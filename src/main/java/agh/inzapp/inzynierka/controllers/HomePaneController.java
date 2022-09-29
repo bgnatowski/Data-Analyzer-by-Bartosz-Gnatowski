@@ -18,6 +18,6 @@ public class HomePaneController {
 //		imageView.fitHeightProperty().bind(imageView.getParent().scaleYProperty());
 //		imageView.fitWidthProperty().bind(hbox.widthProperty());
 //		imageView.fitHeightProperty().bind(hbox.heightProperty());
-
+//
 	}
 }
