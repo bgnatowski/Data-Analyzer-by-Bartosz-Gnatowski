@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox alignment="CENTER" prefHeight="274.0" prefWidth="534.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label text="Information">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <Label maxWidth="500.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed maximus at quam vitae feugiat. Duis suscipit ullamcorper nibh, vitae ultrices metus suscipit nec. Quisque pharetra turpis vitae mauris ornare, vel bibendum leo gravida. Donec facilisis, magna quis maximus malesuada, velit orci lobortis dolor, id suscipit augue lacus sed velit. Curabitur tristique felis non metus blandit malesuada. Proin ultrices laoreet enim sed fringilla. Morbi sit amet vehicula ante. Praesent ultricies ac est ut suscipit. Donec eu vestibulum tellus, in venenatis tellus. Nam quis est turpis. Morbi id nunc tincidunt, luctus eros at, gravida neque. Nam eget felis ac tortor egestas tincidunt. Suspendisse bibendum ante nunc, sed blandit dolor eleifend quis. Nunc nisi leo, feugiat et feugiat ac, posuere nec lorem. Suspendisse potenti. Ut aliquet nulla vitae mollis iaculis." wrapText="true" />
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
