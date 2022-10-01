@@ -1,15 +1,21 @@
 package agh.inzapp.inzynierka.models.modelObj;
 
 import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-public class WinPQDataObj extends BaseDataModelObj {
+@Getter
+@Setter
+@AllArgsConstructor
+@EqualsAndHashCode
+
+public class PQDataObj extends BaseDataModelObj {
 	private Character flags;
-	public WinPQDataObj() {
+	public PQDataObj() {
 		initRecords();
 		initAdditionalRecords();
 	}

@@ -1,13 +1,19 @@
 package agh.inzapp.inzynierka.models.modelObj;
 
 import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.TreeMap;
 
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
+
 public abstract class BaseDataModelObj {
-	private Map<UnitaryNames, Integer> columnsNames = new TreeMap<>();
+	private Map<UnitaryNames, Integer> columnsNamesIndexMap = new TreeMap<>();
 	private Map<UnitaryNames, Double> records = new TreeMap<>();
 	private LocalDateTime localDateTime;
 
@@ -51,29 +57,6 @@ public abstract class BaseDataModelObj {
 
 	protected abstract void initAdditionalRecords();
 
-	public Map<UnitaryNames, Double> getRecords() {
-		return records;
-	}
-
-	public void setRecords(Map<UnitaryNames, Double> records) {
-		this.records = records;
-	}
-
-	public Map<UnitaryNames, Integer> getColumnsNames() {
-		return columnsNames;
-	}
-
-	public void setColumnsNames(Map<UnitaryNames, Integer> columnsNames) {
-		this.columnsNames = columnsNames;
-	}
-
-	public LocalDateTime getLocalDateTime() {
-		return localDateTime;
-	}
-
-	public void setLocalDateTime(LocalDateTime date) {
-		this.localDateTime = date;
-	}
 
 
 }

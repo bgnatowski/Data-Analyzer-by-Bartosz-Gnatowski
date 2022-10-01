@@ -1,8 +1,8 @@
 package agh.inzapp.inzynierka.strategies;
 
 import agh.inzapp.inzynierka.models.modelObj.BaseDataModelObj;
-import agh.inzapp.inzynierka.models.modelObj.WinPQDataObj;
-import agh.inzapp.inzynierka.utils.converters.WinPQParser;
+import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
+import agh.inzapp.inzynierka.utils.converters.PQParser;
 import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import com.opencsv.CSVReader;
@@ -20,8 +20,8 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-public class CSVFromWinPQ implements CSVStrategy {
-	private WinPQDataObj model;
+public class CSVFromPQ implements CSVStrategy {
+	private PQDataObj model;
 	protected List<BaseDataModelObj> dataModels;
 
 	@Override
@@ -48,13 +48,13 @@ public class CSVFromWinPQ implements CSVStrategy {
 					break;
 				}
 
-				this.model = new WinPQDataObj();
+				this.model = new PQDataObj();
 
 				if (!isFirstLineRead) {
-					columnsNames.putAll(WinPQParser.parseNames(recordsList));
+					columnsNames.putAll(PQParser.parseNames(recordsList));
 					isFirstLineRead = true;
 				} else {
-					this.model.setColumnsNames(columnsNames);
+					this.model.setColumnsNamesIndexMap(columnsNames);
 					setDataInModel(recordsList, this.model);
 					dataModels.add(this.model);
 				}
@@ -63,20 +63,20 @@ public class CSVFromWinPQ implements CSVStrategy {
 			throw new ApplicationException(e.getMessage());
 		}
 	}
-	protected void setDataInModel(List<String> recordsList, WinPQDataObj model) {
+	protected void setDataInModel(List<String> recordsList, PQDataObj model) {
 		AtomicReference<LocalDate> date = new AtomicReference<>();
 		AtomicReference<LocalTime> time = new AtomicReference<>();
 
 		Stream.of(UnitaryNames.values()).forEach(unitaryName ->{
-			Integer columnID = model.getColumnsNames().get(unitaryName);
+			Integer columnID = model.getColumnsNamesIndexMap().get(unitaryName);
 			if(unitaryName.equals(UnitaryNames.Date))
-				date.set(WinPQParser.parseDate(recordsList.get(columnID)));
+				date.set(PQParser.parseDate(recordsList.get(columnID)));
 			else if(unitaryName.equals(UnitaryNames.Time)){
-				time.set(WinPQParser.parseTime(recordsList.get(columnID)));
+				time.set(PQParser.parseTime(recordsList.get(columnID)));
 				model.setLocalDateTime(LocalDateTime.of(date.get(), time.get()));
 			}
 			else if(unitaryName.equals(UnitaryNames.Flag))
-				model.setFlags(WinPQParser.parseFlag(recordsList.get(columnID)));
+				model.setFlags(PQParser.parseFlag(recordsList.get(columnID)));
 			else if(columnID != null){ //sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
 				Map<UnitaryNames, Double> records = model.getRecords();
 				try {
@@ -84,7 +84,7 @@ public class CSVFromWinPQ implements CSVStrategy {
 					if (optionalDouble.equals(" ")){
 						records.put(unitaryName, null);
 					} else {
-						records.put(unitaryName, WinPQParser.parseDouble(optionalDouble, unitaryName));
+						records.put(unitaryName, PQParser.parseDouble(optionalDouble, unitaryName));
 					}
 				} catch (ParseException e) {
 					throw new RuntimeException(e);

@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static agh.inzapp.inzynierka.utils.enums.UnitaryNames.*;
 
-public class WinPQParser {
+public class PQParser {
 	private static Map<String, UnitaryNames> winPQNamesMap = new TreeMap<>();
 	private static Map<String, UnitaryNames> winPQHarmonicsNamesMap = new TreeMap<>();
 	private static final List<String> dateFormatPatterns = new ArrayList<>();
