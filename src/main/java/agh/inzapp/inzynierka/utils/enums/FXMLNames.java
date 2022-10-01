@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.utils;
+package agh.inzapp.inzynierka.utils.enums;
 
 public enum FXMLNames {
 	Home("/fxml/HomePane.fxml"),

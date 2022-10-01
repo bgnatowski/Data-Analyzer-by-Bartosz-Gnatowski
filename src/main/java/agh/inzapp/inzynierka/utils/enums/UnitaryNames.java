@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.utils;
+package agh.inzapp.inzynierka.utils.enums;
 
 import java.util.stream.Stream;
 
