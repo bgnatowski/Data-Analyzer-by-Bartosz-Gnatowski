@@ -82,7 +82,7 @@ public class CSVFromPQ implements CSVStrategy {
 				try {
 					String optionalDouble = recordsList.get(columnID);
 					if (optionalDouble.equals(" ")){
-						records.put(unitaryName, null);
+						records.put(unitaryName, 0.00);
 					} else {
 						records.put(unitaryName, PQParser.parseDouble(optionalDouble, unitaryName));
 					}

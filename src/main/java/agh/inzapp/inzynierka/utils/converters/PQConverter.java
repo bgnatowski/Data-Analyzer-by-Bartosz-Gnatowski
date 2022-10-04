@@ -1,6 +1,6 @@
 package agh.inzapp.inzynierka.utils.converters;
 
-import agh.inzapp.inzynierka.database.dbmodels.PQRecords;
+//import agh.inzapp.inzynierka.database.dbmodels.PQRecords;
 import agh.inzapp.inzynierka.database.dbmodels.PQDataDb;
 import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
 import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
@@ -17,7 +17,7 @@ public class PQConverter {
 
 		pqDataDb.setDate(objModel.getLocalDateTime().toLocalDate());
 		pqDataDb.setTime(objModel.getLocalDateTime().toLocalTime());
-		pqDataDb.setRecords(convertRecordsMapToDb(objModel.getRecords()));
+//		pqDataDb.setRecords(convertRecordsMapToDb(objModel.getRecords()));
 		pqDataDb.setFlag(objModel.getFlag());
 
 		return pqDataDb;
@@ -26,26 +26,26 @@ public class PQConverter {
 		PQDataObj PQDataObj = new PQDataObj();
 
 		PQDataObj.setColumnsNamesIndexMap(dbModel.getColumnNamesIndexMap());
-		PQDataObj.setRecords(convertRecordsMapToObj(dbModel.getRecords()));
+//		PQDataObj.setRecords(convertRecordsMapToObj(dbModel.getRecords()));
 		PQDataObj.setFlags(dbModel.getFlag());
 		LocalDateTime dateTime = LocalDateTime.of(dbModel.getDate(), dbModel.getTime());
 		PQDataObj.setLocalDateTime(dateTime);
 
 		return PQDataObj;
 	}
-
-	private static Map<UnitaryNames, Double> convertRecordsMapToObj(Map<UnitaryNames, PQRecords> records) {
-		Map<UnitaryNames, Double> map = new TreeMap<>();
+//
+//	private static Map<UnitaryNames, Double> convertRecordsMapToObj(Map<UnitaryNames, PQRecords> records) {
+//		Map<UnitaryNames, Double> map = new TreeMap<>();
+//		records.forEach((name, record) -> {
+//			map.put(name, record.getRecord());
+//		});
+//		return map;
+//	}
+//
+	public static Map<String, Double> convertRecordsMapToDb(Map<UnitaryNames, Double> records) {
+		Map<String, Double> map = new TreeMap<>();
 		records.forEach((name, record) -> {
-			map.put(name, record.getRecord());
-		});
-		return map;
-	}
-
-	public static Map<UnitaryNames, PQRecords> convertRecordsMapToDb(Map<UnitaryNames, Double> recordsMap) {
-		Map<UnitaryNames, PQRecords> map = new TreeMap<>();
-		recordsMap.forEach((name, record) -> {
-			map.put(name, new PQRecords(name, record));
+			map.put(name.toString(), record);
 		});
 		return map;
 	}

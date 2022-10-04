@@ -3,6 +3,7 @@ package agh.inzapp.inzynierka;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -14,6 +15,7 @@ public class DataAnalysisApp extends Application {
 	@Override
 	public void init() {
 		applicationContext = new SpringApplicationBuilder(EngineerApp.class).run();
+//		applicationContext = SpringApplication.run(EngineerApp.class);
 	}
 
 	@Override

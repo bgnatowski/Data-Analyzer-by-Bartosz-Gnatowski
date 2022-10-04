@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@Component("ImportMenuPaneController")
+@Component()
 public class ImportMenuPaneController {
 	@Autowired
 	PQRepository pqRepository;
