@@ -34,7 +34,7 @@ import static agh.inzapp.inzynierka.utils.enums.FXMLNames.MAIN;
 import static agh.inzapp.inzynierka.utils.enums.FXMLNames.TABLE_VIEW;
 
 //@NoArgsConstructor
-@Component("ImportMenuPaneController")
+@Component
 @Controller
 public class ImportMenuPaneController {
 	@Autowired
