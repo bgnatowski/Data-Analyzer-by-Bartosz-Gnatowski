@@ -1,7 +1,7 @@
 package agh.inzapp.inzynierka.strategies;
 
 
-import agh.inzapp.inzynierka.models.modelObj.BaseDataModelObj;
+import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -14,5 +14,5 @@ public interface CSVStrategy {
 			.withQuoteChar('\'')
 			.withIgnoreQuotations(false)
 			.build();
-	List<BaseDataModelObj> importCSVFile(String... path) throws ApplicationException;
+	List<BaseDataObj> importCSVFile(String... path) throws ApplicationException;
 }

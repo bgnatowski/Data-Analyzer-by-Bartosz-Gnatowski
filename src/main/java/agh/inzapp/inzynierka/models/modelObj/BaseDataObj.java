@@ -12,7 +12,7 @@ import java.util.TreeMap;
 @ToString
 @EqualsAndHashCode
 
-public abstract class BaseDataModelObj {
+public abstract class BaseDataObj {
 	private Map<UnitaryNames, Integer> columnsNamesIndexMap = new TreeMap<>();
 	private Map<UnitaryNames, Double> records = new TreeMap<>();
 	private LocalDateTime localDateTime;

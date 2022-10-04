@@ -3,7 +3,9 @@ package agh.inzapp.inzynierka.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
+import org.springframework.stereotype.Component;
 
+//@Component
 public class TableViewPaneController {
 
 	@FXML

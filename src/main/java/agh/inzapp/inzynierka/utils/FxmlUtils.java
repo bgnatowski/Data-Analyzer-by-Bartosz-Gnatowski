@@ -8,7 +8,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class FxmlUtils {
-	public static Pane fxmlLoader(String fxmlPath) {
+	public static Pane fxmlLoad(String fxmlPath) {
 		FXMLLoader fxmlLoader = new FXMLLoader(FxmlUtils.class.getResource(fxmlPath));
 		fxmlLoader.setResources(getResourceBundle());
 		try {
@@ -18,7 +18,7 @@ public class FxmlUtils {
 		}
 		return null;
 	}
-	public static Parent fxmlLoader(URL url) {
+	public static Parent fxmlLoad(URL url) {
 		FXMLLoader fxmlLoader = new FXMLLoader(url);
 		fxmlLoader.setResources(getResourceBundle());
 		try {

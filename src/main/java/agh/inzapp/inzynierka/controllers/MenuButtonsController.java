@@ -4,14 +4,17 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import org.springframework.stereotype.Component;
 
+import static agh.inzapp.inzynierka.utils.enums.FXMLNames.*;
 
+//@Component
 public class MenuButtonsController {
-	static final String HOME_PANE_FXML = "/fxml/HomePane.fxml";
-	static final String MENU_BUTTONS_FXML = "/fxml/MenuButtons.fxml";
-	static final String MENU_PANE_FXML = "/fxml/ImportMenuPane.fxml";
-	static final String INFORMATION_PANE_FXML = "/fxml/InformationPane.fxml";
-	static final String TABLE_VIEW_FXML = "/fxml/TableViewPane.fxml";
+	static final String HOME_FXML = HOME.getPath();
+	static final String MENU_BUTTONS_FXML = MENU.getPath();
+	static final String IMPORT_MENU_FXML = IMPORT_MENU.getPath();
+	static final String INFORMATION_FXML = INFORMATION.getPath();
+	static final String TABLE_VIEW_FXML = TABLE_VIEW.getPath();
 	private static MainAppPaneController mainAppPaneController;
 	@FXML
 	private Button exitButton;
@@ -24,23 +27,25 @@ public class MenuButtonsController {
 
 	@FXML
 	private void goHomeOnAction() {
-		mainAppPaneController.setCenter(HOME_PANE_FXML);
+		mainAppPaneController.setCenter(HOME_FXML);
 	}
 	@FXML
-	private void importCSVMenu(ActionEvent event) {
-		mainAppPaneController.setCenter(MENU_PANE_FXML);
+	private void importCSVMenu() {
+		mainAppPaneController.setCenter(IMPORT_MENU_FXML);
 	}
 	@FXML
 	private void informationOnAction() {
-		mainAppPaneController.setCenter(INFORMATION_PANE_FXML);
+		mainAppPaneController.setCenter(INFORMATION_FXML);
 	}
-
-//	static void showTableViewPane(List<? extends BaseDataModelObj> modelsList){
-//		mainAppPaneController.setCenter(TABLE_VIEW_FXML);
-//	}
-
 	@FXML
-	private void exitAppOnAction(ActionEvent event) {
+	private void tableViewOnAction() {
+		mainAppPaneController.setCenter(TABLE_VIEW_FXML);
+	}
+	@FXML
+	private void figuresOnAction() {
+	}
+	@FXML
+	private void exitAppOnAction() {
 		Platform.exit();
 		System.exit(0);
 	}
@@ -48,7 +53,6 @@ public class MenuButtonsController {
 	void setMainController(MainAppPaneController mainAppPaneController) {
 		this.mainAppPaneController = mainAppPaneController;
 	}
-
 	public MainAppPaneController getMainAppPaneController() {
 		return mainAppPaneController;
 	}

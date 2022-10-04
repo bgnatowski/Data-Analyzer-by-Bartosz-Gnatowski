@@ -1,7 +1,7 @@
 package agh.inzapp.inzynierka.utils.converters;
 
-import agh.inzapp.inzynierka.database.dbmodels.PQRecords;
-import agh.inzapp.inzynierka.database.dbmodels.PQDataDb;
+import agh.inzapp.inzynierka.database.PQRecords;
+import agh.inzapp.inzynierka.database.PQDataDb;
 import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
 import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
 
@@ -36,33 +36,25 @@ public class PQConverter {
 
 	private static Map<UnitaryNames, Double> convertRecordsMapToObj(Map<UnitaryNames, PQRecords> records) {
 		Map<UnitaryNames, Double> map = new TreeMap<>();
-		records.forEach((name, record) -> {
-			map.put(name, record.getRecord());
-		});
+		records.forEach((name, record) -> map.put(name, record.getRecord()));
 		return map;
 	}
 
 	public static Map<UnitaryNames, PQRecords> convertRecordsMapToDb(Map<UnitaryNames, Double> recordsMap) {
 		Map<UnitaryNames, PQRecords> map = new TreeMap<>();
-		recordsMap.forEach((name, record) -> {
-			map.put(name, new PQRecords(name, record));
-		});
+		recordsMap.forEach((name, record) -> map.put(name, new PQRecords(name, record)));
 		return map;
 	}
 
 	public static List<PQDataObj> convertListDbToObj(List<PQDataDb> models) {
 		ArrayList<PQDataObj> list = new ArrayList<>();
-		models.forEach(modelDb -> {
-			list.add(convertToObj(modelDb));
-		});
+		models.forEach(modelDb -> list.add(convertToObj(modelDb)));
 		return list;
 	}
 
 	public static List<PQDataDb> convertListObjToDb(List<PQDataObj> models) {
 		ArrayList<PQDataDb> list = new ArrayList<>();
-		models.forEach(modelObj -> {
-			list.add(convertToDb(modelObj));
-		});
+		models.forEach(modelObj -> list.add(convertToDb(modelObj)));
 		return list;
 	}
 

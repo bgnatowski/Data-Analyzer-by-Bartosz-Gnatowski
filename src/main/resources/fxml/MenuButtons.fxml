@@ -5,18 +5,27 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.MenuButtonsController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="50.0" minWidth="-Infinity" prefHeight="300.0" prefWidth="170.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.MenuButtonsController">
    <children>
-      <VBox spacing="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="160.0" prefWidth="170.0" spacing="5.0" AnchorPane.bottomAnchor="143.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="homeButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#goHomeOnAction" prefHeight="30.0" prefWidth="120.0" text="%button.home" />
-            <Button fx:id="loadButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#importCSVMenu" prefHeight="30.0" prefWidth="120.0" text="%button.import" />
-            <Button fx:id="infoButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#informationOnAction" prefHeight="30.0" prefWidth="120.0" text="%button.info" />
-            <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#exitAppOnAction" prefHeight="30.0" prefWidth="120.0" text="%button.exit" />
+            <Button fx:id="homeButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goHomeOnAction" prefHeight="30.0" prefWidth="150.0" text="%button.home" />
+            <Button fx:id="loadButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#importCSVMenu" prefHeight="30.0" prefWidth="150.0" text="%button.import" />
+            <Button fx:id="tableViewButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tableViewOnAction" prefHeight="30.0" prefWidth="150.0" text="%button.tableview" />
+            <Button fx:id="figuresButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#figuresOnAction" prefHeight="30.0" prefWidth="150.0" text="%button.figures" />
          </children>
          <padding>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </padding>
+      </VBox>
+      <VBox alignment="BOTTOM_LEFT" layoutY="244.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="90.0" prefWidth="150.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="244.0">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <Button fx:id="infoButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#informationOnAction" prefHeight="30.0" prefWidth="150.0" text="%button.info" />
+            <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exitAppOnAction" prefHeight="30.0" prefWidth="150.0" text="%button.exit" />
+         </children>
       </VBox>
    </children>
 </AnchorPane>

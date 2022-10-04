@@ -5,9 +5,9 @@ import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class SonelDataObjData extends BaseDataModelObj {
+public class SonelDataObj extends BaseDataObj {
 	private Map<UnitaryNames,Character> flags;
-	public SonelDataObjData() {
+	public SonelDataObj() {
 		initRecords();
 		initAdditionalRecords();
 		initFlags();

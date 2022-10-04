@@ -1,55 +1,70 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.database.dbmodels.PQDataDb;
-import agh.inzapp.inzynierka.database.repository.PQRepository;
-import agh.inzapp.inzynierka.models.modelObj.BaseDataModelObj;
+import agh.inzapp.inzynierka.database.PQDataDb;
+import agh.inzapp.inzynierka.repository.PQRepository;
+import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
 import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
 import agh.inzapp.inzynierka.strategies.CSVFromPQ;
 import agh.inzapp.inzynierka.strategies.CSVStrategy;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.converters.PQConverter;
+import agh.inzapp.inzynierka.utils.enums.Analysers;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+import static agh.inzapp.inzynierka.utils.enums.FXMLNames.MAIN;
+import static agh.inzapp.inzynierka.utils.enums.FXMLNames.TABLE_VIEW;
+
+//@NoArgsConstructor
 @Component("ImportMenuPaneController")
+@Controller
 public class ImportMenuPaneController {
 	@Autowired
-	PQRepository pqRepository;
+	private PQRepository pqRepository;
 	final private FileChooser fc = new FileChooser();
-	public static final String FILE_CHOOSER_TITLE_DATA = "fileChooser.data";
-	private static final String FILE_CHOOSER_HARMONICS_DATA = "fileChooser.harmonics";
 	private ObservableList<File> filesNormalDataList = FXCollections.observableArrayList();
 	private ObservableList<File> filesHarmonicsDataList = FXCollections.observableArrayList();
 
+	@Getter
 	private enum DataType {
-		HARMONICS_DATA,
-		NORMAL_DATA;
+		HARMONICS_DATA("fileChooser.harmonics"),
+		NORMAL_DATA("fileChooser.data");
 
+		DataType(String title) {
+			this.title = title;
+		}
+
+		final String title;
 	}
 
 	@FXML
-	private ComboBox<String> comboBoxAnalyzer;
-
+	private AnchorPane ap;
+	@FXML
+	private ComboBox<Analysers> comboBoxAnalyzer;
 	@FXML
 	private Label labelImport;
 	@FXML
-	private Button btnDataImport;
-	@FXML
 	private Label harmonicsLabel;
+	@FXML
+	private Button btnDataImport;
 	@FXML
 	private Button btnHarmonicsImport;
 	@FXML
@@ -66,8 +81,9 @@ public class ImportMenuPaneController {
 	private RadioButton radioButtonYes;
 
 	public void initialize() {
-		comboBoxAnalyzer.setItems(FXCollections.observableArrayList("WinPQ mobil", "Sonel Analiza - PQM-711"));
-		bindings();
+		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
+		this.
+				bindings();
 	}
 
 	private void bindings() {
@@ -84,24 +100,24 @@ public class ImportMenuPaneController {
 		radioButtonYes.disableProperty().bind(comboBoxAnalyzer.valueProperty().isNull());
 
 		importButton.disableProperty().bind(comboBoxAnalyzer.valueProperty().isNull());
-		//todo importButton should be disabled when not done
+		// todo importButton should be disabled when not done
 
 	}
 
 	@FXML
-	void importDataFileNames(ActionEvent event) {
-		prepareFileChooser(FILE_CHOOSER_TITLE_DATA);
+	void importDataFileNames() {
+		prepareFileChooser(DataType.NORMAL_DATA);
 		getFileNames(DataType.NORMAL_DATA);
 	}
 
 	@FXML
-	void importHarmonicsFileNames(ActionEvent event) {
-		prepareFileChooser(FILE_CHOOSER_HARMONICS_DATA);
+	void importHarmonicsFileNames() {
+		prepareFileChooser(DataType.HARMONICS_DATA);
 		getFileNames(DataType.HARMONICS_DATA);
 	}
 
-	private void prepareFileChooser(String title) {
-		fc.setTitle(FxmlUtils.getResourceBundle().getString(title));
+	private void prepareFileChooser(DataType dataType) {
+		fc.setTitle(FxmlUtils.getInternalizedPropertyByKey(dataType.getTitle()));
 		fc.setInitialDirectory(new File(System.getProperty("user.dir")));
 		fc.getExtensionFilters().clear();
 		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(
@@ -145,7 +161,7 @@ public class ImportMenuPaneController {
 		}
 	}
 
-	public void deleteNormalFileFromListOnAction(ActionEvent actionEvent) {
+	public void deleteNormalFileFromListOnAction() {
 		File file = multiFilesNormalDataListView.getSelectionModel().getSelectedItem();
 		System.out.println("usun: " + file);
 
@@ -156,7 +172,7 @@ public class ImportMenuPaneController {
 		}
 	}
 
-	public void deleteHarmonicsFileFromListOnAction(ActionEvent actionEvent) {
+	public void deleteHarmonicsFileFromListOnAction() {
 		File file = multiFilesHarmonicsDataListView.getSelectionModel().getSelectedItem();
 		System.out.println("usun: " + file);
 
@@ -168,10 +184,10 @@ public class ImportMenuPaneController {
 	}
 
 	@FXML
-	private void importData(ActionEvent event) {
-		List<BaseDataModelObj> modelsList = null;
+	private void importData() {
+		List<BaseDataObj> modelsList;
 		switch (comboBoxAnalyzer.getValue()) {
-			case "WinPQ mobil":
+			case PQbox:
 				if (radioButtonNo.isSelected()) {
 					modelsList = getDataList(new CSVFromPQ());
 
@@ -187,26 +203,46 @@ public class ImportMenuPaneController {
 					});
 					System.out.println("done");
 				} else {
-//					modelsList = getWinPQHamronicsModel();
+//					modelsList = getDataList(new CSVFromPQHarmonics);
+//					//todo pq harmonics import
+					System.out.println("pq harmonics import");
 				}
 				break;
-//			case "Sonel Analiza - PQM-711":
-//					if (radioButtonYes.isSelected()){
-//						modelsList = getSonelModelsWithHarmonics();
-//					} else {
-//						modelsList = getSonelModelsWithoutHarmonics();
-//					}
-//				break;
+			case Sonel:
+				if (radioButtonYes.isSelected()) {
+//						modelsList = getDataList(new CSVFromSonel());
+					//todo sonel import csv
+					System.out.println("sonel import");
+				} else {
+//						modelsList = getDataList(new CSVFromSonelHarmonics);
+					//todo sonel harmonics import
+					System.out.println("sonel harmonics import");
+				}
+				break;
 			default:
 				//TODO do bundlesow
 				DialogUtils.errorDialog("Takiego urządzenia nie obsługuję");
 		}
-		;
-//		MenuButtonsController.showTableViewPane(modelsList);
+		switchToTableViewAferImport();
 	}
 
-	private List<BaseDataModelObj> getDataList(CSVStrategy csvStrategy) {
-		List<BaseDataModelObj> modelList = new ArrayList<>();
+	private void switchToTableViewAferImport() {
+		try {
+			FXMLLoader loader = FxmlUtils.getLoader(MAIN.getPath());
+			Stage stage = (Stage) ap.getScene().getWindow();
+			loader.load();
+			Scene scene = new Scene(loader.getRoot(), stage.getWidth(), stage.getHeight());
+			stage.setScene(scene);
+
+			MainAppPaneController controller = loader.getController();
+			controller.setCenter(TABLE_VIEW.getPath());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	private List<BaseDataObj> getDataList(CSVStrategy csvStrategy) {
+		List<BaseDataObj> modelList = new ArrayList<>();
 		filesNormalDataList.forEach(file ->
 		{
 			try {

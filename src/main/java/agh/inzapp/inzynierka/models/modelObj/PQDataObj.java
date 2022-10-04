@@ -11,9 +11,8 @@ import java.util.Map;
 @Getter
 @Setter
 @AllArgsConstructor
-@EqualsAndHashCode
 
-public class PQDataObj extends BaseDataModelObj {
+public class PQDataObj extends BaseDataObj {
 	private Character flags;
 	public PQDataObj() {
 		initRecords();

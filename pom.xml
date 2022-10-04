@@ -66,11 +66,6 @@
             <artifactId>opencsv</artifactId>
             <version>5.7.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.j256.ormlite</groupId>
-            <artifactId>ormlite-jdbc</artifactId>
-            <version>6.1</version>
-        </dependency>
 
 
     </dependencies>

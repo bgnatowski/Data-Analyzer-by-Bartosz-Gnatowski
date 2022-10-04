@@ -1,14 +1,14 @@
 package agh.inzapp.inzynierka.utils.enums;
 
 public enum FXMLNames {
-	Home("/fxml/HomePane.fxml"),
-	ImportMenu("/fxml/ImportMenuPane.fxml"),
-	Information("/fxml/InformationPane.fxml"),
-	Main("/fxml/MainAppPane.fxml"),
-	Menu("/fxml/MenuButtons.fxml"),
-	DataView("/fxml/TableViewPane.fxml");
+	HOME("/fxml/HomePane.fxml"),
+	IMPORT_MENU("/fxml/ImportMenuPane.fxml"),
+	INFORMATION("/fxml/InformationPane.fxml"),
+	MAIN("/fxml/MainAppPane.fxml"),
+	MENU("/fxml/MenuButtons.fxml"),
+	TABLE_VIEW("/fxml/TableViewPane.fxml");
 
-	private String path;
+	private final String path;
 	FXMLNames(String s) {
 		path = s;
 	}

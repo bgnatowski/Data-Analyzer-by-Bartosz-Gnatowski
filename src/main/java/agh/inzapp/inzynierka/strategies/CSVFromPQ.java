@@ -1,6 +1,6 @@
 package agh.inzapp.inzynierka.strategies;
 
-import agh.inzapp.inzynierka.models.modelObj.BaseDataModelObj;
+import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
 import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
 import agh.inzapp.inzynierka.utils.converters.PQParser;
 import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
@@ -21,14 +21,11 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 public class CSVFromPQ implements CSVStrategy {
-	private PQDataObj model;
-	protected List<BaseDataModelObj> dataModels;
-
+	protected List<BaseDataObj> dataModels;
 	@Override
-	public List<BaseDataModelObj> importCSVFile(String... path) throws ApplicationException {
+	public List<BaseDataObj> importCSVFile(String... path) throws ApplicationException {
 		dataModels = new ArrayList<>();
 		readFile(path[0]);
-
 		return dataModels;
 	}
 	private void readFile(String path) throws ApplicationException {
@@ -48,15 +45,15 @@ public class CSVFromPQ implements CSVStrategy {
 					break;
 				}
 
-				this.model = new PQDataObj();
+				PQDataObj model = new PQDataObj();
 
 				if (!isFirstLineRead) {
 					columnsNames.putAll(PQParser.parseNames(recordsList));
 					isFirstLineRead = true;
 				} else {
-					this.model.setColumnsNamesIndexMap(columnsNames);
-					setDataInModel(recordsList, this.model);
-					dataModels.add(this.model);
+					model.setColumnsNamesIndexMap(columnsNames);
+					setDataInModel(recordsList, model);
+					dataModels.add(model);
 				}
 			}
 		} catch (IOException | CsvValidationException e) {

@@ -1,6 +1,6 @@
-package agh.inzapp.inzynierka.database.repository;
+package agh.inzapp.inzynierka.repository;
 
-import agh.inzapp.inzynierka.database.dbmodels.PQDataDb;
+import agh.inzapp.inzynierka.database.PQDataDb;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

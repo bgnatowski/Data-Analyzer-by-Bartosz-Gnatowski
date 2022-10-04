@@ -1,7 +1,6 @@
-package agh.inzapp.inzynierka.database.dbmodels;
+package agh.inzapp.inzynierka.database;
 
 import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
-import com.j256.ormlite.stmt.query.In;
 import lombok.*;
 
 import javax.persistence.*;
@@ -15,7 +14,6 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 
 @Entity(name = "PQDataDb")
 @Table(name = "pqdatadb", uniqueConstraints = {@UniqueConstraint(name = "pqdatadb_unique", columnNames = {"date", "time"})})
@@ -45,6 +43,16 @@ public class PQDataDb {
 	@Transient
 	private Map<UnitaryNames, Integer> columnNamesIndexMap;
 
-
+	@Override
+	public String toString() {
+		return "PQDataDb{" +
+				"id=" + id +
+				", date=" + date +
+				", time=" + time +
+				", flag=" + flag +
+				", records=" + records +
+				", columnNamesIndexMap=" + columnNamesIndexMap +
+				'}';
+	}
 }
 
