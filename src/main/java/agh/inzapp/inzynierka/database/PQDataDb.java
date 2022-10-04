@@ -17,6 +17,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "PQDataDb")
 @Table(name = "pqdatadb", uniqueConstraints = {@UniqueConstraint(name = "pqdatadb_unique", columnNames = {"date", "time"})})
+//@Table(name = "pqdatadb")
 public class PQDataDb {
 	@Id
 	@SequenceGenerator(name = "pqdatadb_sequence", sequenceName = "pqdatadb_sequence", allocationSize = 1)
@@ -32,13 +33,46 @@ public class PQDataDb {
 
 	@Column(name = "flag")
 	private Character flag;
+	//DZIALA NA NAZWY PO PL -> TRZEBA KONWERTOWAC -> PIERWSZE ODPALENIE DZIALA ALE JAKIES BLEDY WYWALA WTF
+	@ElementCollection
+	@CollectionTable(name = "pqdatadb_record_mapping",
+	joinColumns = {@JoinColumn(name = "pqdatadb_id", referencedColumnName = "id")})
+	@MapKeyColumn(name = "uni_name")
+	@Column(name = "value")
+	private Map<String, Double> records;
 
-	@OneToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "pqdata_records_mapping",
-	joinColumns = {@JoinColumn(name ="pqdatadb_id", referencedColumnName = "id")},
-	inverseJoinColumns = {@JoinColumn(name="record_id", referencedColumnName = "id")})
-	@MapKeyEnumerated(EnumType.STRING)
-	private Map<UnitaryNames , PQRecords> records;
+//	@ElementCollection
+//	@CollectionTable(name = "pqdatadb_record_mapping",
+//			joinColumns = {@JoinColumn(name = "pqdatadb_id", referencedColumnName = "id")})
+//	@MapKeyColumn(name = "records_name")
+//	@Column(name = "record")
+//	private Map<UnitaryNames, Double> pqrecordsRecordMap;
+
+//	@ElementCollection
+//	@CollectionTable(name = "pqdatadb_record_mapping",
+//			joinColumns = {@JoinColumn(name = "pqdatadb_id", referencedColumnName = "id")})
+//	@MapKeyEnumerated(EnumType.STRING)
+//	@Column(name = "record")
+//	private Map<UnitaryNames, Double> pqrecordsRecordMap;
+
+//	@ElementCollection
+//	@JoinTable(name="RECORDS_NAME_VALUE", joinColumns=@JoinColumn(name="ID"))
+//	@MapKeyEnumerated (EnumType.STRING)
+//	@Column(name="NAME")
+//	private Map<UnitaryNames, Double> recordsNameValue = new TreeMap<>();
+
+//	@OneToMany(cascade = CascadeType.ALL)
+//	@JoinTable(name = "pqdatadb_pqrecords_mapping",
+//	joinColumns = {@JoinColumn(name ="pqdatadb_id", referencedColumnName = "id")},
+//	inverseJoinColumns = {@JoinColumn(name="pqrecords_id", referencedColumnName = "id")})
+//	@MapKeyEnumerated(EnumType.STRING)
+//	private Map<UnitaryNames , PQRecords> records;
+
+//	@ElementCollection
+//	@JoinTable(name="pqrecords", joinColumns=@JoinColumn(name="id"))
+//	@MapKeyColumn (name="id")
+//	@Column(name="VALUE")
+//	private Map<UnitaryNames, Double> records = new TreeMap<>();
 
 	@Transient
 	private Map<UnitaryNames, Integer> columnNamesIndexMap;
