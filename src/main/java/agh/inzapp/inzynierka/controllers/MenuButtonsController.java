@@ -1,17 +1,15 @@
 package agh.inzapp.inzynierka.controllers;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import org.springframework.stereotype.Component;
 
-import static agh.inzapp.inzynierka.utils.enums.FXMLNames.*;
+import static agh.inzapp.inzynierka.enums.FXMLNames.*;
 
-//@Component
+@Component
 public class MenuButtonsController {
 	static final String HOME_FXML = HOME.getPath();
-	static final String MENU_BUTTONS_FXML = MENU.getPath();
 	static final String IMPORT_MENU_FXML = IMPORT_MENU.getPath();
 	static final String INFORMATION_FXML = INFORMATION.getPath();
 	static final String TABLE_VIEW_FXML = TABLE_VIEW.getPath();
@@ -52,8 +50,5 @@ public class MenuButtonsController {
 	@FXML
 	void setMainController(MainAppPaneController mainAppPaneController) {
 		this.mainAppPaneController = mainAppPaneController;
-	}
-	public MainAppPaneController getMainAppPaneController() {
-		return mainAppPaneController;
 	}
 }

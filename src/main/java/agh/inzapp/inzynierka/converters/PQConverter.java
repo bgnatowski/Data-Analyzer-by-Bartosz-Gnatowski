@@ -1,8 +1,8 @@
-package agh.inzapp.inzynierka.utils.converters;
+package agh.inzapp.inzynierka.converters;
 
-import agh.inzapp.inzynierka.database.PQDataDb;
+import agh.inzapp.inzynierka.entities.PQDataDb;
 import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
-import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
+import agh.inzapp.inzynierka.enums.UniNames;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class PQConverter {
 
 		pqDataDb.setDate(objModel.getLocalDateTime().toLocalDate());
 		pqDataDb.setTime(objModel.getLocalDateTime().toLocalTime());
-//		pqDataDb.setRecords(convertRecordsMapToDb(objModel.getRecords()));
+		pqDataDb.setRecords(convertRecordsMapToDb(objModel.getRecords()));
 		pqDataDb.setFlag(objModel.getFlag());
 
 		return pqDataDb;
@@ -26,7 +26,7 @@ public class PQConverter {
 		PQDataObj PQDataObj = new PQDataObj();
 
 		PQDataObj.setColumnsNamesIndexMap(dbModel.getColumnNamesIndexMap());
-//		PQDataObj.setRecords(convertRecordsMapToObj(dbModel.getRecords()));
+		PQDataObj.setRecords(convertRecordsMapToObj(dbModel.getRecords()));
 		PQDataObj.setFlags(dbModel.getFlag());
 		LocalDateTime dateTime = LocalDateTime.of(dbModel.getDate(), dbModel.getTime());
 		PQDataObj.setLocalDateTime(dateTime);
@@ -34,7 +34,15 @@ public class PQConverter {
 		return PQDataObj;
 	}
 
-	public static Map<String, Double> convertRecordsMapToDb(Map<UnitaryNames, Double> records) {
+	private static Map<UniNames, Double> convertRecordsMapToObj(Map<String, Double> records) {
+		Map<UniNames, Double>  map = new TreeMap<>();
+		records.forEach((name, record) -> {
+			map.put(UniNames.valueOf(name), record);
+		});
+		return map;
+	}
+
+	public static Map<String, Double> convertRecordsMapToDb(Map<UniNames, Double> records) {
 		Map<String, Double> map = new TreeMap<>();
 		records.forEach((name, record) -> {
 			map.put(name.toString(), record);

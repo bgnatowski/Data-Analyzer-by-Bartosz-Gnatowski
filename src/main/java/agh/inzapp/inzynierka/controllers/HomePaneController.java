@@ -6,7 +6,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import org.springframework.stereotype.Component;
 
-
+@Component
 public class HomePaneController {
 	@FXML
 	private AnchorPane anchorPane;

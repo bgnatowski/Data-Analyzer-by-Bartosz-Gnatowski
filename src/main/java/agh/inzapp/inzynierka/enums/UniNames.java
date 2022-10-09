@@ -1,10 +1,10 @@
-package agh.inzapp.inzynierka.utils.enums;
+package agh.inzapp.inzynierka.enums;
 
 import java.util.stream.Stream;
 
 import static agh.inzapp.inzynierka.utils.FxmlUtils.getInternalizedPropertyByKey;
 
-public enum UnitaryNames {
+public enum UniNames {
 	// Base
 	Date(getInternalizedPropertyByKey("column.date"), getInternalizedPropertyByKey("unit.date")),
 	Time(getInternalizedPropertyByKey("column.time"), getInternalizedPropertyByKey("unit.time")),
@@ -454,13 +454,13 @@ public enum UnitaryNames {
 	private final String uniName;
 	private final String unit;
 
-	UnitaryNames(String uniName, String unit) {
+	UniNames(String uniName, String unit) {
 		this.uniName = uniName;
 		this.unit = unit;
 	}
 
-	public static Stream<UnitaryNames> stream() {
-		return Stream.of(UnitaryNames.values());
+	public static Stream<UniNames> stream() {
+		return Stream.of(UniNames.values());
 	}
 
 	public String getUnit() {

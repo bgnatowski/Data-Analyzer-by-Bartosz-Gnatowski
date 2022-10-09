@@ -1,16 +1,13 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.database.PQDataDb;
-import agh.inzapp.inzynierka.repository.PQRepository;
 import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
-import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
+import agh.inzapp.inzynierka.managers.PQDataManager;
 import agh.inzapp.inzynierka.strategies.CSVFromPQ;
 import agh.inzapp.inzynierka.strategies.CSVStrategy;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
-import agh.inzapp.inzynierka.utils.converters.PQConverter;
-import agh.inzapp.inzynierka.utils.enums.Analysers;
-import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.enums.Analysers;
+import agh.inzapp.inzynierka.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -21,24 +18,18 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import lombok.Getter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static agh.inzapp.inzynierka.utils.enums.FXMLNames.MAIN;
-import static agh.inzapp.inzynierka.utils.enums.FXMLNames.TABLE_VIEW;
+import static agh.inzapp.inzynierka.enums.FXMLNames.MAIN;
+import static agh.inzapp.inzynierka.enums.FXMLNames.TABLE_VIEW;
 
-//@NoArgsConstructor
 @Component
-@Controller
 public class ImportMenuPaneController {
-	@Autowired
-	private PQRepository pqRepository;
 	final private FileChooser fc = new FileChooser();
 	private ObservableList<File> filesNormalDataList = FXCollections.observableArrayList();
 	private ObservableList<File> filesHarmonicsDataList = FXCollections.observableArrayList();
@@ -79,11 +70,9 @@ public class ImportMenuPaneController {
 	private RadioButton radioButtonNo;
 	@FXML
 	private RadioButton radioButtonYes;
-
 	public void initialize() {
 		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
-		this.
-				bindings();
+		bindings();
 	}
 
 	private void bindings() {
@@ -125,10 +114,8 @@ public class ImportMenuPaneController {
 		fc.getExtensionFilters().add(extensionFilter);
 	}
 
-
 	private void getFileNames(DataType dataType) {
 		List<File> files = fc.showOpenMultipleDialog(null);
-
 		if (files != null) {
 			files.forEach(file -> {
 				if (file != null) {
@@ -161,7 +148,8 @@ public class ImportMenuPaneController {
 		}
 	}
 
-	public void deleteNormalFileFromListOnAction() {
+	@FXML
+	private void deleteNormalFileFromListOnAction() {
 		File file = multiFilesNormalDataListView.getSelectionModel().getSelectedItem();
 		System.out.println("usun: " + file);
 
@@ -171,10 +159,9 @@ public class ImportMenuPaneController {
 			multiFilesNormalDataListView.setItems(filesNormalDataList);
 		}
 	}
-
-	public void deleteHarmonicsFileFromListOnAction() {
+	@FXML
+	private void deleteHarmonicsFileFromListOnAction() {
 		File file = multiFilesHarmonicsDataListView.getSelectionModel().getSelectedItem();
-		System.out.println("usun: " + file);
 
 		if (file != null) {
 			multiFilesHarmonicsDataListView.getSelectionModel().clearSelection();
@@ -185,22 +172,13 @@ public class ImportMenuPaneController {
 
 	@FXML
 	private void importData() {
-		List<BaseDataObj> modelsList;
+		List<? extends BaseDataObj> modelsList;
 		switch (comboBoxAnalyzer.getValue()) {
 			case PQbox:
 				if (radioButtonNo.isSelected()) {
 					modelsList = getDataList(new CSVFromPQ());
-
 					System.out.println("saving...");
-					modelsList.forEach(model -> {
-						PQDataObj modelObj = (PQDataObj) model;
-						PQDataDb dbModel = new PQDataDb();
-						dbModel.setDate(modelObj.getLocalDateTime().toLocalDate());
-						dbModel.setTime(modelObj.getLocalDateTime().toLocalTime());
-						dbModel.setFlag(modelObj.getFlag());
-						dbModel.setRecords(PQConverter.convertRecordsMapToDb(modelObj.getRecords()));
-						pqRepository.save(dbModel);
-					});
+					PQDataManager.saveAllModelsInDB(modelsList);
 					System.out.println("done");
 				} else {
 //					modelsList = getDataList(new CSVFromPQHarmonics);
@@ -226,6 +204,19 @@ public class ImportMenuPaneController {
 		switchToTableViewAferImport();
 	}
 
+	private List<? extends BaseDataObj> getDataList(CSVStrategy csvStrategy) {
+		List<BaseDataObj> modelList = new ArrayList<>();
+		filesNormalDataList.forEach(file ->
+		{
+			try {
+				modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
+			} catch (ApplicationException e) {
+				DialogUtils.errorDialog(e.getMessage());
+			}
+		});
+		return modelList;
+	}
+
 	private void switchToTableViewAferImport() {
 		try {
 			FXMLLoader loader = FxmlUtils.getLoader(MAIN.getPath());
@@ -237,21 +228,9 @@ public class ImportMenuPaneController {
 			MainAppPaneController controller = loader.getController();
 			controller.setCenter(TABLE_VIEW.getPath());
 		} catch (IOException e) {
+			//TODO exception
 			throw new RuntimeException(e);
 		}
-	}
-
-	private List<BaseDataObj> getDataList(CSVStrategy csvStrategy) {
-		List<BaseDataObj> modelList = new ArrayList<>();
-		filesNormalDataList.forEach(file ->
-		{
-			try {
-				modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
-			} catch (ApplicationException e) {
-				DialogUtils.errorDialog(e.getMessage());
-			}
-		});
-		return modelList;
 	}
 
 }

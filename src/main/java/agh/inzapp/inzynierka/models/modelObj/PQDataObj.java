@@ -1,6 +1,6 @@
 package agh.inzapp.inzynierka.models.modelObj;
 
-import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
+import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,26 +21,26 @@ public class PQDataObj extends BaseDataObj {
 
 	@Override
 	protected void initAdditionalRecords() {
-		Map<UnitaryNames, Double> records = getRecords();
-		records.put(UnitaryNames.U12_max           , null);
-		records.put(UnitaryNames.U23_max           , null);
-		records.put(UnitaryNames.U31_max           , null);
-		records.put(UnitaryNames.U12_min           , null);
-		records.put(UnitaryNames.U23_min           , null);
-		records.put(UnitaryNames.U31_min           , null);
-		records.put(UnitaryNames.Pst_U12           , null);
-		records.put(UnitaryNames.Pst_U23           , null);
-		records.put(UnitaryNames.Pst_U31           , null);
-		records.put(UnitaryNames.Plt_U12           , null);
-		records.put(UnitaryNames.Plt_U23           , null);
-		records.put(UnitaryNames.Plt_U31           , null);
-		records.put(UnitaryNames.f, null);
-		records.put(UnitaryNames.cos_phi           , null);
-		records.put(UnitaryNames.tan_phi           , null);
-		records.put(UnitaryNames.Unbalanced_Voltage, null);
-		records.put(UnitaryNames.Unbalanced_Current, null);
-		records.put(UnitaryNames.P_abs             , null);
-		records.put(UnitaryNames.PF_total_abs      , null);
+		Map<UniNames, Double> records = getRecords();
+		records.put(UniNames.U12_max           , null);
+		records.put(UniNames.U23_max           , null);
+		records.put(UniNames.U31_max           , null);
+		records.put(UniNames.U12_min           , null);
+		records.put(UniNames.U23_min           , null);
+		records.put(UniNames.U31_min           , null);
+		records.put(UniNames.Pst_U12           , null);
+		records.put(UniNames.Pst_U23           , null);
+		records.put(UniNames.Pst_U31           , null);
+		records.put(UniNames.Plt_U12           , null);
+		records.put(UniNames.Plt_U23           , null);
+		records.put(UniNames.Plt_U31           , null);
+		records.put(UniNames.f, null);
+		records.put(UniNames.cos_phi           , null);
+		records.put(UniNames.tan_phi           , null);
+		records.put(UniNames.Unbalanced_Voltage, null);
+		records.put(UniNames.Unbalanced_Current, null);
+		records.put(UniNames.P_abs             , null);
+		records.put(UniNames.PF_total_abs      , null);
 		setRecords(records);
 	}
 

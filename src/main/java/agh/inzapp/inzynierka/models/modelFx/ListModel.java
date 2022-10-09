@@ -4,7 +4,7 @@
 //import agh.inzapp.inzynierka.database.dbmodels.WinPQDataDb;
 //import agh.inzapp.inzynierka.models.modelObj.WinPQDataObj;
 //import agh.inzapp.inzynierka.utils.converters.ConverterWinPQData;
-//import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+//import agh.inzapp.inzynierka.exceptions.ApplicationException;
 //import javafx.collections.FXCollections;
 //import javafx.collections.ObservableList;
 //

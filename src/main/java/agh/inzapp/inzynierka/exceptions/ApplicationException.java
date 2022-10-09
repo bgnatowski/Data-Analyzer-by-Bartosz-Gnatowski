@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.utils.exceptions;
+package agh.inzapp.inzynierka.exceptions;
 
 public class ApplicationException extends Exception {
 	

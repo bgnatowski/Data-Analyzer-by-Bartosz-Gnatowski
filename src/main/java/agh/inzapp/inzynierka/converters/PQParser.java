@@ -1,6 +1,6 @@
-package agh.inzapp.inzynierka.utils.converters;
+package agh.inzapp.inzynierka.converters;
 
-import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
+import agh.inzapp.inzynierka.enums.UniNames;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -12,11 +12,11 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static agh.inzapp.inzynierka.utils.enums.UnitaryNames.*;
+import static agh.inzapp.inzynierka.enums.UniNames.*;
 
 public class PQParser {
-	private static final Map<String, UnitaryNames> mapPQDataNames = new TreeMap<>();
-	private static final Map<String, UnitaryNames> mapPQHarmonicsNames = new TreeMap<>();
+	private static final Map<String, UniNames> mapPQDataNames = new TreeMap<>();
+	private static final Map<String, UniNames> mapPQHarmonicsNames = new TreeMap<>();
 	private static final List<String> dateFormatPatterns = new ArrayList<>();
 
 	static {
@@ -244,16 +244,16 @@ public class PQParser {
 		mapPQHarmonicsNames.put("H50_UL2_[%]",winPQ_H49_UL3);
 		mapPQHarmonicsNames.put("H50_UL3_[%]",winPQ_H50_UL3);
 	}
-	public static Map<UnitaryNames, Integer> parseNames(List<String> names) {
+	public static Map<UniNames, Integer> parseNames(List<String> names) {
 		return getUnitaryNamesIntegerMap(names, mapPQDataNames);
 	}
 
-	public static Map<UnitaryNames, Integer> parseHarmonicsNames(List<String> names) {
+	public static Map<UniNames, Integer> parseHarmonicsNames(List<String> names) {
 		return getUnitaryNamesIntegerMap(names, mapPQHarmonicsNames);
 	}
 
-	private static Map<UnitaryNames, Integer> getUnitaryNamesIntegerMap(List<String> names, Map<String, UnitaryNames> parsingMap ) {
-		Map<UnitaryNames, Integer> unitaryNamesMap = new TreeMap<>();
+	private static Map<UniNames, Integer> getUnitaryNamesIntegerMap(List<String> names, Map<String, UniNames> parsingMap ) {
+		Map<UniNames, Integer> unitaryNamesMap = new TreeMap<>();
 
 		AtomicInteger i = new AtomicInteger(0);
 		names.forEach(element -> {
@@ -289,7 +289,7 @@ public class PQParser {
 		return flag.equals("X") ? 'x' : 'o';
 	}
 
-	public static double parseDouble(String record, UnitaryNames unitaryName) throws ParseException {
+	public static double parseDouble(String record, UniNames unitaryName) throws ParseException {
 		double d;
 		if(record.contains(",")){
 			NumberFormat format = NumberFormat.getInstance(Locale.FRENCH);

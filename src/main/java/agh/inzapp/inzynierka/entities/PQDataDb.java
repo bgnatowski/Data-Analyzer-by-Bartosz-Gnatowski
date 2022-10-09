@@ -1,6 +1,6 @@
-package agh.inzapp.inzynierka.database;
+package agh.inzapp.inzynierka.entities;
 
-import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
+import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,7 +18,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Entity(name = "PQDataDb")
 @Table(name = "pqdatadb", uniqueConstraints = {@UniqueConstraint(name = "pqdatadb_unique", columnNames = {"date", "time"})})
 //@Table(name = "pqdatadb")
-public class PQDataDb {
+public class PQDataDb implements BaseDataDb {
 	@Id
 	@SequenceGenerator(name = "pqdatadb_sequence", sequenceName = "pqdatadb_sequence", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "pqdatadb_sequence")
@@ -75,7 +75,7 @@ public class PQDataDb {
 //	private Map<UnitaryNames, Double> records = new TreeMap<>();
 
 	@Transient
-	private Map<UnitaryNames, Integer> columnNamesIndexMap;
+	private Map<UniNames, Integer> columnNamesIndexMap;
 
 	@Override
 	public String toString() {

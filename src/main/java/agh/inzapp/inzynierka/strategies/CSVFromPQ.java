@@ -2,12 +2,13 @@ package agh.inzapp.inzynierka.strategies;
 
 import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
 import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
-import agh.inzapp.inzynierka.utils.converters.PQParser;
-import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
-import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.converters.PQParser;
+import agh.inzapp.inzynierka.enums.UniNames;
+import agh.inzapp.inzynierka.exceptions.ApplicationException;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
+import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -20,6 +21,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+@Component
 public class CSVFromPQ implements CSVStrategy {
 	protected List<BaseDataObj> dataModels;
 	@Override
@@ -35,7 +37,7 @@ public class CSVFromPQ implements CSVStrategy {
 					 .withCSVParser(parser)
 					 .build()
 		) {
-			Map<UnitaryNames, Integer> columnsNames = new TreeMap<>();
+			Map<UniNames, Integer> columnsNames = new TreeMap<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
 
@@ -64,18 +66,18 @@ public class CSVFromPQ implements CSVStrategy {
 		AtomicReference<LocalDate> date = new AtomicReference<>();
 		AtomicReference<LocalTime> time = new AtomicReference<>();
 
-		Stream.of(UnitaryNames.values()).forEach(unitaryName ->{
+		Stream.of(UniNames.values()).forEach(unitaryName ->{
 			Integer columnID = model.getColumnsNamesIndexMap().get(unitaryName);
-			if(unitaryName.equals(UnitaryNames.Date))
+			if(unitaryName.equals(UniNames.Date))
 				date.set(PQParser.parseDate(recordsList.get(columnID)));
-			else if(unitaryName.equals(UnitaryNames.Time)){
+			else if(unitaryName.equals(UniNames.Time)){
 				time.set(PQParser.parseTime(recordsList.get(columnID)));
 				model.setLocalDateTime(LocalDateTime.of(date.get(), time.get()));
 			}
-			else if(unitaryName.equals(UnitaryNames.Flag))
+			else if(unitaryName.equals(UniNames.Flag))
 				model.setFlags(PQParser.parseFlag(recordsList.get(columnID)));
 			else if(columnID != null){ //sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
-				Map<UnitaryNames, Double> records = model.getRecords();
+				Map<UniNames, Double> records = model.getRecords();
 				try {
 					String optionalDouble = recordsList.get(columnID);
 					if (optionalDouble.equals(" ")){

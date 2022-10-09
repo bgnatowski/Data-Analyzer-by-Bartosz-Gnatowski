@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.utils.converters;
+package agh.inzapp.inzynierka.converters;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

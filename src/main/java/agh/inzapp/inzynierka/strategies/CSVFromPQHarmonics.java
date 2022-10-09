@@ -3,8 +3,8 @@
 //import agh.inzapp.inzynierka.models.modelObj.BaseDataModelObj;
 //import agh.inzapp.inzynierka.models.modelObj.WinPQHarmonicsObjDataObj;
 //import agh.inzapp.inzynierka.utils.converters.WinPQParser;
-//import agh.inzapp.inzynierka.utils.enums.UnitaryNames;
-//import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+//import agh.inzapp.inzynierka.enums.UnitaryNames;
+//import agh.inzapp.inzynierka.exceptions.ApplicationException;
 //import com.opencsv.CSVReader;
 //import com.opencsv.CSVReaderBuilder;
 //import com.opencsv.exceptions.CsvValidationException;
