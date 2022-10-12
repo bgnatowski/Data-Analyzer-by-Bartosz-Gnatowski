@@ -285,8 +285,8 @@ public class PQParser {
 		return LocalTime.parse(time);
 	}
 
-	public static char parseFlag(String flag) {
-		return flag.equals("X") ? 'x' : 'o';
+	public static String parseFlag(String flag) {
+		return flag.equals("X") ? flag : null;
 	}
 
 	public static double parseDouble(String record, UniNames unitaryName) throws ParseException {

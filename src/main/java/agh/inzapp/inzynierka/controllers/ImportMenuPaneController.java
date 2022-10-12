@@ -1,7 +1,7 @@
 package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
-import agh.inzapp.inzynierka.managers.PQDataManager;
+import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.strategies.CSVFromPQ;
 import agh.inzapp.inzynierka.strategies.CSVStrategy;
 import agh.inzapp.inzynierka.utils.DialogUtils;
@@ -178,7 +178,7 @@ public class ImportMenuPaneController {
 				if (radioButtonNo.isSelected()) {
 					modelsList = getDataList(new CSVFromPQ());
 					System.out.println("saving...");
-					PQDataManager.saveAllModelsInDB(modelsList);
+					DataManager.saveAll(modelsList);
 					System.out.println("done");
 				} else {
 //					modelsList = getDataList(new CSVFromPQHarmonics);

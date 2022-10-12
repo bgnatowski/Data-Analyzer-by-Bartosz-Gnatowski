@@ -1,12 +1,19 @@
 package agh.inzapp.inzynierka.models.modelObj;
 
 import agh.inzapp.inzynierka.enums.UniNames;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.Map;
 import java.util.TreeMap;
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 
 public class SonelDataObj extends BaseDataObj {
-	private Map<UniNames,Character> flags;
 	public SonelDataObj() {
 		initRecords();
 		initAdditionalRecords();
@@ -84,20 +91,14 @@ public class SonelDataObj extends BaseDataObj {
 		records.put(UniNames.I2_I1_min   ,null);
 		records.put(UniNames.I2_I1_max   ,null);
 	}
-	private void initFlags() {
-		flags = new TreeMap<>();
-		flags.put(UniNames.Flag_P, 'o');
-		flags.put(UniNames.Flag_G, 'o');
-		flags.put(UniNames.Flag_E, 'o');
-		flags.put(UniNames.Flag_T, 'o');
-		flags.put(UniNames.Flag_A, 'o');
-	}
-
-	public Map<UniNames, Character> getFlags() {
-		return flags;
-	}
-
-	public void setFlags(Map<UniNames, Character> flags) {
-		this.flags = flags;
+	@Override
+	protected void initFlags() {
+		Map<UniNames, String> flags = new TreeMap<>();
+		flags.put(UniNames.Flag_P, null);
+		flags.put(UniNames.Flag_G, null);
+		flags.put(UniNames.Flag_E, null);
+		flags.put(UniNames.Flag_T, null);
+		flags.put(UniNames.Flag_A, null);
+		setFlags(flags);
 	}
 }

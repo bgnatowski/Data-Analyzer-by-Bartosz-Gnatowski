@@ -3,22 +3,19 @@ package agh.inzapp.inzynierka.models.modelObj;
 import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@ToString
+@EqualsAndHashCode
 
 public class PQDataObj extends BaseDataObj {
-	private Character flags;
 	public PQDataObj() {
 		initRecords();
 		initAdditionalRecords();
+		initFlags();
 	}
-
 	@Override
 	protected void initAdditionalRecords() {
 		Map<UniNames, Double> records = getRecords();
@@ -44,12 +41,11 @@ public class PQDataObj extends BaseDataObj {
 		setRecords(records);
 	}
 
-	public Character getFlag() {
-		return flags;
-	}
-
-	public void setFlags(Character flags) {
-		this.flags = flags;
+	@Override
+	protected void initFlags() {
+		Map<UniNames, String> flags = new TreeMap<>();
+		flags.put(UniNames.Flag, null);
+		setFlags(flags);
 	}
 
 	@Override
@@ -57,7 +53,7 @@ public class PQDataObj extends BaseDataObj {
 		List<String> allDataToString = new ArrayList<>();
 		allDataToString.add(getLocalDateTime().toLocalDate().toString());
 		allDataToString.add(getLocalDateTime().toLocalTime().toString());
-		allDataToString.add(getFlag().toString());
+		allDataToString.add(getFlags().values().toString());
 
 		String s = Arrays.toString(getRecords().values().toArray());
 		String data = s.substring(1, s.length()-1);
@@ -65,6 +61,8 @@ public class PQDataObj extends BaseDataObj {
 
 		return allDataToString.toString();
 	}
+
+
 
 
 }

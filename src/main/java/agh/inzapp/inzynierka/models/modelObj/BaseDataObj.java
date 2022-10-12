@@ -13,11 +13,14 @@ import java.util.TreeMap;
 @EqualsAndHashCode
 
 public abstract class BaseDataObj {
+	private Long id;
 	private Map<UniNames, Integer> columnsNamesIndexMap = new TreeMap<>();
-	private Map<UniNames, Double> records = new TreeMap<>();
+	private Map<UniNames, Double> records;
+	private Map<UniNames, String> flags;
 	private LocalDateTime localDateTime;
 
 	protected void initRecords() {
+		records = new TreeMap<>();
 		records.put(UniNames.U12_avg, null);
 		records.put(UniNames.U23_avg, null);
 		records.put(UniNames.U31_avg, null);
@@ -56,7 +59,7 @@ public abstract class BaseDataObj {
 	}
 
 	protected abstract void initAdditionalRecords();
-
+	protected abstract void initFlags();
 
 
 }

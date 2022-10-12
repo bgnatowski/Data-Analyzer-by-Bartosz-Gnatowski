@@ -40,6 +40,7 @@ public class CSVFromPQ implements CSVStrategy {
 			Map<UniNames, Integer> columnsNames = new TreeMap<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
+			Long id = Long.valueOf(0);
 
 			while ((oneLineValues = csvReader.readNext()) != null) {
 				List<String> recordsList = Arrays.asList(oneLineValues);
@@ -48,6 +49,7 @@ public class CSVFromPQ implements CSVStrategy {
 				}
 
 				PQDataObj model = new PQDataObj();
+				model.setId(++id);
 
 				if (!isFirstLineRead) {
 					columnsNames.putAll(PQParser.parseNames(recordsList));
@@ -56,6 +58,7 @@ public class CSVFromPQ implements CSVStrategy {
 					model.setColumnsNamesIndexMap(columnsNames);
 					setDataInModel(recordsList, model);
 					dataModels.add(model);
+//					System.out.println(model.getId());
 				}
 			}
 		} catch (IOException | CsvValidationException e) {
@@ -74,8 +77,11 @@ public class CSVFromPQ implements CSVStrategy {
 				time.set(PQParser.parseTime(recordsList.get(columnID)));
 				model.setLocalDateTime(LocalDateTime.of(date.get(), time.get()));
 			}
-			else if(unitaryName.equals(UniNames.Flag))
-				model.setFlags(PQParser.parseFlag(recordsList.get(columnID)));
+			else if(unitaryName.equals(UniNames.Flag)) {
+				Map<UniNames, String> flags = model.getFlags();
+				flags.put(unitaryName, PQParser.parseFlag(recordsList.get(columnID)));
+				model.setFlags(flags);
+			}
 			else if(columnID != null){ //sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
 				Map<UniNames, Double> records = model.getRecords();
 				try {

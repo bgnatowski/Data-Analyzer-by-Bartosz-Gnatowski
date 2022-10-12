@@ -1,16 +1,17 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.entities.BaseDataDb;
-import agh.inzapp.inzynierka.managers.PQDataManager;
+import agh.inzapp.inzynierka.database.DataDb;
+import agh.inzapp.inzynierka.database.DataManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Transactional
 public class TableViewPaneController {
 	@FXML
 	private Tab harmonicsTab;
@@ -21,7 +22,7 @@ public class TableViewPaneController {
 	@FXML
 	private TableView<?> normalTableView;
 
-	private List<? extends BaseDataDb> dataList;
+	private List<DataDb> dataList;
 
 	public void initialize(){
 		bindings();
@@ -29,8 +30,9 @@ public class TableViewPaneController {
 	}
 
 	private void getData() {
-//		final List<? extends BaseDataDb> all = PQDataManager.getAll();
-//		System.out.println("DZIAŁA");
+		List<DataDb> all = DataManager.getAll();
+		System.out.println("DZIAŁA");
+		System.out.println(all.get(0));
 	}
 
 	private void bindings() {
