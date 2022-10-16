@@ -43,7 +43,7 @@ public class PQDataObj extends BaseDataObj {
 
 	@Override
 	protected void initFlags() {
-		Map<UniNames, String> flags = new TreeMap<>();
+		Map<UniNames, String> flags = new LinkedHashMap<>();
 		flags.put(UniNames.Flag, null);
 		setFlags(flags);
 	}

@@ -37,7 +37,7 @@ public class CSVFromPQ implements CSVStrategy {
 					 .withCSVParser(parser)
 					 .build()
 		) {
-			Map<UniNames, Integer> columnsNames = new TreeMap<>();
+			Map<UniNames, Integer> columnsNames = new LinkedHashMap<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
 			Long id = Long.valueOf(0);
@@ -87,7 +87,7 @@ public class CSVFromPQ implements CSVStrategy {
 				try {
 					String optionalDouble = recordsList.get(columnID);
 					if (optionalDouble.equals(" ")){
-						records.put(unitaryName, 0.00);
+						records.put(unitaryName, 0.0);
 					} else {
 						records.put(unitaryName, PQParser.parseDouble(optionalDouble, unitaryName));
 					}

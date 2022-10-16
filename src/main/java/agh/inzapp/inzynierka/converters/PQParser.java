@@ -15,8 +15,8 @@ import java.util.concurrent.atomic.AtomicReference;
 import static agh.inzapp.inzynierka.enums.UniNames.*;
 
 public class PQParser {
-	private static final Map<String, UniNames> mapPQDataNames = new TreeMap<>();
-	private static final Map<String, UniNames> mapPQHarmonicsNames = new TreeMap<>();
+	private static final Map<String, UniNames> mapPQDataNames = new LinkedHashMap<>();
+	private static final Map<String, UniNames> mapPQHarmonicsNames = new LinkedHashMap<>();
 	private static final List<String> dateFormatPatterns = new ArrayList<>();
 
 	static {
@@ -253,7 +253,7 @@ public class PQParser {
 	}
 
 	private static Map<UniNames, Integer> getUnitaryNamesIntegerMap(List<String> names, Map<String, UniNames> parsingMap ) {
-		Map<UniNames, Integer> unitaryNamesMap = new TreeMap<>();
+		Map<UniNames, Integer> unitaryNamesMap = new LinkedHashMap<>();
 
 		AtomicInteger i = new AtomicInteger(0);
 		names.forEach(element -> {

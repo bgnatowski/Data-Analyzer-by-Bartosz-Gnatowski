@@ -15,8 +15,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-//@ToString(exclude = {"records", "flags"})
-//@EqualsAndHashCode(exclude = {"records", "flags"})
+@ToString
 
 @Entity(name = "DataDb")
 @Table(name = "dataDb", uniqueConstraints = {
@@ -32,21 +31,15 @@ public class DataDb {
 	private LocalDate date;
 	@Column(name = "time", columnDefinition = "TIME", nullable = false)
 	private LocalTime time;
-
-	@ElementCollection
-	@MapKeyColumn(name="flags")
-	@Column(name="value")
-	@CollectionTable(name="datadb_flags_mapping", joinColumns=@JoinColumn(name="flags_id", referencedColumnName = "id"))
-	@ToString.Exclude
-	private Map<String, String> flags;
+	@Column(name = "flags")
+	private String flags;
 
 	@ElementCollection
 	@MapKeyColumn(name = "uni_name")
-	@Column(name = "records")
-	@CollectionTable(name = "datadb_records_mapping", joinColumns = @JoinColumn(name = "records_id", referencedColumnName = "id"))
-	@ToString.Exclude
-	private Map<String, Double> records;
-
+	@Column(name = "record_value")
+	@CollectionTable(name = "records_mapping", joinColumns = @JoinColumn(name = "records_id", referencedColumnName = "id"))
+//	@ToString.Exclude
+	private Map<String, Double> records = new LinkedHashMap<>();
 
 	@Transient
 	private Map<UniNames, Integer> columnNamesIndexMap;
