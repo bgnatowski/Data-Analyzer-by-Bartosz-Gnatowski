@@ -37,12 +37,14 @@ public class Main extends Application {
 			throw new RuntimeException(e);
 		}
 	}
+
 	@Override
 	public void start(Stage stage) {
 		stage.setScene(new Scene(root, 900, 600));
 		stage.setTitle(applicationTitle);
 		stage.show();
 	}
+
 	@Override
 	public void stop() {
 		applicationContext.close();

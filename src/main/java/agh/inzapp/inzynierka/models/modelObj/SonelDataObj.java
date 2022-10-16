@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 @Getter
@@ -93,7 +94,7 @@ public class SonelDataObj extends BaseDataObj {
 	}
 	@Override
 	protected void initFlags() {
-		Map<UniNames, String> flags = new TreeMap<>();
+		Map<UniNames, String> flags = new LinkedHashMap<>();
 		flags.put(UniNames.Flag_P, null);
 		flags.put(UniNames.Flag_G, null);
 		flags.put(UniNames.Flag_E, null);

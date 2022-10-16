@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.LinkedHashMap;
 
 @Transactional
 public class PQConverter {
@@ -37,57 +37,32 @@ public class PQConverter {
 		return pqDataObj;
 	}
 
-//	private static Map<UniNames, Double> convertRecordsMapToObj(DataDb dataDb) {
-//		Map<UniNames, Double>  map = new TreeMap<>();
-//		final Map<String, DataRecord> records = dataDb.getRecords();
-//		records.forEach((name, record) -> {
-//			map.put(UniNames.valueOf(name), record.getRecord());
-//		});
-//		return map;
-//	}
-//
-//	public static Map<String, DataRecord> convertRecordsMapToDb(PQDataObj dataObj) {
-//		Map<String, DataRecord> map = new TreeMap<>();
-//		dataObj.getRecords().forEach((name, record) -> {
-//			DataRecord dataRecord = new DataRecord();
-//			dataRecord.setId(dataObj.getId());
-//			dataRecord.setRecord(dataObj.getRecords().get(name));
-//			map.put(name.toString(), dataRecord);
-//		});
-//		return map;
-//	}
-
-
 	private static Map<UniNames, Double> convertRecordsMapToObj(Map<String, Double> records) {
-		Map<UniNames, Double>  map = new TreeMap<>();
+		Map<UniNames, Double>  map = new LinkedHashMap<>();
 		records.forEach((name, record) -> map.put(UniNames.valueOf(name), record));
 		return map;
 	}
 
 	public static Map<String, Double> convertRecordsMapToDb(Map<UniNames, Double> records) {
-		Map<String, Double> map = new TreeMap<>();
+		Map<String, Double> map = new LinkedHashMap<>();
 		records.forEach((name, record) -> map.put(name.toString(), record));
 		return map;
 	}
 
-	private static Map<UniNames, String> convertFlagsMapToObj(Map<String, String> flags) {
-		Map<UniNames, String> map = new TreeMap<>();
-		flags.forEach((name, flag) -> map.put(UniNames.valueOf(name), flag)) ;
+	private static Map<UniNames, String> convertFlagsMapToObj(String flagPattern) {
+		Map<UniNames, String> map = new LinkedHashMap<>();
+		map.put(UniNames.Flag, flagPattern);
+
 		return map;
 	}
-
-	private static Map<String, String > convertFlagsMapToDb(Map<UniNames, String> flags) {
-		Map<String, String> map = new TreeMap<>();
-		flags.forEach((name, flag) -> map.put(name.toString(), flag)) ;
-		return map;
+	private static String convertFlagsMapToDb(Map<UniNames, String> flag) {
+		return flag.get(UniNames.Flag);
 	}
-
 	public static List<PQDataObj> convertListDbToObj(List<DataDb> models) {
 		ArrayList<PQDataObj> list = new ArrayList<>();
 		models.forEach(modelDb -> list.add(convertToObj(modelDb)));
 		return list;
 	}
-
 	public static List<DataDb> convertListObjToDb(List<PQDataObj> models) {
 		ArrayList<DataDb> list = new ArrayList<>();
 		models.forEach(modelObj -> list.add(convertToDb(modelObj)));

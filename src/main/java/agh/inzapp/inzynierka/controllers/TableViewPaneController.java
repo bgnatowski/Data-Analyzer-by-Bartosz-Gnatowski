@@ -1,5 +1,6 @@
 package agh.inzapp.inzynierka.controllers;
 
+import agh.inzapp.inzynierka.converters.PQConverter;
 import agh.inzapp.inzynierka.database.DataDb;
 import agh.inzapp.inzynierka.database.DataManager;
 import javafx.fxml.FXML;
@@ -31,8 +32,8 @@ public class TableViewPaneController {
 
 	private void getData() {
 		List<DataDb> all = DataManager.getAll();
-		System.out.println("DZIAŁA");
 		System.out.println(all.get(0));
+
 	}
 
 	private void bindings() {
