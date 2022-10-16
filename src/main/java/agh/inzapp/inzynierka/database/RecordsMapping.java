@@ -17,13 +17,13 @@ public class RecordsMapping {
 	@MapsId("recordsId")
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "records_id", nullable = false)
-	private DataDb records_owner;
+	private DataDb recordsOwner;
 
 	@Column(name = "record_value")
-	private Double value;
+	private Double recordValue;
 
 	@Override
 	public String toString() {
-		return "uni_name: " + id.getUniName() + ", value: " + value;
+		return "[ " + id.getUniName() + ", " + recordValue + " ]";
 	}
 }

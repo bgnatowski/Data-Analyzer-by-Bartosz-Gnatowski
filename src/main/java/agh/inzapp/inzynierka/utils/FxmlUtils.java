@@ -1,5 +1,6 @@
 package agh.inzapp.inzynierka.utils;
 
+import agh.inzapp.inzynierka.exceptions.ApplicationException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
@@ -14,17 +15,7 @@ public class FxmlUtils {
 		try {
 			return fxmlLoader.load();
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
-		}
-		return null;
-	}
-	public static Parent fxmlLoad(URL url) {
-		FXMLLoader fxmlLoader = new FXMLLoader(url);
-		fxmlLoader.setResources(getResourceBundle());
-		try {
-			return fxmlLoader.load();
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			ApplicationException.printDialog(e.getMessage(), e.getClass(), "error.fxmlLoad");
 		}
 		return null;
 	}

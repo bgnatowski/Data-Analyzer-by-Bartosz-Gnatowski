@@ -4,6 +4,7 @@ import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -14,7 +15,7 @@ import java.util.TreeMap;
 
 public abstract class BaseDataObj {
 	private Long id;
-	private Map<UniNames, Integer> columnsNamesIndexMap = new TreeMap<>();
+	private Map<UniNames, Integer> columnsNamesIndexMap = new LinkedHashMap<>();
 	private Map<UniNames, Double> records;
 	private Map<UniNames, String> flags;
 	private LocalDateTime localDateTime;

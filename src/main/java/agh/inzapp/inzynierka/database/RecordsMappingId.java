@@ -1,25 +1,31 @@
 package agh.inzapp.inzynierka.database;
 
+import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Getter
 @Setter
+@Getter
 
 @Embeddable
 public class RecordsMappingId implements Serializable {
+	@Serial
 	private static final long serialVersionUID = 1128836653557708349L;
 	@Column(name = "records_id", nullable = false)
 	private Long recordsId;
 
 	@Column(name = "uni_name", nullable = false)
-	private String uniName;
+	@Enumerated(EnumType.STRING)
+	private UniNames uniName;
 
 	@Override
 	public boolean equals(Object o) {

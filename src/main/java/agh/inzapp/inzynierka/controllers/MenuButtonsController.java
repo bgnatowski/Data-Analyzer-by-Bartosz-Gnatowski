@@ -49,6 +49,6 @@ public class MenuButtonsController {
 	}
 	@FXML
 	void setMainController(MainAppPaneController mainAppPaneController) {
-		this.mainAppPaneController = mainAppPaneController;
+		MenuButtonsController.mainAppPaneController = mainAppPaneController;
 	}
 }

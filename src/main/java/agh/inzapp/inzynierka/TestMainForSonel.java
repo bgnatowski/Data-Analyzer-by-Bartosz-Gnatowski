@@ -13,7 +13,7 @@ public class TestMainForSonel {
 		flagMap.put(UniNames.Flag_E, "1");
 		flagMap.put(UniNames.Flag_G, "2");
 		final String s = convertFlagsMapToDb(flagMap);
-		final String[] split = s.split("|");
+		final String[] split = s.split("\\|");
 		Arrays.asList(split).forEach(flaga -> {
 			if (!flaga.equals("|"))
 				System.out.println(flaga);

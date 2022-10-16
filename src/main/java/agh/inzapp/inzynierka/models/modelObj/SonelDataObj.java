@@ -4,15 +4,12 @@ import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 
 public class SonelDataObj extends BaseDataObj {
 	public SonelDataObj() {

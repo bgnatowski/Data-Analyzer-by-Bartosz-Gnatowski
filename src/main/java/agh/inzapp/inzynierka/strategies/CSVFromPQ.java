@@ -40,7 +40,7 @@ public class CSVFromPQ implements CSVStrategy {
 			Map<UniNames, Integer> columnsNames = new LinkedHashMap<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
-			Long id = Long.valueOf(0);
+			long id = 0L;
 
 			while ((oneLineValues = csvReader.readNext()) != null) {
 				List<String> recordsList = Arrays.asList(oneLineValues);

@@ -151,7 +151,7 @@ public class ImportMenuPaneController {
 	@FXML
 	private void deleteNormalFileFromListOnAction() {
 		File file = multiFilesNormalDataListView.getSelectionModel().getSelectedItem();
-		System.out.println("usun: " + file);
+		System.out.println("usuń: " + file);
 
 		if (file != null) {
 			multiFilesNormalDataListView.getSelectionModel().clearSelection();
@@ -198,10 +198,18 @@ public class ImportMenuPaneController {
 				}
 				break;
 			default:
-				//TODO do bundlesow
-				DialogUtils.errorDialog("Takiego urządzenia nie obsługuję");
+				try {
+					throw new ApplicationException("Błąd w importData() -> case: default");
+				} catch (ApplicationException e) {
+					ApplicationException.printDialog(e.getMessage(), e.getClass(), "error.importData");
+				}
 		}
-		switchToTableViewAferImport();
+
+		try {
+			switchToTableViewAferImport();
+		} catch (ApplicationException e) {
+			ApplicationException.printDialog(e.getMessage(), e.getClass(), "error.switchTableView");
+		}
 	}
 
 	private List<? extends BaseDataObj> getDataList(CSVStrategy csvStrategy) {
@@ -211,13 +219,13 @@ public class ImportMenuPaneController {
 			try {
 				modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
 			} catch (ApplicationException e) {
-				DialogUtils.errorDialog(e.getMessage());
+				ApplicationException.printDialog(e.getMessage(), e.getClass(), "error.getDataList");
 			}
 		});
 		return modelList;
 	}
 
-	private void switchToTableViewAferImport() {
+	private void switchToTableViewAferImport() throws ApplicationException {
 		try {
 			FXMLLoader loader = FxmlUtils.getLoader(MAIN.getPath());
 			Stage stage = (Stage) ap.getScene().getWindow();
@@ -228,8 +236,7 @@ public class ImportMenuPaneController {
 			MainAppPaneController controller = loader.getController();
 			controller.setCenter(TABLE_VIEW.getPath());
 		} catch (IOException e) {
-			//TODO exception
-			throw new RuntimeException(e);
+			throw new ApplicationException(e.getMessage());
 		}
 	}
 

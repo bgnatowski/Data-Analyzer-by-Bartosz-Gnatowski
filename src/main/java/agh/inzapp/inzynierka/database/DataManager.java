@@ -1,10 +1,9 @@
 package agh.inzapp.inzynierka.database;
 
-import agh.inzapp.inzynierka.converters.PQConverter;
+import agh.inzapp.inzynierka.converters.DataConverter;
 import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
 import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
-import agh.inzapp.inzynierka.models.modelObj.SonelDataObj;
-import agh.inzapp.inzynierka.service.CrudService;
+import agh.inzapp.inzynierka.service.CrudServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -12,32 +11,35 @@ import java.util.List;
 
 @Component
 public class DataManager {
-	private static CrudService crudService;
+	private static CrudServiceImpl crudService;
 	@Autowired
-	public DataManager(CrudService service) {
-		this.crudService = service;
+	public DataManager(CrudServiceImpl service) {
+		crudService = service;
 	}
 	public static void saveAll(List<? extends BaseDataObj> dataObjList) {
 		dataObjList.forEach(dataObj -> {
 			DataDb modelDb;
 			if (dataObj instanceof PQDataObj) {
-				modelDb = PQConverter.convertToDb((PQDataObj) dataObj);
+				modelDb = DataConverter.convertToDb(dataObj);
 				crudService.add(modelDb);
 			}
-			if (dataObj instanceof SonelDataObj) {
+			//todo crudService.add(sonel model)
+//			if (dataObj instanceof SonelDataObj) {
 //				modelDb = SonelConverter.convertToDb((SonelDataObj) dataObj);
-			}
+//			}
 
 		});
 	}
 
 	public static <T extends BaseDataObj> void save(T dataObj) {
-		DataDb modelDb = new DataDb();
-		if (dataObj instanceof PQDataObj)
-			modelDb = PQConverter.convertToDb((PQDataObj) dataObj);
-		if (dataObj instanceof SonelDataObj)
-//			modelDb = SonelConverter.convertToDb((SonelDataObj) dataObj);
+		DataDb modelDb;
+		if (dataObj instanceof PQDataObj){
+			modelDb = DataConverter.convertToDb(dataObj);
 			crudService.add(modelDb);
+		}
+//		if (dataObj instanceof SonelDataObj)
+//			modelDb = SonelConverter.convertToDb((SonelDataObj) dataObj);
+
 	}
 
 	public static List<DataDb> getAll() {

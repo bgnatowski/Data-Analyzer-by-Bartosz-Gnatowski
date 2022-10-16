@@ -7,8 +7,7 @@ import java.util.*;
 
 @Getter
 @Setter
-@ToString
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 
 public class PQDataObj extends BaseDataObj {
 	public PQDataObj() {

@@ -2,12 +2,12 @@ package agh.inzapp.inzynierka.database;
 
 import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.*;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -36,10 +36,11 @@ public class DataDb {
 
 	@ElementCollection
 	@MapKeyColumn(name = "uni_name")
+	@MapKeyEnumerated(EnumType.STRING)
 	@Column(name = "record_value")
 	@CollectionTable(name = "records_mapping", joinColumns = @JoinColumn(name = "records_id", referencedColumnName = "id"))
 //	@ToString.Exclude
-	private Map<String, Double> records = new LinkedHashMap<>();
+	private Map<UniNames, Double> records = new LinkedHashMap<>();
 
 	@Transient
 	private Map<UniNames, Integer> columnNamesIndexMap;
