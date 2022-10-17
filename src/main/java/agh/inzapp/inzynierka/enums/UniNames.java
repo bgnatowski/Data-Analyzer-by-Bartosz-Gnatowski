@@ -459,12 +459,14 @@ public enum UniNames {
 		this.unit = unit;
 	}
 
-	public static Stream<UniNames> stream() {
-		return Stream.of(UniNames.values());
-	}
+//	public static Stream<UniNames> stream() {
+//		return Stream.of(UniNames.values());
+//	}
 	public String getUnit() {
 		return unit;
 	}
+//	public String getUniName() { return uniName;}
+
 	@Override
 	public String toString() {
 		return this.uniName;

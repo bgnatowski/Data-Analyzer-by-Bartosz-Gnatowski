@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import static javax.persistence.GenerationType.SEQUENCE;
@@ -42,8 +43,11 @@ public class DataDb {
 //	@ToString.Exclude
 	private Map<UniNames, Double> records = new LinkedHashMap<>();
 
-	@Transient
-	private Map<UniNames, Integer> columnNamesIndexMap;
+	@ElementCollection(targetClass = UniNames.class, fetch = FetchType.EAGER)
+	@JoinTable(name = "columnNames_mapping", joinColumns = @JoinColumn(name = "columnName_id"))
+	@Column(name = "columnName", nullable = false)
+	@Enumerated(EnumType.STRING)
+	private List<UniNames> columnNames;
 
 }
 

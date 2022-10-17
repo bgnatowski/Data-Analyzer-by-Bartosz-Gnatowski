@@ -25,6 +25,7 @@ public class DataConverter {
 		dataDb.setTime(dataObj.getLocalDateTime().toLocalTime());
 		dataDb.setRecords(dataObj.getRecords());
 		dataDb.setFlags(convertFlagsMapToDb(dataObj.getFlags()));
+		dataDb.setColumnNames(dataObj.getColumnNames());
 		return dataDb;
 	}
 
@@ -42,6 +43,7 @@ public class DataConverter {
 		dataObj.setLocalDateTime(dateTime);
 		dataObj.setFlags(convertFlagPatternToMap(dataDb.getFlags()));
 		dataObj.setRecords(dataDb.getRecords());
+		dataObj.setColumnNames(dataDb.getColumnNames());
 
 		return dataObj;
 	}
@@ -60,7 +62,7 @@ public class DataConverter {
 		} else {
 			map.put(UniNames.Flag, flagPattern);
 		}
-
+		map.replaceAll((k, v) -> v.equals("o") ? null : v);
 		return map;
 	}
 	private static String convertFlagsMapToDb(Map<UniNames, String> flags) {
@@ -86,9 +88,15 @@ public class DataConverter {
 		dataFx.setId(dataDb.getId());
 		dataFx.setDate(dataDb.getDate());
 		dataFx.setTime(dataDb.getTime());
-		dataFx.setRecords(FXCollections.observableMap(dataDb.getRecords()));
-		dataFx.setFlags(FXCollections.observableMap((convertFlagPatternToMap(dataDb.getFlags()))));
+		dataFx.setRecords(FXCollections.observableMap(convertRecordsMap(dataDb.getRecords())));
+		dataFx.setFlags(FXCollections.observableMap(convertFlagPatternToMap(dataDb.getFlags())));
+		dataFx.setColumnNames(FXCollections.observableArrayList(dataDb.getColumnNames()));
 		return dataFx;
+	}
+
+	private static Map<UniNames, Double> convertRecordsMap(Map<UniNames, Double> records) {
+		records.replaceAll((k, v) -> v.equals(0.0) ? null : v);
+		return records;
 	}
 
 	public static DataDb convertFxToDb(DataFx dataFx) {
@@ -98,6 +106,7 @@ public class DataConverter {
 		dataDb.setTime(dataFx.getTime());
 		dataDb.setRecords(dataFx.getRecords());
 		dataDb.setFlags(convertFlagsMapToDb(dataFx.getFlags()));
+		dataDb.setColumnNames(dataFx.getColumnNames());
 
 		return dataDb;
 	}

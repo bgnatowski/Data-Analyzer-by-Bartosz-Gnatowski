@@ -245,26 +245,21 @@ public class PQParser {
 		mapPQHarmonicsNames.put("H50_UL2_[%]",PQ_H49_UL3);
 		mapPQHarmonicsNames.put("H50_UL3_[%]",PQ_H50_UL3);
 	}
-	public static Map<UniNames, Integer> parseNames(List<String> names) {
-		return getUnitaryNamesIntegerMap(names, mapPQDataNames);
-	}
+//	public static Map<UniNames, Integer> parseNames(List<String> names) {
+//		return getUnitaryNamesIntegerMap(names, mapPQDataNames);
+//	}
 
-	public static Map<UniNames, Integer> parseHarmonicsNames(List<String> names) {
-		return getUnitaryNamesIntegerMap(names, mapPQHarmonicsNames);
-	}
-
-	private static Map<UniNames, Integer> getUnitaryNamesIntegerMap(List<String> names, Map<String, UniNames> parsingMap ) {
-		Map<UniNames, Integer> unitaryNamesMap = new LinkedHashMap<>();
-
-		AtomicInteger i = new AtomicInteger(0);
-		names.forEach(element -> {
-			if (parsingMap.get(element) != null){
-				unitaryNamesMap.put(parsingMap.get(element), i.getAndIncrement());
+	public static List<UniNames> parseNames(List<String> names) {
+		List<UniNames> uniNamesList = new ArrayList<>();
+		names.forEach(name -> {
+			if (mapPQDataNames.get(name) != null){
+				uniNamesList.add(mapPQDataNames.get(name));
 			}
 		});
-
-		return unitaryNamesMap;
+		return uniNamesList;
 	}
+
+
 
 	public static LocalDate parseDate(String stringDate) {
 		AtomicReference<LocalDate> parsedDate = new AtomicReference<>();

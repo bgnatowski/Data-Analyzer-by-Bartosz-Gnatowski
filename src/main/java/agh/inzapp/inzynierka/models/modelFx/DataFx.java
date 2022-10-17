@@ -2,6 +2,7 @@ package agh.inzapp.inzynierka.models.modelFx;
 
 import agh.inzapp.inzynierka.enums.UniNames;
 import javafx.beans.property.*;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 import java.time.LocalDate;
@@ -13,6 +14,19 @@ public class DataFx {
 	private ObjectProperty<LocalTime> time = new SimpleObjectProperty<>();
 	private MapProperty<UniNames, String> flags = new SimpleMapProperty<>();
 	private MapProperty<UniNames, Double> records = new SimpleMapProperty<>();
+	private ListProperty<UniNames> columnNames = new SimpleListProperty<>();
+
+	public ObservableList<UniNames> getColumnNames() {
+		return columnNames.get();
+	}
+
+	public ListProperty<UniNames> columnNamesProperty() {
+		return columnNames;
+	}
+
+	public void setColumnNames(ObservableList<UniNames> columnNames) {
+		this.columnNames.set(columnNames);
+	}
 
 	public long getId() {
 		return id.get();

@@ -1,21 +1,32 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.database.DataDb;
 import agh.inzapp.inzynierka.enums.UniNames;
 import agh.inzapp.inzynierka.models.modelFx.DataFx;
 import agh.inzapp.inzynierka.models.modelFx.ListDataFx;
-import com.sun.javafx.collections.ObservableMapWrapper;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.MapValueFactory;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Callback;
+import org.springframework.data.util.Optionals;
 
+import javax.swing.text.html.Option;
+import javax.xml.crypto.Data;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 //@Component
 public class TableViewPaneController {
@@ -44,35 +55,59 @@ public class TableViewPaneController {
 
 	private void initTable() {
 		normalTableView.setEditable(true);
+
+		final DataFx dataFx = listDataFx.getDataFxList().get(0);
+		final ObservableList<UniNames> columnNames = dataFx.getColumnNames();
+
 		List<TableColumn<DataFx, ?>> tableColumnList = new ArrayList<>();
-		tableColumnList.add(new TableColumn<DataFx, String>("Flag"));
-		tableColumnList.add(new TableColumn<DataFx, LocalDate>("Date"));
-		tableColumnList.add(new TableColumn<DataFx, LocalTime>("Time"));
-		tableColumnList.add(new TableColumn<DataFx, Double>("Var1"));
-		tableColumnList.add(new TableColumn<DataFx, Double>("Var2"));
-		tableColumnList.add(new TableColumn<DataFx, Double>("Var3"));
-		tableColumnList.add(new TableColumn<DataFx, Double>("Var4"));
-		tableColumnList.add(new TableColumn<DataFx, Double>("Var5"));
-		tableColumnList.add(new TableColumn<DataFx, Double>("Var6"));
+
+		TableColumn<DataFx, Long> idColumn = new TableColumn<>("id");
+		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+		tableColumnList.add(idColumn);
+
+		columnNames.forEach(uniName -> {
+			TableColumn tableColumn;
+			switch (uniName){
+				case Flag:
+				case Flag_A:
+				case Flag_G:
+				case Flag_E:
+				case Flag_T:
+				case Flag_P:
+					tableColumn = new TableColumn<DataFx, Map<UniNames, String>>(uniName.toString());
+					tableColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<DataFx, String>, ObservableValue<String>>) dataFxCellDataFeatures -> new SimpleStringProperty(dataFxCellDataFeatures.getValue().flagsProperty().getValue().get(uniName)));
+					break;
+				case Date:
+					tableColumn = new TableColumn<DataFx, LocalDate>(uniName.toString());
+					tableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+					break;
+				case Time:
+					tableColumn = new TableColumn<DataFx, LocalTime>(uniName.toString());
+					tableColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+					break;
+				default:
+					tableColumn = new TableColumn<DataFx, Double>(uniName + " " + uniName.getUnit());
+					tableColumn.setCellValueFactory((Callback<TableColumn.CellDataFeatures<DataFx, Double>, ObservableValue>) cellDataFeatures -> {
+						final Optional<Double> aDouble = Optional.ofNullable(cellDataFeatures.getValue().recordsProperty().getValue().get(uniName));
+						if (aDouble.isEmpty())
+							return new SimpleObjectProperty(null);
+						else{
+							return new SimpleDoubleProperty(aDouble.get());
+						}
+
+					});
+			}
+			tableColumnList.add(tableColumn);
+
+		});
 		normalTableView.getColumns().addAll(tableColumnList);
 	}
 
-
 	private void bindings() {
-//		List<TableColumn<DataFx, ?>> tableColumnList = new ArrayList<>();
-//		tableColumnList.add(new TableColumn<DataFx, String>("Flag"));
-//		tableColumnList.add(new TableColumn<DataFx, LocalDate>("Date"));
-//		tableColumnList.add(new TableColumn<DataFx, LocalTime>("Time"));
-//		tableColumnList.add(new TableColumn<DataFx, Double>("Var1"));
-//		tableColumnList.add(new TableColumn<DataFx, Double>("Var2"));
-//		tableColumnList.add(new TableColumn<DataFx, Double>("Var3"));
-//		tableColumnList.add(new TableColumn<DataFx, Double>("Var4"));
-//		tableColumnList.add(new TableColumn<DataFx, Double>("Var5"));
-//		tableColumnList.add(new TableColumn<DataFx, Double>("Var6"));
-//		normalTableView.getColumns().setAll((TableColumn<DataFx, ?>) tableColumnList);
-//		normalTableView.setItems(listDataFx.getDataFxObservableList());
-
-//		testColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
+		normalTableView.getItems().addAll(listDataFx.getDataFxObservableList());
+//		for (TableColumn<DataFx, ?> dataFxTableColumn : normalTableView.getColumns()) {
+//			dataFxTableColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
+//		}
 	}
 
 }

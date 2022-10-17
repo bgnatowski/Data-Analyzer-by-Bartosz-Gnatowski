@@ -37,7 +37,8 @@ public class CSVFromPQ implements CSVStrategy {
 					 .withCSVParser(parser)
 					 .build()
 		) {
-			Map<UniNames, Integer> columnsNames = new LinkedHashMap<>();
+//			Map<UniNames, Integer> columnsNames = new LinkedHashMap<>();
+			List<UniNames> columnsNames = new ArrayList<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
 			long id = 0L;
@@ -52,10 +53,10 @@ public class CSVFromPQ implements CSVStrategy {
 				model.setId(++id);
 
 				if (!isFirstLineRead) {
-					columnsNames.putAll(PQParser.parseNames(recordsList));
+					columnsNames.addAll(PQParser.parseNames(recordsList));
 					isFirstLineRead = true;
 				} else {
-					model.setColumnsNamesIndexMap(columnsNames);
+					model.setColumnNames(columnsNames);
 					setDataInModel(recordsList, model);
 					dataModels.add(model);
 //					System.out.println(model.getId());
@@ -69,7 +70,10 @@ public class CSVFromPQ implements CSVStrategy {
 		AtomicReference<LocalDate> date = new AtomicReference<>();
 		AtomicReference<LocalTime> time = new AtomicReference<>();
 		Stream.of(UniNames.values()).forEach(unitaryName ->{
-			Integer columnID = model.getColumnsNamesIndexMap().get(unitaryName);
+			Integer columnID = null;
+			if (model.getColumnNames().contains(unitaryName)){
+				columnID = model.getColumnNames().indexOf(unitaryName);
+			}
 			if(unitaryName.equals(UniNames.Date))
 				date.set(PQParser.parseDate(recordsList.get(columnID)));
 			else if(unitaryName.equals(UniNames.Time)){
