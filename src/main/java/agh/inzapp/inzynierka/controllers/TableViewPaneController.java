@@ -32,20 +32,18 @@ public class TableViewPaneController {
 	@FXML
 	private TableView<DataFx> normalTableView;
 
-	@FXML
-	private TableColumn<DataFx, LocalDate> testColumn;
-
 	private ListDataFx listDataFx;
 
 	@FXML
 	public void initialize(){
 		listDataFx = new ListDataFx();
 		listDataFx.init();
+		initTable();
 		bindings();
 	}
 
-
-	private void bindings() {
+	private void initTable() {
+		normalTableView.setEditable(true);
 		List<TableColumn<DataFx, ?>> tableColumnList = new ArrayList<>();
 		tableColumnList.add(new TableColumn<DataFx, String>("Flag"));
 		tableColumnList.add(new TableColumn<DataFx, LocalDate>("Date"));
@@ -56,7 +54,22 @@ public class TableViewPaneController {
 		tableColumnList.add(new TableColumn<DataFx, Double>("Var4"));
 		tableColumnList.add(new TableColumn<DataFx, Double>("Var5"));
 		tableColumnList.add(new TableColumn<DataFx, Double>("Var6"));
-		normalTableView.getColumns().setAll((TableColumn<DataFx, ?>) tableColumnList);
+		normalTableView.getColumns().addAll(tableColumnList);
+	}
+
+
+	private void bindings() {
+//		List<TableColumn<DataFx, ?>> tableColumnList = new ArrayList<>();
+//		tableColumnList.add(new TableColumn<DataFx, String>("Flag"));
+//		tableColumnList.add(new TableColumn<DataFx, LocalDate>("Date"));
+//		tableColumnList.add(new TableColumn<DataFx, LocalTime>("Time"));
+//		tableColumnList.add(new TableColumn<DataFx, Double>("Var1"));
+//		tableColumnList.add(new TableColumn<DataFx, Double>("Var2"));
+//		tableColumnList.add(new TableColumn<DataFx, Double>("Var3"));
+//		tableColumnList.add(new TableColumn<DataFx, Double>("Var4"));
+//		tableColumnList.add(new TableColumn<DataFx, Double>("Var5"));
+//		tableColumnList.add(new TableColumn<DataFx, Double>("Var6"));
+//		normalTableView.getColumns().setAll((TableColumn<DataFx, ?>) tableColumnList);
 //		normalTableView.setItems(listDataFx.getDataFxObservableList());
 
 //		testColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());

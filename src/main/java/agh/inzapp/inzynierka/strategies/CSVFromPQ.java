@@ -68,7 +68,6 @@ public class CSVFromPQ implements CSVStrategy {
 	protected void setDataInModel(List<String> recordsList, PQDataObj model) {
 		AtomicReference<LocalDate> date = new AtomicReference<>();
 		AtomicReference<LocalTime> time = new AtomicReference<>();
-
 		Stream.of(UniNames.values()).forEach(unitaryName ->{
 			Integer columnID = model.getColumnsNamesIndexMap().get(unitaryName);
 			if(unitaryName.equals(UniNames.Date))
