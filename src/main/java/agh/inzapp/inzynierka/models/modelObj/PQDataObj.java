@@ -5,18 +5,26 @@ import lombok.*;
 
 import java.util.*;
 
+@NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
 
 public class PQDataObj extends BaseDataObj {
-	public PQDataObj() {
-		initRecords();
-		initAdditionalRecords();
+	@Override
+	public void init() {
+		initCommonRecords();
+		initOwnRecords();
 		initFlags();
 	}
 	@Override
-	protected void initAdditionalRecords() {
+	protected void initFlags() {
+		Map<UniNames, String> flags = new LinkedHashMap<>();
+		flags.put(UniNames.Flag, null);
+		setFlags(flags);
+	}
+
+	private void initOwnRecords() {
 		Map<UniNames, Double> records = getRecords();
 		records.put(UniNames.U12_max           , null);
 		records.put(UniNames.U23_max           , null);
@@ -38,13 +46,6 @@ public class PQDataObj extends BaseDataObj {
 		records.put(UniNames.P_abs             , null);
 		records.put(UniNames.PF_total_abs      , null);
 		setRecords(records);
-	}
-
-	@Override
-	protected void initFlags() {
-		Map<UniNames, String> flags = new LinkedHashMap<>();
-		flags.put(UniNames.Flag, null);
-		setFlags(flags);
 	}
 
 	@Override

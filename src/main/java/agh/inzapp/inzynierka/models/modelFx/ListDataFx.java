@@ -13,7 +13,26 @@ public class ListDataFx {
 	private ObservableList<DataFx> dataFxObservableList = FXCollections.observableArrayList();
 	private List<DataFx> dataFxList = new ArrayList<>();
 
-	public void init(){
+	private static volatile ListDataFx instance;
+
+	private ListDataFx() {
+		init();
+	}
+
+	public static ListDataFx getInstance() {
+		ListDataFx result = instance;
+		if (result != null) {
+			return result;
+		}
+		synchronized(ListDataFx.class) {
+			if (instance == null) {
+				instance = new ListDataFx();
+			}
+			return instance;
+		}
+	}
+
+	private void init(){
 		List<DataDb> allDataDb = DataManager.getAll();
 		dataFxList.clear();
 		allDataDb.forEach(dataDb -> {

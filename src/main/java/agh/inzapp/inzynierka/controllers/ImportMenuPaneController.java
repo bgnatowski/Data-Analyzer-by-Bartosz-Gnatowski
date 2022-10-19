@@ -1,13 +1,13 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
 import agh.inzapp.inzynierka.database.DataManager;
-import agh.inzapp.inzynierka.strategies.CSVFromPQ;
+import agh.inzapp.inzynierka.enums.Analysers;
+import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
+import agh.inzapp.inzynierka.strategies.CSVImportPQ;
 import agh.inzapp.inzynierka.strategies.CSVStrategy;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
-import agh.inzapp.inzynierka.enums.Analysers;
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -51,9 +51,11 @@ public class ImportMenuPaneController {
 	@FXML
 	private ComboBox<Analysers> comboBoxAnalyzer;
 	@FXML
-	private Label labelImport;
+	private Label labelImportNormal;
 	@FXML
-	private Label harmonicsLabel;
+	private Label labelImportHarmonics;
+	@FXML
+	private Label getLabelImportNormal;
 	@FXML
 	private Button btnDataImport;
 	@FXML
@@ -65,31 +67,47 @@ public class ImportMenuPaneController {
 	@FXML
 	private ListView<File> multiFilesHarmonicsDataListView;
 	@FXML
-	private Label questionLabel;
+	private Label questionLabelHarmonics;
 	@FXML
-	private RadioButton radioButtonNo;
+	private Label questionLabelNormal;
 	@FXML
-	private RadioButton radioButtonYes;
+	private RadioButton radioButtonNoHarmonic;
+	@FXML
+	private RadioButton radioButtonYesHarmonic;
+	@FXML
+	private RadioButton radioButtonYesNormal;
+	@FXML
+	private RadioButton radioButtonNoNormal;
+	@FXML
+	private TitledPane titledPaneNormal;
+	@FXML
+	private TitledPane titledPaneHarmonics;
+	@FXML
+	private ToggleGroup normalGroup;
+	@FXML
+	private ToggleGroup harmonicsGroup;
+
+
 	public void initialize() {
-		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
 		bindings();
 	}
 
 	private void bindings() {
-		labelImport.disableProperty().bind(comboBoxAnalyzer.valueProperty().isNull());
-		btnDataImport.disableProperty().bind(comboBoxAnalyzer.valueProperty().isNull());
-		multiFilesNormalDataListView.disableProperty().bind(comboBoxAnalyzer.valueProperty().isNull());
+		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
+		titledPaneNormal.setExpanded(true);
+		titledPaneHarmonics.setExpanded(false);
 
-		harmonicsLabel.disableProperty().bind(radioButtonNo.selectedProperty());
-		btnHarmonicsImport.disableProperty().bind(radioButtonNo.selectedProperty());
-		multiFilesHarmonicsDataListView.disableProperty().bind(radioButtonNo.selectedProperty());
+		labelImportNormal.disableProperty().bindBidirectional(radioButtonNoNormal.selectedProperty());
+		btnDataImport.disableProperty().bindBidirectional(radioButtonNoNormal.selectedProperty());
+		multiFilesNormalDataListView.disableProperty().bindBidirectional(radioButtonNoNormal.selectedProperty());
+//
+		labelImportHarmonics.disableProperty().bindBidirectional(radioButtonNoHarmonic.selectedProperty());
+		btnHarmonicsImport.disableProperty().bindBidirectional(radioButtonNoHarmonic.selectedProperty());
+		multiFilesHarmonicsDataListView.disableProperty().bindBidirectional(radioButtonNoHarmonic.selectedProperty());
 
-		questionLabel.disableProperty().bind(comboBoxAnalyzer.valueProperty().isNull());
-		radioButtonNo.disableProperty().bind(comboBoxAnalyzer.valueProperty().isNull());
-		radioButtonYes.disableProperty().bind(comboBoxAnalyzer.valueProperty().isNull());
-
-		importButton.disableProperty().bind(comboBoxAnalyzer.valueProperty().isNull());
-		// todo importButton should be disabled when not done
+		importButton.disableProperty().bind(radioButtonYesNormal.selectedProperty().or(radioButtonYesHarmonic.selectedProperty())
+				.and(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not()
+		);
 
 	}
 
@@ -159,6 +177,7 @@ public class ImportMenuPaneController {
 			multiFilesNormalDataListView.setItems(filesNormalDataList);
 		}
 	}
+
 	@FXML
 	private void deleteHarmonicsFileFromListOnAction() {
 		File file = multiFilesHarmonicsDataListView.getSelectionModel().getSelectedItem();
@@ -175,8 +194,8 @@ public class ImportMenuPaneController {
 		List<? extends BaseDataObj> modelsList;
 		switch (comboBoxAnalyzer.getValue()) {
 			case PQbox:
-				if (radioButtonNo.isSelected()) {
-					modelsList = getDataList(new CSVFromPQ());
+				if (radioButtonNoHarmonic.isSelected()) {
+					modelsList = getDataList(new CSVImportPQ());
 					System.out.println("saving...");
 					DataManager.saveAll(modelsList);
 					System.out.println("done");
@@ -187,7 +206,7 @@ public class ImportMenuPaneController {
 				}
 				break;
 			case Sonel:
-				if (radioButtonYes.isSelected()) {
+				if (radioButtonYesHarmonic.isSelected()) {
 //						modelsList = getDataList(new CSVFromSonel());
 					//todo sonel import csv
 					System.out.println("sonel import");

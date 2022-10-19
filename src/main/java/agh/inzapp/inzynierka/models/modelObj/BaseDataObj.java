@@ -17,9 +17,10 @@ public abstract class BaseDataObj {
 	private Map<UniNames, Double> records;
 	private Map<UniNames, String> flags;
 	private LocalDateTime localDateTime;
+	public abstract void init();
 
-	protected void initRecords() {
-		records = new TreeMap<>();
+	protected void initCommonRecords() {
+		records = new LinkedHashMap<>();
 		records.put(UniNames.U12_avg, null);
 		records.put(UniNames.U23_avg, null);
 		records.put(UniNames.U31_avg, null);
@@ -56,9 +57,6 @@ public abstract class BaseDataObj {
 		records.put(UniNames.PF_total,null);
 		records.put(UniNames.Q_total,null);
 	}
-
-	protected abstract void initAdditionalRecords();
 	protected abstract void initFlags();
-
 
 }

@@ -42,13 +42,12 @@ public class TableViewPaneController {
 
 	@FXML
 	private TableView<DataFx> normalTableView;
-
 	private ListDataFx listDataFx;
 
 	@FXML
 	public void initialize(){
-		listDataFx = new ListDataFx();
-		listDataFx.init();
+		listDataFx = ListDataFx.getInstance();
+
 		initTable();
 		bindings();
 	}

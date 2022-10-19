@@ -3,22 +3,37 @@ package agh.inzapp.inzynierka.models.modelObj;
 import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
+@NoArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
 
 public class SonelDataObj extends BaseDataObj {
-	public SonelDataObj() {
-		initRecords();
-		initAdditionalRecords();
+
+	@Override
+	public void init() {
+		initCommonRecords();
+		initOwnRecords();
 		initFlags();
 	}
+
 	@Override
-	protected void initAdditionalRecords() {
+	protected void initFlags() {
+		Map<UniNames, String> flags = new LinkedHashMap<>();
+		flags.put(UniNames.Flag_P, null);
+		flags.put(UniNames.Flag_G, null);
+		flags.put(UniNames.Flag_E, null);
+		flags.put(UniNames.Flag_T, null);
+		flags.put(UniNames.Flag_A, null);
+		setFlags(flags);
+	}
+	private void initOwnRecords() {
 		Map<UniNames, Double> records = getRecords();
 		records.put(UniNames.Plt_L2      ,null);
 		records.put(UniNames.Plt_L1      ,null);
@@ -88,15 +103,5 @@ public class SonelDataObj extends BaseDataObj {
 		records.put(UniNames.I2_I1_avg   ,null);
 		records.put(UniNames.I2_I1_min   ,null);
 		records.put(UniNames.I2_I1_max   ,null);
-	}
-	@Override
-	protected void initFlags() {
-		Map<UniNames, String> flags = new LinkedHashMap<>();
-		flags.put(UniNames.Flag_P, null);
-		flags.put(UniNames.Flag_G, null);
-		flags.put(UniNames.Flag_E, null);
-		flags.put(UniNames.Flag_T, null);
-		flags.put(UniNames.Flag_A, null);
-		setFlags(flags);
 	}
 }

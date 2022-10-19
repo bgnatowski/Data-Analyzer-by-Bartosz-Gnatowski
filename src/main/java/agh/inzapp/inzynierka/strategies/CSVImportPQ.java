@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 @Component
-public class CSVFromPQ implements CSVStrategy {
+public class CSVImportPQ implements CSVStrategy {
 	protected List<BaseDataObj> dataModels;
 	@Override
 	public List<BaseDataObj> importCSVFile(String... path) throws ApplicationException {
@@ -50,6 +50,7 @@ public class CSVFromPQ implements CSVStrategy {
 				}
 
 				PQDataObj model = new PQDataObj();
+				model.init();
 				model.setId(++id);
 
 				if (!isFirstLineRead) {
