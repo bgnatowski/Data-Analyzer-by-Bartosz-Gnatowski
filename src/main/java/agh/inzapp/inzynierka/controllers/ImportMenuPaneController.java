@@ -4,8 +4,9 @@ import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.enums.Analysers;
 import agh.inzapp.inzynierka.enums.DataType;
 import agh.inzapp.inzynierka.exceptions.ApplicationException;
-import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
-import agh.inzapp.inzynierka.service.FileChooserRemember;
+import agh.inzapp.inzynierka.models.DataFx;
+import agh.inzapp.inzynierka.strategies.CSVImportPQHarmonics;
+import agh.inzapp.inzynierka.utils.FileChooserRemember;
 import agh.inzapp.inzynierka.strategies.CSVImportPQ;
 import agh.inzapp.inzynierka.strategies.CSVStrategy;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
@@ -17,7 +18,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -25,7 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static agh.inzapp.inzynierka.enums.DataType.*;
+import static agh.inzapp.inzynierka.enums.DataType.HARMONICS_DATA;
+import static agh.inzapp.inzynierka.enums.DataType.NORMAL_DATA;
 import static agh.inzapp.inzynierka.enums.FXMLNames.MAIN;
 import static agh.inzapp.inzynierka.enums.FXMLNames.TABLE_VIEW;
 
@@ -158,7 +159,7 @@ public class ImportMenuPaneController {
 					DataManager.saveAll(getDataList(new CSVImportPQ()));
 					System.out.println("done");
 				} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
-//					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
+					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
 					//todo pq harmonics import
 					System.out.println("pq harmonics import");
 				} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
@@ -192,8 +193,8 @@ public class ImportMenuPaneController {
 		}
 	}
 
-	private List<? extends BaseDataObj> getDataList(CSVStrategy csvStrategy) {
-		List<BaseDataObj> modelList = new ArrayList<>();
+	private List<? extends DataFx> getDataList(CSVStrategy csvStrategy) {
+		List<DataFx> modelList = new ArrayList<>();
 		observableNormalList.forEach(file ->
 		{
 			try {

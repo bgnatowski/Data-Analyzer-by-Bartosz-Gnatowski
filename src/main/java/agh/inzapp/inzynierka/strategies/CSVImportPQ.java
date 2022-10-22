@@ -1,31 +1,28 @@
 package agh.inzapp.inzynierka.strategies;
 
-import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
-import agh.inzapp.inzynierka.models.modelObj.PQDataObj;
+import agh.inzapp.inzynierka.models.DataFx;
+import agh.inzapp.inzynierka.models.PQNormalFx;
 import agh.inzapp.inzynierka.converters.PQParser;
 import agh.inzapp.inzynierka.enums.UniNames;
 import agh.inzapp.inzynierka.exceptions.ApplicationException;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
+import javafx.collections.FXCollections;
 import org.springframework.stereotype.Component;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 @Component
 public class CSVImportPQ implements CSVStrategy {
-	protected List<BaseDataObj> dataModels;
+	protected List<DataFx> dataModels;
 	@Override
-	public List<BaseDataObj> importCSVFile(String... path) throws ApplicationException {
+	public List<DataFx> importCSVFile(String... path) throws ApplicationException {
 		dataModels = new ArrayList<>();
 		readFile(path[0]);
 		return dataModels;
@@ -37,69 +34,66 @@ public class CSVImportPQ implements CSVStrategy {
 					 .withCSVParser(parser)
 					 .build()
 		) {
-//			Map<UniNames, Integer> columnsNames = new LinkedHashMap<>();
+
 			List<UniNames> columnsNames = new ArrayList<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
 			long id = 0L;
 
 			while ((oneLineValues = csvReader.readNext()) != null) {
-				List<String> recordsList = Arrays.asList(oneLineValues);
-				if (recordsList.contains("")){
+				List<String> allRecords = Arrays.asList(oneLineValues);
+				PQNormalFx model = new PQNormalFx();
+
+				if (allRecords.contains("")){ //bez tego wczytywało +1 wartość
 					break;
 				}
-
-				PQDataObj model = new PQDataObj();
-				model.init();
-				model.setId(++id);
-
 				if (!isFirstLineRead) {
-					columnsNames.addAll(PQParser.parseNames(recordsList));
+					columnsNames.addAll(PQParser.parseNames(allRecords));
 					isFirstLineRead = true;
 				} else {
-					model.setColumnNames(columnsNames);
-					setDataInModel(recordsList, model);
+					model.init();
+					model.setId(++id);
+					model.setColumnNames(FXCollections.observableArrayList(columnsNames));
+					setDataInModel(allRecords, model);
 					dataModels.add(model);
-//					System.out.println(model.getId());
 				}
 			}
 		} catch (IOException | CsvValidationException e) {
 			throw new ApplicationException(e.getMessage());
 		}
 	}
-	protected void setDataInModel(List<String> recordsList, PQDataObj model) {
-		AtomicReference<LocalDate> date = new AtomicReference<>();
-		AtomicReference<LocalTime> time = new AtomicReference<>();
+	protected void setDataInModel(List<String> recordsList, PQNormalFx model) {
 		Stream.of(UniNames.values()).forEach(unitaryName ->{
 			Integer columnID = null;
 			if (model.getColumnNames().contains(unitaryName)){
 				columnID = model.getColumnNames().indexOf(unitaryName);
 			}
-			if(unitaryName.equals(UniNames.Date))
-				date.set(PQParser.parseDate(recordsList.get(columnID)));
-			else if(unitaryName.equals(UniNames.Time)){
-				time.set(PQParser.parseTime(recordsList.get(columnID)));
-				model.setLocalDateTime(LocalDateTime.of(date.get(), time.get()));
-			}
-			else if(unitaryName.equals(UniNames.Flag)) {
-				Map<UniNames, String> flags = model.getFlags();
-				flags.put(unitaryName, PQParser.parseFlag(recordsList.get(columnID)));
-				model.setFlags(flags);
-			}
-			else if(columnID != null){ //sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
-				Map<UniNames, Double> records = model.getRecords();
-				try {
-					String optionalDouble = recordsList.get(columnID);
-					if (optionalDouble.equals(" ")){
-						records.put(unitaryName, 0.0);
-					} else {
-						records.put(unitaryName, PQParser.parseDouble(optionalDouble, unitaryName));
-					}
-				} catch (ParseException e) {
-					throw new RuntimeException(e);
+			switch (unitaryName){
+				case Date -> model.setDate(PQParser.parseDate(recordsList.get(columnID)));
+				case Time -> model.setTime(PQParser.parseTime(recordsList.get(columnID)));
+				case Flag -> {
+					Map<UniNames, String> flags = model.getFlags();
+					flags.put(unitaryName, PQParser.parseFlag(recordsList.get(columnID)));
+					model.setFlags(FXCollections.observableMap(flags));
 				}
-				model.setRecords(records);
+				default -> {
+					if(columnID != null){ //sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
+						Map<UniNames, Double> records = model.getRecords();
+						String optionalDouble = recordsList.get(columnID);
+						if (optionalDouble.equals(" ")){
+							records.put(unitaryName, 0.0);
+						} else {
+							try {
+								records.put(unitaryName, PQParser.parseDouble(optionalDouble, unitaryName));
+							} catch (ParseException e) {
+								ApplicationException.printDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+							}
+						}
+						model.setRecords(FXCollections.observableMap(records));
+					}
+				}
 			}
+
 		});
 	}
 }

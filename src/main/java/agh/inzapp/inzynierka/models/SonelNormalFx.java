@@ -1,37 +1,26 @@
-package agh.inzapp.inzynierka.models.modelObj;
+package agh.inzapp.inzynierka.models;
 
 import agh.inzapp.inzynierka.enums.UniNames;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javafx.collections.FXCollections;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = false)
+public class SonelNormalFx extends DataFx{
 
-public class SonelDataObj extends BaseDataObj {
-
-	@Override
 	public void init() {
 		initCommonRecords();
 		initOwnRecords();
 		initFlags();
 	}
-
-	@Override
-	protected void initFlags() {
+	private void initFlags() {
 		Map<UniNames, String> flags = new LinkedHashMap<>();
 		flags.put(UniNames.Flag_P, null);
 		flags.put(UniNames.Flag_G, null);
 		flags.put(UniNames.Flag_E, null);
 		flags.put(UniNames.Flag_T, null);
 		flags.put(UniNames.Flag_A, null);
-		setFlags(flags);
+		setFlags(FXCollections.observableMap(flags));
 	}
 	private void initOwnRecords() {
 		Map<UniNames, Double> records = getRecords();
@@ -103,5 +92,7 @@ public class SonelDataObj extends BaseDataObj {
 		records.put(UniNames.I2_I1_avg   ,null);
 		records.put(UniNames.I2_I1_min   ,null);
 		records.put(UniNames.I2_I1_max   ,null);
+		setRecords(FXCollections.observableMap(records));
+
 	}
 }

@@ -1,12 +1,11 @@
-package agh.inzapp.inzynierka.service;
+package agh.inzapp.inzynierka.services;
 
-import agh.inzapp.inzynierka.database.DataDb;
-import agh.inzapp.inzynierka.database.DataRepository;
-import agh.inzapp.inzynierka.database.RecordsMapping;
-import agh.inzapp.inzynierka.database.RecordsMappingRepository;
+import agh.inzapp.inzynierka.database.models.DataDb;
+import agh.inzapp.inzynierka.database.repositories.DataRepository;
+import agh.inzapp.inzynierka.database.models.RecordsMapping;
+import agh.inzapp.inzynierka.database.repositories.RecordsMappingRepository;
 import agh.inzapp.inzynierka.enums.UniNames;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;

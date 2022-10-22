@@ -1,26 +1,20 @@
 package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.enums.UniNames;
-import agh.inzapp.inzynierka.models.modelFx.DataFx;
-import agh.inzapp.inzynierka.models.modelFx.ListDataFx;
+import agh.inzapp.inzynierka.models.DataFx;
+import agh.inzapp.inzynierka.models.ListDataFx;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
-import org.springframework.data.util.Optionals;
 
-import javax.swing.text.html.Option;
-import javax.xml.crypto.Data;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;

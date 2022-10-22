@@ -1,29 +1,21 @@
-package agh.inzapp.inzynierka.models.modelObj;
+package agh.inzapp.inzynierka.models;
 
 import agh.inzapp.inzynierka.enums.UniNames;
-import lombok.*;
+import javafx.collections.FXCollections;
 
 import java.util.*;
 
-@NoArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode(callSuper = false)
-
-public class PQDataObj extends BaseDataObj {
-	@Override
+public class PQNormalFx extends DataFx{
 	public void init() {
 		initCommonRecords();
 		initOwnRecords();
 		initFlags();
 	}
-	@Override
 	protected void initFlags() {
 		Map<UniNames, String> flags = new LinkedHashMap<>();
 		flags.put(UniNames.Flag, null);
-		setFlags(flags);
+		setFlags(FXCollections.observableMap(flags));
 	}
-
 	private void initOwnRecords() {
 		Map<UniNames, Double> records = getRecords();
 		records.put(UniNames.U12_max           , null);
@@ -45,24 +37,7 @@ public class PQDataObj extends BaseDataObj {
 		records.put(UniNames.Unbalanced_Current, null);
 		records.put(UniNames.P_abs             , null);
 		records.put(UniNames.PF_total_abs      , null);
-		setRecords(records);
+		setRecords(FXCollections.observableMap(records));
 	}
-
-	@Override
-	public String toString() {
-		List<String> allDataToString = new ArrayList<>();
-		allDataToString.add(getLocalDateTime().toLocalDate().toString());
-		allDataToString.add(getLocalDateTime().toLocalTime().toString());
-		allDataToString.add(getFlags().values().toString());
-
-		String s = Arrays.toString(getRecords().values().toArray());
-		String data = s.substring(1, s.length()-1);
-		allDataToString.add(data);
-
-		return allDataToString.toString();
-	}
-
-
-
 
 }

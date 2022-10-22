@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.models.modelFx;
+package agh.inzapp.inzynierka.models;
 
 import agh.inzapp.inzynierka.enums.UniNames;
 import javafx.beans.property.*;
@@ -11,8 +11,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
+
+import static agh.inzapp.inzynierka.enums.UniNames.*;
 
 @Getter
 @Setter
@@ -28,41 +29,41 @@ public class DataFx {
 
 	protected void initCommonRecords() {
 		Map<UniNames, Double> map = new LinkedHashMap<>();
-		map.put(UniNames.U12_avg, null);
-		map.put(UniNames.U23_avg, null);
-		map.put(UniNames.U31_avg, null);
-		map.put(UniNames.UL1_avg, null);
-		map.put(UniNames.UL2_avg, null);
-		map.put(UniNames.UL3_avg, null);
-		map.put(UniNames.UL1_max, null);
-		map.put(UniNames.UL2_max, null);
-		map.put(UniNames.UL3_max, null);
-		map.put(UniNames.UL1_min, null);
-		map.put(UniNames.UL2_min, null);
-		map.put(UniNames.UL3_min, null);
-		map.put(UniNames.IL1_avg, null);
-		map.put(UniNames.IL2_avg, null);
-		map.put(UniNames.IL3_avg, null);
-		map.put(UniNames.IL1_max, null);
-		map.put(UniNames.IL2_max, null);
-		map.put(UniNames.IL3_max, null);
-		map.put(UniNames.IL1_min, null);
-		map.put(UniNames.IL2_min, null);
-		map.put(UniNames.IL3_min, null);
-		map.put(UniNames.IN_avg,  null);
-		map.put(UniNames.IN_max,  null);
-		map.put(UniNames.IN_min,  null);
-		map.put(UniNames.Pst_UL1, null);
-		map.put(UniNames.Pst_UL2, null);
-		map.put(UniNames.Pst_UL3, null);
-		map.put(UniNames.P_total, null);
-		map.put(UniNames.P_max,   null);
-		map.put(UniNames.P_min,   null);
-		map.put(UniNames.S_total, null);
-		map.put(UniNames.S_max,   null);
-		map.put(UniNames.S_min,   null);
-		map.put(UniNames.PF_total,null);
-		map.put(UniNames.Q_total,null);
+		map.put(U12_avg, null);
+		map.put(U23_avg, null);
+		map.put(U31_avg, null);
+		map.put(UL1_avg, null);
+		map.put(UL2_avg, null);
+		map.put(UL3_avg, null);
+		map.put(UL1_max, null);
+		map.put(UL2_max, null);
+		map.put(UL3_max, null);
+		map.put(UL1_min, null);
+		map.put(UL2_min, null);
+		map.put(UL3_min, null);
+		map.put(IL1_avg, null);
+		map.put(IL2_avg, null);
+		map.put(IL3_avg, null);
+		map.put(IL1_max, null);
+		map.put(IL2_max, null);
+		map.put(IL3_max, null);
+		map.put(IL1_min, null);
+		map.put(IL2_min, null);
+		map.put(IL3_min, null);
+		map.put(IN_avg,  null);
+		map.put(IN_max,  null);
+		map.put(IN_min,  null);
+		map.put(Pst_UL1, null);
+		map.put(Pst_UL2, null);
+		map.put(Pst_UL3, null);
+		map.put(P_total, null);
+		map.put(P_max,   null);
+		map.put(P_min,   null);
+		map.put(S_total, null);
+		map.put(S_max,   null);
+		map.put(S_min,   null);
+		map.put(PF_total,null);
+		map.put(Q_total,null);
 		records.setValue(FXCollections.observableMap(map));
 	}
 
@@ -136,5 +137,19 @@ public class DataFx {
 
 	public void setColumnNames(ObservableList<UniNames> columnNames) {
 		this.columnNames.set(columnNames);
+	}
+
+	@Override
+	public String toString() {
+		List<String> allDataToString = new ArrayList<>();
+		allDataToString.add(getDate().toString());
+		allDataToString.add(getTime().toString());
+		allDataToString.add(getFlags().values().toString());
+
+		String s = Arrays.toString(getRecords().values().toArray());
+		String records = s.substring(1, s.length()-1);
+		allDataToString.add(records);
+
+		return allDataToString.toString();
 	}
 }

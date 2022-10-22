@@ -1,7 +1,7 @@
-package agh.inzapp.inzynierka.models.modelFx;
+package agh.inzapp.inzynierka.models;
 
 import agh.inzapp.inzynierka.converters.DataConverter;
-import agh.inzapp.inzynierka.database.DataDb;
+import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.DataManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

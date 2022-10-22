@@ -1,34 +1,23 @@
-package agh.inzapp.inzynierka.models.modelObj;
+package agh.inzapp.inzynierka.models;
 
 import agh.inzapp.inzynierka.enums.UniNames;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import javafx.beans.property.MapProperty;
+import javafx.beans.property.SimpleMapProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-@NoArgsConstructor
-@Getter
-@Setter
-
-public class PQHarmonicObj extends PQDataObj{
-	private Map<UniNames, Double> thd;
-	private Map<UniNames, Double> harmonics;
-
+public class PQHarmonicsFx extends PQNormalFx{
+	private MapProperty<UniNames, Double> thd = new SimpleMapProperty<>();
+	private MapProperty<UniNames, Double> harmonics = new SimpleMapProperty<>();
 	@Override
 	public void init() {
 		initFlags();
 		initThd();
 		initHarmonics();
 	}
-
-
-	@Override
-	protected void initFlags() {
-		super.initFlags();
-	}
-
 	private void initThd() {
 		Map<UniNames, Double> dataMap = new LinkedHashMap<>();
 		dataMap.put(UniNames.PQ_H1_UL1, null);
@@ -183,8 +172,8 @@ public class PQHarmonicObj extends PQDataObj{
 		dataMap.put(UniNames.PQ_H48_UL3, null);
 		dataMap.put(UniNames.PQ_H49_UL3, null);
 		dataMap.put(UniNames.PQ_H50_UL3, null);
-		
-		setHarmonics(dataMap);
+
+		setHarmonics(FXCollections.observableMap(dataMap));
 	}
 
 	private void initHarmonics() {
@@ -195,6 +184,31 @@ public class PQHarmonicObj extends PQDataObj{
 		dataMap.put(UniNames.PQ_THD_L1, null);
 		dataMap.put(UniNames.PQ_THD_L2, null);
 		dataMap.put(UniNames.PQ_THD_L3, null);
-		setThd(dataMap);
+
+		setThd(FXCollections.observableMap(dataMap));
+	}
+
+	public ObservableMap<UniNames, Double> getThd() {
+		return thd.get();
+	}
+
+	public MapProperty<UniNames, Double> thdProperty() {
+		return thd;
+	}
+
+	public void setThd(ObservableMap<UniNames, Double> thd) {
+		this.thd.set(thd);
+	}
+
+	public ObservableMap<UniNames, Double> getHarmonics() {
+		return harmonics.get();
+	}
+
+	public MapProperty<UniNames, Double> harmonicsProperty() {
+		return harmonics;
+	}
+
+	public void setHarmonics(ObservableMap<UniNames, Double> harmonics) {
+		this.harmonics.set(harmonics);
 	}
 }

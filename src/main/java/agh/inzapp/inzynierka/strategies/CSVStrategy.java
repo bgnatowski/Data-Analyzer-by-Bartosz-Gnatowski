@@ -1,8 +1,8 @@
 package agh.inzapp.inzynierka.strategies;
 
 
-import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
 import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.DataFx;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import org.springframework.stereotype.Component;
@@ -15,5 +15,5 @@ public interface CSVStrategy {
 			.withQuoteChar('\'')
 			.withIgnoreQuotations(false)
 			.build();
-	List<BaseDataObj> importCSVFile(String... path) throws ApplicationException;
+	List<DataFx> importCSVFile(String... path) throws ApplicationException;
 }

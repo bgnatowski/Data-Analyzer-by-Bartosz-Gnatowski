@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.database;
+package agh.inzapp.inzynierka.database.models;
 
 import lombok.Getter;
 import lombok.Setter;

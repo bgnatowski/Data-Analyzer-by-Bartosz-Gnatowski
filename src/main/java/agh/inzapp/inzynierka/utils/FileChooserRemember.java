@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.service;
+package agh.inzapp.inzynierka.utils;
 
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.beans.property.SimpleObjectProperty;

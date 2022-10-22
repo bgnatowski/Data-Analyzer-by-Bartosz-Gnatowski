@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.database;
+package agh.inzapp.inzynierka.database.models;
 
 import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.Getter;

@@ -1,10 +1,9 @@
-package agh.inzapp.inzynierka.service;
+package agh.inzapp.inzynierka.services;
 
-import agh.inzapp.inzynierka.database.DataDb;
+import agh.inzapp.inzynierka.database.models.DataDb;
 import org.springframework.stereotype.Service;
 
 
-import java.io.Serial;
 import java.util.List;
 
 @Service
