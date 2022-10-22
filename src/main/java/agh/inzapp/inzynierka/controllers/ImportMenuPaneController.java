@@ -2,11 +2,12 @@ package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.enums.Analysers;
+import agh.inzapp.inzynierka.enums.DataType;
 import agh.inzapp.inzynierka.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.modelObj.BaseDataObj;
+import agh.inzapp.inzynierka.service.FileChooserRemember;
 import agh.inzapp.inzynierka.strategies.CSVImportPQ;
 import agh.inzapp.inzynierka.strategies.CSVStrategy;
-import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,9 +16,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import lombok.Getter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -25,68 +25,44 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static agh.inzapp.inzynierka.enums.DataType.*;
 import static agh.inzapp.inzynierka.enums.FXMLNames.MAIN;
 import static agh.inzapp.inzynierka.enums.FXMLNames.TABLE_VIEW;
 
 @Component
 public class ImportMenuPaneController {
-	final private FileChooser fc = new FileChooser();
-	private ObservableList<File> filesNormalDataList = FXCollections.observableArrayList();
-	private ObservableList<File> filesHarmonicsDataList = FXCollections.observableArrayList();
-
-	@Getter
-	private enum DataType {
-		HARMONICS_DATA("fileChooser.harmonics"),
-		NORMAL_DATA("fileChooser.data");
-
-		DataType(String title) {
-			this.title = title;
-		}
-
-		final String title;
-	}
-
+	private final ObservableList<File> observableNormalList = FXCollections.observableArrayList();
+	private final ObservableList<File> observableHarmonicList = FXCollections.observableArrayList();
 	@FXML
-	private AnchorPane ap;
+	private AnchorPane apMain;
 	@FXML
 	private ComboBox<Analysers> comboBoxAnalyzer;
 	@FXML
-	private Label labelImportNormal;
+	private ListView<File> listViewNormal;
 	@FXML
-	private Label labelImportHarmonics;
+	private ListView<File> listViewHarmonics;
 	@FXML
-	private Label getLabelImportNormal;
+	private Button btnNormalSelect;
 	@FXML
-	private Button btnDataImport;
+	private Button btnHarmonicsSelect;
 	@FXML
-	private Button btnHarmonicsImport;
+	private Button btnImport;
 	@FXML
-	private Button importButton;
+	private RadioButton noNormal;
 	@FXML
-	private ListView<File> multiFilesNormalDataListView;
+	private RadioButton noHarmonic;
 	@FXML
-	private ListView<File> multiFilesHarmonicsDataListView;
+	private RadioButton yesHarmonic;
 	@FXML
-	private Label questionLabelHarmonics;
-	@FXML
-	private Label questionLabelNormal;
-	@FXML
-	private RadioButton radioButtonNoHarmonic;
-	@FXML
-	private RadioButton radioButtonYesHarmonic;
-	@FXML
-	private RadioButton radioButtonYesNormal;
-	@FXML
-	private RadioButton radioButtonNoNormal;
+	private RadioButton yesNormal;
 	@FXML
 	private TitledPane titledPaneNormal;
 	@FXML
 	private TitledPane titledPaneHarmonics;
 	@FXML
-	private ToggleGroup normalGroup;
+	private Label labelNormal;
 	@FXML
-	private ToggleGroup harmonicsGroup;
-
+	private Label labelHarmonics;
 
 	public void initialize() {
 		bindings();
@@ -97,15 +73,14 @@ public class ImportMenuPaneController {
 		titledPaneNormal.setExpanded(true);
 		titledPaneHarmonics.setExpanded(false);
 
-		labelImportNormal.disableProperty().bindBidirectional(radioButtonNoNormal.selectedProperty());
-		btnDataImport.disableProperty().bindBidirectional(radioButtonNoNormal.selectedProperty());
-		multiFilesNormalDataListView.disableProperty().bindBidirectional(radioButtonNoNormal.selectedProperty());
-//
-		labelImportHarmonics.disableProperty().bindBidirectional(radioButtonNoHarmonic.selectedProperty());
-		btnHarmonicsImport.disableProperty().bindBidirectional(radioButtonNoHarmonic.selectedProperty());
-		multiFilesHarmonicsDataListView.disableProperty().bindBidirectional(radioButtonNoHarmonic.selectedProperty());
+		labelNormal.disableProperty().bindBidirectional(noNormal.selectedProperty());
+		btnNormalSelect.disableProperty().bindBidirectional(noNormal.selectedProperty());
+		listViewNormal.disableProperty().bindBidirectional(noNormal.selectedProperty());
+		labelHarmonics.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
+		btnHarmonicsSelect.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
+		listViewHarmonics.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
 
-		importButton.disableProperty().bind(radioButtonYesNormal.selectedProperty().or(radioButtonYesHarmonic.selectedProperty())
+		btnImport.disableProperty().bind(yesNormal.selectedProperty().or(yesHarmonic.selectedProperty())
 				.and(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not()
 		);
 
@@ -113,105 +88,91 @@ public class ImportMenuPaneController {
 
 	@FXML
 	void importDataFileNames() {
-		prepareFileChooser(DataType.NORMAL_DATA);
-		getFileNames(DataType.NORMAL_DATA);
+		getFiles(NORMAL_DATA);
+		setObservableFileList(NORMAL_DATA);
 	}
 
 	@FXML
 	void importHarmonicsFileNames() {
-		prepareFileChooser(DataType.HARMONICS_DATA);
-		getFileNames(DataType.HARMONICS_DATA);
+		getFiles(HARMONICS_DATA);
+		setObservableFileList(HARMONICS_DATA);
 	}
 
-	private void prepareFileChooser(DataType dataType) {
-		fc.setTitle(FxmlUtils.getInternalizedPropertyByKey(dataType.getTitle()));
-		fc.setInitialDirectory(new File(System.getProperty("user.dir")));
-		fc.getExtensionFilters().clear();
-		FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter(
-				FxmlUtils.getResourceBundle().getString("fileChooser.extension"), "*.csv");
-		fc.getExtensionFilters().add(extensionFilter);
-	}
-
-	private void getFileNames(DataType dataType) {
-		List<File> files = fc.showOpenMultipleDialog(null);
+	private void getFiles(DataType dataType) {
+		List<File> files = FileChooserRemember.showOpenMultipleDialog();
 		if (files != null) {
 			files.forEach(file -> {
-				if (file != null) {
-					switch (dataType) {
-						case NORMAL_DATA -> {
-							if (!filesNormalDataList.contains(file)) {
-								filesNormalDataList.add(file);
-							}
-						}
-						case HARMONICS_DATA -> {
-							if (!filesHarmonicsDataList.contains(file)) {
-								filesHarmonicsDataList.add(file);
-							}
+				switch (dataType) {
+					case NORMAL_DATA -> {
+						if (!observableNormalList.contains(file)) {
+							observableNormalList.add(file);
 						}
 					}
-					System.out.println(file);
-				} else {
-					try {
-						throw new ApplicationException("Invalid file. File = null.");
-					} catch (ApplicationException e) {
-						DialogUtils.errorDialog(e.getMessage());
+					case HARMONICS_DATA -> {
+						if (!observableHarmonicList.contains(file)) {
+							observableHarmonicList.add(file);
+						}
 					}
 				}
 			});
 		}
-		if (dataType.equals(DataType.NORMAL_DATA)) {
-			multiFilesNormalDataListView.setItems(filesNormalDataList);
-		} else if (dataType.equals(DataType.HARMONICS_DATA)) {
-			multiFilesHarmonicsDataListView.setItems(filesHarmonicsDataList);
+	}
+
+	private void setObservableFileList(DataType dataType) {
+		if (dataType.equals(NORMAL_DATA)) {
+			listViewNormal.setItems(observableNormalList);
+		} else if (dataType.equals(HARMONICS_DATA)) {
+			listViewHarmonics.setItems(observableHarmonicList);
 		}
 	}
 
 	@FXML
 	private void deleteNormalFileFromListOnAction() {
-		File file = multiFilesNormalDataListView.getSelectionModel().getSelectedItem();
-		System.out.println("usuń: " + file);
+		File file = listViewNormal.getSelectionModel().getSelectedItem();
+//		System.out.println("usuń: " + file);
 
 		if (file != null) {
-			multiFilesNormalDataListView.getSelectionModel().clearSelection();
-			filesNormalDataList.remove(file);
-			multiFilesNormalDataListView.setItems(filesNormalDataList);
+			listViewNormal.getSelectionModel().clearSelection();
+			observableNormalList.remove(file);
+			listViewNormal.setItems(observableNormalList);
 		}
 	}
 
 	@FXML
 	private void deleteHarmonicsFileFromListOnAction() {
-		File file = multiFilesHarmonicsDataListView.getSelectionModel().getSelectedItem();
+		File file = listViewHarmonics.getSelectionModel().getSelectedItem();
 
 		if (file != null) {
-			multiFilesHarmonicsDataListView.getSelectionModel().clearSelection();
-			filesHarmonicsDataList.remove(file);
-			multiFilesHarmonicsDataListView.refresh();
+			listViewHarmonics.getSelectionModel().clearSelection();
+			observableHarmonicList.remove(file);
+			listViewHarmonics.refresh();
 		}
 	}
 
 	@FXML
 	private void importData() {
-		List<? extends BaseDataObj> modelsList;
 		switch (comboBoxAnalyzer.getValue()) {
 			case PQbox:
-				if (radioButtonNoHarmonic.isSelected()) {
-					modelsList = getDataList(new CSVImportPQ());
+				if (yesNormal.isSelected() && noHarmonic.isSelected()) {
 					System.out.println("saving...");
-					DataManager.saveAll(modelsList);
+					DataManager.saveAll(getDataList(new CSVImportPQ()));
 					System.out.println("done");
-				} else {
-//					modelsList = getDataList(new CSVFromPQHarmonics);
-//					//todo pq harmonics import
+				} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
+//					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
+					//todo pq harmonics import
 					System.out.println("pq harmonics import");
+				} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
+//					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
+//					DataManager.saveAll(getDataList(new CSVImportPQ()));
+					//todo pq harmonics import
+//					System.out.println("pq harmonics import");
 				}
 				break;
 			case Sonel:
-				if (radioButtonYesHarmonic.isSelected()) {
-//						modelsList = getDataList(new CSVFromSonel());
+				if (yesHarmonic.isSelected()) {
 					//todo sonel import csv
 					System.out.println("sonel import");
 				} else {
-//						modelsList = getDataList(new CSVFromSonelHarmonics);
 					//todo sonel harmonics import
 					System.out.println("sonel harmonics import");
 				}
@@ -233,7 +194,7 @@ public class ImportMenuPaneController {
 
 	private List<? extends BaseDataObj> getDataList(CSVStrategy csvStrategy) {
 		List<BaseDataObj> modelList = new ArrayList<>();
-		filesNormalDataList.forEach(file ->
+		observableNormalList.forEach(file ->
 		{
 			try {
 				modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
@@ -247,7 +208,7 @@ public class ImportMenuPaneController {
 	private void switchToTableViewAferImport() throws ApplicationException {
 		try {
 			FXMLLoader loader = FxmlUtils.getLoader(MAIN.getPath());
-			Stage stage = (Stage) ap.getScene().getWindow();
+			Stage stage = (Stage) apMain.getScene().getWindow();
 			loader.load();
 			Scene scene = new Scene(loader.getRoot(), stage.getWidth(), stage.getHeight());
 			stage.setScene(scene);

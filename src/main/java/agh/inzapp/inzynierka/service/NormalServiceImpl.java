@@ -6,6 +6,7 @@ import agh.inzapp.inzynierka.database.RecordsMapping;
 import agh.inzapp.inzynierka.database.RecordsMappingRepository;
 import agh.inzapp.inzynierka.enums.UniNames;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
@@ -13,11 +14,11 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class CrudServiceImpl implements CrudService {
+public class NormalServiceImpl implements CrudService {
 	private final DataRepository repository;
 	private final RecordsMappingRepository recordsRepository;
 	@Autowired
-	public CrudServiceImpl(DataRepository repository, RecordsMappingRepository recordsRepository) {
+	public NormalServiceImpl(DataRepository repository, RecordsMappingRepository recordsRepository) {
 		this.repository = repository;
 		this.recordsRepository = recordsRepository;
 	}
