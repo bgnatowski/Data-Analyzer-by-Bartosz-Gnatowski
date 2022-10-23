@@ -261,7 +261,7 @@ public class PQParser {
 		List<UniNames> uniNamesList = new ArrayList<>();
 		names.forEach(name -> {
 			if (mapPQHarmonicsNames.containsKey(name)) {
-				uniNamesList.add(mapPQDataNames.get(name));
+				uniNamesList.add(mapPQHarmonicsNames.get(name));
 			}
 		});
 		return uniNamesList;

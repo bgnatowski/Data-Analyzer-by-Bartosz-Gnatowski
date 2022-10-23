@@ -79,7 +79,7 @@ public class CSVImportPQHarmonics implements CSVStrategy {
 						try {
 							model.setDate(PQParser.parseDate(recordsList.get(columnID)));
 						} catch (ApplicationException e) {
-							throw new RuntimeException(e);
+							DialogUtils.errorDialog(e.getMessage());
 						}
 					}
 					case Time -> model.setTime(PQParser.parseTime(recordsList.get(columnID)));
@@ -105,7 +105,7 @@ public class CSVImportPQHarmonics implements CSVStrategy {
 							Map<UniNames, Double> harmonicsMap = model.getHarmonics();
 							try {
 								harmonicsMap.put(unitaryName, PQParser.parseDouble(recordsList.get(columnID)));
-								model.setThd(FXCollections.observableMap(harmonicsMap));
+								model.setHarmonics(FXCollections.observableMap(harmonicsMap));
 							} catch (ParseException e) {
 								DialogUtils.errorDialog(e.getMessage());
 							}

@@ -28,10 +28,10 @@ public class DataManager {
 		this.harmonicsService = harmonicsService;
 	}
 
-	public static void saveAll(List<? extends CommonModel> dataFxList) {
-		dataFxList.forEach(dataFx -> {
+	public static void saveAll(List<? extends CommonModel> modelFxList) {
+		modelFxList.forEach(modelFx -> {
 			try {
-				save(dataFx);
+				save(modelFx);
 			} catch (ApplicationException e) {
 				DialogUtils.errorDialog(e.getMessage());
 			}
@@ -46,7 +46,7 @@ public class DataManager {
 		}
 		if (modelFx instanceof HarmoFx) {
 			modelDb = HarmoConverter.convertFxToDb((HarmoFx) modelFx);
-			dataService.add(modelDb);
+			harmonicsService.add(modelDb);
 		}
 	}
 

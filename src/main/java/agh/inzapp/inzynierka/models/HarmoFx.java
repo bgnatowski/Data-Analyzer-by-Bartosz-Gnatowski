@@ -112,21 +112,21 @@ public class HarmoFx implements CommonModel{
 		this.harmonics.set(harmonics);
 	}
 
-	@Override
-	public String toString() {
-		List<String> allDataToString = new ArrayList<>();
-		allDataToString.add(getDate().toString());
-		allDataToString.add(getTime().toString());
-		allDataToString.add(getFlags().values().toString());
-
-		String s = Arrays.toString(getHarmonics().values().toArray());
-		String records = s.substring(1, s.length()-1);
-		allDataToString.add(records);
-
-		String s2 = Arrays.toString(getThd().values().toArray());
-		String records2 = s2.substring(1, s.length()-1);
-		allDataToString.add(records2);
-
-		return allDataToString.toString();
-	}
+//	@Override
+//	public String toString() {
+//		List<String> allDataToString = new ArrayList<>();
+//		allDataToString.add(getDate().toString());
+//		allDataToString.add(getTime().toString());
+//		allDataToString.add(getFlags().values().toString());
+//
+//		String s = Arrays.toString(getHarmonics().values().toArray());
+//		String records = s.substring(1, s.length()-1);
+//		allDataToString.add(records);
+//
+//		String s2 = Arrays.toString(getThd().values().toArray());
+//		String records2 = s2.substring(1, s.length()-1);
+//		allDataToString.add(records2);
+//
+//		return allDataToString.toString();
+//	}
 }

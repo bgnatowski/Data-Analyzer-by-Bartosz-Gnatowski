@@ -29,7 +29,7 @@ public class HarmonicsServiceImpl implements CrudService{
 	@Override
 	public <T extends CommonDbModel> T add(T dataModel) throws ApplicationException {
 		HarmoDb saved;
-		if (dataModel instanceof DataDb){
+		if (dataModel instanceof HarmoDb){
 			saved = repository.save((HarmoDb) dataModel);
 			return (T) saved;
 		} else {

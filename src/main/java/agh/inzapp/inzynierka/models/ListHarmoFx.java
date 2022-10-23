@@ -17,7 +17,6 @@ public class ListHarmoFx {
 	private static volatile ListHarmoFx instance;
 
 	private ListHarmoFx() {
-		init();
 	}
 
 	public static ListHarmoFx getInstance(){
@@ -33,7 +32,7 @@ public class ListHarmoFx {
 		}
 	}
 
-	private void init() {
+	public void init() {
 		List<? extends CommonDbModel> allHarmoDb = DataManager.getAll(HarmoDb.class);
 		harmoFxList.clear();
 		if (allHarmoDb != null){

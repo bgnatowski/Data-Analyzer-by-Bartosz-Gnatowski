@@ -5,12 +5,16 @@ import agh.inzapp.inzynierka.enums.Analysers;
 import agh.inzapp.inzynierka.enums.DataType;
 import agh.inzapp.inzynierka.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.CommonModel;
+import agh.inzapp.inzynierka.models.ListDataFx;
+import agh.inzapp.inzynierka.models.ListHarmoFx;
 import agh.inzapp.inzynierka.strategies.CSVImportPQ;
 import agh.inzapp.inzynierka.strategies.CSVImportPQHarmonics;
 import agh.inzapp.inzynierka.strategies.CSVStrategy;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FileChooserRemember;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -35,6 +39,8 @@ import static agh.inzapp.inzynierka.enums.FXMLNames.TABLE_VIEW;
 public class ImportMenuPaneController {
 	private final ObservableList<File> observableNormalList = FXCollections.observableArrayList();
 	private final ObservableList<File> observableHarmonicList = FXCollections.observableArrayList();
+	private final ListProperty<File> listNormalProperty = new SimpleListProperty<>();
+	private final ListProperty<File> listHarmoProperty = new SimpleListProperty<>();
 	@FXML
 	private AnchorPane apMain;
 	@FXML
@@ -83,8 +89,9 @@ public class ImportMenuPaneController {
 		listViewHarmonics.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
 
 		btnImport.disableProperty().bind(yesNormal.selectedProperty().or(yesHarmonic.selectedProperty())
-				.and(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not()
-		);
+				.and((listNormalProperty.emptyProperty().not().and(yesNormal.selectedProperty().and(noHarmonic.selectedProperty())))
+						.or(listHarmoProperty.emptyProperty().not().and(yesHarmonic.selectedProperty())))
+				.and(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not());
 
 	}
 
@@ -108,11 +115,13 @@ public class ImportMenuPaneController {
 					case NORMAL_DATA -> {
 						if (!observableNormalList.contains(file)) {
 							observableNormalList.add(file);
+							listNormalProperty.setValue(observableNormalList);
 						}
 					}
 					case HARMONICS_DATA -> {
 						if (!observableHarmonicList.contains(file)) {
 							observableHarmonicList.add(file);
+							listHarmoProperty.setValue(observableHarmonicList);
 						}
 					}
 				}
@@ -157,14 +166,16 @@ public class ImportMenuPaneController {
 			case PQbox:
 				if (yesNormal.isSelected() && noHarmonic.isSelected()) {
 					DataManager.saveAll(getDataList(new CSVImportPQ()));
+					ListDataFx.getInstance().init();
 				} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
-					final List<? extends CommonModel> dataList = getDataList(new CSVImportPQHarmonics());
-					DataManager.saveAll(dataList);//todo
+					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));//todo
+					ListHarmoFx.getInstance().init();
 					System.out.println("pq harmonics import");
 				} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
 					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
+					ListDataFx.getInstance().init();
 					DataManager.saveAll(getDataList(new CSVImportPQ()));
-//					System.out.println("pq harmonics import");
+					ListHarmoFx.getInstance().init();
 				}
 				break;
 			case Sonel:
@@ -190,7 +201,7 @@ public class ImportMenuPaneController {
 
 	private List<? extends CommonModel> getDataList(CSVStrategy csvStrategy) {
 		List<CommonModel> modelList = new ArrayList<>();
-		if (csvStrategy instanceof CSVImportPQ){
+		if (csvStrategy instanceof CSVImportPQ) {
 			observableNormalList.forEach(file ->
 			{
 				try {
@@ -200,7 +211,7 @@ public class ImportMenuPaneController {
 				}
 			});
 		}
-		if (csvStrategy instanceof CSVImportPQHarmonics){
+		if (csvStrategy instanceof CSVImportPQHarmonics) {
 			observableHarmonicList.forEach(file ->
 			{
 				try {

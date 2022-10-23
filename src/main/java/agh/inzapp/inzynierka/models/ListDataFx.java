@@ -17,7 +17,6 @@ public class ListDataFx {
 	private static volatile ListDataFx instance;
 
 	private ListDataFx(){
-		init();
 	}
 
 	public static ListDataFx getInstance(){
@@ -33,7 +32,7 @@ public class ListDataFx {
 		}
 	}
 
-	private void init() {
+	public void init() {
 		List<? extends CommonDbModel> allDataDb = DataManager.getAll(DataDb.class);
 		if (allDataDb != null){
 			dataFxList.clear();

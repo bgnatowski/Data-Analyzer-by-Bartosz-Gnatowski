@@ -27,7 +27,6 @@ public class DataFx implements CommonModel {
 	private MapProperty<UniNames, Double> records = new SimpleMapProperty<>();
 	private ListProperty<UniNames> columnNames = new SimpleListProperty<>();
 
-
 	protected void initCommonRecords() {
 		Map<UniNames, Double> map = new LinkedHashMap<>();
 		map.put(U12_avg, null);
