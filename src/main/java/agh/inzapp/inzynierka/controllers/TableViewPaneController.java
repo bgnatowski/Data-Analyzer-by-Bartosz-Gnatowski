@@ -28,9 +28,7 @@ import java.util.Optional;
 public class TableViewPaneController {
 
 	@FXML
-	private Tab harmonicsTab;
-	@FXML
-	private Tab normalTab;
+	private Tab harmonicsTab, normalTab;
 	@FXML
 	private TableView<HarmoFx> harmonicsTableView;
 	@FXML
