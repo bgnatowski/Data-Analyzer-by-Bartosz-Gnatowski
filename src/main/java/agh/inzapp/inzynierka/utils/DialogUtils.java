@@ -17,4 +17,14 @@ public class DialogUtils {
 		errorAlert.getDialogPane().setContent(textArea);
 		errorAlert.showAndWait();
 	}
+	public static void errorDialog(String errorMessage, Class<? extends Exception> aClass, String bundleResourceKey) {
+		StringBuilder sb = new StringBuilder();
+		final String internalizedPropertyByKey = FxmlUtils.getInternalizedPropertyByKey(bundleResourceKey);
+		sb.append(errorMessage)
+				.append(". \nCaused in class: ")
+				.append(aClass.getSimpleName())
+				.append(". \n")
+				.append(internalizedPropertyByKey);
+		DialogUtils.errorDialog(sb.toString());
+	}
 }

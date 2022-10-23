@@ -19,13 +19,14 @@ import static agh.inzapp.inzynierka.enums.UniNames.*;
 @Setter
 @NoArgsConstructor
 
-public class DataFx {
+public class DataFx implements CommonModel {
 	private LongProperty id = new SimpleLongProperty();
 	private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
 	private ObjectProperty<LocalTime> time = new SimpleObjectProperty<>();
 	private MapProperty<UniNames, String> flags = new SimpleMapProperty<>();
 	private MapProperty<UniNames, Double> records = new SimpleMapProperty<>();
 	private ListProperty<UniNames> columnNames = new SimpleListProperty<>();
+
 
 	protected void initCommonRecords() {
 		Map<UniNames, Double> map = new LinkedHashMap<>();

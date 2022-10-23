@@ -10,7 +10,7 @@
    <children>
       <TabPane maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab fx:id="normalTab" closable="false" text="%tab.normal.name">
+          <Tab fx:id="normalTab" closable="false" disable="true" text="%tab.normal.name">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -19,7 +19,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="harmonicsTab" closable="false" text="%tab.harmonics.name">
+          <Tab fx:id="harmonicsTab" closable="false" disable="true" text="%tab.harmonics.name">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

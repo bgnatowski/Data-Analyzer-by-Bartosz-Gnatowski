@@ -1,10 +1,12 @@
 package agh.inzapp.inzynierka.services;
 
+import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.repositories.DataRepository;
-import agh.inzapp.inzynierka.database.models.RecordsMapping;
+import agh.inzapp.inzynierka.database.mappings.RecordsMapping;
 import agh.inzapp.inzynierka.database.repositories.RecordsMappingRepository;
 import agh.inzapp.inzynierka.enums.UniNames;
+import agh.inzapp.inzynierka.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +23,18 @@ public class NormalServiceImpl implements CrudService {
 		this.repository = repository;
 		this.recordsRepository = recordsRepository;
 	}
+
 	@Override
-	public DataDb add(DataDb dataModel) {
-		return repository.save(dataModel);
+	public <T extends CommonDbModel> T add(T dataModel) throws ApplicationException {
+		DataDb saved;
+		if (dataModel instanceof DataDb){
+			 saved = repository.save((DataDb) dataModel);
+			 return (T) saved;
+		} else {
+			throw new ApplicationException("error.saving.datadb");
+		}
 	}
+
 	@Override
 	public List<DataDb> getAll(){
 		final List<DataDb> all = repository.findAll();

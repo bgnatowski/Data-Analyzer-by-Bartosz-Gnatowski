@@ -1,22 +1,21 @@
 package agh.inzapp.inzynierka.models;
 
 import agh.inzapp.inzynierka.enums.UniNames;
-import javafx.beans.property.MapProperty;
-import javafx.beans.property.SimpleMapProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class PQHarmonicsFx extends PQNormalFx{
-	private MapProperty<UniNames, Double> thd = new SimpleMapProperty<>();
-	private MapProperty<UniNames, Double> harmonics = new SimpleMapProperty<>();
-	@Override
+public class PQHarmonicsFx extends HarmoFx{
 	public void init() {
 		initFlags();
 		initThd();
 		initHarmonics();
+	}
+	private void initFlags() {
+		Map<UniNames, String> flags = new LinkedHashMap<>();
+		flags.put(UniNames.Flag, null);
+		setFlags(FXCollections.observableMap(flags));
 	}
 	private void initThd() {
 		Map<UniNames, Double> dataMap = new LinkedHashMap<>();
@@ -188,27 +187,4 @@ public class PQHarmonicsFx extends PQNormalFx{
 		setThd(FXCollections.observableMap(dataMap));
 	}
 
-	public ObservableMap<UniNames, Double> getThd() {
-		return thd.get();
-	}
-
-	public MapProperty<UniNames, Double> thdProperty() {
-		return thd;
-	}
-
-	public void setThd(ObservableMap<UniNames, Double> thd) {
-		this.thd.set(thd);
-	}
-
-	public ObservableMap<UniNames, Double> getHarmonics() {
-		return harmonics.get();
-	}
-
-	public MapProperty<UniNames, Double> harmonicsProperty() {
-		return harmonics;
-	}
-
-	public void setHarmonics(ObservableMap<UniNames, Double> harmonics) {
-		this.harmonics.set(harmonics);
-	}
 }

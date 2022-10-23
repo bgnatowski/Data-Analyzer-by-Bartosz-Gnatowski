@@ -11,7 +11,7 @@ public class PQNormalFx extends DataFx{
 		initOwnRecords();
 		initFlags();
 	}
-	protected void initFlags() {
+	private void initFlags() {
 		Map<UniNames, String> flags = new LinkedHashMap<>();
 		flags.put(UniNames.Flag, null);
 		setFlags(FXCollections.observableMap(flags));

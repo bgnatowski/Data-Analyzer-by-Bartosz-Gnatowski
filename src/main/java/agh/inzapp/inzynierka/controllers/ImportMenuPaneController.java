@@ -4,11 +4,12 @@ import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.enums.Analysers;
 import agh.inzapp.inzynierka.enums.DataType;
 import agh.inzapp.inzynierka.exceptions.ApplicationException;
-import agh.inzapp.inzynierka.models.DataFx;
-import agh.inzapp.inzynierka.strategies.CSVImportPQHarmonics;
-import agh.inzapp.inzynierka.utils.FileChooserRemember;
+import agh.inzapp.inzynierka.models.CommonModel;
 import agh.inzapp.inzynierka.strategies.CSVImportPQ;
+import agh.inzapp.inzynierka.strategies.CSVImportPQHarmonics;
 import agh.inzapp.inzynierka.strategies.CSVStrategy;
+import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.FileChooserRemember;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -155,54 +156,60 @@ public class ImportMenuPaneController {
 		switch (comboBoxAnalyzer.getValue()) {
 			case PQbox:
 				if (yesNormal.isSelected() && noHarmonic.isSelected()) {
-					System.out.println("saving...");
 					DataManager.saveAll(getDataList(new CSVImportPQ()));
-					System.out.println("done");
 				} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
-					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
-					//todo pq harmonics import
+					final List<? extends CommonModel> dataList = getDataList(new CSVImportPQHarmonics());
+					DataManager.saveAll(dataList);//todo
 					System.out.println("pq harmonics import");
 				} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
-//					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
-//					DataManager.saveAll(getDataList(new CSVImportPQ()));
-					//todo pq harmonics import
+					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
+					DataManager.saveAll(getDataList(new CSVImportPQ()));
 //					System.out.println("pq harmonics import");
 				}
 				break;
 			case Sonel:
-				if (yesHarmonic.isSelected()) {
-					//todo sonel import csv
-					System.out.println("sonel import");
-				} else {
-					//todo sonel harmonics import
+				//todo sonel import
+				if (yesNormal.isSelected() && noHarmonic.isSelected()) {
+					System.out.println("sonel normal import");
+//					DataManager.saveAll(getDataList(new CSVImportPQ()));
+				} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
+//					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
 					System.out.println("sonel harmonics import");
-				}
-				break;
-			default:
-				try {
-					throw new ApplicationException("Błąd w importData() -> case: default");
-				} catch (ApplicationException e) {
-					ApplicationException.printDialog(e.getMessage(), e.getClass(), "error.importData");
+				} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
+//					DataManager.saveAll(getDataList(new CSVImportPQHarmonics()));
+//					DataManager.saveAll(getDataList(new CSVImportPQ()));
+					System.out.println("sonel all import");
 				}
 		}
-
 		try {
 			switchToTableViewAferImport();
 		} catch (ApplicationException e) {
-			ApplicationException.printDialog(e.getMessage(), e.getClass(), "error.switchTableView");
+			DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.switchTableView");
 		}
 	}
 
-	private List<? extends DataFx> getDataList(CSVStrategy csvStrategy) {
-		List<DataFx> modelList = new ArrayList<>();
-		observableNormalList.forEach(file ->
-		{
-			try {
-				modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
-			} catch (ApplicationException e) {
-				ApplicationException.printDialog(e.getMessage(), e.getClass(), "error.getDataList");
-			}
-		});
+	private List<? extends CommonModel> getDataList(CSVStrategy csvStrategy) {
+		List<CommonModel> modelList = new ArrayList<>();
+		if (csvStrategy instanceof CSVImportPQ){
+			observableNormalList.forEach(file ->
+			{
+				try {
+					modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
+				} catch (ApplicationException e) {
+					DialogUtils.errorDialog(e.getMessage());
+				}
+			});
+		}
+		if (csvStrategy instanceof CSVImportPQHarmonics){
+			observableHarmonicList.forEach(file ->
+			{
+				try {
+					modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
+				} catch (ApplicationException e) {
+					DialogUtils.errorDialog(e.getMessage());
+				}
+			});
+		}
 		return modelList;
 	}
 

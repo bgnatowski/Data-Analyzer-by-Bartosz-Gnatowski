@@ -1,10 +1,12 @@
 package agh.inzapp.inzynierka.strategies;
 
+import agh.inzapp.inzynierka.models.CommonModel;
 import agh.inzapp.inzynierka.models.DataFx;
 import agh.inzapp.inzynierka.models.PQNormalFx;
 import agh.inzapp.inzynierka.converters.PQParser;
 import agh.inzapp.inzynierka.enums.UniNames;
 import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.utils.DialogUtils;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
@@ -14,13 +16,14 @@ import org.springframework.stereotype.Component;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Stream;
 
 @Component
 public class CSVImportPQ implements CSVStrategy {
-	protected List<DataFx> dataModels;
+	private List<DataFx> dataModels;
 	@Override
 	public List<DataFx> importCSVFile(String... path) throws ApplicationException {
 		dataModels = new ArrayList<>();
@@ -34,7 +37,6 @@ public class CSVImportPQ implements CSVStrategy {
 					 .withCSVParser(parser)
 					 .build()
 		) {
-
 			List<UniNames> columnsNames = new ArrayList<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
@@ -64,29 +66,35 @@ public class CSVImportPQ implements CSVStrategy {
 	}
 	protected void setDataInModel(List<String> recordsList, PQNormalFx model) {
 		Stream.of(UniNames.values()).forEach(unitaryName ->{
-			Integer columnID = null;
+			Long columnID = null;
 			if (model.getColumnNames().contains(unitaryName)){
-				columnID = model.getColumnNames().indexOf(unitaryName);
+				columnID = Long.valueOf(model.getColumnNames().indexOf(unitaryName));
 			}
 			switch (unitaryName){
-				case Date -> model.setDate(PQParser.parseDate(recordsList.get(columnID)));
-				case Time -> model.setTime(PQParser.parseTime(recordsList.get(columnID)));
+				case Date -> {
+					try {
+						model.setDate(PQParser.parseDate(recordsList.get(Math.toIntExact(columnID))));
+					} catch (ApplicationException e) {
+						throw new RuntimeException(e); //todo
+					}
+				}
+				case Time -> model.setTime(PQParser.parseTime(recordsList.get(Math.toIntExact(columnID))));
 				case Flag -> {
 					Map<UniNames, String> flags = model.getFlags();
-					flags.put(unitaryName, PQParser.parseFlag(recordsList.get(columnID)));
+					flags.put(unitaryName, PQParser.parseFlag(recordsList.get(Math.toIntExact(columnID))));
 					model.setFlags(FXCollections.observableMap(flags));
 				}
 				default -> {
 					if(columnID != null){ //sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
 						Map<UniNames, Double> records = model.getRecords();
-						String optionalDouble = recordsList.get(columnID);
+						String optionalDouble = recordsList.get(Math.toIntExact(columnID));
 						if (optionalDouble.equals(" ")){
 							records.put(unitaryName, 0.0);
 						} else {
 							try {
 								records.put(unitaryName, PQParser.parseDouble(optionalDouble, unitaryName));
 							} catch (ParseException e) {
-								ApplicationException.printDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+								DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
 							}
 						}
 						model.setRecords(FXCollections.observableMap(records));

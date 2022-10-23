@@ -22,7 +22,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @Table(name = "dataDb", uniqueConstraints = {
 		@UniqueConstraint(name = "dataDb_unique", columnNames = {"date", "time"})
 })
-public class DataDb {
+public class DataDb implements CommonDbModel{
 	@Id
 	@SequenceGenerator(name = "dataDb_sequence", sequenceName = "dataDb_sequence", allocationSize = 1)
 	@GeneratedValue(strategy = SEQUENCE, generator = "dataDb_sequence")

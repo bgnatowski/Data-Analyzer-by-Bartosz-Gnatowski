@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.database.models;
+package agh.inzapp.inzynierka.database.mappings;
 
 import agh.inzapp.inzynierka.enums.UniNames;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,11 +16,10 @@ import java.util.Objects;
 @Getter
 
 @Embeddable
-public class RecordsMappingId implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 1128836653557708349L;
-	@Column(name = "records_id", nullable = false)
-	private Long recordsId;
+public class HarmonicsMappingId implements Serializable {
+	private static final long serialVersionUID = 6257191391108915418L;
+	@Column(name = "harmonics_id", nullable = false)
+	private Long harmonicsId;
 
 	@Column(name = "uni_name", nullable = false)
 	@Enumerated(EnumType.STRING)
@@ -31,14 +29,14 @@ public class RecordsMappingId implements Serializable {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-		RecordsMappingId entity = (RecordsMappingId) o;
+		HarmonicsMappingId entity = (HarmonicsMappingId) o;
 		return Objects.equals(this.uniName, entity.uniName) &&
-				Objects.equals(this.recordsId, entity.recordsId);
+				Objects.equals(this.harmonicsId, entity.harmonicsId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(uniName, recordsId);
+		return Objects.hash(uniName, harmonicsId);
 	}
 
 }

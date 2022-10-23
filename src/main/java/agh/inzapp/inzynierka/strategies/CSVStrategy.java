@@ -2,6 +2,7 @@ package agh.inzapp.inzynierka.strategies;
 
 
 import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.CommonModel;
 import agh.inzapp.inzynierka.models.DataFx;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -15,5 +16,5 @@ public interface CSVStrategy {
 			.withQuoteChar('\'')
 			.withIgnoreQuotations(false)
 			.build();
-	List<DataFx> importCSVFile(String... path) throws ApplicationException;
+	List<? extends CommonModel> importCSVFile(String... path) throws ApplicationException;
 }

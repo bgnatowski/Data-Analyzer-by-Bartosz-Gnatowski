@@ -1,8 +1,9 @@
 package agh.inzapp.inzynierka.models;
 
 import agh.inzapp.inzynierka.converters.DataConverter;
-import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.DataManager;
+import agh.inzapp.inzynierka.database.models.CommonDbModel;
+import agh.inzapp.inzynierka.database.models.DataDb;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,11 +16,11 @@ public class ListDataFx {
 
 	private static volatile ListDataFx instance;
 
-	private ListDataFx() {
+	private ListDataFx(){
 		init();
 	}
 
-	public static ListDataFx getInstance() {
+	public static ListDataFx getInstance(){
 		ListDataFx result = instance;
 		if (result != null) {
 			return result;
@@ -32,14 +33,19 @@ public class ListDataFx {
 		}
 	}
 
-	private void init(){
-		List<DataDb> allDataDb = DataManager.getAll();
-		dataFxList.clear();
-		allDataDb.forEach(dataDb -> {
-			final DataFx dataFx = DataConverter.convertDbToFx(dataDb);
-			dataFxList.add(dataFx);
-		});
-		dataFxObservableList.setAll(dataFxList);
+	private void init() {
+		List<? extends CommonDbModel> allDataDb = DataManager.getAll(DataDb.class);
+		if (allDataDb != null){
+			dataFxList.clear();
+			allDataDb.forEach(dataDb -> {
+				if (dataDb instanceof DataDb){
+					DataFx dataFx = DataConverter.convertDbToFx((DataDb) dataDb);
+					dataFxList.add(dataFx);
+				}
+			});
+			dataFxObservableList.setAll(dataFxList);
+		}
+
 	}
 
 	public ObservableList<DataFx> getDataFxObservableList() {
