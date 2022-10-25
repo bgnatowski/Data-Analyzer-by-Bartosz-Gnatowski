@@ -1,17 +1,16 @@
 package agh.inzapp.inzynierka.database;
 
-import agh.inzapp.inzynierka.utils.converters.DataConverter;
-import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
-import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.services.HarmonicsServiceImpl;
 import agh.inzapp.inzynierka.services.NormalServiceImpl;
-import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.converters.DataConverter;
+import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,14 +27,10 @@ public class DataManager {
 		this.harmonicsService = harmonicsService;
 	}
 
-	public static void saveAll(List<? extends CommonModelFx> modelFxList) {
-		modelFxList.forEach(modelFx -> {
-			try {
-				save(modelFx);
-			} catch (ApplicationException e) {
-				DialogUtils.errorDialog(e.getMessage());
-			}
-		});
+	public static void saveAll(List<? extends CommonModelFx> modelFxList) throws ApplicationException{
+		for (CommonModelFx commonModelFx : modelFxList) {
+			save(commonModelFx);
+		}
 	}
 
 	public static <T extends CommonModelFx> void save(T modelFx) throws ApplicationException {

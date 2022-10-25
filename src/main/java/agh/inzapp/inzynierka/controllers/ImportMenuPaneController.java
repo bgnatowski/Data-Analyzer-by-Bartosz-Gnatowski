@@ -3,7 +3,6 @@ package agh.inzapp.inzynierka.controllers;
 import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.FilesList;
-import agh.inzapp.inzynierka.services.ImportManager;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.collections.FXCollections;
@@ -42,7 +41,7 @@ public class ImportMenuPaneController {
 	private FilesList filesList;
 
 	public void initialize() {
-		filesList = FilesList.getInstance();
+		filesList = new FilesList();
 		bindings();
 	}
 
@@ -95,33 +94,23 @@ public class ImportMenuPaneController {
 			listViewHarmonics.refresh();
 		}
 	}
-
 	@FXML
 	private void importData() {
-		ImportManager importManager = new ImportManager();
-		switch (comboBoxAnalyzer.getValue()) {
-			case PQbox:
-				if (yesNormal.isSelected() && noHarmonic.isSelected()) {
-					importManager.saveNormal(Analysers.PQbox);
-				} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
-					importManager.saveHarmonics(Analysers.PQbox);
-				} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
-					importManager.saveBoth(Analysers.PQbox);
-				}
-				break;
-			case Sonel:
-				if (yesNormal.isSelected() && noHarmonic.isSelected()) {
-					importManager.saveNormal(Analysers.Sonel);
-				} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
-					importManager.saveHarmonics(Analysers.Sonel);
-				} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
-					importManager.saveBoth(Analysers.Sonel);
-				}
-		}
 		try {
+			importDataFromAnalyser();
 			switchToTableViewAferImport();
 		} catch (ApplicationException e) {
-			DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.switchTableView");
+			DialogUtils.errorDialog(e.getMessage());
+		}
+	}
+	private void importDataFromAnalyser() throws ApplicationException {
+		Analysers analyser = comboBoxAnalyzer.getValue();
+		if (yesNormal.isSelected() && noHarmonic.isSelected()) {
+			filesList.saveNormal(analyser);
+		} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
+			filesList.saveHarmonics(analyser);
+		} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
+			filesList.saveBoth(analyser);
 		}
 	}
 
@@ -136,7 +125,7 @@ public class ImportMenuPaneController {
 			MainAppPaneController controller = loader.getController();
 			controller.setCenter(TABLE_VIEW.getPath());
 		} catch (IOException e) {
-			throw new ApplicationException(e.getMessage());
+			throw new ApplicationException("error.switchTableView");
 		}
 	}
 

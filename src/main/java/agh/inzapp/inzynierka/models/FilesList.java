@@ -1,35 +1,24 @@
 package agh.inzapp.inzynierka.models;
 
+import agh.inzapp.inzynierka.database.DataManager;
+import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.models.enums.DataType;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
+import agh.inzapp.inzynierka.strategies.*;
+import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FilesList {
 	private final ListProperty<File> listNormal = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private final ListProperty<File> listHarmonics = new SimpleListProperty<>(FXCollections.observableArrayList());
-	private static FilesList instance;
-
-	private FilesList() {
-	}
-
-	public static FilesList getInstance() {
-		FilesList result = instance;
-		if (result != null) {
-			return result;
-		}
-		synchronized(ListHarmoFx.class) {
-			if (instance == null) {
-				instance = new FilesList();
-			}
-			return instance;
-		}
-	}
-
 	public void getFiles(DataType dataType) {
 		List<File> files = FileChooserRemember.showOpenMultipleDialog();
 		if (files != null) {
@@ -48,6 +37,61 @@ public class FilesList {
 				}
 			});
 		}
+	}
+
+	public void saveNormal(Analysers analyser) throws ApplicationException {
+		switch (analyser){
+			case PQbox -> DataManager.saveAll(importNormalDataList(new CSVImportPQ()));
+			case Sonel -> DataManager.saveAll(importNormalDataList(new CSVImportSonel()));
+		}
+		ListDataFx.getInstance().init();
+	}
+	public void saveHarmonics(Analysers analyser) throws ApplicationException {
+		switch (analyser){
+			case PQbox -> DataManager.saveAll(importHarmonicsDataList(new CSVImportPQHarmonics()));
+			case Sonel -> DataManager.saveAll(importHarmonicsDataList(new CSVImportSonelHarmonics()));
+		}
+		ListHarmoFx.getInstance().init();
+	}
+
+	public void saveBoth(Analysers analyser) throws ApplicationException {
+		switch (analyser){
+			case PQbox ->{
+				DataManager.saveAll(importNormalDataList(new CSVImportPQ()));
+				DataManager.saveAll(importHarmonicsDataList(new CSVImportPQHarmonics()));
+			}
+			case Sonel -> {
+				DataManager.saveAll(importNormalDataList(new CSVImportSonel()));
+				DataManager.saveAll(importHarmonicsDataList(new CSVImportSonelHarmonics()));
+			}
+		}
+		ListDataFx.getInstance().init();
+		ListHarmoFx.getInstance().init();
+	}
+	private List<? extends CommonModelFx> importNormalDataList(CSVStrategy csvStrategy) {
+		List<CommonModelFx> modelList = new ArrayList<>();
+		listNormal.forEach(file ->
+		{
+			try {
+				modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
+			} catch (ApplicationException e) {
+				DialogUtils.errorDialog(e.getMessage());
+			}
+		});
+		return modelList;
+	}
+
+	private List<? extends CommonModelFx> importHarmonicsDataList(CSVStrategy csvStrategy) {
+		List<CommonModelFx> modelList = new ArrayList<>();
+		listHarmonics.forEach(file ->
+		{
+			try {
+				modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
+			} catch (ApplicationException e) {
+				DialogUtils.errorDialog(e.getMessage());
+			}
+		});
+		return modelList;
 	}
 	public ObservableList<File> getListNormal() {
 		return listNormal.get();

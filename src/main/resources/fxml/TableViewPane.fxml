@@ -8,22 +8,22 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.TableViewPaneController">
    <children>
-      <TabPane maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab fx:id="normalTab" closable="false" disable="true" text="%tab.normal.name">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane>
                      <children>
-                        <TableView fx:id="normalTableView" prefHeight="171.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <TableView fx:id="normalTableView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
           <Tab fx:id="harmonicsTab" closable="false" disable="true" text="%tab.harmonics.name">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane>
                      <children>
-                        <TableView fx:id="harmonicsTableView" prefHeight="172.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <TableView fx:id="harmonicsTableView" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
             </content>

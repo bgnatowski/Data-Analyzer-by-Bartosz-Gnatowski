@@ -1,6 +1,6 @@
 package agh.inzapp.inzynierka.strategies;
 
-import agh.inzapp.inzynierka.utils.converters.PQParser;
+import agh.inzapp.inzynierka.utils.parsers.PQParser;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;

@@ -15,14 +15,7 @@ public class MenuButtonsController {
 	static final String TABLE_VIEW_FXML = TABLE_VIEW.getPath();
 	private static MainAppPaneController mainAppPaneController;
 	@FXML
-	private Button exitButton;
-	@FXML
-	private Button homeButton;
-	@FXML
-	private Button infoButton;
-	@FXML
-	private Button loadButton;
-
+	private Button exitButton, homeButton, infoButton, loadButton;
 	@FXML
 	private void goHomeOnAction() {
 		mainAppPaneController.setCenter(HOME_FXML);
