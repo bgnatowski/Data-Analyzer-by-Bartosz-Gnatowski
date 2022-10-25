@@ -5,8 +5,8 @@ import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.repositories.DataRepository;
 import agh.inzapp.inzynierka.database.mappings.RecordsMapping;
 import agh.inzapp.inzynierka.database.repositories.RecordsMappingRepository;
-import agh.inzapp.inzynierka.enums.UniNames;
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

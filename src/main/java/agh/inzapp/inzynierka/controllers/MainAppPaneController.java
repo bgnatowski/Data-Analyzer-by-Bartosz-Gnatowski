@@ -3,10 +3,10 @@ package agh.inzapp.inzynierka.controllers;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.fxml.FXML;
 import javafx.scene.layout.BorderPane;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-import static agh.inzapp.inzynierka.enums.FXMLNames.*;
-@Component
+import static agh.inzapp.inzynierka.models.enums.FXMLNames.*;
+@Controller
 public class MainAppPaneController {
 	@FXML
 	private MenuButtonsController menuButtonsController;

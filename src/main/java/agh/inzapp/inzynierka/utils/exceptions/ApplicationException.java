@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.exceptions;
+package agh.inzapp.inzynierka.utils.exceptions;
 
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;

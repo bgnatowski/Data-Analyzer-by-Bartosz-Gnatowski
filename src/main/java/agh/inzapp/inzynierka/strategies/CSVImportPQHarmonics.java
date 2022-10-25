@@ -1,11 +1,11 @@
 package agh.inzapp.inzynierka.strategies;
 
-import agh.inzapp.inzynierka.converters.PQParser;
-import agh.inzapp.inzynierka.enums.UniNames;
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
-import agh.inzapp.inzynierka.models.CommonModel;
-import agh.inzapp.inzynierka.models.HarmoFx;
-import agh.inzapp.inzynierka.models.PQHarmonicsFx;
+import agh.inzapp.inzynierka.utils.converters.PQParser;
+import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
+import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
+import agh.inzapp.inzynierka.models.fxmodels.PQHarmonicsFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -25,7 +25,7 @@ import java.util.stream.Stream;
 public class CSVImportPQHarmonics implements CSVStrategy {
 	private List<HarmoFx> dataModels;
 	@Override
-	public List<? extends CommonModel> importCSVFile(String... path) throws ApplicationException {
+	public List<? extends CommonModelFx> importCSVFile(String... path) throws ApplicationException {
 		dataModels = new ArrayList<>();
 		readFile(path[0]);
 		return dataModels;

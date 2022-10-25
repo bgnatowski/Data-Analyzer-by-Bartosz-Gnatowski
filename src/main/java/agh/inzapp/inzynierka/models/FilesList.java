@@ -1,7 +1,6 @@
 package agh.inzapp.inzynierka.models;
 
-import agh.inzapp.inzynierka.enums.DataType;
-import agh.inzapp.inzynierka.utils.FileChooserRemember;
+import agh.inzapp.inzynierka.models.enums.DataType;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;

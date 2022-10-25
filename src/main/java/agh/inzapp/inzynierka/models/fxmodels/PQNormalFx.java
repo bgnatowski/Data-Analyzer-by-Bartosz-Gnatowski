@@ -1,6 +1,6 @@
-package agh.inzapp.inzynierka.models;
+package agh.inzapp.inzynierka.models.fxmodels;
 
-import agh.inzapp.inzynierka.enums.UniNames;
+import agh.inzapp.inzynierka.models.enums.UniNames;
 import javafx.collections.FXCollections;
 
 import java.util.*;

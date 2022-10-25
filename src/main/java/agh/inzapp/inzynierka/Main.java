@@ -1,7 +1,7 @@
 package agh.inzapp.inzynierka;
 
 import agh.inzapp.inzynierka.utils.FxmlUtils;
-import agh.inzapp.inzynierka.enums.FXMLNames;
+import agh.inzapp.inzynierka.models.enums.FXMLNames;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;

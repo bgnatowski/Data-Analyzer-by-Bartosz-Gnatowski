@@ -1,6 +1,6 @@
 package agh.inzapp.inzynierka.database.models;
 
-import agh.inzapp.inzynierka.enums.UniNames;
+import agh.inzapp.inzynierka.models.enums.UniNames;
 import lombok.*;
 
 import javax.persistence.*;

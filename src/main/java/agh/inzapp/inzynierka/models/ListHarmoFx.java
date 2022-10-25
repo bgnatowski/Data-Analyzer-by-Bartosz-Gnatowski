@@ -1,19 +1,21 @@
 package agh.inzapp.inzynierka.models;
 
-import agh.inzapp.inzynierka.converters.HarmoConverter;
+import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
+import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ListHarmoFx {
 	private ObservableList<HarmoFx> harmoFxObservableList = FXCollections.observableArrayList();
 	private List<HarmoFx> harmoFxList = new ArrayList<>();
-
 	private static volatile ListHarmoFx instance;
 
 	private ListHarmoFx() {

@@ -1,11 +1,8 @@
 package agh.inzapp.inzynierka.utils;
 
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 
-import java.net.URL;
 import java.util.ResourceBundle;
 
 public class FxmlUtils {

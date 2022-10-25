@@ -1,6 +1,6 @@
-package agh.inzapp.inzynierka.models;
+package agh.inzapp.inzynierka.models.fxmodels;
 
-import agh.inzapp.inzynierka.enums.UniNames;
+import agh.inzapp.inzynierka.models.enums.UniNames;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,13 +13,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-import static agh.inzapp.inzynierka.enums.UniNames.*;
+import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 
 @Getter
 @Setter
 @NoArgsConstructor
 
-public class DataFx implements CommonModel {
+public class DataFx implements CommonModelFx {
 	private LongProperty id = new SimpleLongProperty();
 	private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
 	private ObjectProperty<LocalTime> time = new SimpleObjectProperty<>();

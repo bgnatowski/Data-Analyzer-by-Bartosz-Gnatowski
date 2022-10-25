@@ -1,9 +1,8 @@
 package agh.inzapp.inzynierka.strategies;
 
 
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
-import agh.inzapp.inzynierka.models.CommonModel;
-import agh.inzapp.inzynierka.models.DataFx;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import org.springframework.stereotype.Component;
@@ -16,5 +15,5 @@ public interface CSVStrategy {
 			.withQuoteChar('\'')
 			.withIgnoreQuotations(false)
 			.build();
-	List<? extends CommonModel> importCSVFile(String... path) throws ApplicationException;
+	List<? extends CommonModelFx> importCSVFile(String... path) throws ApplicationException;
 }

@@ -1,15 +1,9 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.database.DataManager;
-import agh.inzapp.inzynierka.enums.Analysers;
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.enums.Analysers;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.FilesList;
-import agh.inzapp.inzynierka.models.ListDataFx;
-import agh.inzapp.inzynierka.models.ListHarmoFx;
 import agh.inzapp.inzynierka.services.ImportManager;
-import agh.inzapp.inzynierka.strategies.CSVImportPQ;
-import agh.inzapp.inzynierka.strategies.CSVImportPQHarmonics;
-import agh.inzapp.inzynierka.utils.CSVUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.collections.FXCollections;
@@ -19,17 +13,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.io.File;
 import java.io.IOException;
 
-import static agh.inzapp.inzynierka.enums.DataType.HARMONICS_DATA;
-import static agh.inzapp.inzynierka.enums.DataType.NORMAL_DATA;
-import static agh.inzapp.inzynierka.enums.FXMLNames.MAIN;
-import static agh.inzapp.inzynierka.enums.FXMLNames.TABLE_VIEW;
+import static agh.inzapp.inzynierka.models.enums.DataType.HARMONICS_DATA;
+import static agh.inzapp.inzynierka.models.enums.DataType.NORMAL_DATA;
+import static agh.inzapp.inzynierka.models.enums.FXMLNames.MAIN;
+import static agh.inzapp.inzynierka.models.enums.FXMLNames.TABLE_VIEW;
 
-@Component
+@Controller
 public class ImportMenuPaneController {
 	@FXML
 	private AnchorPane apMain;
@@ -65,7 +59,8 @@ public class ImportMenuPaneController {
 		listViewHarmonics.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
 
 		btnImport.disableProperty().bind(yesNormal.selectedProperty().or(yesHarmonic.selectedProperty())
-				.and((filesList.listNormalProperty().emptyProperty().not().and(yesNormal.selectedProperty().and(noHarmonic.selectedProperty())))
+				.and(
+						(filesList.listNormalProperty().emptyProperty().not().and(yesNormal.selectedProperty().and(noHarmonic.selectedProperty())))
 						.or(filesList.listHarmonicsProperty().emptyProperty().not().and(yesHarmonic.selectedProperty())))
 				.and(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not());
 
@@ -103,27 +98,24 @@ public class ImportMenuPaneController {
 
 	@FXML
 	private void importData() {
+		ImportManager importManager = new ImportManager();
 		switch (comboBoxAnalyzer.getValue()) {
 			case PQbox:
 				if (yesNormal.isSelected() && noHarmonic.isSelected()) {
-					ImportManager.saveNormal(Analysers.PQbox);
+					importManager.saveNormal(Analysers.PQbox);
 				} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
-					ImportManager.saveHarmonics(Analysers.PQbox);
+					importManager.saveHarmonics(Analysers.PQbox);
 				} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
-					ImportManager.saveBoth(Analysers.PQbox);
+					importManager.saveBoth(Analysers.PQbox);
 				}
 				break;
 			case Sonel:
-				//todo sonel import
 				if (yesNormal.isSelected() && noHarmonic.isSelected()) {
-					System.out.println("sonel normal import");
-					ImportManager.saveNormal(Analysers.Sonel);
+					importManager.saveNormal(Analysers.Sonel);
 				} else if (yesHarmonic.isSelected() && noNormal.isSelected()) {
-					ImportManager.saveHarmonics(Analysers.Sonel);
-					System.out.println("sonel harmonics import");
+					importManager.saveHarmonics(Analysers.Sonel);
 				} else if (yesNormal.isSelected() && yesHarmonic.isSelected()) {
-					ImportManager.saveBoth(Analysers.Sonel);
-					System.out.println("sonel all import");
+					importManager.saveBoth(Analysers.Sonel);
 				}
 		}
 		try {

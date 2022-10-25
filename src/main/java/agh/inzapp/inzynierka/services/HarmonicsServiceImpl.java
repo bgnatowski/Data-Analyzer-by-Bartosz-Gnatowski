@@ -3,11 +3,10 @@ package agh.inzapp.inzynierka.services;
 import agh.inzapp.inzynierka.database.mappings.HarmonicsMapping;
 import agh.inzapp.inzynierka.database.mappings.ThdMapping;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
-import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
 import agh.inzapp.inzynierka.database.repositories.*;
-import agh.inzapp.inzynierka.enums.UniNames;
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package agh.inzapp.inzynierka.models;
+package agh.inzapp.inzynierka.models.fxmodels;
 
-import agh.inzapp.inzynierka.enums.UniNames;
+import agh.inzapp.inzynierka.models.enums.UniNames;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -10,15 +10,12 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 
-public class HarmoFx implements CommonModel{
+public class HarmoFx implements CommonModelFx {
 	private LongProperty id = new SimpleLongProperty();
 	private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
 	private ObjectProperty<LocalTime> time = new SimpleObjectProperty<>();

@@ -1,6 +1,6 @@
 package agh.inzapp.inzynierka.database.mappings;
 
-import agh.inzapp.inzynierka.enums.UniNames;
+import agh.inzapp.inzynierka.models.enums.UniNames;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;

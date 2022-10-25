@@ -1,8 +1,7 @@
 package agh.inzapp.inzynierka.services;
 
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
-import agh.inzapp.inzynierka.database.models.DataDb;
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.stereotype.Service;
 
 

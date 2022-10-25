@@ -3,11 +3,11 @@ package agh.inzapp.inzynierka.controllers;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
-import static agh.inzapp.inzynierka.enums.FXMLNames.*;
+import static agh.inzapp.inzynierka.models.enums.FXMLNames.*;
 
-@Component
+@Controller
 public class MenuButtonsController {
 	static final String HOME_FXML = HOME.getPath();
 	static final String IMPORT_MENU_FXML = IMPORT_MENU.getPath();

@@ -1,11 +1,10 @@
 package agh.inzapp.inzynierka.strategies;
 
-import agh.inzapp.inzynierka.models.CommonModel;
-import agh.inzapp.inzynierka.models.DataFx;
-import agh.inzapp.inzynierka.models.PQNormalFx;
-import agh.inzapp.inzynierka.converters.PQParser;
-import agh.inzapp.inzynierka.enums.UniNames;
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.fxmodels.DataFx;
+import agh.inzapp.inzynierka.models.fxmodels.PQNormalFx;
+import agh.inzapp.inzynierka.utils.converters.PQParser;
+import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Stream;

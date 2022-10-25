@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.enums;
+package agh.inzapp.inzynierka.models.enums;
 
 import lombok.Getter;
 import lombok.Setter;

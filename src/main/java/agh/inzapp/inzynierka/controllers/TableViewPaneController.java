@@ -1,8 +1,8 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.enums.UniNames;
-import agh.inzapp.inzynierka.models.DataFx;
-import agh.inzapp.inzynierka.models.HarmoFx;
+import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.models.fxmodels.DataFx;
+import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.models.ListDataFx;
 import agh.inzapp.inzynierka.models.ListHarmoFx;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -24,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-//@Component
+@Controller
 public class TableViewPaneController {
 
 	@FXML

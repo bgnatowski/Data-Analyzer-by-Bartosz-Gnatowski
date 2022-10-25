@@ -1,8 +1,8 @@
-package agh.inzapp.inzynierka.converters;
+package agh.inzapp.inzynierka.utils.converters;
 
 import agh.inzapp.inzynierka.database.models.DataDb;
-import agh.inzapp.inzynierka.enums.UniNames;
-import agh.inzapp.inzynierka.models.DataFx;
+import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import javafx.collections.FXCollections;
 import org.springframework.transaction.annotation.Transactional;
 

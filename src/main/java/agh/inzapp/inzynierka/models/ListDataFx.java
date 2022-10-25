@@ -1,19 +1,21 @@
 package agh.inzapp.inzynierka.models;
 
-import agh.inzapp.inzynierka.converters.DataConverter;
 import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.DataDb;
+import agh.inzapp.inzynierka.models.fxmodels.DataFx;
+import agh.inzapp.inzynierka.utils.converters.DataConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class ListDataFx {
 	private ObservableList<DataFx> dataFxObservableList = FXCollections.observableArrayList();
 	private List<DataFx> dataFxList = new ArrayList<>();
-
 	private static volatile ListDataFx instance;
 
 	private ListDataFx(){

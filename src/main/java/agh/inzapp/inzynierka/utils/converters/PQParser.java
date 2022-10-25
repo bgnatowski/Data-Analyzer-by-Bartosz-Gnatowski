@@ -1,7 +1,7 @@
-package agh.inzapp.inzynierka.converters;
+package agh.inzapp.inzynierka.utils.converters;
 
-import agh.inzapp.inzynierka.enums.UniNames;
-import agh.inzapp.inzynierka.exceptions.ApplicationException;
+import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static agh.inzapp.inzynierka.enums.UniNames.*;
+import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 
 public class PQParser {
 	private static final Map<String, UniNames> mapPQDataNames = new LinkedHashMap<>();

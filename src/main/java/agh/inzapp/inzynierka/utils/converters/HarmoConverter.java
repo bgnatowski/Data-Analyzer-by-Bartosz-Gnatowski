@@ -1,18 +1,12 @@
-package agh.inzapp.inzynierka.converters;
+package agh.inzapp.inzynierka.utils.converters;
 
-import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
-import agh.inzapp.inzynierka.enums.UniNames;
-import agh.inzapp.inzynierka.models.DataFx;
-import agh.inzapp.inzynierka.models.HarmoFx;
+import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import javafx.collections.FXCollections;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import static agh.inzapp.inzynierka.converters.DataConverter.convertFlagPatternToMap;
-import static agh.inzapp.inzynierka.converters.DataConverter.convertFlagsMapToDb;
+import static agh.inzapp.inzynierka.utils.converters.DataConverter.convertFlagPatternToMap;
+import static agh.inzapp.inzynierka.utils.converters.DataConverter.convertFlagsMapToDb;
 
 @Transactional
 public class HarmoConverter {
