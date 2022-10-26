@@ -97,7 +97,9 @@ public class ImportMenuPaneController {
 	@FXML
 	private void importData() {
 		try {
+			System.out.println("importing...");
 			importDataFromAnalyser();
+			System.out.println("imported");
 			switchToTableViewAferImport();
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());

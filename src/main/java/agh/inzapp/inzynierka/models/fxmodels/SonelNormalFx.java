@@ -68,8 +68,8 @@ public class SonelNormalFx extends DataFx{
 		records.put(UniNames.Q_L1_min   ,null);
 		records.put(UniNames.Q_L2_min   ,null);
 		records.put(UniNames.Q_L3_min   ,null);
-		records.put(UniNames.Q_max,null);
-		records.put(UniNames.Q_min,null);
+		records.put(UniNames.Q_total_max,null);
+		records.put(UniNames.Q_total_min,null);
 		records.put(UniNames.S_L1_avg    ,null);
 		records.put(UniNames.S_L2_avg    ,null);
 		records.put(UniNames.S_L3_avg    ,null);

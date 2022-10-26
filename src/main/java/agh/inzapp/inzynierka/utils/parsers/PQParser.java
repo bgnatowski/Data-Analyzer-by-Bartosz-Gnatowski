@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -17,6 +18,7 @@ public class PQParser {
 	private static final Map<String, UniNames> mapDataNames = new LinkedHashMap<>();
 	private static final Map<String, UniNames> mapHarmonicNames = new LinkedHashMap<>();
 	private static final List<String> dateFormatPatterns = new ArrayList<>();
+	public static final String DECIMAL_SEPARATOR = ",";
 
 	static {
 		dateFormatPatterns.add("d.MM.yyyy");
@@ -247,6 +249,7 @@ public class PQParser {
 		mapHarmonicNames.put("H50_UL3_[%]", PQ_H50_UL3);
 	}
 
+	// common
 	public static List<UniNames> parseNames(List<String> names) {
 		List<UniNames> uniNamesList = new ArrayList<>();
 		names.forEach(name -> {
@@ -257,6 +260,7 @@ public class PQParser {
 		return uniNamesList;
 	}
 
+	// common
 	public static List<UniNames> parseHarmonicsNames(List<String> names) {
 		List<UniNames> uniNamesList = new ArrayList<>();
 		names.forEach(name -> {
@@ -267,31 +271,50 @@ public class PQParser {
 		return uniNamesList;
 	}
 
-
+	// common
 	public static LocalDate parseDate(String stringDate) throws ApplicationException {
 		AtomicReference<LocalDate> parsedDate = new AtomicReference<>();
 		final boolean isMatched = dateFormatPatterns.stream()
 				.anyMatch(pattern -> {
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
-					LocalDate parse = LocalDate.parse(stringDate, formatter);
-					parsedDate.set(parse);
-					return true;
+					try {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+						LocalDate parse = LocalDate.parse(stringDate, formatter);
+						parsedDate.set(parse);
+						return true;
+					} catch (DateTimeParseException e) {
+						return false;
+					}
 				});
 		if (isMatched) return parsedDate.get();
 		else throw new ApplicationException("error.parseDate");
 	}
 
+	// common
 	public static LocalTime parseTime(String time) {
 		return LocalTime.parse(time);
 	}
 
+	// common
 	public static String parseFlag(String flag) {
 		return flag.equals(" ") ? "o" : "x";
 	}
 
-	public static double parseDouble(String record, UniNames unitaryName) throws ParseException {
+	// common
+	public static double parseDouble(String record) throws ParseException {
 		double d;
 		if (record.contains(",")) {
+			NumberFormat format = NumberFormat.getInstance(Locale.FRENCH);
+			Number number = format.parse(record);
+			d = number.doubleValue();
+		} else {
+			d = Double.parseDouble(record);
+		}
+		return d;
+	}
+
+	public static double parseDouble(String record, UniNames unitaryName) throws ParseException {
+		double d;
+		if (record.contains(DECIMAL_SEPARATOR)) {
 			NumberFormat format = NumberFormat.getInstance(Locale.FRENCH);
 			Number number = format.parse(record);
 			d = number.doubleValue();
@@ -303,18 +326,6 @@ public class PQParser {
 			case P_total, P_abs, P_max, P_min, S_total, S_max, S_min, Q_total -> d = d / 1000;
 		}
 
-		return d;
-	}
-
-	public static double parseDouble(String record) throws ParseException {
-		double d;
-		if (record.contains(",")) {
-			NumberFormat format = NumberFormat.getInstance(Locale.FRENCH);
-			Number number = format.parse(record);
-			d = number.doubleValue();
-		} else {
-			d = Double.parseDouble(record);
-		}
 		return d;
 	}
 }

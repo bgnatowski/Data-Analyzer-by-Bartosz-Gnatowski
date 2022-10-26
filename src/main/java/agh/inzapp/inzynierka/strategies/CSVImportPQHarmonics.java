@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 
 public class CSVImportPQHarmonics implements CSVStrategy {
 	private List<HarmoFx> dataModels;
+
 	@Override
 	public List<? extends CommonModelFx> importCSVFile(String... path) throws ApplicationException {
 		dataModels = new ArrayList<>();
@@ -48,7 +49,7 @@ public class CSVImportPQHarmonics implements CSVStrategy {
 				List<String> allRecords = Arrays.asList(oneLineValues);
 				PQHarmonicsFx model = new PQHarmonicsFx();
 
-				if (allRecords.contains("")){ //bez tego wczytywało +1 wartość
+				if (allRecords.contains("")) { //bez tego wczytywało +1 wartość
 					break;
 				}
 				if (!isFirstLineRead) {
@@ -68,53 +69,49 @@ public class CSVImportPQHarmonics implements CSVStrategy {
 	}
 
 	private void setDataInModel(List<String> recordsList, PQHarmonicsFx model) {
-		Stream.of(UniNames.values()).forEach(unitaryName ->{
-			Integer columnID = null;
-			if (model.getColumnHarmonicNames().contains(unitaryName)){
-				columnID = (model.getColumnHarmonicNames().indexOf(unitaryName));
+		Map<UniNames, Double> harmonicsMap = model.getHarmonics();
+		Map<UniNames, Double> thdMap = model.getThd();
+
+		Stream.of(UniNames.values()).forEach(unitaryName -> {
+			Long columnID = null;
+			if (model.getColumnHarmonicNames().contains(unitaryName)) {
+				columnID = Long.valueOf((model.getColumnHarmonicNames().indexOf(unitaryName)));
 			}
-			if(columnID != null){
-				switch (unitaryName){
+			if (columnID != null) {
+				final String stringRecord = recordsList.get(Math.toIntExact(columnID));
+				switch (unitaryName) {
 					case Date -> {
 						try {
-							model.setDate(PQParser.parseDate(recordsList.get(columnID)));
+							model.setDate(PQParser.parseDate(stringRecord));
 						} catch (ApplicationException e) {
 							DialogUtils.errorDialog(e.getMessage());
 						}
 					}
-					case Time -> model.setTime(PQParser.parseTime(recordsList.get(columnID)));
+					case Time -> model.setTime(PQParser.parseTime(stringRecord));
 					case Flag -> {
 						Map<UniNames, String> flags = model.getFlags();
-						flags.put(unitaryName, PQParser.parseFlag(recordsList.get(columnID)));
+						flags.put(unitaryName, PQParser.parseFlag(stringRecord));
 						model.setFlags(FXCollections.observableMap(flags));
 					}
-					case PQ_THD_12, PQ_THD_23, PQ_THD_31,PQ_THD_L1, PQ_THD_L2, PQ_THD_L3 -> {
-						if(columnID != null){
-							Map<UniNames, Double> thdMap = model.getThd();
-							try {
-								thdMap.put(unitaryName, PQParser.parseDouble(recordsList.get(columnID)));
-								model.setThd(FXCollections.observableMap(thdMap));
-							} catch (ParseException e) {
-								DialogUtils.errorDialog(e.getMessage());
-							}
+					case PQ_THD_12, PQ_THD_23, PQ_THD_31, PQ_THD_L1, PQ_THD_L2, PQ_THD_L3 -> {
+						try {
+							thdMap.put(unitaryName, PQParser.parseDouble(stringRecord));
+						} catch (ParseException e) {
+							DialogUtils.errorDialog(e.getMessage());
 						}
-
 					}
 					default -> {
-						if(columnID != null){ //sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
-							Map<UniNames, Double> harmonicsMap = model.getHarmonics();
-							try {
-								harmonicsMap.put(unitaryName, PQParser.parseDouble(recordsList.get(columnID)));
-								model.setHarmonics(FXCollections.observableMap(harmonicsMap));
-							} catch (ParseException e) {
-								DialogUtils.errorDialog(e.getMessage());
-							}
+						//sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
+						try {
+							harmonicsMap.put(unitaryName, PQParser.parseDouble(stringRecord));
+						} catch (ParseException e) {
+							DialogUtils.errorDialog(e.getMessage());
 						}
 					}
 				}
-
 			}
-
 		});
+		model.setThd(FXCollections.observableMap(thdMap));
+		model.setHarmonics(FXCollections.observableMap(harmonicsMap));
 	}
 }

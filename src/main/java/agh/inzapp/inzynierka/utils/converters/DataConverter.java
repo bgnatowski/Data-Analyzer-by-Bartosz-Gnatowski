@@ -53,10 +53,10 @@ public class DataConverter {
 		if (flagPattern.contains("|")){
 			final String[] split = flagPattern.split("\\|");
 			map.put(UniNames.Flag_E, split[0]);
-			map.put(UniNames.Flag_P, split[2]);
-			map.put(UniNames.Flag_G, split[4]);
-			map.put(UniNames.Flag_T, split[6]);
-			map.put(UniNames.Flag_A, split[8]);
+			map.put(UniNames.Flag_P, split[1]);
+			map.put(UniNames.Flag_G, split[2]);
+			map.put(UniNames.Flag_T, split[3]);
+			map.put(UniNames.Flag_A, split[4]);
 		} else {
 			map.put(UniNames.Flag, flagPattern);
 		}
