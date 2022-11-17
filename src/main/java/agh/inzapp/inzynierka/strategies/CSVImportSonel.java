@@ -24,6 +24,8 @@ import java.util.stream.Stream;
 
 //todo import sonel
 public class CSVImportSonel implements CSVStrategy {
+	private static final int BLANK_COLUMNS = 2;
+	private static final int SKIP_INFO_LINES = 11;
 	// jakby parser dać jako instancje a nie korzystac jako statyczny
 	private List<DataFx> dataModels;
 
@@ -37,7 +39,7 @@ public class CSVImportSonel implements CSVStrategy {
 	private void readFile(String path) throws ApplicationException {
 		try (Reader reader = new FileReader(path);
 			 CSVReader csvReader = new CSVReaderBuilder(reader)
-					 .withSkipLines(11)
+					 .withSkipLines(SKIP_INFO_LINES)
 					 .withCSVParser(parser)
 					 .build()
 		) {
@@ -50,9 +52,6 @@ public class CSVImportSonel implements CSVStrategy {
 				List<String> allRecords = Arrays.asList(oneLineValues);
 				SonelNormalFx model = new SonelNormalFx();
 
-//				if (allRecords.contains("")){ //bez tego wczytywało +1 wartość
-//					break;
-//				}
 				if (!isFirstLineRead) {
 					columnsNames.addAll(SonelParser.parseNames(allRecords));
 					isFirstLineRead = true;
@@ -74,7 +73,7 @@ public class CSVImportSonel implements CSVStrategy {
 		Stream.of(UniNames.values()).forEach(unitaryName -> {
 			Long columnID = null;
 			if (model.getColumnNames().contains(unitaryName)) {
-				columnID = Long.valueOf(model.getColumnNames().indexOf(unitaryName)) + 2;
+				columnID = Long.valueOf(model.getColumnNames().indexOf(unitaryName)) + BLANK_COLUMNS;
 			}
 			if (columnID != null) { //sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
 				String stringRecord = recordsList.get(Math.toIntExact(columnID)).trim();

@@ -13,6 +13,7 @@ public class MenuButtonsController {
 	static final String IMPORT_MENU_FXML = IMPORT_MENU.getPath();
 	static final String INFORMATION_FXML = INFORMATION.getPath();
 	static final String TABLE_VIEW_FXML = TABLE_VIEW.getPath();
+	static final String CHART_VIEW_FXML = CHART_VIEW.getPath();;
 	private static MainAppPaneController mainAppPaneController;
 	@FXML
 	private Button exitButton, homeButton, infoButton, loadButton;
@@ -34,6 +35,7 @@ public class MenuButtonsController {
 	}
 	@FXML
 	private void figuresOnAction() {
+		mainAppPaneController.setCenter(CHART_VIEW_FXML);
 	}
 	@FXML
 	private void exitAppOnAction() {

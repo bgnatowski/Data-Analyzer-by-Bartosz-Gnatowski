@@ -51,6 +51,9 @@ public class NormalServiceImpl implements CrudService {
 		return all;
 	}
 
-
+	@Override
+	public void clearAll() {
+		repository.deleteAll();
+	}
 
 }

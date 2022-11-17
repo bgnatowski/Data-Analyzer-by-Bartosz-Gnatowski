@@ -1,5 +1,6 @@
 package agh.inzapp.inzynierka;
 
+import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.models.enums.FXMLNames;
 import javafx.application.Application;
@@ -15,7 +16,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import java.io.IOException;
 
 @SpringBootApplication
-
 public class Main extends Application {
 	private ConfigurableApplicationContext applicationContext;
 	private Parent root;
@@ -34,17 +34,16 @@ public class Main extends Application {
 		try {
 			root = loader.load();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.init");
 		}
 	}
-
 	@Override
 	public void start(Stage stage) {
-		stage.setScene(new Scene(root, 900, 600));
+		stage.setScene(new Scene(root, 1280, 720));
 		stage.setTitle(applicationTitle);
+		stage.setMaximized(true);
 		stage.show();
 	}
-
 	@Override
 	public void stop() {
 		applicationContext.close();

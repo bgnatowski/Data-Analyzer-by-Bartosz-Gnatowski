@@ -24,7 +24,6 @@ import java.util.stream.Stream;
 
 public class CSVImportPQHarmonics implements CSVStrategy {
 	private List<HarmoFx> dataModels;
-
 	@Override
 	public List<? extends CommonModelFx> importCSVFile(String... path) throws ApplicationException {
 		dataModels = new ArrayList<>();

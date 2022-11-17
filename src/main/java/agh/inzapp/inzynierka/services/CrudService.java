@@ -12,5 +12,7 @@ public interface CrudService {
 	<T extends CommonDbModel> T add(T dataModel) throws ApplicationException;
 	List<? extends CommonDbModel> getAll();
 
+	void clearAll();
+
 
 }

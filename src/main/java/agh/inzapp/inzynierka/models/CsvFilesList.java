@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FilesList {
+public class CsvFilesList {
 	private ListProperty<File> listNormal = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private ListProperty<File> listHarmonics = new SimpleListProperty<>(FXCollections.observableArrayList());
 	public void getFiles(DataType dataType) {
@@ -40,6 +40,7 @@ public class FilesList {
 	}
 
 	public void saveNormal(Analysers analyser) throws ApplicationException {
+		DataManager.clearNormal();
 		switch (analyser){
 			case PQbox -> DataManager.saveAll(importNormalDataList(new CSVImportPQ()));
 			case Sonel -> DataManager.saveAll(importNormalDataList(new CSVImportSonel()));
@@ -47,6 +48,7 @@ public class FilesList {
 		ListDataFx.getInstance().init();
 	}
 	public void saveHarmonics(Analysers analyser) throws ApplicationException {
+		DataManager.clearHarmo();
 		switch (analyser){
 			case PQbox -> DataManager.saveAll(importHarmonicsDataList(new CSVImportPQHarmonics()));
 			case Sonel -> DataManager.saveAll(importHarmonicsDataList(new CSVImportSonelHarmonics()));
@@ -55,6 +57,8 @@ public class FilesList {
 	}
 
 	public void saveBoth(Analysers analyser) throws ApplicationException {
+		DataManager.clearNormal();
+		DataManager.clearNormal();
 		switch (analyser){
 			case PQbox ->{
 				DataManager.saveAll(importNormalDataList(new CSVImportPQ()));

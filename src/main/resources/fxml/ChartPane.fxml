@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.ChartViewController">
+   <children>
+      <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <content>
+          <AnchorPane>
+               <children>
+                  <SplitPane dividerPositions="0.9" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <items>
+                        <AnchorPane fx:id="apOfChart" maxWidth="1.7976931348623157E308" />
+                        <AnchorPane maxWidth="-Infinity">
+                           <children>
+                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <AnchorPane>
+                                       <children>
+                                          <TitledPane text="Oś X" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <content>
+                                                <AnchorPane>
+                                                   <children>
+                                                      <GridPane hgap="5.0" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columnConstraints>
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints />
+                                                          <ColumnConstraints minWidth="-Infinity" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="OD" />
+                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="DO" GridPane.columnIndex="1" />
+                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Kolor" GridPane.columnIndex="2" />
+                                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#xAddOnAction" text="Dodaj" GridPane.columnIndex="3" GridPane.rowIndex="1" fx:id="xAddButton" />
+                                                            <ColorPicker prefWidth="40.0" GridPane.columnIndex="2" GridPane.rowIndex="1" fx:id="xColor" />
+                                                            <DatePicker GridPane.rowIndex="1" fx:id="xDateFrom" />
+                                                            <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="xDateTo" />
+                                                            <Spinner GridPane.rowIndex="2" fx:id="xTimeFrom" />
+                                                            <Spinner GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="xTimeTo" />
+                                                         </children>
+                                                      </GridPane>
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </TitledPane>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane>
+                                       <children>
+                                          <TitledPane prefHeight="200.0" text="Oś Y" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <content>
+                                                <AnchorPane>
+                                                   <children>
+                                                      <GridPane fx:id="yGrid" hgap="5.0" layoutX="1.0" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columnConstraints>
+                                                            <ColumnConstraints hgrow="SOMETIMES" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Wartość" GridPane.columnIndex="1" />
+                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Rodzaj lini" GridPane.columnIndex="2" />
+                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Kolor" GridPane.columnIndex="3" />
+                                                            <Button fx:id="yAddValueButton" mnemonicParsing="false" onAction="#yAddValueOnAction" text="+" GridPane.rowIndex="2" />
+                                                            <ComboBox fx:id="yValue" minWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                            <ComboBox fx:id="yLineStyle" minWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                            <ColorPicker fx:id="yColor" prefWidth="40.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                            <Button fx:id="yAddButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yAddOnAction" text="Dodaj" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                         </children>
+                                                      </GridPane>
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </TitledPane>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <HBox alignment="BOTTOM_RIGHT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Button fx:id="addToRaportButton" mnemonicParsing="false" onAction="#addChartToRaportOnAction" text="Dodaj do raportu" HBox.hgrow="ALWAYS" />
+                                                <Button fx:id="saveAsChartButton" mnemonicParsing="false" onAction="#saveAsChartOnAction" text="Zapisz jako..." />
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

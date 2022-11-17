@@ -60,4 +60,9 @@ public class HarmonicsServiceImpl implements CrudService{
 
 		return all;
 	}
+
+	@Override
+	public void clearAll() {
+		repository.deleteAll();
+	}
 }

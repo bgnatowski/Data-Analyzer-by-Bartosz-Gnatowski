@@ -39,7 +39,6 @@ public class TableViewPaneController {
 
 	@FXML
 	public void initialize(){
-		//todo ogarnać zeby sie robilo przy kazdym wlaczeniu tableview
 		listDataFx = ListDataFx.getInstance();
 		listHarmoFx = ListHarmoFx.getInstance();
 		bindings();
@@ -54,7 +53,6 @@ public class TableViewPaneController {
 			initTableHarmonics();
 		}
 	}
-
 	private void initTableNormal() {
 		if (!listDataFx.getDataFxObservableList().isEmpty()){
 			normalTab.setDisable(false);
@@ -66,7 +64,6 @@ public class TableViewPaneController {
 			normalTableView.getItems().addAll(listDataFx.getDataFxObservableList());
 		}
 	}
-
 	private static List<TableColumn<DataFx, ?>> getTableColumnsNormal(ObservableList<UniNames> columnNames) {
 		List<TableColumn<DataFx, ?>> tableColumnList = new ArrayList<>();
 
@@ -109,7 +106,6 @@ public class TableViewPaneController {
 		});
 		return tableColumnList;
 	}
-
 	private void initTableHarmonics() {
 		if (!listHarmoFx.getHarmoFxObservableList().isEmpty()){
 			harmonicsTab.setDisable(false);
@@ -122,7 +118,6 @@ public class TableViewPaneController {
 			harmonicsTableView.getColumns().addAll(tableColumnList);
 			harmonicsTableView.getItems().addAll(listHarmoFx.getHarmoFxObservableList());
 		}
-
 	}
 
 	private static List<TableColumn<HarmoFx, ?>> getTableColumnsHarmonics(ObservableList<UniNames> columnNames) {
@@ -149,7 +144,8 @@ public class TableViewPaneController {
 					tableColumn = new TableColumn<HarmoFx, LocalTime>(uniName.toString());
 					tableColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
 				}
-				case PQ_THD_12, PQ_THD_23, PQ_THD_31,PQ_THD_L1, PQ_THD_L2, PQ_THD_L3 -> {
+				case PQ_THD_12, PQ_THD_23, PQ_THD_31,PQ_THD_L1, PQ_THD_L2, PQ_THD_L3,
+						SONEL_THD_L1, SONEL_THD_L2, SONEL_THD_L3 -> {
 					tableColumn = new TableColumn<HarmoFx, Double>(uniName + " " + uniName.getUnit());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<HarmoFx, Double>, ObservableValue>) dataFxCellDataFeatures ->

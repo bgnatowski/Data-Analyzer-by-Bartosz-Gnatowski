@@ -30,7 +30,7 @@ public class SonelParser {
 	}
 
 	static {
-		mapDataNames.put("Date      ", Date);
+		mapDataNames.put("Date", Date);
 		mapDataNames.put("Time (UTC±0)", Time);
 		mapDataNames.put("Time (UTC+1)", Time);
 		mapDataNames.put("Time (UTC+2)", Time);
@@ -99,24 +99,24 @@ public class SonelParser {
 		mapDataNames.put("U N-PE min [V]", U_NPE_min);
 		mapDataNames.put("U N-PE max [V]", U_NPE_max);
 		mapDataNames.put("U N-PE avg [V]", U_NPE_avg);
-		mapDataNames.put("U0 Σ avg [V]", U0_avg);
-		mapDataNames.put("U0 Σ max [V]", U0_max);
-		mapDataNames.put("U0 Σ min [V]", U0_min);
-		mapDataNames.put("U1 Σ avg [V]", U1_avg);
-		mapDataNames.put("U1 Σ max [V]", U1_max);
-		mapDataNames.put("U1 Σ min [V]", U1_min);
-		mapDataNames.put("U2 Σ avg [V]", U2_avg);
-		mapDataNames.put("U2 Σ max [V]", U2_max);
-		mapDataNames.put("U2 Σ min [V]", U2_min);
-		mapDataNames.put("I0 Σ avg [A]", I0_avg);
-		mapDataNames.put("I0 Σ max [A]", I0_max);
-		mapDataNames.put("I0 Σ min [A]", I0_min);
-		mapDataNames.put("I1 Σ avg [A]", I1_avg);
-		mapDataNames.put("I1 Σ max [A]", I1_max);
-		mapDataNames.put("I1 Σ min [A]", I1_min);
-		mapDataNames.put("I2 Σ avg [A]", I2_avg);
+		mapDataNames.put("U0 Σ avg [V]", U0_avg_total);
+		mapDataNames.put("U0 Σ max [V]", U0_max_total);
+		mapDataNames.put("U0 Σ min [V]", U0_min_total);
+		mapDataNames.put("U1 Σ avg [V]", U1_avg_total);
+		mapDataNames.put("U1 Σ max [V]", U1_max_total);
+		mapDataNames.put("U1 Σ min [V]", U1_min_total);
+		mapDataNames.put("U2 Σ avg [V]", U2_avg_total);
+		mapDataNames.put("U2 Σ max [V]", U2_max_total);
+		mapDataNames.put("U2 Σ min [V]", U2_min_total);
+		mapDataNames.put("I0 Σ avg [A]", I0_avg_total);
+		mapDataNames.put("I0 Σ max [A]", I0_max_total);
+		mapDataNames.put("I0 Σ min [A]", I0_min_total);
+		mapDataNames.put("I1 Σ avg [A]", I1_avg_total);
+		mapDataNames.put("I1 Σ max [A]", I1_max_total);
+		mapDataNames.put("I1 Σ min [A]", I1_min_total);
+		mapDataNames.put("I2 Σ avg [A]", I2_avg_total);
 		mapDataNames.put("I2 Σ max [A]", I2_max);
-		mapDataNames.put("I2 Σ min [A]", I2_min);
+		mapDataNames.put("I2 Σ min [A]", I2_min_total);
 		mapDataNames.put("PF L1 avg [---]", PF_L1_avg);
 		mapDataNames.put("PF L2 avg [---]", PF_L2_avg);
 		mapDataNames.put("PF L3 avg [---]", PF_L3_avg);
@@ -164,12 +164,36 @@ public class SonelParser {
 	}
 	static {
 		mapHarmonicNames.put("Date", Date);
-		mapHarmonicNames.put("Time", Time);
-		mapHarmonicNames.put("Flag_P", Flag_P);
-		mapHarmonicNames.put("Flag_G", Flag_G);
-		mapHarmonicNames.put("Flag_E", Flag_E);
-		mapHarmonicNames.put("Flag_T", Flag_T);
-		mapHarmonicNames.put("Flag_A", Flag_A);
+		mapHarmonicNames.put("Time (UTC±0)", Time);
+		mapHarmonicNames.put("Time (UTC+1)", Time);
+		mapHarmonicNames.put("Time (UTC+2)", Time);
+		mapHarmonicNames.put("Time (UTC+3)", Time);
+		mapHarmonicNames.put("Time (UTC+4)", Time);
+		mapHarmonicNames.put("Time (UTC+5)", Time);
+		mapHarmonicNames.put("Time (UTC+6)", Time);
+		mapHarmonicNames.put("Time (UTC+7)", Time);
+		mapHarmonicNames.put("Time (UTC+8)", Time);
+		mapHarmonicNames.put("Time (UTC+9)", Time);
+		mapHarmonicNames.put("Time (UTC+10)", Time);
+		mapHarmonicNames.put("Time (UTC+11)", Time);
+		mapHarmonicNames.put("Time (UTC+12)", Time);
+		mapHarmonicNames.put("Time (UTC+13)", Time);
+		mapHarmonicNames.put("Time (UTC-1)", Time);
+		mapHarmonicNames.put("Time (UTC-2)", Time);
+		mapHarmonicNames.put("Time (UTC-3)", Time);
+		mapHarmonicNames.put("Time (UTC-4)", Time);
+		mapHarmonicNames.put("Time (UTC-5)", Time);
+		mapHarmonicNames.put("Time (UTC-6)", Time);
+		mapHarmonicNames.put("Time (UTC-7)", Time);
+		mapHarmonicNames.put("Time (UTC-8)", Time);
+		mapHarmonicNames.put("Time (UTC-9)", Time);
+		mapHarmonicNames.put("Time (UTC-10)", Time);
+		mapHarmonicNames.put("Time (UTC-11)", Time);
+		mapHarmonicNames.put("P", Flag_P);
+		mapHarmonicNames.put("G", Flag_G);
+		mapHarmonicNames.put("E", Flag_E);
+		mapHarmonicNames.put("T", Flag_T);
+		mapHarmonicNames.put("A", Flag_A);
 		mapHarmonicNames.put("THD U L1 avg [%]", SONEL_THD_L1);
 		mapHarmonicNames.put("THD U L2 avg [%]", SONEL_THD_L2);
 		mapHarmonicNames.put("THD U L3 avg [%]", SONEL_THD_L3);
@@ -328,8 +352,8 @@ public class SonelParser {
 	public static List<UniNames> parseNames(List<String> names) {
 		List<UniNames> uniNamesList = new ArrayList<>();
 		names.forEach(name -> {
-			if (mapDataNames.containsKey(name)) {
-				uniNamesList.add(mapDataNames.get(name));
+			if (mapDataNames.containsKey(name.trim())) {
+				uniNamesList.add(mapDataNames.get(name.trim()));
 			}
 		});
 		return uniNamesList;
@@ -338,14 +362,13 @@ public class SonelParser {
 	public static List<UniNames> parseHarmonicsNames(List<String> names) {
 		List<UniNames> uniNamesList = new ArrayList<>();
 		names.forEach(name -> {
-			if (mapHarmonicNames.containsKey(name)) {
-				uniNamesList.add(mapHarmonicNames.get(name));
+			if (mapHarmonicNames.containsKey(name.trim())) {
+				uniNamesList.add(mapHarmonicNames.get(name.trim()));
 			}
 		});
 		return uniNamesList;
 	}
 
-	//todo do przerobienia bo nie działa jak nie jest pierwsze jendak
 	public static LocalDate parseDate(String stringDate) throws ApplicationException {
 		AtomicReference<LocalDate> parsedDate = new AtomicReference<>();
 		final boolean isMatched = dateFormatPatterns.stream()
@@ -368,7 +391,7 @@ public class SonelParser {
 	}
 
 	public static String parseFlag(String flag) {
-		return flag.equals("") ? "o" : "x";
+		return flag.equals("   ") ? "o" : "x";
 	}
 
 	public static double parseDouble(String record) throws ParseException {

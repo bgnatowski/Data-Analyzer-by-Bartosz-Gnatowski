@@ -53,4 +53,12 @@ public class DataManager {
 		return null;
 	}
 
+	public static void clearNormal(){
+		dataService.clearAll();
+	}
+
+	public static void clearHarmo(){
+		harmonicsService.clearAll();
+	}
+
 }

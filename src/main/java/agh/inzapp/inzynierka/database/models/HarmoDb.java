@@ -39,7 +39,6 @@ public class HarmoDb implements CommonDbModel{
 	@MapKeyEnumerated(EnumType.STRING)
 	@Column(name = "harmonics_value")
 	@CollectionTable(name = "harmonics_mapping", joinColumns = @JoinColumn(name = "harmonics_id", referencedColumnName = "id"))
-//	@ToString.Exclude
 	private Map<UniNames, Double> harmonics = new LinkedHashMap<>();
 
 	@ElementCollection
@@ -47,7 +46,6 @@ public class HarmoDb implements CommonDbModel{
 	@MapKeyEnumerated(EnumType.STRING)
 	@Column(name = "thd_value")
 	@CollectionTable(name = "thd_mapping", joinColumns = @JoinColumn(name = "thd_id", referencedColumnName = "id"))
-//	@ToString.Exclude
 	private Map<UniNames, Double> thd = new LinkedHashMap<>();
 
 	@ElementCollection(targetClass = UniNames.class, fetch = FetchType.EAGER)

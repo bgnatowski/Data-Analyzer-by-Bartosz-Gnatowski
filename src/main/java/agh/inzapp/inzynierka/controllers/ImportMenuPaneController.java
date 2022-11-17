@@ -2,7 +2,7 @@ package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
-import agh.inzapp.inzynierka.models.FilesList;
+import agh.inzapp.inzynierka.models.CsvFilesList;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.collections.FXCollections;
@@ -38,17 +38,17 @@ public class ImportMenuPaneController {
 	private TitledPane titledPaneNormal, titledPaneHarmonics;
 	@FXML
 	private Label labelNormal, labelHarmonics;
-	private FilesList filesList;
+	private CsvFilesList filesList;
 
 	public void initialize() {
-		filesList = new FilesList();
+		filesList = new CsvFilesList();
 		bindings();
 	}
 
 	private void bindings() {
 		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
 		titledPaneNormal.setExpanded(true);
-		titledPaneHarmonics.setExpanded(false);
+		titledPaneHarmonics.setExpanded(true);
 
 		labelNormal.disableProperty().bindBidirectional(noNormal.selectedProperty());
 		btnNormalSelect.disableProperty().bindBidirectional(noNormal.selectedProperty());
@@ -97,9 +97,7 @@ public class ImportMenuPaneController {
 	@FXML
 	private void importData() {
 		try {
-			System.out.println("importing...");
 			importDataFromAnalyser();
-			System.out.println("imported");
 			switchToTableViewAferImport();
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());

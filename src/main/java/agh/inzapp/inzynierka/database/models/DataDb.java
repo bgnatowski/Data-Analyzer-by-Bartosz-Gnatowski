@@ -40,7 +40,6 @@ public class DataDb implements CommonDbModel{
 	@MapKeyEnumerated(EnumType.STRING)
 	@Column(name = "record_value")
 	@CollectionTable(name = "records_mapping", joinColumns = @JoinColumn(name = "records_id", referencedColumnName = "id"))
-//	@ToString.Exclude
 	private Map<UniNames, Double> records = new LinkedHashMap<>();
 
 	@ElementCollection(targetClass = UniNames.class, fetch = FetchType.EAGER)
