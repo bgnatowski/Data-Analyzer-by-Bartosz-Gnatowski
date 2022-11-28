@@ -16,6 +16,7 @@ public class MainAppPaneController {
 	@FXML
 	private BorderPane borderPane;
 
+	@FXML
 	public void initialize(){
 		menuButtonsController.setMainController(this);
 		setCenter(HOME.getPath());
@@ -37,5 +38,6 @@ public class MainAppPaneController {
 			DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.fxmlLoad");
 		}
 	}
+
 
 }

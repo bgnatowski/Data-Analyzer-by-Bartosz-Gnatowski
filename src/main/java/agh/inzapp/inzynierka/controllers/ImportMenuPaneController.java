@@ -19,8 +19,7 @@ import java.io.IOException;
 
 import static agh.inzapp.inzynierka.models.enums.DataType.HARMONICS_DATA;
 import static agh.inzapp.inzynierka.models.enums.DataType.NORMAL_DATA;
-import static agh.inzapp.inzynierka.models.enums.FXMLNames.MAIN;
-import static agh.inzapp.inzynierka.models.enums.FXMLNames.TABLE_VIEW;
+import static agh.inzapp.inzynierka.models.enums.FXMLNames.*;
 
 @Controller
 public class ImportMenuPaneController {
@@ -124,6 +123,7 @@ public class ImportMenuPaneController {
 
 			MainAppPaneController controller = loader.getController();
 			controller.setCenter(TABLE_VIEW.getPath());
+			MenuButtonsController.setToggleButtonProperty(false);
 		} catch (IOException e) {
 			throw new ApplicationException("error.switchTableView");
 		}

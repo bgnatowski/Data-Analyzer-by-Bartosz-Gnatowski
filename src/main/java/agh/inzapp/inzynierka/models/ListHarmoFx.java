@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,17 @@ public class ListHarmoFx {
 			});
 			harmoFxObservableList.setAll(harmoFxList);
 		}
+	}
+	public boolean hasRecordOfDate(LocalDateTime testedLocalDateTime){
+		if(!harmoFxList.isEmpty()) {
+//			System.out.println("harmo:"+testedLocalDateTime.toLocalDate() + " " + testedLocalDateTime.toLocalTime());
+			final boolean b = harmoFxList.stream().anyMatch(record ->
+					(record.getDate().isEqual(testedLocalDateTime.toLocalDate())) && (record.getTime().getHour() == testedLocalDateTime.toLocalTime().getHour())
+							&& record.getTime().getMinute() == testedLocalDateTime.toLocalTime().getMinute());
+//			System.out.println(b);
+			return b;
+		}
+		return false;
 	}
 
 	public ObservableList<HarmoFx> getHarmoFxObservableList() {

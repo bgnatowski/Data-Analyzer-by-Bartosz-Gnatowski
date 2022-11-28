@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface RecordsMappingRepository extends JpaRepository<RecordsMapping, RecordsMappingId> {
+
 }

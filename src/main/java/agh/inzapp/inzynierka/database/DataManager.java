@@ -14,6 +14,8 @@ import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 @Component
@@ -59,6 +61,13 @@ public class DataManager {
 
 	public static void clearHarmo(){
 		harmonicsService.clearAll();
+	}
+
+	public static List<? extends CommonDbModel> findAllNormalByDateBetweenAndTimeBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime){
+		return dataService.findAllByDateBetweenAndTimeBetween(startDate, endDate, startTime, endTime);
+	}
+	public static List<? extends CommonDbModel> findAllHarmoByDateBetweenAndTimeBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime){
+		return harmonicsService.findAllByDateBetweenAndTimeBetween(startDate, endDate, startTime, endTime);
 	}
 
 }

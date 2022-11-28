@@ -35,7 +35,7 @@ public class DataDb implements CommonDbModel{
 	@Column(name = "flags")
 	private String flags;
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@MapKeyColumn(name = "uni_name")
 	@MapKeyEnumerated(EnumType.STRING)
 	@Column(name = "record_value")
@@ -47,7 +47,6 @@ public class DataDb implements CommonDbModel{
 	@Column(name = "columnName", nullable = false)
 	@Enumerated(EnumType.STRING)
 	private List<UniNames> columnNames;
-
 }
 
 

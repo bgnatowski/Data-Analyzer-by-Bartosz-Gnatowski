@@ -1,6 +1,8 @@
 package agh.inzapp.inzynierka.controllers;
 
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import org.springframework.stereotype.Controller;
@@ -15,8 +17,10 @@ public class MenuButtonsController {
 	static final String TABLE_VIEW_FXML = TABLE_VIEW.getPath();
 	static final String CHART_VIEW_FXML = CHART_VIEW.getPath();;
 	private static MainAppPaneController mainAppPaneController;
+
+	private static BooleanProperty toggleButtonProperty = new SimpleBooleanProperty(true);
 	@FXML
-	private Button exitButton, homeButton, infoButton, loadButton;
+	private Button exitButton, homeButton, infoButton, loadButton, tableViewButton, chartViewButton;
 	@FXML
 	private void goHomeOnAction() {
 		mainAppPaneController.setCenter(HOME_FXML);
@@ -46,4 +50,13 @@ public class MenuButtonsController {
 	void setMainController(MainAppPaneController mainAppPaneController) {
 		MenuButtonsController.mainAppPaneController = mainAppPaneController;
 	}
+	@FXML
+	public void initialize(){
+		tableViewButton.disableProperty().bind(toggleButtonProperty);
+		chartViewButton.disableProperty().bind(toggleButtonProperty);
+	}
+	public static void setToggleButtonProperty(boolean toggleButtonProperty) {
+		MenuButtonsController.toggleButtonProperty.setValue(toggleButtonProperty);
+	}
+
 }

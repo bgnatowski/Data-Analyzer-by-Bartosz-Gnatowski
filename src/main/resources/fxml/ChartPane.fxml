@@ -6,7 +6,6 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,7 +14,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-
 
 <AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.ChartViewController">
    <children>
@@ -36,12 +34,10 @@
                                              <content>
                                                 <AnchorPane>
                                                    <children>
-                                                      <GridPane hgap="5.0" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                      <GridPane hgap="5.0" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="xGrid">
                                                         <columnConstraints>
                                                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                          <ColumnConstraints />
-                                                          <ColumnConstraints minWidth="-Infinity" />
                                                         </columnConstraints>
                                                         <rowConstraints>
                                                           <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -51,13 +47,8 @@
                                                          <children>
                                                             <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="OD" />
                                                             <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="DO" GridPane.columnIndex="1" />
-                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Kolor" GridPane.columnIndex="2" />
-                                                            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#xAddOnAction" text="Dodaj" GridPane.columnIndex="3" GridPane.rowIndex="1" fx:id="xAddButton" />
-                                                            <ColorPicker prefWidth="40.0" GridPane.columnIndex="2" GridPane.rowIndex="1" fx:id="xColor" />
                                                             <DatePicker GridPane.rowIndex="1" fx:id="xDateFrom" />
                                                             <DatePicker GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="xDateTo" />
-                                                            <Spinner GridPane.rowIndex="2" fx:id="xTimeFrom" />
-                                                            <Spinner GridPane.columnIndex="1" GridPane.rowIndex="2" fx:id="xTimeTo" />
                                                          </children>
                                                       </GridPane>
                                                    </children>
@@ -76,7 +67,6 @@
                                                         <columnConstraints>
                                                             <ColumnConstraints hgrow="SOMETIMES" />
                                                             <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
-                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
                                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
                                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="-Infinity" />
                                                         </columnConstraints>
@@ -90,13 +80,22 @@
                                                         </rowConstraints>
                                                          <children>
                                                             <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Wartość" GridPane.columnIndex="1" />
-                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Rodzaj lini" GridPane.columnIndex="2" />
-                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Kolor" GridPane.columnIndex="3" />
-                                                            <Button fx:id="yAddValueButton" mnemonicParsing="false" onAction="#yAddValueOnAction" text="+" GridPane.rowIndex="2" />
-                                                            <ComboBox fx:id="yValue" minWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                            <ComboBox fx:id="yLineStyle" minWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                            <ColorPicker fx:id="yColor" prefWidth="40.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                                                            <Button fx:id="yAddButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yAddOnAction" text="Dodaj" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                                                            <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Kolor" GridPane.columnIndex="2" />
+                                                            <Button fx:id="yPlusButton1" minWidth="25.0" mnemonicParsing="false" onAction="#yPlusOnAction1" text="+" GridPane.rowIndex="2" />
+                                                            <ComboBox fx:id="yValue0" minWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                            <ColorPicker fx:id="yColor0" prefWidth="40.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                            <Button fx:id="yAddButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yAddOnAction" text="Dodaj" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                                            <Button fx:id="yPlusButton2" minWidth="25.0" mnemonicParsing="false" onAction="#yPlusOnAction2" text="+" visible="false" GridPane.rowIndex="3" />
+                                                            <Button fx:id="yPlusButton3" minWidth="25.0" mnemonicParsing="false" onAction="#yPlusOnAction3" text="+" visible="false" GridPane.rowIndex="4" />
+                                                            <Button fx:id="yPlusButton4" minWidth="25.0" mnemonicParsing="false" onAction="#yPlusOnAction4" text="+" visible="false" GridPane.rowIndex="5" />
+                                                            <ComboBox fx:id="yValue2" minWidth="100.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                            <ComboBox fx:id="yValue3" minWidth="100.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                            <ComboBox fx:id="yValue4" minWidth="100.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                            <ComboBox fx:id="yValue1" minWidth="100.0" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                            <ColorPicker fx:id="yColor1" prefWidth="40.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                                            <ColorPicker fx:id="yColor2" prefWidth="40.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                                            <ColorPicker fx:id="yColor3" prefWidth="40.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                            <ColorPicker fx:id="yColor4" prefWidth="40.0" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                                                          </children>
                                                       </GridPane>
                                                    </children>
@@ -109,6 +108,8 @@
                                        <children>
                                           <HBox alignment="BOTTOM_RIGHT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
+                                                <Button fx:id="newChartButton" mnemonicParsing="false" onAction="#newChartOnAction" text="Nowy" />
+                                                <ComboBox fx:id="lineChartSelect" onAction="#switchLineChartOnAction" prefWidth="100.0" />
                                                 <Button fx:id="addToRaportButton" mnemonicParsing="false" onAction="#addChartToRaportOnAction" text="Dodaj do raportu" HBox.hgrow="ALWAYS" />
                                                 <Button fx:id="saveAsChartButton" mnemonicParsing="false" onAction="#saveAsChartOnAction" text="Zapisz jako..." />
                                              </children>

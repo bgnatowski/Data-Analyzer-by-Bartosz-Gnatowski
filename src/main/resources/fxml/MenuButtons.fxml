@@ -13,8 +13,8 @@
                <children>
                   <Button fx:id="homeButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goHomeOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.home" />
                   <Button fx:id="loadButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#importCSVMenu" prefHeight="30.0" prefWidth="140.0" text="%button.import" />
-                  <Button fx:id="tableViewButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tableViewOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.tableview" />
-                  <Button fx:id="figuresButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#figuresOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.figures" />
+                  <Button fx:id="tableViewButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tableViewOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.tableview" />
+                  <Button fx:id="chartViewButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#figuresOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.figures" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

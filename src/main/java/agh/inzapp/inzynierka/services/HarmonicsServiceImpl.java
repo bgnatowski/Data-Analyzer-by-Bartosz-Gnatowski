@@ -10,6 +10,8 @@ import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,13 +19,13 @@ import java.util.Map;
 @Service
 public class HarmonicsServiceImpl implements CrudService{
 	private final HarmoRepository repository;
-	private final HarmonicsMappingRepository harmonicsMappingRepository;
-	private final ThdMappingRepository thdMappingRepository;
+//	private final HarmonicsMappingRepository harmonicsMappingRepository;
+//	private final ThdMappingRepository thdMappingRepository;
 	@Autowired
 	public HarmonicsServiceImpl(HarmoRepository repository, HarmonicsMappingRepository harmonicsMappingRepository, ThdMappingRepository thdMappingRepository) {
 		this.repository = repository;
-		this.harmonicsMappingRepository = harmonicsMappingRepository;
-		this.thdMappingRepository = thdMappingRepository;
+//		this.harmonicsMappingRepository = harmonicsMappingRepository;
+//		this.thdMappingRepository = thdMappingRepository;
 	}
 	@Override
 	public <T extends CommonDbModel> T add(T dataModel) throws ApplicationException {
@@ -39,30 +41,34 @@ public class HarmonicsServiceImpl implements CrudService{
 	@Override
 	public List<? extends CommonDbModel> getAll() {
 		List<HarmoDb> all = repository.findAll();
-		final List<HarmonicsMapping> harmonicsMapping = harmonicsMappingRepository.findAll();
-		final List<ThdMapping> thdMapping = thdMappingRepository.findAll();
+//		final List<HarmonicsMapping> harmonicsMapping = harmonicsMappingRepository.findAll();
+//		final List<ThdMapping> thdMapping = thdMappingRepository.findAll();
 
-		all.forEach(dataDb -> {
-			Map<UniNames, Double> harmonicsMap = new LinkedHashMap<>();
-			Map<UniNames, Double> thdMap = new LinkedHashMap<>();
-			final List<HarmonicsMapping> collectHarmonics = harmonicsMapping.stream()
-					.filter(record -> record.getId().getHarmonicsId().equals(dataDb.getId()))
-					.toList();
-			final List<ThdMapping> collectThd = thdMapping.stream()
-					.filter(record -> record.getId().getThdId().equals(dataDb.getId()))
-					.toList();
-			collectHarmonics.forEach(record -> harmonicsMap.put(record.getId().getUniName(), record.getHarmonicValue()));
-			collectThd.forEach(record -> thdMap.put(record.getId().getUniName(), record.getThdValue()));
-
-			dataDb.setHarmonics(harmonicsMap);
-			dataDb.setThd(thdMap);
-		});
+//		all.forEach(dataDb -> {
+//			Map<UniNames, Double> harmonicsMap = new LinkedHashMap<>();
+//			Map<UniNames, Double> thdMap = new LinkedHashMap<>();
+//			final List<HarmonicsMapping> collectHarmonics = harmonicsMapping.stream()
+//					.filter(record -> record.getId().getHarmonicsId().equals(dataDb.getId()))
+//					.toList();
+//			final List<ThdMapping> collectThd = thdMapping.stream()
+//					.filter(record -> record.getId().getThdId().equals(dataDb.getId()))
+//					.toList();
+//			collectHarmonics.forEach(record -> harmonicsMap.put(record.getId().getUniName(), record.getHarmonicValue()));
+//			collectThd.forEach(record -> thdMap.put(record.getId().getUniName(), record.getThdValue()));
+//
+//			dataDb.setHarmonics(harmonicsMap);
+//			dataDb.setThd(thdMap);
+//		});
 
 		return all;
 	}
-
 	@Override
 	public void clearAll() {
 		repository.deleteAll();
+	}
+
+	@Override
+	public List<? extends CommonDbModel> findAllByDateBetweenAndTimeBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime){
+		return repository.findAllByDateBetweenAndTimeBetween(startDate, endDate, startTime, endTime);
 	}
 }

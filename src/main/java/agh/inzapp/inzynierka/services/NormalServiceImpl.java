@@ -10,6 +10,8 @@ import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,11 +19,11 @@ import java.util.Map;
 @Service
 public class NormalServiceImpl implements CrudService {
 	private final DataRepository repository;
-	private final RecordsMappingRepository recordsRepository;
+//	private final RecordsMappingRepository recordsRepository;
 	@Autowired
 	public NormalServiceImpl(DataRepository repository, RecordsMappingRepository recordsRepository) {
 		this.repository = repository;
-		this.recordsRepository = recordsRepository;
+//		this.recordsRepository = recordsRepository;
 	}
 
 	@Override
@@ -38,17 +40,22 @@ public class NormalServiceImpl implements CrudService {
 	@Override
 	public List<DataDb> getAll(){
 		final List<DataDb> all = repository.findAll();
-		final List<RecordsMapping> records = recordsRepository.findAll();
-
-		all.forEach(dataDb -> {
-			Map<UniNames, Double> recordsMap = new LinkedHashMap<>();
-			final List<RecordsMapping> collect = records.stream()
-					.filter(record -> record.getId().getRecordsId().equals(dataDb.getId()))
-					.toList();
-			collect.forEach(record -> recordsMap.put(record.getId().getUniName(), record.getRecordValue()));
-			dataDb.setRecords(recordsMap);
-		});
+//		final List<RecordsMapping> records = recordsRepository.findAll();
+//
+//		all.forEach(dataDb -> {
+//			Map<UniNames, Double> recordsMap = new LinkedHashMap<>();
+//			final List<RecordsMapping> collect = records.stream()
+//					.filter(record -> record.getId().getRecordsId().equals(dataDb.getId()))
+//					.toList();
+//			collect.forEach(record -> recordsMap.put(record.getId().getUniName(), record.getRecordValue()));
+//			dataDb.setRecords(recordsMap);
+//		});
 		return all;
+	}
+
+	@Override
+	public List<? extends CommonDbModel> findAllByDateBetweenAndTimeBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
+		return repository.findAllByDateBetweenAndTimeBetween(startDate, endDate, startTime, endTime);
 	}
 
 	@Override

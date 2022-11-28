@@ -34,14 +34,14 @@ public class HarmoDb implements CommonDbModel{
 	@Column(name = "flags")
 	private String flags;
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@MapKeyColumn(name = "uni_name")
 	@MapKeyEnumerated(EnumType.STRING)
 	@Column(name = "harmonics_value")
 	@CollectionTable(name = "harmonics_mapping", joinColumns = @JoinColumn(name = "harmonics_id", referencedColumnName = "id"))
 	private Map<UniNames, Double> harmonics = new LinkedHashMap<>();
 
-	@ElementCollection
+	@ElementCollection(fetch = FetchType.EAGER)
 	@MapKeyColumn(name = "uni_name")
 	@MapKeyEnumerated(EnumType.STRING)
 	@Column(name = "thd_value")
