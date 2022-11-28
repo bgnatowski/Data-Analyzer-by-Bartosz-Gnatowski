@@ -2,6 +2,8 @@ package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
+import agh.inzapp.inzynierka.database.models.DataDb;
+import agh.inzapp.inzynierka.database.models.HarmoDb;
 import agh.inzapp.inzynierka.models.ListDataFx;
 import agh.inzapp.inzynierka.models.ListHarmoFx;
 import agh.inzapp.inzynierka.models.enums.UniNames;
@@ -164,21 +166,36 @@ public class ChartViewController {
 		try {
 			List<LocalDateTime> xDataList = getFromX();
 			Map<LocalDateTime, Double> xyDataMap;
-			for(int i = 0; i < howManyYDData; i++){
+			for(int i = 0; i <= howManyYDData; i++){
 				List<Double> yDataList = getFromY(i);
-				xyDataMap = FxmlUtils.zipToMap(xDataList, yDataList);
-				chartService.addSeriesToChart(xyDataMap);
-				chartService.setSeriesName(yValuesList.get(i).getValue());
-				chartService.setSeriesColor(yColorPickerList.get(i).getValue());
+//				xyDataMap = FxmlUtils.zipToMap(xDataList, yDataList);
+//				chartService.addSeriesToChart(xyDataMap);
+//				chartService.setSeriesName(yValuesList.get(i).getValue());
+//				chartService.setSeriesColor(yColorPickerList.get(i).getValue());
 			}
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
 	}
 
-	private List<Double> getFromY(int i) {
+	private List<Double> getFromY(int i) throws ApplicationException {
 		final UniNames value = yValuesList.get(i).getValue();
-		return null;
+		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
+		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
+		if(to.isAfter(from)){
+			List<? extends CommonDbModel> queryListNormal = DataManager.findAllNormalByDateBetweenAndTimeBetween(from.toLocalDate(), to.toLocalDate(), from.toLocalTime(), to.toLocalTime());
+			List<? extends CommonDbModel> queryListHarmo = DataManager.findAllHarmoByDateBetweenAndTimeBetween(from.toLocalDate(), to.toLocalDate(), from.toLocalTime(), to.toLocalTime());
+			List<CommonDbModel> list = new ArrayList<>(queryListNormal);
+			list.addAll(queryListHarmo);
+			list.forEach(e->{
+				System.out.println(e);
+				if(e instanceof DataDb) System.out.println("normal");
+				else if(e instanceof HarmoDb) System.out.println("harmo");
+			});
+			return null;
+//			return timeRecordList.stream().distinct().collect(Collectors.toList());
+		}
+		throw new ApplicationException("bad value"); //todo exception comunicat
 	}
 
 	private List<LocalDateTime> getFromX() throws ApplicationException {

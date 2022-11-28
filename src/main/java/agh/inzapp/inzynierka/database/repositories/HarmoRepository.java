@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface HarmoRepository extends JpaRepository<HarmoDb, Long> {
 	List<HarmoDb> findAllByDateBetweenAndTimeBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime);
+	List<HarmoDb> findAllByDateAfterAndTimeAfterAndDateBeforeAndTimeBefore(LocalDate date, LocalTime time, LocalDate date2, LocalTime time2);
 }
