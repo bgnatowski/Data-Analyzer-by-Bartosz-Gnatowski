@@ -10,14 +10,13 @@ import static agh.inzapp.inzynierka.utils.converters.DataConverter.convertFlagsM
 
 @Transactional
 public class HarmoConverter {
-	public static HarmoFx convertDbToFx(HarmoDb dataDb) {
+	public static HarmoFx convertDbToFx(HarmoDb harmoDb) {
 		HarmoFx harmoFx = new HarmoFx();
-		harmoFx.setId(dataDb.getId());
-		harmoFx.setDate(dataDb.getDate());
-		harmoFx.setFlags(FXCollections.observableMap(convertFlagPatternToMap(dataDb.getFlags())));
-		harmoFx.setColumnHarmonicNames(FXCollections.observableArrayList(dataDb.getColumnNames()));
-		harmoFx.setHarmonics(FXCollections.observableMap(dataDb.getHarmonics()));
-		harmoFx.setThd(FXCollections.observableMap(dataDb.getThd()));
+		harmoFx.setId(harmoDb.getId());
+		harmoFx.setDate(harmoDb.getDate());
+		harmoFx.setFlags(FXCollections.observableMap(convertFlagPatternToMap(harmoDb.getFlags())));
+		harmoFx.setColumnNames(FXCollections.observableArrayList(harmoDb.getColumnNames()));
+		harmoFx.setRecords(FXCollections.observableMap(harmoDb.getRecords()));
 
 		return harmoFx;
 	}
@@ -27,9 +26,8 @@ public class HarmoConverter {
 		harmoDb.setId(harmoFx.getId());
 		harmoDb.setDate(harmoFx.getDate());
 		harmoDb.setFlags(convertFlagsMapToDb(harmoFx.getFlags()));
-		harmoDb.setColumnNames(harmoFx.getColumnHarmonicNames());
-		harmoDb.setHarmonics(harmoFx.getHarmonics());
-		harmoDb.setThd(harmoFx.getThd());
+		harmoDb.setColumnNames(harmoFx.getColumnNames());
+		harmoDb.setRecords(harmoFx.getRecords());
 
 		return harmoDb;
 	}

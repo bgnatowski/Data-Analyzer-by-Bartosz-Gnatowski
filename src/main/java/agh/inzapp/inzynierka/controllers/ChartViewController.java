@@ -1,9 +1,6 @@
 package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.database.DataManager;
-import agh.inzapp.inzynierka.database.models.CommonDbModel;
-import agh.inzapp.inzynierka.database.models.DataDb;
-import agh.inzapp.inzynierka.database.models.HarmoDb;
 import agh.inzapp.inzynierka.models.ListDataFx;
 import agh.inzapp.inzynierka.models.ListHarmoFx;
 import agh.inzapp.inzynierka.models.enums.UniNames;
@@ -22,7 +19,6 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import org.springframework.stereotype.Controller;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -148,11 +144,11 @@ public class ChartViewController {
 		List<UniNames> uniNamesList = null;
 		if(!dataFxList.isEmpty() && !harmoFxList.isEmpty()){
 			uniNamesList = dataFxList.stream().findFirst().get().getColumnNames();
-			uniNamesList.addAll(harmoFxList.stream().findFirst().get().getColumnHarmonicNames());
+			uniNamesList.addAll(harmoFxList.stream().findFirst().get().getColumnNames());
 		} else if(!dataFxList.isEmpty() && harmoFxList.isEmpty()){
 			uniNamesList = dataFxList.stream().findFirst().get().getColumnNames();
 		} else if(dataFxList.isEmpty() && !harmoFxList.isEmpty()){
-			uniNamesList = harmoFxList.stream().findFirst().get().getColumnHarmonicNames();
+			uniNamesList = harmoFxList.stream().findFirst().get().getColumnNames();
 		}
 		List<UniNames> finalUniNamesList = uniNamesList.stream().distinct().collect(Collectors.toList());
 		if(!finalUniNamesList.isEmpty()){

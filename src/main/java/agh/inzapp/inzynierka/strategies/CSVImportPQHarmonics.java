@@ -61,7 +61,7 @@ public class CSVImportPQHarmonics implements CSVStrategy {
 				} else {
 					model.init();
 					model.setId(++id);
-					model.setColumnHarmonicNames(FXCollections.observableArrayList(columnsNames));
+					model.setColumnNames(FXCollections.observableArrayList(columnsNames));
 					setDataInModel(allRecords, model);
 					dataModels.add(model);
 				}
@@ -72,14 +72,13 @@ public class CSVImportPQHarmonics implements CSVStrategy {
 	}
 
 	private void setDataInModel(List<String> recordsList, PQHarmonicsFx model) {
-		Map<UniNames, Double> harmonicsMap = model.getHarmonics();
-		Map<UniNames, Double> thdMap = model.getThd();
+		Map<UniNames, Double> harmonicsMap = model.getRecords();
 		AtomicReference<LocalDate> localDate = new AtomicReference<>();
 		AtomicReference<LocalTime> localTime = new AtomicReference<>();
 		Stream.of(UniNames.values()).forEach(unitaryName -> {
 			Long columnID = null;
-			if (model.getColumnHarmonicNames().contains(unitaryName)) {
-				columnID = Long.valueOf((model.getColumnHarmonicNames().indexOf(unitaryName)));
+			if (model.getColumnNames().contains(unitaryName)) {
+				columnID = Long.valueOf((model.getColumnNames().indexOf(unitaryName)));
 			}
 			if (columnID != null) {
 				final String stringRecord = recordsList.get(Math.toIntExact(columnID));
@@ -97,13 +96,6 @@ public class CSVImportPQHarmonics implements CSVStrategy {
 						flags.put(unitaryName, PQParser.parseFlag(stringRecord));
 						model.setFlags(FXCollections.observableMap(flags));
 					}
-					case PQ_THD_12, PQ_THD_23, PQ_THD_31, PQ_THD_L1, PQ_THD_L2, PQ_THD_L3 -> {
-						try {
-							thdMap.put(unitaryName, PQParser.parseDouble(stringRecord));
-						} catch (ParseException e) {
-							DialogUtils.errorDialog(e.getMessage());
-						}
-					}
 					default -> {
 						//sprawdza, czy w odczytanym csv mamy kolumnę o takiej nazwie
 						try {
@@ -116,7 +108,7 @@ public class CSVImportPQHarmonics implements CSVStrategy {
 			}
 		});
 		model.setDate(LocalDateTime.of(localDate.get(), localTime.get()));
-		model.setThd(FXCollections.observableMap(thdMap));
-		model.setHarmonics(FXCollections.observableMap(harmonicsMap));
+
+		model.setRecords(FXCollections.observableMap(harmonicsMap));
 	}
 }

@@ -9,7 +9,6 @@ import java.util.Map;
 public class SonelHarmonicFx extends HarmoFx{
 	public void init() {
 		initFlags();
-		initThd();
 		initHarmonics();
 	}
 	private void initFlags() {
@@ -22,17 +21,11 @@ public class SonelHarmonicFx extends HarmoFx{
 		setFlags(FXCollections.observableMap(flags));
 	}
 
-	private void initThd() {
+	private void initHarmonics() {
 		Map<UniNames, Double> dataMap = new LinkedHashMap<>();
 		dataMap.put(UniNames.SONEL_THD_L1, null);
 		dataMap.put(UniNames.SONEL_THD_L2, null);
 		dataMap.put(UniNames.SONEL_THD_L3, null);
-
-		setThd(FXCollections.observableMap(dataMap));
-	}
-
-	private void initHarmonics() {
-		Map<UniNames, Double> dataMap = new LinkedHashMap<>();
 		dataMap.put(UniNames.SONEL_H1_UL1, null);
 		dataMap.put(UniNames.SONEL_H2_UL1, null);
 		dataMap.put(UniNames.SONEL_H3_UL1, null);
@@ -184,6 +177,6 @@ public class SonelHarmonicFx extends HarmoFx{
 		dataMap.put(UniNames.SONEL_H49_UL3, null);
 		dataMap.put(UniNames.SONEL_H50_UL3, null);
 
-		setHarmonics(FXCollections.observableMap(dataMap));
+		setRecords(FXCollections.observableMap(dataMap));
 	}
 }

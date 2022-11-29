@@ -9,7 +9,6 @@ import java.util.Map;
 public class PQHarmonicsFx extends HarmoFx{
 	public void init() {
 		initFlags();
-		initThd();
 		initHarmonics();
 	}
 	private void initFlags() {
@@ -17,7 +16,8 @@ public class PQHarmonicsFx extends HarmoFx{
 		flags.put(UniNames.Flag, null);
 		setFlags(FXCollections.observableMap(flags));
 	}
-	private void initThd() {
+
+	private void initHarmonics() {
 		Map<UniNames, Double> dataMap = new LinkedHashMap<>();
 		dataMap.put(UniNames.PQ_THD_12, null);
 		dataMap.put(UniNames.PQ_THD_23, null);
@@ -26,11 +26,6 @@ public class PQHarmonicsFx extends HarmoFx{
 		dataMap.put(UniNames.PQ_THD_L2, null);
 		dataMap.put(UniNames.PQ_THD_L3, null);
 
-		setThd(FXCollections.observableMap(dataMap));
-	}
-
-	private void initHarmonics() {
-		Map<UniNames, Double> dataMap = new LinkedHashMap<>();
 		dataMap.put(UniNames.PQ_H1_UL1, null);
 		dataMap.put(UniNames.PQ_H2_UL1, null);
 		dataMap.put(UniNames.PQ_H3_UL1, null);
@@ -184,7 +179,7 @@ public class PQHarmonicsFx extends HarmoFx{
 		dataMap.put(UniNames.PQ_H49_UL3, null);
 		dataMap.put(UniNames.PQ_H50_UL3, null);
 
-		setHarmonics(FXCollections.observableMap(dataMap));
+		setRecords(FXCollections.observableMap(dataMap));
 	}
 
 }

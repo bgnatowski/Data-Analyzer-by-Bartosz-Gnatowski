@@ -18,6 +18,6 @@ public interface DataRepository extends JpaRepository<DataDb, Long> {
 	List<Long> findIdByDateBetween(LocalDateTime start, LocalDateTime end);
 
 //	@Query(value = "select rm.record_value from data_db inner join records_mapping rm on data_db.id = rm.records_id where (rm.records_id>=3 and rm.records_id<=10) and rm.uni_name='IL2_avg' order by rm.records_id asc", nativeQuery = true);
-	List<Double> findRecordValueByIdBetweenAndUniName();
+//	List<Double> findRecordValueByIdBetweenAndUniName();
 }
 

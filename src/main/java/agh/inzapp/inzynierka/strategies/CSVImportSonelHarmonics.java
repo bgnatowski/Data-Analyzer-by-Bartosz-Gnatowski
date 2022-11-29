@@ -58,7 +58,7 @@ public class CSVImportSonelHarmonics implements CSVStrategy {
 				} else {
 					model.init();
 					model.setId(++id);
-					model.setColumnHarmonicNames(FXCollections.observableArrayList(columnsNames));
+					model.setColumnNames(FXCollections.observableArrayList(columnsNames));
 					setDataInModel(allRecords, model);
 					dataModels.add(model);
 				}
@@ -69,15 +69,14 @@ public class CSVImportSonelHarmonics implements CSVStrategy {
 	}
 
 	private void setDataInModel(List<String> recordsList, SonelHarmonicFx model) {
-		Map<UniNames, Double> harmonicsMap = model.getHarmonics();
-		Map<UniNames, Double> thdMap = model.getThd();
+		Map<UniNames, Double> harmonicsMap = model.getRecords();
 		AtomicReference<LocalDate> localDate = new AtomicReference<>();
 		AtomicReference<LocalTime> localTime = new AtomicReference<>();
 
 		Stream.of(UniNames.values()).forEach(unitaryName -> {
 			Long columnID = null;
-			if (model.getColumnHarmonicNames().contains(unitaryName)) {
-				columnID = Long.valueOf(model.getColumnHarmonicNames().indexOf(unitaryName)) + BLANK_COLUMNS;
+			if (model.getColumnNames().contains(unitaryName)) {
+				columnID = Long.valueOf(model.getColumnNames().indexOf(unitaryName)) + BLANK_COLUMNS;
 			}
 			if (columnID != null) {
 				final String stringRecord = recordsList.get(Math.toIntExact(columnID));
@@ -95,13 +94,6 @@ public class CSVImportSonelHarmonics implements CSVStrategy {
 						flags.put(unitaryName, SonelParser.parseFlag(stringRecord));
 						model.setFlags(FXCollections.observableMap(flags));
 					}
-					case SONEL_THD_L1, SONEL_THD_L2, SONEL_THD_L3 -> {
-						try {
-							thdMap.put(unitaryName, SonelParser.parseDouble(stringRecord));
-						} catch (ParseException e) {
-							DialogUtils.errorDialog(e.getMessage());
-						}
-					}
 					default -> {
 						try {
 							harmonicsMap.put(unitaryName, SonelParser.parseDouble(stringRecord));
@@ -113,7 +105,6 @@ public class CSVImportSonelHarmonics implements CSVStrategy {
 			}
 		});
 		model.setDate(LocalDateTime.of(localDate.get(), localTime.get()));
-		model.setThd(FXCollections.observableMap(thdMap));
-		model.setHarmonics(FXCollections.observableMap(harmonicsMap));
+		model.setRecords(FXCollections.observableMap(harmonicsMap));
 	}
 }

@@ -4,9 +4,7 @@ import agh.inzapp.inzynierka.models.enums.UniNames;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,14 +36,7 @@ public class HarmoDb implements CommonDbModel{
 	@MapKeyEnumerated(EnumType.STRING)
 	@Column(name = "harmonics_value")
 	@CollectionTable(name = "harmonics_mapping", joinColumns = @JoinColumn(name = "harmonics_id", referencedColumnName = "id"))
-	private Map<UniNames, Double> harmonics = new LinkedHashMap<>();
-
-	@ElementCollection(fetch = FetchType.EAGER)
-	@MapKeyColumn(name = "uni_name")
-	@MapKeyEnumerated(EnumType.STRING)
-	@Column(name = "thd_value")
-	@CollectionTable(name = "thd_mapping", joinColumns = @JoinColumn(name = "thd_id", referencedColumnName = "id"))
-	private Map<UniNames, Double> thd = new LinkedHashMap<>();
+	private Map<UniNames, Double> records = new LinkedHashMap<>();
 
 	@ElementCollection(targetClass = UniNames.class, fetch = FetchType.EAGER)
 	@JoinTable(name = "columnHarmoNames_mapping", joinColumns = @JoinColumn(name = "columnHarmoNames_id"))

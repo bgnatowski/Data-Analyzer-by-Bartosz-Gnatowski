@@ -116,7 +116,7 @@ public class TableViewPaneController {
 			harmonicsTableView.setEditable(true);
 
 			final HarmoFx harmoFx = listHarmoFx.getHarmoFxList().get(0);
-			final ObservableList<UniNames> columnNames = harmoFx.getColumnHarmonicNames();
+			final ObservableList<UniNames> columnNames = harmoFx.getColumnNames();
 
 			List<TableColumn<HarmoFx, ?>> tableColumnList = getTableColumnsHarmonics(columnNames);
 			harmonicsTableView.getColumns().addAll(tableColumnList);
@@ -152,18 +152,11 @@ public class TableViewPaneController {
 							(Callback<TableColumn.CellDataFeatures<HarmoFx, LocalTime>, ObservableValue<LocalTime>>) dataFxCellDataFeatures ->
 									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalTime()));
 				}
-				case PQ_THD_12, PQ_THD_23, PQ_THD_31,PQ_THD_L1, PQ_THD_L2, PQ_THD_L3,
-						SONEL_THD_L1, SONEL_THD_L2, SONEL_THD_L3 -> {
-					tableColumn = new TableColumn<HarmoFx, Double>(uniName + " " + uniName.getUnit());
-					tableColumn.setCellValueFactory(
-							(Callback<TableColumn.CellDataFeatures<HarmoFx, Double>, ObservableValue>) dataFxCellDataFeatures ->
-									new SimpleDoubleProperty(dataFxCellDataFeatures.getValue().thdProperty().getValue().get(uniName)));
-				}
 				default ->{
 					tableColumn = new TableColumn<HarmoFx, Double>(uniName + " " + uniName.getUnit());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<HarmoFx, Double>, ObservableValue>) dataFxCellDataFeatures ->
-									new SimpleDoubleProperty(dataFxCellDataFeatures.getValue().harmonicsProperty().getValue().get(uniName)));
+									new SimpleDoubleProperty(dataFxCellDataFeatures.getValue().recordsProperty().getValue().get(uniName)));
 				}
 			}
 			tableColumnList.add(tableColumn);
