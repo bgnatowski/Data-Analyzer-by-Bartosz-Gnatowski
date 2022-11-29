@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -21,8 +22,7 @@ import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 
 public class DataFx implements CommonModelFx {
 	private LongProperty id = new SimpleLongProperty();
-	private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
-	private ObjectProperty<LocalTime> time = new SimpleObjectProperty<>();
+	private ObjectProperty<LocalDateTime> date = new SimpleObjectProperty<>();
 	private MapProperty<UniNames, String> flags = new SimpleMapProperty<>();
 	private MapProperty<UniNames, Double> records = new SimpleMapProperty<>();
 	private ListProperty<UniNames> columnNames = new SimpleListProperty<>();
@@ -79,28 +79,16 @@ public class DataFx implements CommonModelFx {
 		this.id.set(id);
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date.get();
 	}
 
-	public ObjectProperty<LocalDate> dateProperty() {
+	public ObjectProperty<LocalDateTime> dateProperty() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date.set(date);
-	}
-
-	public LocalTime getTime() {
-		return time.get();
-	}
-
-	public ObjectProperty<LocalTime> timeProperty() {
-		return time;
-	}
-
-	public void setTime(LocalTime time) {
-		this.time.set(time);
 	}
 
 	public ObservableMap<UniNames, String> getFlags() {
@@ -143,7 +131,6 @@ public class DataFx implements CommonModelFx {
 	public String toString() {
 		List<String> allDataToString = new ArrayList<>();
 		allDataToString.add(getDate().toString());
-		allDataToString.add(getTime().toString());
 		allDataToString.add(getFlags().values().toString());
 
 		String s = Arrays.toString(getRecords().values().toArray());

@@ -14,15 +14,19 @@ import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DataManager {
 	private static NormalServiceImpl dataService;
 	private static HarmonicsServiceImpl harmonicsService;
 
+	private static boolean firstData = true;
+	private static boolean firstHarmo = true;
 	@Autowired
 	public DataManager(NormalServiceImpl dataService, HarmonicsServiceImpl harmonicsService) {
 		this.dataService = dataService;
@@ -33,15 +37,26 @@ public class DataManager {
 		for (CommonModelFx commonModelFx : modelFxList) {
 			save(commonModelFx);
 		}
+		firstData = true;
+		firstHarmo = true;
 	}
 
 	public static <T extends CommonModelFx> void save(T modelFx) throws ApplicationException {
 		CommonDbModel modelDb;
+
 		if (modelFx instanceof DataFx) {
+			if(firstData) {
+				dataService.clearAll();
+				firstData=false;
+			}
 			modelDb = DataConverter.convertFxToDb((DataFx) modelFx);
 			dataService.add(modelDb);
 		}
 		if (modelFx instanceof HarmoFx) {
+			if(firstHarmo){
+				harmonicsService.clearAll();
+				firstHarmo = false;
+			}
 			modelDb = HarmoConverter.convertFxToDb((HarmoFx) modelFx);
 			harmonicsService.add(modelDb);
 		}
@@ -63,11 +78,26 @@ public class DataManager {
 		harmonicsService.clearAll();
 	}
 
-	public static List<? extends CommonDbModel> findAllNormalByDateBetweenAndTimeBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime){
-		return dataService.findAllByDateBetweenAndTimeBetween(startDate, endDate, startTime, endTime);
+	public static List<? extends CommonDbModel> findAllNormalByDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate){
+		return dataService.findAllByDateAfterAndDateBefore(startDate, endDate);
 	}
-	public static List<? extends CommonDbModel> findAllHarmoByDateBetweenAndTimeBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime){
-		return harmonicsService.findAllByDateBetweenAndTimeBetween(startDate, endDate, startTime, endTime);
+	public static List<? extends CommonDbModel> findAllHarmoByDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate){
+		return harmonicsService.findAllByDateAfterAndDateBefore(startDate, endDate);
+	}
+
+	public static List<LocalDateTime> findTimeSeriesByLocalDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate){
+		final List<Timestamp> byDateBetween = dataService.findByDateBetween(startDate, endDate);
+		byDateBetween.addAll(harmonicsService.findByDateBetween(startDate, endDate));
+		final List<Timestamp> collect = byDateBetween.stream().distinct().collect(Collectors.toList());
+		return collect.stream().map(timestamp ->
+				timestamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
+				.collect(Collectors.toList());
+	}
+
+	public static List<Long> findIdByDateBetween(LocalDateTime startDate, LocalDateTime endDate){
+		final List<Long> idByDateBetween = dataService.findIdByDateBetween(startDate, endDate);
+		idByDateBetween.addAll(harmonicsService.findIdByDateBetween(startDate,endDate));
+		return idByDateBetween.stream().distinct().collect(Collectors.toList());
 	}
 
 }

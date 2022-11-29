@@ -12,7 +12,6 @@ import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
 import agh.inzapp.inzynierka.services.ChartService;
 import agh.inzapp.inzynierka.utils.DialogUtils;
-import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -23,6 +22,7 @@ import javafx.scene.layout.GridPane;
 import javafx.util.Callback;
 import org.springframework.stereotype.Controller;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -104,8 +104,8 @@ public class ChartViewController {
 		bindDatePickers();
 	}
 	private void bindDatePickers() {
-		LocalDate startDate = null;
-		LocalDate endDate = null;
+		LocalDateTime startDate = null;
+		LocalDateTime endDate = null;
 		if(!dataFxList.isEmpty() && !harmoFxList.isEmpty()) {
 			startDate = dataFxList.stream().findFirst().get().getDate();
 			endDate = dataFxList.get(dataFxList.size() - 1).getDate();
@@ -117,10 +117,10 @@ public class ChartViewController {
 			endDate = harmoFxList.get(harmoFxList.size()-1).getDate();
 		}
 		if(startDate!=null && endDate!=null){
-			restrictDatePicker(xDateFrom, startDate, endDate);
-			restrictDatePicker(xDateTo, startDate, endDate);
-			xDateFrom.setValue(startDate);
-			xDateTo.setValue(endDate);
+			restrictDatePicker(xDateFrom, startDate.toLocalDate(), endDate.toLocalDate());
+			restrictDatePicker(xDateTo, startDate.toLocalDate(), endDate.toLocalDate());
+			xDateFrom.setValue(startDate.toLocalDate());
+			xDateTo.setValue(endDate.toLocalDate());
 		}
 	}
 	private void restrictDatePicker(DatePicker datePicker, LocalDate minDate, LocalDate maxDate) {
@@ -166,6 +166,7 @@ public class ChartViewController {
 		try {
 			List<LocalDateTime> xDataList = getFromX();
 			Map<LocalDateTime, Double> xyDataMap;
+//			System.out.println(xDataList);
 			for(int i = 0; i <= howManyYDData; i++){
 				List<Double> yDataList = getFromY(i);
 //				xyDataMap = FxmlUtils.zipToMap(xDataList, yDataList);
@@ -182,31 +183,32 @@ public class ChartViewController {
 		final UniNames value = yValuesList.get(i).getValue();
 		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
 		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
-		if(to.isAfter(from)){
-			List<? extends CommonDbModel> queryListNormal = DataManager.findAllNormalByDateBetweenAndTimeBetween(from.toLocalDate(), to.toLocalDate(), from.toLocalTime(), to.toLocalTime());
-			List<? extends CommonDbModel> queryListHarmo = DataManager.findAllHarmoByDateBetweenAndTimeBetween(from.toLocalDate(), to.toLocalDate(), from.toLocalTime(), to.toLocalTime());
-			List<CommonDbModel> list = new ArrayList<>(queryListNormal);
-			list.addAll(queryListHarmo);
-			list.forEach(e->{
-				System.out.println(e);
-				if(e instanceof DataDb) System.out.println("normal");
-				else if(e instanceof HarmoDb) System.out.println("harmo");
-			});
-			return null;
-//			return timeRecordList.stream().distinct().collect(Collectors.toList());
+		if(from.isBefore(to)){
+			final List<Long> allIdByDateBetween = DataManager.findIdByDateBetween(from, to);
+//
 		}
+//		if(to.isAfter(from)){
+//			List<? extends CommonDbModel> queryListNormal = DataManager.findAllNormalByDateTimeBetween(from, to);
+//			List<? extends CommonDbModel> queryListHarmo = DataManager.findAllHarmoByDateTimeBetween(from, to);
+//			List<CommonDbModel> list = new ArrayList<>(queryListNormal);
+//			list.addAll(queryListHarmo);
+//			list.forEach(e->{
+//				System.out.println(e);
+//				if(e instanceof DataDb) System.out.println("normal");
+//				else if(e instanceof HarmoDb) System.out.println("harmo");
+//			});
+//			return null;
+////			return timeRecordList.stream().distinct().collect(Collectors.toList());
+//		}
 		throw new ApplicationException("bad value"); //todo exception comunicat
 	}
 
 	private List<LocalDateTime> getFromX() throws ApplicationException {
 		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
 		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
-		if(to.isAfter(from)){
-			List<? extends CommonDbModel> queryListNormal = DataManager.findAllNormalByDateBetweenAndTimeBetween(from.toLocalDate(), to.toLocalDate(), from.toLocalTime(), to.toLocalTime());
-			List<? extends CommonDbModel> queryListHarmo = DataManager.findAllHarmoByDateBetweenAndTimeBetween(from.toLocalDate(), to.toLocalDate(), from.toLocalTime(), to.toLocalTime());
-			List<LocalDateTime> timeRecordList = queryListNormal.stream().map(e -> LocalDateTime.of(e.getDate(), e.getTime())).collect(Collectors.toList());
-			timeRecordList.addAll(queryListHarmo.stream().map(e -> LocalDateTime.of(e.getDate(), e.getTime())).collect(Collectors.toList()));
-			return timeRecordList.stream().distinct().collect(Collectors.toList());
+		if(from.isBefore(to)){
+			List<LocalDateTime> xData = DataManager.findTimeSeriesByLocalDateTimeBetween(from, to);
+			return xData;
 		}
 		throw new ApplicationException("date out of range"); //todo exception comunicat
 	}

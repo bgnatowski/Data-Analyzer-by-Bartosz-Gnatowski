@@ -16,7 +16,6 @@ public class DataConverter {
 		DataFx dataFx = new DataFx();
 		dataFx.setId(dataDb.getId());
 		dataFx.setDate(dataDb.getDate());
-		dataFx.setTime(dataDb.getTime());
 		dataFx.setFlags(FXCollections.observableMap(convertFlagPatternToMap(dataDb.getFlags())));
 		dataFx.setColumnNames(FXCollections.observableArrayList(dataDb.getColumnNames()));
 		dataFx.setRecords(FXCollections.observableMap(convertRecordsMap(dataDb.getRecords())));
@@ -27,7 +26,6 @@ public class DataConverter {
 		DataDb dataDb = new DataDb();
 		dataDb.setId(dataFx.getId());
 		dataDb.setDate(dataFx.getDate());
-		dataDb.setTime(dataFx.getTime());
 		dataDb.setFlags(convertFlagsMapToDb(dataFx.getFlags()));
 		dataDb.setColumnNames(dataFx.getColumnNames());
 		dataDb.setRecords(dataFx.getRecords());

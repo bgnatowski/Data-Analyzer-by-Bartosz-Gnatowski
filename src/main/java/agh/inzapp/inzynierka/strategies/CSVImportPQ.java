@@ -16,7 +16,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 @Component
@@ -67,7 +71,8 @@ public class CSVImportPQ implements CSVStrategy {
 
 	private void setDataInModel(List<String> recordsList, PQNormalFx model) {
 		Map<UniNames, Double> modelRecords = model.getRecords();
-
+		AtomicReference<LocalDate> localDate = new AtomicReference<>();
+		AtomicReference<LocalTime> localTime = new AtomicReference<>();
 		Stream.of(UniNames.values()).forEach(unitaryName -> {
 			Long columnID = null;
 			if (model.getColumnNames().contains(unitaryName)) {
@@ -75,15 +80,18 @@ public class CSVImportPQ implements CSVStrategy {
 			}
 			if (columnID != null) {
 				final String stringRecord = recordsList.get(Math.toIntExact(columnID));
+
 				switch (unitaryName) {
 					case Date -> {
 						try {
-							model.setDate(PQParser.parseDate(stringRecord));
+							localDate.set(PQParser.parseDate(stringRecord));
 						} catch (ApplicationException e) {
 							DialogUtils.errorDialog(e.getMessage());
 						}
 					}
-					case Time -> model.setTime(PQParser.parseTime(stringRecord));
+					case Time -> {
+						localTime.set(PQParser.parseTime(stringRecord));
+					}
 					case Flag -> {
 						Map<UniNames, String> flags = model.getFlags();
 						flags.put(unitaryName, PQParser.parseFlag(stringRecord));
@@ -104,6 +112,7 @@ public class CSVImportPQ implements CSVStrategy {
 				}
 			}
 		});
+		model.setDate(LocalDateTime.of(localDate.get(), localTime.get()));
 		model.setRecords(FXCollections.observableMap(modelRecords));
 	}
 }

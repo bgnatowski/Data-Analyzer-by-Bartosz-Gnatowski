@@ -1,10 +1,10 @@
 package agh.inzapp.inzynierka.controllers;
 
+import agh.inzapp.inzynierka.models.ListDataFx;
+import agh.inzapp.inzynierka.models.ListHarmoFx;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
-import agh.inzapp.inzynierka.models.ListDataFx;
-import agh.inzapp.inzynierka.models.ListHarmoFx;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -82,11 +82,15 @@ public class TableViewPaneController {
 				}
 				case Date -> {
 					tableColumn = new TableColumn<DataFx, LocalDate>(uniName.toString());
-					tableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+					tableColumn.setCellValueFactory(
+							(Callback<TableColumn.CellDataFeatures<DataFx, LocalDate>, ObservableValue<LocalDate>>) dataFxCellDataFeatures ->
+									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalDate()));
 				}
 				case Time -> {
 					tableColumn = new TableColumn<DataFx, LocalTime>(uniName.toString());
-					tableColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+					tableColumn.setCellValueFactory(
+							(Callback<TableColumn.CellDataFeatures<DataFx, LocalTime>, ObservableValue<LocalTime>>) dataFxCellDataFeatures ->
+									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalTime()));
 				}
 				default ->{
 					tableColumn = new TableColumn<DataFx, Double>(uniName + " " + uniName.getUnit());
@@ -138,11 +142,15 @@ public class TableViewPaneController {
 				}
 				case Date -> {
 					tableColumn = new TableColumn<HarmoFx, LocalDate>(uniName.toString());
-					tableColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
+					tableColumn.setCellValueFactory(
+							(Callback<TableColumn.CellDataFeatures<HarmoFx, LocalDate>, ObservableValue<LocalDate>>) dataFxCellDataFeatures ->
+									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalDate()));
 				}
 				case Time -> {
 					tableColumn = new TableColumn<HarmoFx, LocalTime>(uniName.toString());
-					tableColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
+					tableColumn.setCellValueFactory(
+							(Callback<TableColumn.CellDataFeatures<HarmoFx, LocalTime>, ObservableValue<LocalTime>>) dataFxCellDataFeatures ->
+									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalTime()));
 				}
 				case PQ_THD_12, PQ_THD_23, PQ_THD_31,PQ_THD_L1, PQ_THD_L2, PQ_THD_L3,
 						SONEL_THD_L1, SONEL_THD_L2, SONEL_THD_L3 -> {

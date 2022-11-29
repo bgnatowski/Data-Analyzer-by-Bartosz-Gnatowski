@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -17,8 +18,7 @@ import java.time.LocalTime;
 
 public class HarmoFx implements CommonModelFx {
 	private LongProperty id = new SimpleLongProperty();
-	private ObjectProperty<LocalDate> date = new SimpleObjectProperty<>();
-	private ObjectProperty<LocalTime> time = new SimpleObjectProperty<>();
+	private ObjectProperty<LocalDateTime> date = new SimpleObjectProperty<>();
 	private MapProperty<UniNames, String> flags = new SimpleMapProperty<>();
 	private ListProperty<UniNames> columnHarmonicNames = new SimpleListProperty<>();
 	private MapProperty<UniNames, Double> thd = new SimpleMapProperty<>();
@@ -37,28 +37,16 @@ public class HarmoFx implements CommonModelFx {
 		this.id.set(id);
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date.get();
 	}
 
-	public ObjectProperty<LocalDate> dateProperty() {
+	public ObjectProperty<LocalDateTime> dateProperty() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date.set(date);
-	}
-
-	public LocalTime getTime() {
-		return time.get();
-	}
-
-	public ObjectProperty<LocalTime> timeProperty() {
-		return time;
-	}
-
-	public void setTime(LocalTime time) {
-		this.time.set(time);
 	}
 
 	public ObservableMap<UniNames, String> getFlags() {

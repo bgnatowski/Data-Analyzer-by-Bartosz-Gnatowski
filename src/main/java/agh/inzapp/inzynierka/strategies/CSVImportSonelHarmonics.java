@@ -2,12 +2,10 @@ package agh.inzapp.inzynierka.strategies;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
-import agh.inzapp.inzynierka.models.fxmodels.PQHarmonicsFx;
 import agh.inzapp.inzynierka.models.fxmodels.SonelHarmonicFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
-import agh.inzapp.inzynierka.utils.parsers.PQParser;
 import agh.inzapp.inzynierka.utils.parsers.SonelParser;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
@@ -18,10 +16,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 public class CSVImportSonelHarmonics implements CSVStrategy {
@@ -69,6 +71,8 @@ public class CSVImportSonelHarmonics implements CSVStrategy {
 	private void setDataInModel(List<String> recordsList, SonelHarmonicFx model) {
 		Map<UniNames, Double> harmonicsMap = model.getHarmonics();
 		Map<UniNames, Double> thdMap = model.getThd();
+		AtomicReference<LocalDate> localDate = new AtomicReference<>();
+		AtomicReference<LocalTime> localTime = new AtomicReference<>();
 
 		Stream.of(UniNames.values()).forEach(unitaryName -> {
 			Long columnID = null;
@@ -80,12 +84,12 @@ public class CSVImportSonelHarmonics implements CSVStrategy {
 				switch (unitaryName) {
 					case Date -> {
 						try {
-							model.setDate(SonelParser.parseDate(stringRecord));
+							localDate.set(SonelParser.parseDate(stringRecord));
 						} catch (ApplicationException e) {
 							DialogUtils.errorDialog(e.getMessage());
 						}
 					}
-					case Time -> model.setTime(SonelParser.parseTime(stringRecord));
+					case Time -> localTime.set(SonelParser.parseTime(stringRecord));
 					case Flag_A, Flag_G, Flag_E, Flag_T, Flag_P -> {
 						Map<UniNames, String> flags = model.getFlags();
 						flags.put(unitaryName, SonelParser.parseFlag(stringRecord));
@@ -108,6 +112,7 @@ public class CSVImportSonelHarmonics implements CSVStrategy {
 				}
 			}
 		});
+		model.setDate(LocalDateTime.of(localDate.get(), localTime.get()));
 		model.setThd(FXCollections.observableMap(thdMap));
 		model.setHarmonics(FXCollections.observableMap(harmonicsMap));
 	}

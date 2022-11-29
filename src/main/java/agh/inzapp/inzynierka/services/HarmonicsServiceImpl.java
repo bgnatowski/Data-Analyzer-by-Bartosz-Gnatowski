@@ -7,7 +7,9 @@ import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -40,8 +42,16 @@ public class HarmonicsServiceImpl implements CrudService{
 	}
 
 	@Override
-	public List<? extends CommonDbModel> findAllByDateBetweenAndTimeBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime){
-//		return repository.findAllByDateBetweenAndTimeBetween(startDate, endDate, startTime, endTime);
-		return repository.findAllByDateAfterAndTimeAfterAndDateBeforeAndTimeBefore(startDate, startTime, endDate, endTime);
+	public List<? extends CommonDbModel> findAllByDateAfterAndDateBefore(LocalDateTime startDate, LocalDateTime endDate){
+		return repository.findAllByDateAfterAndDateBefore(startDate, endDate);
+	}
+	@Override
+	public List<Timestamp> findByDateBetween(LocalDateTime startDate, LocalDateTime endDate){
+		return repository.findByDateBetween(startDate, endDate);
+	}
+
+	@Override
+	public List<Long> findIdByDateBetween(LocalDateTime startDate, LocalDateTime endDate) {
+		return repository.findIdByDateBetween(startDate, endDate);
 	}
 }

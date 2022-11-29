@@ -14,7 +14,6 @@ public class HarmoConverter {
 		HarmoFx harmoFx = new HarmoFx();
 		harmoFx.setId(dataDb.getId());
 		harmoFx.setDate(dataDb.getDate());
-		harmoFx.setTime(dataDb.getTime());
 		harmoFx.setFlags(FXCollections.observableMap(convertFlagPatternToMap(dataDb.getFlags())));
 		harmoFx.setColumnHarmonicNames(FXCollections.observableArrayList(dataDb.getColumnNames()));
 		harmoFx.setHarmonics(FXCollections.observableMap(dataDb.getHarmonics()));
@@ -27,7 +26,6 @@ public class HarmoConverter {
 
 		harmoDb.setId(harmoFx.getId());
 		harmoDb.setDate(harmoFx.getDate());
-		harmoDb.setTime(harmoFx.getTime());
 		harmoDb.setFlags(convertFlagsMapToDb(harmoFx.getFlags()));
 		harmoDb.setColumnNames(harmoFx.getColumnHarmonicNames());
 		harmoDb.setHarmonics(harmoFx.getHarmonics());

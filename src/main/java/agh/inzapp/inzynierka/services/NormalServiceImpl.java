@@ -3,18 +3,13 @@ package agh.inzapp.inzynierka.services;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.repositories.DataRepository;
-import agh.inzapp.inzynierka.database.mappings.RecordsMapping;
-import agh.inzapp.inzynierka.database.repositories.RecordsMappingRepository;
-import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.LinkedHashMap;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class NormalServiceImpl implements CrudService {
@@ -23,7 +18,6 @@ public class NormalServiceImpl implements CrudService {
 	public NormalServiceImpl(DataRepository repository) {
 		this.repository = repository;
 	}
-
 	@Override
 	public <T extends CommonDbModel> T add(T dataModel) throws ApplicationException {
 		DataDb saved;
@@ -42,11 +36,16 @@ public class NormalServiceImpl implements CrudService {
 	}
 
 	@Override
-	public List<? extends CommonDbModel> findAllByDateBetweenAndTimeBetween(LocalDate startDate, LocalDate endDate, LocalTime startTime, LocalTime endTime) {
-//		return repository.findAllByDateBetweenAndTimeBetween(startDate, endDate, startTime, endTime);
-		return repository.findAllByDateAfterAndTimeAfterAndDateBeforeAndTimeBefore(startDate, startTime, endDate, endTime);
+	public List<? extends CommonDbModel> findAllByDateAfterAndDateBefore(LocalDateTime startDate, LocalDateTime endDate) {
+		return repository.findAllByDateAfterAndDateBefore(startDate, endDate);
 	}
-
+	@Override
+	public List<Timestamp> findByDateBetween(LocalDateTime startDate, LocalDateTime endDate){
+		return repository.findByDateBetween(startDate, endDate);
+	}
+	public List<Long> findIdByDateBetween(LocalDateTime startDate, LocalDateTime endDate){
+		return repository.findIdByDateBetween(startDate, endDate);
+	}
 	@Override
 	public void clearAll() {
 		repository.deleteAll();

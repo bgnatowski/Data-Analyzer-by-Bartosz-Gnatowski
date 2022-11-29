@@ -1,11 +1,9 @@
 package agh.inzapp.inzynierka.database.models;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public interface CommonDbModel {
 	Long getId();
-	LocalDate getDate();
-	LocalTime getTime();
+	LocalDateTime getDate();
 	String getFlags();
 }

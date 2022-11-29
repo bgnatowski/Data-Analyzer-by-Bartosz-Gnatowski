@@ -39,9 +39,7 @@ public class ListDataFx {
 	public boolean hasRecordOfDate(LocalDateTime testedLocalDateTime){
 		if(!dataFxList.isEmpty()) {
 //			System.out.println("data:"+testedLocalDateTime.toLocalDate() + " " + testedLocalDateTime.toLocalTime());
-			final boolean b = dataFxList.stream().anyMatch(record ->
-					(record.getDate().isEqual(testedLocalDateTime.toLocalDate())) && (record.getTime().getHour() == testedLocalDateTime.toLocalTime().getHour())
-							&& record.getTime().getMinute() == testedLocalDateTime.toLocalTime().getMinute());
+			final boolean b = dataFxList.stream().anyMatch(record -> record.getDate().isEqual(testedLocalDateTime));
 //			System.out.println(b);
 			return b;
 		}

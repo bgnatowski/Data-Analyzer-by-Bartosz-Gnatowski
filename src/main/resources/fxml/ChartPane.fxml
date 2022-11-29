@@ -23,7 +23,7 @@
                <children>
                   <SplitPane dividerPositions="0.9" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <items>
-                        <AnchorPane fx:id="apOfChart" maxWidth="1.7976931348623157E308" />
+                        <AnchorPane fx:id="apOfChart" />
                         <AnchorPane maxWidth="-Infinity">
                            <children>
                               <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -82,8 +82,8 @@
                                                             <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Wartość" GridPane.columnIndex="1" />
                                                             <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Kolor" GridPane.columnIndex="2" />
                                                             <Button fx:id="yPlusButton1" minWidth="25.0" mnemonicParsing="false" onAction="#yPlusOnAction1" text="+" GridPane.rowIndex="2" />
-                                                            <ComboBox fx:id="yValue0" minWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                            <ColorPicker fx:id="yColor0" prefWidth="40.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                            <ComboBox fx:id="yValue0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                            <ColorPicker fx:id="yColor0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                             <Button fx:id="yAddButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yAddOnAction" text="Dodaj" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                                                             <Button fx:id="yPlusButton2" minWidth="25.0" mnemonicParsing="false" onAction="#yPlusOnAction2" text="+" visible="false" GridPane.rowIndex="3" />
                                                             <Button fx:id="yPlusButton3" minWidth="25.0" mnemonicParsing="false" onAction="#yPlusOnAction3" text="+" visible="false" GridPane.rowIndex="4" />
@@ -109,7 +109,7 @@
                                           <HBox alignment="BOTTOM_RIGHT" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
                                                 <Button fx:id="newChartButton" mnemonicParsing="false" onAction="#newChartOnAction" text="Nowy" />
-                                                <ComboBox fx:id="lineChartSelect" onAction="#switchLineChartOnAction" prefWidth="100.0" />
+                                                <ComboBox fx:id="lineChartSelect" minWidth="80.0" onAction="#switchLineChartOnAction" />
                                                 <Button fx:id="addToRaportButton" mnemonicParsing="false" onAction="#addChartToRaportOnAction" text="Dodaj do raportu" HBox.hgrow="ALWAYS" />
                                                 <Button fx:id="saveAsChartButton" mnemonicParsing="false" onAction="#saveAsChartOnAction" text="Zapisz jako..." />
                                              </children>

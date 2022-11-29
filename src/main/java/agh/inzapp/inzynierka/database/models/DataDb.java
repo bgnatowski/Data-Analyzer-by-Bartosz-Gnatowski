@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity(name = "DataDb")
 @Table(name = "dataDb", uniqueConstraints = {
-		@UniqueConstraint(name = "dataDb_unique", columnNames = {"date", "time"})
+		@UniqueConstraint(name = "dataDb_unique", columnNames = {"date"})
 })
 public class DataDb implements CommonDbModel{
 	@Id
@@ -28,10 +29,8 @@ public class DataDb implements CommonDbModel{
 	@GeneratedValue(strategy = SEQUENCE, generator = "dataDb_sequence")
 	@Column(name = "id", updatable = false)
 	private Long id;
-	@Column(name = "date", columnDefinition = "DATE", nullable = false)
-	private LocalDate date;
-	@Column(name = "time", columnDefinition = "TIME", nullable = false)
-	private LocalTime time;
+	@Column(name = "date", columnDefinition = "TIMESTAMP", nullable = false)
+	private LocalDateTime date;
 	@Column(name = "flags")
 	private String flags;
 
