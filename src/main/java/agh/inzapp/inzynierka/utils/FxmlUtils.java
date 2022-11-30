@@ -1,13 +1,12 @@
 package agh.inzapp.inzynierka.utils;
 
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -32,11 +31,15 @@ public class FxmlUtils {
 		return ResourceBundle.getBundle("bundles.messages").getString(key);
 	}
 
-	public static <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values) {
+	public static <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values) throws ApplicationException {
 		Iterator<K> keyIter = keys.iterator();
 		Iterator<V> valIter = values.iterator();
-		return IntStream.range(0, keys.size()).boxed()
-				.collect(Collectors.toMap(_i -> keyIter.next(), _i -> valIter.next()));
+		Map<K, V> map = new LinkedHashMap<>();
+		while (keyIter.hasNext() && valIter.hasNext()) {
+			map.put(keyIter.next(), valIter.next());
+		}
+		if (keyIter.hasNext() || valIter.hasNext()) throw new ApplicationException("map size are not the same");
+		return map;
 	}
 
 }

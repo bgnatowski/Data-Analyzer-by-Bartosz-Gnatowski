@@ -17,7 +17,6 @@ import javafx.scene.paint.Color;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -30,37 +29,6 @@ public class ChartService {
 	public ChartService() {
 		currentSeries = new XYChart.Series();
 		indexOfLineChart = -1;
-//		testChart();
-	}
-	private void testChart() {
-		CategoryAxis xAxis = new CategoryAxis(FXCollections.observableList(Arrays.asList("0", "10", "2")));
-		NumberAxis yAxis = new NumberAxis(1.3378, 1.3390, 0.0001);
-		xAxis.setLabel("xAxis");
-		yAxis.setLabel("yAxis");
-		yAxis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(yAxis){
-			@Override public String toString(Number object){
-				return String.format("%1.4f", object); }
-		});
-		LineChart<String, Number> lineChart = new LineChart<String, Number>(xAxis, yAxis);
-		XYChart.Series series = new XYChart.Series();
-
-		final XYChart.Data d1 = new XYChart.Data("0.0",1.3379);
-		final XYChart.Data d2 = new XYChart.Data("2.0",1.3387);
-		final XYChart.Data d3 = new XYChart.Data("2.5",1.3385);
-		final XYChart.Data d4 = new XYChart.Data("3.5",1.3387);
-		final XYChart.Data d5 = new XYChart.Data("8.0",1.3378);
-		final XYChart.Data d6 = new XYChart.Data("9.5",1.3388);
-		series.getData().addAll(d1, d2, d3, d4, d5, d6);
-		lineChart.getData().add(series);
-		lineChart.setLegendVisible(true);
-		lineChart.setPrefWidth(Control.USE_COMPUTED_SIZE);
-		lineChart.setPrefHeight(Control.USE_COMPUTED_SIZE);
-		lineChart.setMaxSize(Control.USE_PREF_SIZE, Control.USE_PREF_SIZE);
-		AnchorPane.setTopAnchor(lineChart, 0.0);
-		AnchorPane.setBottomAnchor(lineChart, 0.0);
-		AnchorPane.setLeftAnchor(lineChart, 0.0);
-		AnchorPane.setRightAnchor(lineChart, 0.0);
-		lineChartObservableList.add(lineChart);
 	}
 
 	public ObservableList<String> getLineChartsList() {
@@ -74,13 +42,14 @@ public class ChartService {
 	public void newLineChart() {
 		CategoryAxis xAxis = new CategoryAxis();
 		NumberAxis yAxis = new NumberAxis();
-		xAxis.setLabel("xAxis");
-		yAxis.setLabel("yAxis");
+//		xAxis.setLabel("xAxis");
+//		yAxis.setLabel("yAxis");
 		yAxis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(yAxis){
 			@Override public String toString(Number object){
 				return String.format("%1.4f", object); }
 		});
 		LineChart<String, Number> newLineChart = new LineChart<>(xAxis, yAxis);
+		newLineChart.setCreateSymbols(false);
 		newLineChart.setLegendVisible(true);
 		newLineChart.setPrefWidth(Control.USE_COMPUTED_SIZE);
 		newLineChart.setPrefHeight(Control.USE_COMPUTED_SIZE);
@@ -108,11 +77,12 @@ public class ChartService {
 		return lineChart;
 	}
 
-	public void addSeriesToChart(Map<LocalDateTime, Double> xyDataMap){
+	public void createSeries(Map<LocalDateTime, Double> xyDataMap, UniNames seriesName, Color color){
 		currentSeries = new XYChart.Series();
-
-//		currentSeries.getNode().setStyle("-fx-stroke:"+xColorValueColor+";");
 		setSeries(xyDataMap);
+		setSeriesName(seriesName);
+		updateCurrentLineChart();
+//		setSeriesColor(color);
 	}
 
 	public void setSeriesColor(Color seriesColor){
@@ -132,10 +102,17 @@ public class ChartService {
 		ObservableList dataList = currentSeries.getData();
 		dataList.clear();
 		xyDataMap.forEach((x,y)->{
-			XYChart.Data data = new XYChart.Data(x,y);
+			XYChart.Data data = new XYChart.Data(x.toString(),y);
 			dataList.add(data);
 		});
 		currentSeries.setData(dataList);
 	}
+	private void updateCurrentLineChart(){
+		currentLineChart.getData().add(currentSeries);
+		lineChartObservableList.set(indexOfLineChart, currentLineChart);
+	}
 
+	public void clearSeriesBeforeCreatingNewOne() {
+		currentLineChart.getData().clear();
+	}
 }

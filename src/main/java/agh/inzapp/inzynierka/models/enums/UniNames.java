@@ -458,7 +458,7 @@ public enum UniNames{
 	public String getUnit() {
 		return unit;
 	}
-//	public String getUniName() { return uniName;}
+	public String getUniName() { return uniName;}
 
 	@Override
 	public String toString() {

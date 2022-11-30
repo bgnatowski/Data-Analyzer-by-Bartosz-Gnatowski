@@ -1,6 +1,7 @@
 package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.database.DataManager;
+import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.models.ListDataFx;
 import agh.inzapp.inzynierka.models.ListHarmoFx;
 import agh.inzapp.inzynierka.models.enums.UniNames;
@@ -9,6 +10,7 @@ import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
 import agh.inzapp.inzynierka.services.ChartService;
 import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -38,15 +40,12 @@ public class ChartViewController {
 	private DatePicker xDateFrom, xDateTo;
 	private TimeSpinner xTimeFrom, xTimeTo;
 	@FXML
-	private Button newChartButton, addToRaportButton, saveAsChartButton, yAddButton;
-	@FXML
-	private Button yPlusButton1, yPlusButton2, yPlusButton3, yPlusButton4;
+	private Button newChartButton, addToRaportButton, saveAsChartButton, yAddButton, yPlusButton, yMinusButton;;
 	@FXML
 	private ColorPicker yColor0 ,yColor1 ,yColor2, yColor3, yColor4;
 	@FXML
 	private ComboBox<UniNames> yValue0,yValue1,yValue2,yValue3,yValue4;
 	////////////////////////////////////
-	private List<Button> yAddValueButtonsList;
 	private List<ComboBox<UniNames>> yValuesList;
 	private List<ColorPicker> yColorPickerList;
 	/////////////////////////////////////
@@ -77,11 +76,6 @@ public class ChartViewController {
 		xGrid.add(xTimeTo, 1,2);
 	}
 	private void initLists() {
-		yAddValueButtonsList = new ArrayList<>();
-		yAddValueButtonsList.add(yPlusButton1);
-		yAddValueButtonsList.add(yPlusButton2);
-		yAddValueButtonsList.add(yPlusButton3);
-		yAddValueButtonsList.add(yPlusButton4);
 		yValuesList = new ArrayList<>();
 		yValuesList.add(yValue0);
 		yValuesList.add(yValue1);
@@ -150,10 +144,23 @@ public class ChartViewController {
 		} else if(dataFxList.isEmpty() && !harmoFxList.isEmpty()){
 			uniNamesList = harmoFxList.stream().findFirst().get().getColumnNames();
 		}
-		List<UniNames> finalUniNamesList = uniNamesList.stream().distinct().collect(Collectors.toList());
+		List<UniNames> finalUniNamesList = deleteNotRecords(uniNamesList);
 		if(!finalUniNamesList.isEmpty()){
 			yValuesList.forEach(uniNamesComboBox -> uniNamesComboBox.setItems(FXCollections.observableArrayList(finalUniNamesList)));
 		}
+	}
+
+	private static List<UniNames> deleteNotRecords(List<UniNames> uniNamesList) {
+		List<UniNames> collect = uniNamesList.stream().distinct().collect(Collectors.toList());
+		collect.remove(UniNames.Date);
+		collect.remove(UniNames.Time);
+		collect.remove(UniNames.Flag);
+		collect.remove(UniNames.Flag_A);
+		collect.remove(UniNames.Flag_E);
+		collect.remove(UniNames.Flag_G);
+		collect.remove(UniNames.Flag_P);
+		collect.remove(UniNames.Flag_T);
+		return collect;
 	}
 
 	//PRZYCISKI "DODAJ
@@ -162,40 +169,36 @@ public class ChartViewController {
 		try {
 			List<LocalDateTime> xDataList = getFromX();
 			Map<LocalDateTime, Double> xyDataMap;
-//			System.out.println(xDataList);
+			if(isAnyCreatedChart()) newChartOnAction();
+			chartService.clearSeriesBeforeCreatingNewOne();
 			for(int i = 0; i <= howManyYDData; i++){
 				List<Double> yDataList = getFromY(i);
-//				xyDataMap = FxmlUtils.zipToMap(xDataList, yDataList);
-//				chartService.addSeriesToChart(xyDataMap);
-//				chartService.setSeriesName(yValuesList.get(i).getValue());
-//				chartService.setSeriesColor(yColorPickerList.get(i).getValue());
+				xyDataMap = FxmlUtils.zipToMap(xDataList, yDataList);
+				chartService.createSeries(xyDataMap, yValuesList.get(i).getValue(), yColorPickerList.get(i).getValue());
 			}
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
 	}
 
+	private boolean isAnyCreatedChart() {
+		return lineChartSelect.getSelectionModel().isEmpty();
+	}
+
 	private List<Double> getFromY(int i) throws ApplicationException {
-		final UniNames value = yValuesList.get(i).getValue();
-		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
-		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
+		UniNames uniName = yValuesList.get(i).getValue();
+		LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
+		LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
 		if(from.isBefore(to)){
-			final List<Long> allIdByDateBetween = DataManager.findIdByDateBetween(from, to);
-//
+			List<Long> allIdByDateBetween = DataManager.findIdByDateBetween(from, to);
+			List<CommonDbModel> recordsById = DataManager.findAllByIdBetween(allIdByDateBetween.get(0), allIdByDateBetween.get(allIdByDateBetween.size() - 1));
+			List<Double> valuesList = new ArrayList<>();
+			recordsById.forEach(record->{
+				final Double recordValue = record.getRecords().get(uniName);
+				valuesList.add(recordValue);
+			});
+			return valuesList;
 		}
-//		if(to.isAfter(from)){
-//			List<? extends CommonDbModel> queryListNormal = DataManager.findAllNormalByDateTimeBetween(from, to);
-//			List<? extends CommonDbModel> queryListHarmo = DataManager.findAllHarmoByDateTimeBetween(from, to);
-//			List<CommonDbModel> list = new ArrayList<>(queryListNormal);
-//			list.addAll(queryListHarmo);
-//			list.forEach(e->{
-//				System.out.println(e);
-//				if(e instanceof DataDb) System.out.println("normal");
-//				else if(e instanceof HarmoDb) System.out.println("harmo");
-//			});
-//			return null;
-////			return timeRecordList.stream().distinct().collect(Collectors.toList());
-//		}
 		throw new ApplicationException("bad value"); //todo exception comunicat
 	}
 
@@ -228,78 +231,19 @@ public class ChartViewController {
 	}
 	//PRZYCISKI "+"
 	@FXML
-	private void yPlusOnAction1() {
-		if(yPlusButton2.isVisible()) return;
-		if(yPlusButton1.getText().equals("+")){
-			howManyYDData++;
-			yPlusButton1.setText("-");
-			yPlusButton1.setVisible(false); //wylaczenie kliknietego
-			yPlusButton2.setVisible(true); //wlaczenie nastepnego
-			//wlaczenie kolejnych
-			yValue1.setVisible(true);
-			yColor1.setVisible(true);
-		}else{
-			howManyYDData--;
-			yPlusButton1.setText("+");
-			yPlusButton2.setVisible(false); //wlaczenie poprzedniego
-			//wylaczenie w kliknietym wierszu
-			yValue1.setVisible(false);
-			yColor1.setVisible(false);
-		}
+	private void yPlusOnAction() {
+		if(howManyYDData==4) return;
+		howManyYDData++;
+		yValuesList.get(howManyYDData).setVisible(true);
+		yColorPickerList.get(howManyYDData).setVisible(true);
 	}
+
 	@FXML
-	private void yPlusOnAction2() {
-		if(yPlusButton3.isVisible()) return;
-		if(yPlusButton2.getText().equals("+")){
-			howManyYDData++;
-			yPlusButton2.setText("-");
-			yPlusButton2.setVisible(false);
-			yPlusButton3.setVisible(true);
-			yValue2.setVisible(true);
-			yColor2.setVisible(true);
-		}else{
-			howManyYDData--;
-			yPlusButton2.setText("+");
-			yPlusButton2.setVisible(false);
-			yValue2.setVisible(false);
-			yColor2.setVisible(false);
-			yPlusButton1.setVisible(true);
-		}
-	}
-	@FXML
-	private void yPlusOnAction3() {
-		if(yPlusButton4.isVisible()) return;
-		if(yPlusButton3.getText().equals("+")){
-			howManyYDData++;
-			yPlusButton3.setText("-");
-			yPlusButton3.setVisible(false);
-			yPlusButton4.setVisible(true);
-			yValue3.setVisible(true);
-			yColor3.setVisible(true);
-		}else{
-			howManyYDData--;
-			yPlusButton3.setText("+");
-			yPlusButton2.setVisible(true);
-			yValue3.setVisible(false);
-			yColor3.setVisible(false);
-			yPlusButton3.setVisible(false);
-		}
-	}
-	@FXML
-	private void yPlusOnAction4() {
-		if(yPlusButton4.getText().equals("+")){
-			howManyYDData++;
-			yPlusButton4.setText("-");
-			yValue4.setVisible(true);
-			yColor4.setVisible(true);
-		}else{
-			howManyYDData--;
-			yPlusButton4.setText("+");
-			yValue4.setVisible(false);
-			yColor4.setVisible(false);
-			yPlusButton4.setVisible(false);
-			yPlusButton3.setVisible(true);
-		}
+	private void yMinusOnAction() {
+		if(howManyYDData==0) return;
+		yValuesList.get(howManyYDData).setVisible(false);
+		yColorPickerList.get(howManyYDData).setVisible(false);
+		howManyYDData--;
 	}
 
 	//SAVE TO RAPORT

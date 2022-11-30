@@ -36,9 +36,10 @@ public class NormalServiceImpl implements CrudService {
 	}
 
 	@Override
-	public List<? extends CommonDbModel> findAllByDateAfterAndDateBefore(LocalDateTime startDate, LocalDateTime endDate) {
-		return repository.findAllByDateAfterAndDateBefore(startDate, endDate);
+	public List<CommonDbModel> findRecordsByIdBetween(Long startId, Long endId) {
+		return repository.findAllByIdBetween(startId, endId);
 	}
+
 	@Override
 	public List<Timestamp> findByDateBetween(LocalDateTime startDate, LocalDateTime endDate){
 		return repository.findByDateBetween(startDate, endDate);
@@ -46,6 +47,7 @@ public class NormalServiceImpl implements CrudService {
 	public List<Long> findIdByDateBetween(LocalDateTime startDate, LocalDateTime endDate){
 		return repository.findIdByDateBetween(startDate, endDate);
 	}
+
 	@Override
 	public void clearAll() {
 		repository.deleteAll();

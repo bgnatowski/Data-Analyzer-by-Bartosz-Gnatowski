@@ -3,6 +3,7 @@ package agh.inzapp.inzynierka.database;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
+import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
@@ -77,14 +78,6 @@ public class DataManager {
 	public static void clearHarmo(){
 		harmonicsService.clearAll();
 	}
-
-	public static List<? extends CommonDbModel> findAllNormalByDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate){
-		return dataService.findAllByDateAfterAndDateBefore(startDate, endDate);
-	}
-	public static List<? extends CommonDbModel> findAllHarmoByDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate){
-		return harmonicsService.findAllByDateAfterAndDateBefore(startDate, endDate);
-	}
-
 	public static List<LocalDateTime> findTimeSeriesByLocalDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate){
 		final List<Timestamp> byDateBetween = dataService.findByDateBetween(startDate, endDate);
 		byDateBetween.addAll(harmonicsService.findByDateBetween(startDate, endDate));
@@ -98,6 +91,12 @@ public class DataManager {
 		final List<Long> idByDateBetween = dataService.findIdByDateBetween(startDate, endDate);
 		idByDateBetween.addAll(harmonicsService.findIdByDateBetween(startDate,endDate));
 		return idByDateBetween.stream().distinct().collect(Collectors.toList());
+	}
+
+	public static List<CommonDbModel> findAllByIdBetween(Long idStart, Long idEnd){
+		final List<CommonDbModel> recordsByIdBetween = dataService.findRecordsByIdBetween(idStart, idEnd);
+		recordsByIdBetween.addAll(harmonicsService.findRecordsByIdBetween(idStart,idEnd));
+		return recordsByIdBetween.stream().distinct().collect(Collectors.toList());
 	}
 
 }
