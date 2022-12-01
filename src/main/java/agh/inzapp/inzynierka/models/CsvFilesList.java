@@ -58,7 +58,7 @@ public class CsvFilesList {
 
 	public void saveBoth(Analysers analyser) throws ApplicationException {
 		DataManager.clearNormal();
-		DataManager.clearNormal();
+		DataManager.clearHarmo();
 		switch (analyser){
 			case PQbox ->{
 				DataManager.saveAll(importNormalDataList(new CSVImportPQ()));

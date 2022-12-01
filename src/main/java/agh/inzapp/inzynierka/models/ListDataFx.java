@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,8 +19,7 @@ public class ListDataFx {
 	private List<DataFx> dataFxList = new ArrayList<>();
 	private static volatile ListDataFx instance;
 
-	private ListDataFx(){
-	}
+	private ListDataFx(){}
 
 	public static ListDataFx getInstance(){
 		ListDataFx result = instance;
@@ -34,16 +32,6 @@ public class ListDataFx {
 			}
 			return instance;
 		}
-	}
-
-	public boolean hasRecordOfDate(LocalDateTime testedLocalDateTime){
-		if(!dataFxList.isEmpty()) {
-//			System.out.println("data:"+testedLocalDateTime.toLocalDate() + " " + testedLocalDateTime.toLocalTime());
-			final boolean b = dataFxList.stream().anyMatch(record -> record.getDate().isEqual(testedLocalDateTime));
-//			System.out.println(b);
-			return b;
-		}
-		return false;
 	}
 
 	public void init() {
@@ -60,6 +48,11 @@ public class ListDataFx {
 		}
 	}
 
+	public boolean hasRecordOfDate(LocalDateTime testedLocalDateTime){
+		if(!dataFxList.isEmpty())
+			return dataFxList.stream().anyMatch(record -> record.getDate().isEqual(testedLocalDateTime));
+		return false;
+	}
 
 	public ObservableList<DataFx> getDataFxObservableList() {
 		return dataFxObservableList;

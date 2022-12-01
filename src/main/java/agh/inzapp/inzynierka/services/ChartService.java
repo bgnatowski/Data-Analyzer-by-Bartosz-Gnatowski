@@ -7,10 +7,7 @@ import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
+import javafx.scene.chart.*;
 import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -82,11 +79,44 @@ public class ChartService {
 		currentSeries = new XYChart.Series();
 		setSeries(xyDataMap);
 		setSeriesName(seriesName);
-		updateCurrentLineChart();
+		updateCurrentLineChartSeries();
 //		setSeriesColor(color);
 	}
 
-	public void setSeriesColor(Color seriesColor){
+	public void clearSeriesBeforeCreatingNewOne() {
+		currentLineChart.getData().clear();
+	}
+
+	public void setLineChartTitle(String title){
+		currentLineChart.setTitle(title);
+		updateChart();
+	}
+
+	public void setXAxisLabel(String label){
+		currentLineChart.getXAxis().setLabel(label);
+		currentLineChart.getXAxis()
+				.lookup(".axis-label")
+				.setStyle("-fx-label-padding: 0 -10 0 0;");
+		updateChart();
+	}
+	public void setYAxisLabel(String label){;
+		currentLineChart.getYAxis().setTickLabelRotation(-90);
+		currentLineChart.getYAxis().setLabel(label);
+		currentLineChart.getYAxis()
+				.lookup(".axis-label")
+				.setStyle("-fx-label-padding: -10 0 0 0;");
+		updateChart();
+	}
+
+	public void setXDateTickToOnlyTime() {
+		xTickDatePattern = "HH:mm";
+	}
+
+	public void setXDateTickToDays() {
+		xTickDatePattern = "d-MMM-yyyy HH:mm";
+	}
+
+	private void setSeriesColor(Color seriesColor){
 		Node line = currentSeries.getNode().lookup(".chart-series-line");
 		String rgb = String.format("%d, %d, %d",
 				(int) (seriesColor.getRed() * 255),
@@ -95,7 +125,7 @@ public class ChartService {
 		line.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
 	}
 
-	public void setSeriesName(UniNames seriesName){
+	private void setSeriesName(UniNames seriesName){
 		currentSeries.setName(seriesName.toString()+seriesName.getUnit());
 	}
 
@@ -109,25 +139,12 @@ public class ChartService {
 		});
 		currentSeries.setData(dataList);
 	}
-	private void updateCurrentLineChart(){
+	private void updateCurrentLineChartSeries(){
 		currentLineChart.getData().add(currentSeries);
+		updateChart();
+	}
+
+	private void updateChart() {
 		lineChartObservableList.set(indexOfLineChart, currentLineChart);
-	}
-
-	public void clearSeriesBeforeCreatingNewOne() {
-		currentLineChart.getData().clear();
-	}
-
-	public void setLineChartTitle(String title){
-		currentLineChart.setTitle(title);
-		updateCurrentLineChart();
-	}
-
-	public void setXDateTickToOnlyTime() {
-		xTickDatePattern = "HH:mm";
-	}
-
-	public void setXDateTickToDays() {
-		xTickDatePattern = "d-MMM-yyyy HH:mm";
 	}
 }

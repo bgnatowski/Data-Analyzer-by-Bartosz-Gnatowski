@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -75,30 +76,32 @@ public class DataManager {
 	public static void clearNormal(){
 		dataService.clearAll();
 	}
-
 	public static void clearHarmo(){
 		harmonicsService.clearAll();
 	}
 	public static List<LocalDateTime> findTimeSeriesByLocalDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate){
-		final List<Timestamp> byDateBetween = dataService.findByDateBetween(startDate, endDate);
+		List<Timestamp> byDateBetween = new ArrayList<>();
+		byDateBetween.addAll(dataService.findByDateBetween(startDate, endDate));
 		byDateBetween.addAll(harmonicsService.findByDateBetween(startDate, endDate));
-		final List<Timestamp> collect = byDateBetween.stream().distinct().collect(Collectors.toList());
+		List<Timestamp> listWithoutDuplicates = byDateBetween.stream().distinct().collect(Collectors.toList());
 
-		return collect.stream().map(timestamp ->
+		return listWithoutDuplicates.stream().map(timestamp ->
 				timestamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
 				.collect(Collectors.toList());
 	}
 
 	public static List<Long> findIdByDateBetween(LocalDateTime startDate, LocalDateTime endDate){
-		final List<Long> idByDateBetween = dataService.findIdByDateBetween(startDate, endDate);
+		List<Long> idByDateBetween = new ArrayList<>();
+		idByDateBetween.addAll(dataService.findIdByDateBetween(startDate,endDate));
 		idByDateBetween.addAll(harmonicsService.findIdByDateBetween(startDate,endDate));
 		return idByDateBetween.stream().distinct().collect(Collectors.toList());
 	}
 
-	public static List<CommonDbModel> findAllByIdBetween(Long idStart, Long idEnd){
-		final List<CommonDbModel> recordsByIdBetween = dataService.findRecordsByIdBetween(idStart, idEnd);
-		recordsByIdBetween.addAll(harmonicsService.findRecordsByIdBetween(idStart,idEnd));
-		return recordsByIdBetween.stream().distinct().collect(Collectors.toList());
+	public static List<CommonDbModel> findAllNormalByIdBetween(Long idStart, Long idEnd){
+		return dataService.findRecordsByIdBetween(idStart,idEnd);
 	}
 
+	public static List<CommonDbModel> findAllHarmoByIdBetween(Long idStart, Long idEnd){
+		return harmonicsService.findRecordsByIdBetween(idStart,idEnd);
+	}
 }

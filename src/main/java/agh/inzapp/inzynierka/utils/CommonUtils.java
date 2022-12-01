@@ -1,11 +1,12 @@
 package agh.inzapp.inzynierka.utils;
 
+import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommonUtils {
 	public static boolean isSameDay(LocalDateTime date1, LocalDateTime date2) {
@@ -22,5 +23,18 @@ public class CommonUtils {
 			map.put(keyIter.next(), valIter.next());
 		}
 		return map;
+	}
+
+	public static List<UniNames> deleteNonRecordsFromUniNamesList(List<UniNames> uniNamesList) {
+		List<UniNames> collect = uniNamesList.stream().distinct().collect(Collectors.toList());
+		collect.remove(UniNames.Date);
+		collect.remove(UniNames.Time);
+		collect.remove(UniNames.Flag);
+		collect.remove(UniNames.Flag_A);
+		collect.remove(UniNames.Flag_E);
+		collect.remove(UniNames.Flag_G);
+		collect.remove(UniNames.Flag_P);
+		collect.remove(UniNames.Flag_T);
+		return collect;
 	}
 }

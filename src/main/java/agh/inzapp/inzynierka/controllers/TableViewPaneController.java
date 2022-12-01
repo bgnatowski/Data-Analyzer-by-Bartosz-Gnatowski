@@ -95,10 +95,10 @@ public class TableViewPaneController {
 				default ->{
 					tableColumn = new TableColumn<DataFx, Double>(uniName + " " + uniName.getUnit());
 					tableColumn.setCellValueFactory(
-							(Callback<TableColumn.CellDataFeatures<DataFx, Double>, ObservableValue>) cellDataFeatures -> {
+							(Callback<TableColumn.CellDataFeatures<DataFx, Double>, ObservableValue<?>>) cellDataFeatures -> {
 						final Optional<Double> aDouble = Optional.ofNullable(cellDataFeatures.getValue().recordsProperty().getValue().get(uniName));
 						if (aDouble.isEmpty())
-							return new SimpleObjectProperty(null);
+							return new SimpleObjectProperty<Double>(null);
 						else{
 							return new SimpleDoubleProperty(aDouble.get());
 						}
@@ -137,7 +137,7 @@ public class TableViewPaneController {
 				case Flag, Flag_A, Flag_G, Flag_E, Flag_T, Flag_P -> {
 					tableColumn = new TableColumn<HarmoFx, Map<UniNames, String>>(uniName.toString());
 					tableColumn.setCellValueFactory(
-							(Callback<TableColumn.CellDataFeatures<HarmoFx, String>, ObservableValue>) dataFxCellDataFeatures ->
+							(Callback<TableColumn.CellDataFeatures<HarmoFx, String>, ObservableValue<String>>) dataFxCellDataFeatures ->
 									new SimpleStringProperty(dataFxCellDataFeatures.getValue().flagsProperty().getValue().get(uniName)));
 				}
 				case Date -> {
@@ -155,7 +155,7 @@ public class TableViewPaneController {
 				default ->{
 					tableColumn = new TableColumn<HarmoFx, Double>(uniName + " " + uniName.getUnit());
 					tableColumn.setCellValueFactory(
-							(Callback<TableColumn.CellDataFeatures<HarmoFx, Double>, ObservableValue>) dataFxCellDataFeatures ->
+							(Callback<TableColumn.CellDataFeatures<HarmoFx, Double>, ObservableValue<?>>) dataFxCellDataFeatures ->
 									new SimpleDoubleProperty(dataFxCellDataFeatures.getValue().recordsProperty().getValue().get(uniName)));
 				}
 			}

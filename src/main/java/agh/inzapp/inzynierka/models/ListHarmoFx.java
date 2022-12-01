@@ -1,10 +1,10 @@
 package agh.inzapp.inzynierka.models;
 
-import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
-import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
+import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
+import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
@@ -19,8 +19,7 @@ public class ListHarmoFx {
 	private List<HarmoFx> harmoFxList = new ArrayList<>();
 	private static volatile ListHarmoFx instance;
 
-	private ListHarmoFx() {
-	}
+	private ListHarmoFx() {}
 
 	public static ListHarmoFx getInstance(){
 		ListHarmoFx result = instance;
@@ -37,8 +36,8 @@ public class ListHarmoFx {
 
 	public void init() {
 		List<? extends CommonDbModel> allHarmoDb = DataManager.getAll(HarmoDb.class);
-		harmoFxList.clear();
 		if (allHarmoDb != null){
+			harmoFxList.clear();
 			allHarmoDb.forEach(harmoDb -> {
 				if (harmoDb instanceof HarmoDb){
 					HarmoFx harmoFx = HarmoConverter.convertDbToFx((HarmoDb) harmoDb);
@@ -49,12 +48,8 @@ public class ListHarmoFx {
 		}
 	}
 	public boolean hasRecordOfDate(LocalDateTime testedLocalDateTime){
-		if(!harmoFxList.isEmpty()) {
-//			System.out.println("harmo:"+testedLocalDateTime.toLocalDate() + " " + testedLocalDateTime.toLocalTime());
-			final boolean b = harmoFxList.stream().anyMatch(record -> record.getDate().isEqual(testedLocalDateTime));
-//			System.out.println(b);
-			return b;
-		}
+		if(!harmoFxList.isEmpty())
+			return harmoFxList.stream().anyMatch(record -> record.getDate().isEqual(testedLocalDateTime));
 		return false;
 	}
 

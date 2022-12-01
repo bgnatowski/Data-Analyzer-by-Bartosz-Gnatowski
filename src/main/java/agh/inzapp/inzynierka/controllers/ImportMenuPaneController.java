@@ -32,7 +32,7 @@ public class ImportMenuPaneController {
 	@FXML
 	private Button btnNormalSelect, btnHarmonicsSelect, btnImport;
 	@FXML
-	private RadioButton noNormal, noHarmonic, yesHarmonic, yesNormal;;
+	private RadioButton noNormal, noHarmonic, yesHarmonic, yesNormal;
 	@FXML
 	private TitledPane titledPaneNormal, titledPaneHarmonics;
 	@FXML
@@ -48,14 +48,14 @@ public class ImportMenuPaneController {
 		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
 		titledPaneNormal.setExpanded(true);
 		titledPaneHarmonics.setExpanded(true);
-
+		//list bindings
 		labelNormal.disableProperty().bindBidirectional(noNormal.selectedProperty());
 		btnNormalSelect.disableProperty().bindBidirectional(noNormal.selectedProperty());
 		listViewNormal.disableProperty().bindBidirectional(noNormal.selectedProperty());
 		labelHarmonics.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
 		btnHarmonicsSelect.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
 		listViewHarmonics.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
-
+		// button binding
 		btnImport.disableProperty().bind(yesNormal.selectedProperty().or(yesHarmonic.selectedProperty())
 				.and(
 						(filesList.listNormalProperty().emptyProperty().not().and(yesNormal.selectedProperty().and(noHarmonic.selectedProperty())))

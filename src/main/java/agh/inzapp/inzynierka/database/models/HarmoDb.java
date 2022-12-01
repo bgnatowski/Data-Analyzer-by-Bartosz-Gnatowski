@@ -16,7 +16,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @AllArgsConstructor
 @ToString
 
-@Entity(name = "HataDb")
+@Entity(name = "HarmoDb")
 @Table(name = "harmoDb", uniqueConstraints = {
 		@UniqueConstraint(name = "harmoDb_unique", columnNames = {"date"})
 })

@@ -18,6 +18,6 @@ public interface HarmoRepository extends JpaRepository<HarmoDb, Long> {
 	@Query(value = "select id from harmo_db record WHERE record.date BETWEEN ?1 AND ?2", nativeQuery = true)
 	List<Long> findIdByDateBetween(LocalDateTime start, LocalDateTime end);
 
-	@Query("select h from HataDb h where h.id between ?1 and ?2")
+	@Query("select h from HarmoDb h where h.id between ?1 and ?2")
 	List<CommonDbModel> findAllByIdBetween(Long id, Long id2);
 }
