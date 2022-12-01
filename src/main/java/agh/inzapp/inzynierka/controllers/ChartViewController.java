@@ -196,16 +196,10 @@ public class ChartViewController {
 		LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
 		if(from.isBefore(to)){
 			List<Long> allIdByDateBetween = DataManager.findIdByDateBetween(from, to);
-			List<CommonDbModel> normalByIdBetween = DataManager.findAllNormalByIdBetween(allIdByDateBetween.get(0), allIdByDateBetween.get(allIdByDateBetween.size() - 1));
-			List<CommonDbModel> harmoByIdBetween = DataManager.findAllHarmoByIdBetween(allIdByDateBetween.get(0), allIdByDateBetween.get(allIdByDateBetween.size() - 1));
-			List<Double> valuesList = new ArrayList<>();
-			valuesList.addAll(normalByIdBetween.stream().map(record -> record.getRecords().get(uniName))
+			List<CommonDbModel> allByIdBetween = DataManager.findAllByIdBetween(allIdByDateBetween.get(0), allIdByDateBetween.get(allIdByDateBetween.size() - 1));
+			return allByIdBetween.stream().map(record -> record.getRecords().get(uniName))
 					.filter(Objects::nonNull)
-					.collect(Collectors.toList()));
-			valuesList.addAll(harmoByIdBetween.stream().map(record -> record.getRecords().get(uniName))
-					.filter(Objects::nonNull)
-					.collect(Collectors.toList()));
-			return valuesList;
+					.collect(Collectors.toList());
 		}
 		throw new ApplicationException("bad value"); //todo exception communicate
 	}

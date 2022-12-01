@@ -3,7 +3,6 @@ package agh.inzapp.inzynierka.database;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
-import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -97,11 +95,11 @@ public class DataManager {
 		return idByDateBetween.stream().distinct().collect(Collectors.toList());
 	}
 
-	public static List<CommonDbModel> findAllNormalByIdBetween(Long idStart, Long idEnd){
-		return dataService.findRecordsByIdBetween(idStart,idEnd);
+	public static List<CommonDbModel> findAllByIdBetween(Long idStart, Long idEnd){
+		List<CommonDbModel> list = new ArrayList<>();
+		list.addAll(dataService.findRecordsByIdBetween(idStart,idEnd));
+		list.addAll(harmonicsService.findRecordsByIdBetween(idStart,idEnd));
+		return list;
 	}
 
-	public static List<CommonDbModel> findAllHarmoByIdBetween(Long idStart, Long idEnd){
-		return harmonicsService.findRecordsByIdBetween(idStart,idEnd);
-	}
 }
