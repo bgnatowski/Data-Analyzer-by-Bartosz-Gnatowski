@@ -64,12 +64,12 @@ public class SonelParser {
 		mapDataNames.put("U L12 avg [V]", U12_avg); //
 		mapDataNames.put("U L23 avg [V]", U23_avg); //
 		mapDataNames.put("U L31 avg [V]", U31_avg); //
-		mapDataNames.put("U L1 avg [V]", U12_max); //
-		mapDataNames.put("U L2 avg [V]", U23_max); //
-		mapDataNames.put("U L3 avg [V]", U31_max); //
-		mapDataNames.put("U L1 max [V]", U12_min); //
-		mapDataNames.put("U L2 max [V]", U23_min); //
-		mapDataNames.put("U L3 max [V]", U31_min); //
+		mapDataNames.put("U L1 avg [V]", UL1_max); //
+		mapDataNames.put("U L2 avg [V]", UL2_max); //
+		mapDataNames.put("U L3 avg [V]", UL3_max); //
+		mapDataNames.put("U L1 max [V]", UL1_min); //
+		mapDataNames.put("U L2 max [V]", UL2_min); //
+		mapDataNames.put("U L3 max [V]", UL3_min); //
 		mapDataNames.put("U L1 min [V]", UL1_avg); //
 		mapDataNames.put("U L2 min [V]", UL2_avg); //
 		mapDataNames.put("U L3 min [V]", UL3_avg); //
@@ -85,20 +85,20 @@ public class SonelParser {
 		mapDataNames.put("I *N avg [A]", IN_avg); //
 		mapDataNames.put("I *N max [A]", IN_max); //
 		mapDataNames.put("I *N min [A]", IN_min); //
-		mapDataNames.put("Pst L1 inst [---]", P_total); //
-		mapDataNames.put("Pst L2 inst [---]", P_max); //
-		mapDataNames.put("Pst L3 inst [---]", P_min); //
-		mapDataNames.put("P Σ avg [kW] ", S_total); //
-		mapDataNames.put("P Σ max [kW] ", S_max); //
-		mapDataNames.put("P Σ min [kW] ", S_min); //
+		mapDataNames.put("Pst L1 inst [---]", Pst_UL1); //
+		mapDataNames.put("Pst L2 inst [---]", Pst_UL2); //
+		mapDataNames.put("Pst L3 inst [---]", Pst_UL3); //
+		mapDataNames.put("P Σ avg [kW] ", P_total); //
+		mapDataNames.put("P Σ max [kW] ", P_max); //
+		mapDataNames.put("P Σ min [kW] ", P_min); //
 
 		//todo uzupełnic uninames
 		mapDataNames.put("Plt L1 inst [---]", Plt_L1);
 		mapDataNames.put("Plt L2 inst [---]", Plt_L2);
 		mapDataNames.put("Plt L3 inst [---]", Plt_L3);
-		mapDataNames.put("U N-PE min [V]", U_NPE_min);
-		mapDataNames.put("U N-PE max [V]", U_NPE_max);
 		mapDataNames.put("U N-PE avg [V]", U_NPE_avg);
+		mapDataNames.put("U N-PE max [V]", U_NPE_max);
+		mapDataNames.put("U N-PE min [V]", U_NPE_min);
 		mapDataNames.put("U0 Σ avg [V]", U0_avg_total);
 		mapDataNames.put("U0 Σ max [V]", U0_max_total);
 		mapDataNames.put("U0 Σ min [V]", U0_min_total);
@@ -115,7 +115,7 @@ public class SonelParser {
 		mapDataNames.put("I1 Σ max [A]", I1_max_total);
 		mapDataNames.put("I1 Σ min [A]", I1_min_total);
 		mapDataNames.put("I2 Σ avg [A]", I2_avg_total);
-		mapDataNames.put("I2 Σ max [A]", I2_max);
+		mapDataNames.put("I2 Σ max [A]", I2_max_total);
 		mapDataNames.put("I2 Σ min [A]", I2_min_total);
 		mapDataNames.put("PF L1 avg [---]", PF_L1_avg);
 		mapDataNames.put("PF L2 avg [---]", PF_L2_avg);
@@ -126,17 +126,17 @@ public class SonelParser {
 		mapDataNames.put("P L1 max [kW]", P_L1_max);
 		mapDataNames.put("P L2 max [kW]", P_L2_max);
 		mapDataNames.put("P L3 max [kW]", P_L3_max);
-		mapDataNames.put("P L1 min [kW]", P_L3_min);
-		mapDataNames.put("P L2 min [kW]", P_L3_min);
+		mapDataNames.put("P L1 min [kW]", P_L1_min);
+		mapDataNames.put("P L2 min [kW]", P_L2_min);
 		mapDataNames.put("P L3 min [kW]", P_L3_min);
 		mapDataNames.put("Q1 L1 avg [kvar]", Q_L1_avg);
 		mapDataNames.put("Q1 L2 avg [kvar]", Q_L2_avg);
 		mapDataNames.put("Q1 L3 avg [kvar]", Q_L3_avg);
-		mapDataNames.put("Q1 L1 max [kvar]", Q_L3_max);
-		mapDataNames.put("Q1 L2 max [kvar]", Q_L3_max);
+		mapDataNames.put("Q1 L1 max [kvar]", Q_L1_max);
+		mapDataNames.put("Q1 L2 max [kvar]", Q_L2_max);
 		mapDataNames.put("Q1 L3 max [kvar]", Q_L3_max);
-		mapDataNames.put("Q1 L1 min [kvar]", Q_L3_min);
-		mapDataNames.put("Q1 L2 min [kvar]", Q_L3_min);
+		mapDataNames.put("Q1 L1 min [kvar]", Q_L1_min);
+		mapDataNames.put("Q1 L2 min [kvar]", Q_L2_min);
 		mapDataNames.put("Q1 L3 min [kvar]", Q_L3_min);
 		mapDataNames.put("Q1 Σ max [kvar]", Q_total_max);
 		mapDataNames.put("Q1 Σ min [kvar]", Q_total_min);
@@ -150,17 +150,17 @@ public class SonelParser {
 		mapDataNames.put("S L2 min [kVA]", S_L2_min);
 		mapDataNames.put("S L3 min [kVA]", S_L3_min);
 		mapDataNames.put("U0/U1 Σ avg [%]",U0_U1_avg);
-		mapDataNames.put("U0/U1 Σ min [%]",U0_U1_min);
 		mapDataNames.put("U0/U1 Σ max [%]",U0_U1_max);
+		mapDataNames.put("U0/U1 Σ min [%]",U0_U1_min);
 		mapDataNames.put("U2/U1 Σ avg [%]",U2_U1_avg);
-		mapDataNames.put("U2/U1 Σ min [%]",U2_U1_min);
 		mapDataNames.put("U2/U1 Σ max [%]",U2_U1_max);
+		mapDataNames.put("U2/U1 Σ min [%]",U2_U1_min);
 		mapDataNames.put("I0/I1 Σ avg [%]",I0_I1_avg);
-		mapDataNames.put("I0/I1 Σ min [%]",I0_I1_min);
 		mapDataNames.put("I0/I1 Σ max [%]",I0_I1_max);
+		mapDataNames.put("I0/I1 Σ min [%]",I0_I1_min);
 		mapDataNames.put("I2/I1 Σ avg [%]",I2_I1_avg);
-		mapDataNames.put("I2/I1 Σ min [%]",I2_I1_min);
 		mapDataNames.put("I2/I1 Σ max [%]",I2_I1_max);
+		mapDataNames.put("I2/I1 Σ min [%]",I2_I1_min);
 	}
 	static {
 		mapHarmonicNames.put("Date", Date);

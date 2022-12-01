@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -82,6 +83,7 @@ public class DataManager {
 		final List<Timestamp> byDateBetween = dataService.findByDateBetween(startDate, endDate);
 		byDateBetween.addAll(harmonicsService.findByDateBetween(startDate, endDate));
 		final List<Timestamp> collect = byDateBetween.stream().distinct().collect(Collectors.toList());
+
 		return collect.stream().map(timestamp ->
 				timestamp.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
 				.collect(Collectors.toList());

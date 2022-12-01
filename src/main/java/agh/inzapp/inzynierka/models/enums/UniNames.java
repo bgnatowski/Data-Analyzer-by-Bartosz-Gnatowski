@@ -59,7 +59,7 @@ public enum UniNames{
 	I2_avg_total(getInternalizedPropertyByKey("column.I2_avg"), getInternalizedPropertyByKey("unit.A")),
 	I0_max_total(getInternalizedPropertyByKey("column.I0_max"), getInternalizedPropertyByKey("unit.A")),
 	I1_max_total(getInternalizedPropertyByKey("column.I1_max"), getInternalizedPropertyByKey("unit.A")),
-	I2_max(getInternalizedPropertyByKey("column.I2_max"), getInternalizedPropertyByKey("unit.A")),
+	I2_max_total(getInternalizedPropertyByKey("column.I2_max"), getInternalizedPropertyByKey("unit.A")),
 	I0_min_total(getInternalizedPropertyByKey("column.I0_min"), getInternalizedPropertyByKey("unit.A")),
 	I1_min_total(getInternalizedPropertyByKey("column.I1_min"), getInternalizedPropertyByKey("unit.A")),
 	I2_min_total(getInternalizedPropertyByKey("column.I2_min"), getInternalizedPropertyByKey("unit.A")),

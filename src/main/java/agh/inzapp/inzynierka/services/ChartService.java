@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class ChartService {
 	private LineChart<String, Number> currentLineChart;
 	private XYChart.Series currentSeries;
 	private int indexOfLineChart;
+	private String xTickDatePattern;
 
 	public ChartService() {
 		currentSeries = new XYChart.Series();
@@ -42,11 +44,10 @@ public class ChartService {
 	public void newLineChart() {
 		CategoryAxis xAxis = new CategoryAxis();
 		NumberAxis yAxis = new NumberAxis();
-//		xAxis.setLabel("xAxis");
-//		yAxis.setLabel("yAxis");
+		yAxis.setAutoRanging(true);
 		yAxis.setTickLabelFormatter(new NumberAxis.DefaultFormatter(yAxis){
 			@Override public String toString(Number object){
-				return String.format("%1.4f", object); }
+				return String.format("%1.2f", object); }
 		});
 		LineChart<String, Number> newLineChart = new LineChart<>(xAxis, yAxis);
 		newLineChart.setCreateSymbols(false);
@@ -101,8 +102,9 @@ public class ChartService {
 	private void setSeries(Map<LocalDateTime, Double> xyDataMap){
 		ObservableList dataList = currentSeries.getData();
 		dataList.clear();
+
 		xyDataMap.forEach((x,y)->{
-			XYChart.Data data = new XYChart.Data(x.toString(),y);
+			XYChart.Data data = new XYChart.Data(x.format(DateTimeFormatter.ofPattern(xTickDatePattern)),y);
 			dataList.add(data);
 		});
 		currentSeries.setData(dataList);
@@ -114,5 +116,18 @@ public class ChartService {
 
 	public void clearSeriesBeforeCreatingNewOne() {
 		currentLineChart.getData().clear();
+	}
+
+	public void setLineChartTitle(String title){
+		currentLineChart.setTitle(title);
+		updateCurrentLineChart();
+	}
+
+	public void setXDateTickToOnlyTime() {
+		xTickDatePattern = "HH:mm";
+	}
+
+	public void setXDateTickToDays() {
+		xTickDatePattern = "d-MMM-yyyy HH:mm";
 	}
 }

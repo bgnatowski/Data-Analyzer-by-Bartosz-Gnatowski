@@ -45,12 +45,12 @@ public class SonelNormalFx extends DataFx{
 		records.put(UniNames.I1_max_total,null);
 		records.put(UniNames.I1_min_total,null);
 		records.put(UniNames.I2_avg_total,null);
+		records.put(UniNames.I2_max_total,null);
 		records.put(UniNames.I2_min_total,null);
 		records.put(UniNames.PF_L1_avg   ,null);
 		records.put(UniNames.PF_L2_avg   ,null);
 		records.put(UniNames.PF_L3_avg   ,null);
 		records.put(UniNames.P_L1_avg    ,null);
-		records.put(UniNames.I2_max      ,null);
 		records.put(UniNames.P_L2_avg    ,null);
 		records.put(UniNames.P_L3_avg    ,null);
 		records.put(UniNames.P_L1_max    ,null);

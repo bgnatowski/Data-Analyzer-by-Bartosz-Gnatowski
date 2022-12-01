@@ -9,8 +9,8 @@ import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
 import agh.inzapp.inzynierka.services.ChartService;
+import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
-import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -70,9 +70,11 @@ public class ChartViewController {
 	private void addTimeSpinnersToGrid() {
 		xTimeFrom = new TimeSpinner();
 		xTimeFrom.setId("timeSpinnerFrom");
+		xTimeFrom.maxWidth(Double.MAX_VALUE);
 		xGrid.add(xTimeFrom, 0,2);
 		xTimeTo = new TimeSpinner();
 		xTimeTo.setId("timeSpinnerTo");
+		xTimeTo.maxWidth(Double.MAX_VALUE);
 		xGrid.add(xTimeTo, 1,2);
 	}
 	private void initLists() {
@@ -168,12 +170,18 @@ public class ChartViewController {
 	private void yAddOnAction() {
 		try {
 			List<LocalDateTime> xDataList = getFromX();
+			if(CommonUtils.isSameDay(xDataList.get(0), xDataList.get(xDataList.size()-1)))
+				chartService.setXDateTickToOnlyTime();
+			else
+				chartService.setXDateTickToDays();
+
 			Map<LocalDateTime, Double> xyDataMap;
 			if(isAnyCreatedChart()) newChartOnAction();
 			chartService.clearSeriesBeforeCreatingNewOne();
+
 			for(int i = 0; i <= howManyYDData; i++){
 				List<Double> yDataList = getFromY(i);
-				xyDataMap = FxmlUtils.zipToMap(xDataList, yDataList);
+				xyDataMap = CommonUtils.zipToMap(xDataList, yDataList);
 				chartService.createSeries(xyDataMap, yValuesList.get(i).getValue(), yColorPickerList.get(i).getValue());
 			}
 		} catch (ApplicationException e) {

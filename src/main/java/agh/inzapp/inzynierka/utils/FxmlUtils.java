@@ -31,15 +31,5 @@ public class FxmlUtils {
 		return ResourceBundle.getBundle("bundles.messages").getString(key);
 	}
 
-	public static <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values) throws ApplicationException {
-		Iterator<K> keyIter = keys.iterator();
-		Iterator<V> valIter = values.iterator();
-		Map<K, V> map = new LinkedHashMap<>();
-		while (keyIter.hasNext() && valIter.hasNext()) {
-			map.put(keyIter.next(), valIter.next());
-		}
-		if (keyIter.hasNext() || valIter.hasNext()) throw new ApplicationException("map size are not the same");
-		return map;
-	}
 
 }
