@@ -1,19 +1,19 @@
-package agh.inzapp.inzynierka.services;
+package agh.inzapp.inzynierka.database.services;
 
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
-import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
 import agh.inzapp.inzynierka.database.repositories.HarmoRepository;
-import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@Transactional
 public class HarmonicsServiceImpl implements CrudService{
 	private final HarmoRepository repository;
 	@Autowired
@@ -39,6 +39,12 @@ public class HarmonicsServiceImpl implements CrudService{
 	@Override
 	public void clearAll() {
 		repository.deleteAll();
+	}
+
+	@Override
+	@Transactional
+	public void reset() {
+		repository.reset();
 	}
 
 	@Override

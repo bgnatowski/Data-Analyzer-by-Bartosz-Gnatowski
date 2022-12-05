@@ -391,7 +391,7 @@ public class SonelParser {
 	}
 
 	public static String parseFlag(String flag) {
-		return flag.equals("   ") ? "o" : "x";
+		return flag.trim().isEmpty() ? "o" : "x";
 	}
 
 	public static double parseDouble(String record) throws ParseException {

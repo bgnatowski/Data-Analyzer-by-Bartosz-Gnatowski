@@ -34,6 +34,10 @@ public class ListHarmoFx {
 		}
 	}
 
+	public static void reset() {
+		instance = null;
+	}
+
 	public void init() {
 		List<? extends CommonDbModel> allHarmoDb = DataManager.getAll(HarmoDb.class);
 		if (allHarmoDb != null){
@@ -46,6 +50,10 @@ public class ListHarmoFx {
 			});
 			harmoFxObservableList.setAll(harmoFxList);
 		}
+	}
+
+	public void clear(){
+		harmoFxList.clear();
 	}
 	public boolean hasRecordOfDate(LocalDateTime testedLocalDateTime){
 		if(!harmoFxList.isEmpty())

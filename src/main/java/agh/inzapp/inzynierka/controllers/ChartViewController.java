@@ -11,10 +11,13 @@ import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
 import agh.inzapp.inzynierka.services.ChartService;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -29,6 +32,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static agh.inzapp.inzynierka.utils.CommonUtils.getDoubleTextFormatter;
+
 @Controller
 public class ChartViewController {
 	@FXML
@@ -42,14 +47,16 @@ public class ChartViewController {
 	@FXML
 	private DatePicker xDateFrom, xDateTo;
 	private TimeSpinner xTimeFrom, xTimeTo;
-//	@FXML
+	//	@FXML
 //	private Button newChartButton, addToRaportButton, saveAsChartButton, yAddButton, yPlusButton, yMinusButton;
 	@FXML
-	private TextField chartTitle, xLabel, yLabel;
+	private Button saveAsChartButton;
 	@FXML
-	private ColorPicker yColor0 ,yColor1 ,yColor2, yColor3, yColor4;
+	private TextField chartTitle, xLabel, yLabel, yMin, yMax;
 	@FXML
-	private ComboBox<UniNames> yValue0,yValue1,yValue2,yValue3,yValue4;
+	private ColorPicker yColor0, yColor1, yColor2, yColor3, yColor4;
+	@FXML
+	private ComboBox<UniNames> yValue0, yValue1, yValue2, yValue3, yValue4;
 	////////////////////////////////////
 	private List<ComboBox<UniNames>> yValuesList;
 	private List<ColorPicker> yColorPickerList;
@@ -58,13 +65,14 @@ public class ChartViewController {
 	private List<HarmoFx> harmoFxList;
 	private ChartService chartService;
 	private int howManyYDData;
+
 	@FXML
-	public void initialize(){
+	public void initialize() {
 		chartService = new ChartService();
 		howManyYDData = 0;
 		ListDataFx listDataFx = ListDataFx.getInstance();
 		ListHarmoFx listHarmoFx = ListHarmoFx.getInstance();
-		if(listDataFx!= null || listHarmoFx!=null){
+		if (listDataFx != null || listHarmoFx != null) {
 			dataFxList = Objects.requireNonNull(listDataFx).getDataFxList();
 			harmoFxList = Objects.requireNonNull(listHarmoFx).getHarmoFxList();
 			addTimeSpinnersToGrid();
@@ -72,16 +80,18 @@ public class ChartViewController {
 			bindings();
 		}
 	}
+
 	private void addTimeSpinnersToGrid() {
 		xTimeFrom = new TimeSpinner();
 		xTimeFrom.setId("timeSpinnerFrom");
 		xTimeFrom.maxWidth(Double.MAX_VALUE);
-		xGrid.add(xTimeFrom, 0,2);
+		xGrid.add(xTimeFrom, 0, 2);
 		xTimeTo = new TimeSpinner();
 		xTimeTo.setId("timeSpinnerTo");
 		xTimeTo.maxWidth(Double.MAX_VALUE);
-		xGrid.add(xTimeTo, 1,2);
+		xGrid.add(xTimeTo, 1, 2);
 	}
+
 	private void initLists() {
 		yValuesList = new ArrayList<>();
 		yValuesList.add(yValue0);
@@ -96,29 +106,31 @@ public class ChartViewController {
 		yColorPickerList.add(yColor3);
 		yColorPickerList.add(yColor4);
 	}
+
 	private void bindings() {
 		bindValueComboBoxes();
 		bindDatePickers();
 		bindSettings();
+		bindYRangingTextField();
 	}
 
 	private void bindSettings() {
 		settingsPane.disableProperty().bind(lineChartSelect.valueProperty().isNull());
+		saveAsChartButton.disableProperty().bind(lineChartSelect.valueProperty().isNull());
 	}
 
 	private void bindDatePickers() {
 		LocalDateTime startDate = LocalDateTime.now();
 		LocalDateTime endDate = LocalDateTime.now();
-		if(isBothListPresent()){
+		if (isBothListPresent()) {
 			startDate = dataFxList.get(0).getDate();
-			endDate = dataFxList.get(dataFxList.size()-1).getDate();
-		}
-		else if (isOnlyNormalDataPresent()){
+			endDate = dataFxList.get(dataFxList.size() - 1).getDate();
+		} else if (isOnlyNormalDataPresent()) {
 			startDate = dataFxList.get(0).getDate();
-			endDate = dataFxList.get(dataFxList.size()-1).getDate();
-		} else if(isOnlyHarmoDataPresent()){
+			endDate = dataFxList.get(dataFxList.size() - 1).getDate();
+		} else if (isOnlyHarmoDataPresent()) {
 			startDate = harmoFxList.get(0).getDate();
-			endDate = harmoFxList.get(harmoFxList.size()-1).getDate();
+			endDate = harmoFxList.get(harmoFxList.size() - 1).getDate();
 		}
 
 		restrictDatePicker(xDateFrom, startDate.toLocalDate(), endDate.toLocalDate());
@@ -151,50 +163,61 @@ public class ChartViewController {
 
 	private void bindValueComboBoxes() {
 		List<UniNames> uniNamesList = new ArrayList<>();
-		if(isBothListPresent()){
+		if (isBothListPresent()) {
 			uniNamesList = dataFxList.get(0).getColumnNames();
 			uniNamesList.addAll(harmoFxList.get(0).getColumnNames());
-		} else if(isOnlyNormalDataPresent()){
+		} else if (isOnlyNormalDataPresent()) {
 			uniNamesList = dataFxList.get(0).getColumnNames();
-		} else if(isOnlyHarmoDataPresent()){
+		} else if (isOnlyHarmoDataPresent()) {
 			uniNamesList = harmoFxList.get(0).getColumnNames();
 		}
 		List<UniNames> finalUniNamesList = CommonUtils.deleteNonRecordsFromUniNamesList(uniNamesList);
-		if(!finalUniNamesList.isEmpty()){
+		if (!finalUniNamesList.isEmpty()) {
 			yValuesList.forEach(uniNamesComboBox -> uniNamesComboBox.setItems(FXCollections.observableArrayList(finalUniNamesList)));
 		}
 	}
+
+	private void bindYRangingTextField() {
+		TextFormatter<Double> minTextFormatter = getDoubleTextFormatter();
+		yMin.setTextFormatter(minTextFormatter);
+		TextFormatter<Double> maxTextFormatter = getDoubleTextFormatter();
+		yMax.setTextFormatter(maxTextFormatter);
+	}
+
+
 	//PRZYCISKI "DODAJ
 
 	@FXML
 	private void yAddOnAction() {
 		try {
-			if(isAnyCreatedChart()) newChartOnAction();
+			if (isAnyCreatedChart()) newChartOnAction();
 			chartService.clearSeriesBeforeCreatingNewOne();
 
 			List<LocalDateTime> xDataList = getFromX();
 
-			if(CommonUtils.isSameDay(xDataList.get(0), xDataList.get(xDataList.size()-1)))
+			if (CommonUtils.isSameDay(xDataList.get(0), xDataList.get(xDataList.size() - 1)))
 				chartService.setXDateTickToOnlyTime();
 			else
 				chartService.setXDateTickToDays();
 
 			Map<LocalDateTime, Double> xyDataMap;
-			for(int i = 0; i <= howManyYDData; i++){
+			for (int i = 0; i <= howManyYDData; i++) {
 				List<Double> yDataList = getFromY(i);
 				if (!isSelectedValue(i)) break;
 				xyDataMap = CommonUtils.zipToMap(xDataList, yDataList);
+//				chartService.setDefaultStyleCss("style/default_chart.css");
 				chartService.createSeries(xyDataMap, yValuesList.get(i).getValue(), yColorPickerList.get(i).getValue());
 			}
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
 	}
+
 	private List<Double> getFromY(int i) throws ApplicationException {
 		UniNames uniName = yValuesList.get(i).getValue();
 		LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
 		LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
-		if(from.isBefore(to)){
+		if (from.isBefore(to)) {
 			List<Long> allIdByDateBetween = DataManager.findIdByDateBetween(from, to);
 			List<CommonDbModel> allByIdBetween = DataManager.findAllByIdBetween(allIdByDateBetween.get(0), allIdByDateBetween.get(allIdByDateBetween.size() - 1));
 			return allByIdBetween.stream().map(record -> record.getRecords().get(uniName))
@@ -207,40 +230,46 @@ public class ChartViewController {
 	private List<LocalDateTime> getFromX() throws ApplicationException {
 		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
 		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
-		if(from.isBefore(to))
+		if (from.isBefore(to))
 			return DataManager.findTimeSeriesByLocalDateTimeBetween(from, to);
 		throw new ApplicationException("date out of range"); //todo exception communicate
 	}
 
 	//COMBOBOX LINE CHART + NEW LINE CHART
-
 	@FXML
 	private void switchLineChartOnAction() {
-		LineChart<String, Number> currentLineChart;
-		String selectedLineChart = lineChartSelect.getValue();
-		if(selectedLineChart!=null){
-			currentLineChart = chartService.getSelectedLineChart(selectedLineChart);
-			apOfChart.getChildren().clear();
-			apOfChart.getChildren().add(currentLineChart);
-		}
+		apOfChart.getChildren().clear();
+		apOfChart.getChildren().add(getCurrentSelectedLineChart());
 	}
+
+	private LineChart<String, Number> getCurrentSelectedLineChart() {
+		LineChart<String, Number> currentLineChart = new LineChart<>(new CategoryAxis(), new NumberAxis());
+		String selectedLineChart = lineChartSelect.getValue();
+		if (selectedLineChart != null) {
+			currentLineChart = chartService.getSelectedLineChart(selectedLineChart);
+		}
+		return currentLineChart;
+	}
+
 	@FXML
 	private void newChartOnAction() {
 		chartService.newLineChart();
 		lineChartSelect.setItems(chartService.getLineChartsList());
 		lineChartSelect.getSelectionModel().selectNext();
 	}
+
 	//PRZYCISKI "+"
 	@FXML
 	private void yPlusOnAction() {
-		if(howManyYDData==4) return;
+		if (howManyYDData == 4) return;
 		howManyYDData++;
 		yValuesList.get(howManyYDData).setVisible(true);
 		yColorPickerList.get(howManyYDData).setVisible(true);
 	}
+
 	@FXML
 	private void yMinusOnAction() {
-		if(howManyYDData==0) return;
+		if (howManyYDData == 0) return;
 		yValuesList.get(howManyYDData).setVisible(false);
 		yColorPickerList.get(howManyYDData).setVisible(false);
 		howManyYDData--;
@@ -251,9 +280,17 @@ public class ChartViewController {
 	@FXML
 	private void addChartToRaportOnAction() {
 	}
+
 	@FXML
 	private void saveAsChartOnAction() {
+		try {
+			SavingUtils.saveLineChart(getCurrentSelectedLineChart());
+			switchLineChartOnAction();
+		} catch (Exception e) {
+			DialogUtils.errorDialog(e.getMessage());
+		}
 	}
+
 	@FXML
 	private void setTitleOnKeyTyped() {
 		chartService.setLineChartTitle(chartTitle.getText());
@@ -265,8 +302,33 @@ public class ChartViewController {
 	}
 
 	@FXML
+	private void switchOnLegend() {
+		chartService.switchCurrentLegendOn();
+	}
+
+	@FXML
+	private void switchOffLegend() {
+		chartService.switchCurrentLegendOff();
+	}
+
+	@FXML
+	private void switchOnDataPoints() {
+		chartService.switchCurrentDataPointsOn();
+	}
+
+	@FXML
+	private void switchOffDataPoints() {
+		chartService.switchCurrentDataPointsOff();
+	}
+
+	@FXML
 	private void yLabelOnKeyTyped() {
 		chartService.setYAxisLabel(yLabel.getText());
+	}
+
+	@FXML
+	private void changeYRangeOnAction() {
+		chartService.setAxisBounds(Double.parseDouble(yMin.getText()), Double.parseDouble(yMax.getText()));
 	}
 
 	private boolean isSelectedValue(int i) {
@@ -276,6 +338,7 @@ public class ChartViewController {
 	private boolean isAnyCreatedChart() {
 		return lineChartSelect.getSelectionModel().isEmpty();
 	}
+
 	private boolean isOnlyHarmoDataPresent() {
 		return dataFxList.isEmpty() && !harmoFxList.isEmpty();
 	}

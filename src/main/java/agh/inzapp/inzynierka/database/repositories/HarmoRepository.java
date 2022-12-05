@@ -3,6 +3,7 @@ package agh.inzapp.inzynierka.database.repositories;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.sql.Timestamp;
@@ -20,4 +21,8 @@ public interface HarmoRepository extends JpaRepository<HarmoDb, Long> {
 
 	@Query("select h from HarmoDb h where h.id between ?1 and ?2")
 	List<CommonDbModel> findAllByIdBetween(Long id, Long id2);
+
+	@Modifying
+	@Query(value = "TRUNCATE TABLE harmo_db RESTART IDENTITY", nativeQuery = true)
+	void reset();
 }

@@ -23,8 +23,9 @@ import static javax.persistence.GenerationType.SEQUENCE;
 })
 public class DataDb implements CommonDbModel{
 	@Id
-	@SequenceGenerator(name = "dataDb_sequence", sequenceName = "dataDb_sequence", allocationSize = 1)
-	@GeneratedValue(strategy = SEQUENCE, generator = "dataDb_sequence")
+//	@SequenceGenerator(name = "dataDb_sequence", sequenceName = "dataDb_sequence", allocationSize = 1)
+//	@GeneratedValue(strategy = SEQUENCE, generator = "dataDb_sequence")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false)
 	private Long id;
 	@Column(name = "date", columnDefinition = "TIMESTAMP", nullable = false)

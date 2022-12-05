@@ -22,8 +22,9 @@ import static javax.persistence.GenerationType.SEQUENCE;
 })
 public class HarmoDb implements CommonDbModel{
 	@Id
-	@SequenceGenerator(name = "harmoDb_sequence", sequenceName = "harmoDb_sequence", allocationSize = 1)
-	@GeneratedValue(strategy = SEQUENCE, generator = "harmoDb_sequence")
+//	@SequenceGenerator(name = "harmoDb_sequence", sequenceName = "harmoDb_sequence", allocationSize = 1)
+//	@GeneratedValue(strategy = SEQUENCE, generator = "harmoDb_sequence")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id", updatable = false)
 	private Long id;
 	@Column(name = "date", columnDefinition = "TIMESTAMP", nullable = false)

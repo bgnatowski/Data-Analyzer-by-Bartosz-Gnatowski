@@ -1,5 +1,6 @@
 package agh.inzapp.inzynierka.controllers;
 
+import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -47,6 +48,11 @@ public class MenuButtonsController {
 		System.exit(0);
 	}
 	@FXML
+	private void openInNewWindow() {
+		FxmlUtils.openNewSceneFromLoader(TABLE_VIEW_FXML, "button.tableview", 450, 450);
+	}
+
+	@FXML
 	void setMainController(MainAppPaneController mainAppPaneController) {
 		MenuButtonsController.mainAppPaneController = mainAppPaneController;
 	}
@@ -56,8 +62,8 @@ public class MenuButtonsController {
 		tableViewButton.disableProperty().bind(toggleButtonProperty);
 		chartViewButton.disableProperty().bind(toggleButtonProperty);
 	}
+
 	public static void setToggleButtonProperty(boolean toggleButtonProperty) {
 		MenuButtonsController.toggleButtonProperty.setValue(toggleButtonProperty);
 	}
-
 }

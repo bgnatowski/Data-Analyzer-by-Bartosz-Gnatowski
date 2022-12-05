@@ -3,6 +3,7 @@ package agh.inzapp.inzynierka.database.repositories;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.DataDb;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +19,10 @@ public interface DataRepository extends JpaRepository<DataDb, Long> {
 	List<Long> findIdByDateBetween(LocalDateTime start, LocalDateTime end);
 	@Query("select d from DataDb d where d.id between ?1 and ?2")
 	List<CommonDbModel> findAllByIdBetween(Long idStart, Long idEnd);
+
+	@Modifying
+	@Query(value = "TRUNCATE TABLE data_db RESTART IDENTITY", nativeQuery = true)
+	void reset();
 
 
 

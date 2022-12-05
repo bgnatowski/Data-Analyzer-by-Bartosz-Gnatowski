@@ -1,11 +1,15 @@
 package agh.inzapp.inzynierka.controllers;
 
+import agh.inzapp.inzynierka.database.DataManager;
+import agh.inzapp.inzynierka.models.ListDataFx;
+import agh.inzapp.inzynierka.models.ListHarmoFx;
 import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.CsvFilesList;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -96,12 +100,31 @@ public class ImportMenuPaneController {
 	@FXML
 	private void importData() {
 		try {
+			clearUploaded();
 			importDataFromAnalyser();
 			switchToTableViewAferImport();
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
 	}
+
+	@FXML
+	private void addNormalFileFromListOnAction() {
+		importDataFileNames();
+	}
+
+	@FXML
+	private void addHarmonicsFileFromListOnAction() {
+		importHarmonicsFileNames();
+	}
+
+	private void clearUploaded() {
+		DataManager.clearNormal();
+		DataManager.clearHarmo();
+		ListHarmoFx.reset();
+		ListDataFx.reset();
+	}
+
 	private void importDataFromAnalyser() throws ApplicationException {
 		Analysers analyser = comboBoxAnalyzer.getValue();
 		if (yesNormal.isSelected() && noHarmonic.isSelected()) {
@@ -112,7 +135,6 @@ public class ImportMenuPaneController {
 			filesList.saveBoth(analyser);
 		}
 	}
-
 	private void switchToTableViewAferImport() throws ApplicationException {
 		try {
 			FXMLLoader loader = FxmlUtils.getLoader(MAIN.getPath());
@@ -128,5 +150,4 @@ public class ImportMenuPaneController {
 			throw new ApplicationException("error.switchTableView");
 		}
 	}
-
 }

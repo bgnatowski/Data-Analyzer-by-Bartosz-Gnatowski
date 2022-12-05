@@ -2,10 +2,14 @@ package agh.inzapp.inzynierka.utils;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+import javafx.scene.control.TextFormatter;
+import javafx.util.StringConverter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.function.UnaryOperator;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class CommonUtils {
@@ -36,5 +40,35 @@ public class CommonUtils {
 		collect.remove(UniNames.Flag_P);
 		collect.remove(UniNames.Flag_T);
 		return collect;
+	}
+
+	public static TextFormatter<Double> getDoubleTextFormatter() {
+		Pattern validEditingState = Pattern.compile("-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?");
+
+		UnaryOperator<TextFormatter.Change> filter = c -> {
+			String text = c.getControlNewText();
+			if (validEditingState.matcher(text).matches()) {
+				return c ;
+			} else {
+				return null ;
+			}
+		};
+
+		StringConverter<Double> converter = new StringConverter<Double>() {
+			@Override
+			public Double fromString(String s) {
+				if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s)) {
+					return 0.0 ;
+				} else {
+					return Double.valueOf(s);
+				}
+			}
+			@Override
+			public String toString(Double d) {
+				return d.toString();
+			}
+		};
+		TextFormatter<Double> textFormatter = new TextFormatter<>(converter, 0.0, filter);
+		return textFormatter;
 	}
 }

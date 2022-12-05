@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -13,7 +15,14 @@
                <children>
                   <Button fx:id="homeButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#goHomeOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.home" />
                   <Button fx:id="loadButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#importCSVMenu" prefHeight="30.0" prefWidth="140.0" text="%button.import" />
-                  <Button fx:id="tableViewButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tableViewOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.tableview" />
+                  <Button fx:id="tableViewButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tableViewOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.tableview">
+                     <contextMenu>
+                        <ContextMenu>
+                          <items>
+                            <MenuItem mnemonicParsing="false" onAction="#openInNewWindow" text="%menu.open.new.window" />
+                          </items>
+                        </ContextMenu>
+                     </contextMenu></Button>
                   <Button fx:id="chartViewButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#figuresOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.figures" />
                </children>
                <padding>

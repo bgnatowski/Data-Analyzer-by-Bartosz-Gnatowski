@@ -6,8 +6,8 @@ import agh.inzapp.inzynierka.database.models.HarmoDb;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
-import agh.inzapp.inzynierka.services.HarmonicsServiceImpl;
-import agh.inzapp.inzynierka.services.NormalServiceImpl;
+import agh.inzapp.inzynierka.database.services.HarmonicsServiceImpl;
+import agh.inzapp.inzynierka.database.services.NormalServiceImpl;
 import agh.inzapp.inzynierka.utils.converters.DataConverter;
 import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 public class DataManager {
 	private static NormalServiceImpl dataService;
 	private static HarmonicsServiceImpl harmonicsService;
-
 	private static boolean firstData = true;
 	private static boolean firstHarmo = true;
 	@Autowired
@@ -102,4 +101,9 @@ public class DataManager {
 		return list;
 	}
 
+
+	public static void resetTables(){
+		dataService.reset();
+		harmonicsService.reset();
+	}
 }

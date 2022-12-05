@@ -296,7 +296,7 @@ public class PQParser {
 
 	// common
 	public static String parseFlag(String flag) {
-		return flag.equals(" ") ? "o" : "x";
+		return flag.trim().isEmpty() ? "o" : "x";
 	}
 
 	// common

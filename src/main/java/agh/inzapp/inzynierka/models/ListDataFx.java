@@ -34,6 +34,10 @@ public class ListDataFx {
 		}
 	}
 
+	public static void reset() {
+		instance = null;
+	}
+
 	public void init() {
 		List<? extends CommonDbModel> allDataDb = DataManager.getAll(DataDb.class);
 		if (allDataDb != null){
@@ -48,6 +52,9 @@ public class ListDataFx {
 		}
 	}
 
+	public void clear(){
+		dataFxList.clear();
+	}
 	public boolean hasRecordOfDate(LocalDateTime testedLocalDateTime){
 		if(!dataFxList.isEmpty())
 			return dataFxList.stream().anyMatch(record -> record.getDate().isEqual(testedLocalDateTime));

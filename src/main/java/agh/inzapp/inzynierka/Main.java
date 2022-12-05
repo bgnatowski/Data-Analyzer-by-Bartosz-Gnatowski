@@ -39,9 +39,10 @@ public class Main extends Application {
 	}
 	@Override
 	public void start(Stage stage) {
-		stage.setScene(new Scene(root, 800, 600));
+		final Scene scene = new Scene(root, 1200, 640);
+		stage.setScene(scene);
 		stage.setTitle(applicationTitle);
-		stage.setMaximized(true);
+//		stage.setMaximized(true);
 		stage.show();
 	}
 	@Override

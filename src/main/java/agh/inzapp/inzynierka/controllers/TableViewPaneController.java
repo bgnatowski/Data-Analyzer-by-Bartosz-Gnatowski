@@ -12,6 +12,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -79,18 +80,21 @@ public class TableViewPaneController {
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<DataFx, String>, ObservableValue<String>>) dataFxCellDataFeatures ->
 									new SimpleStringProperty(dataFxCellDataFeatures.getValue().flagsProperty().getValue().get(uniName)));
+					setRightAlignment(tableColumn);
 				}
 				case Date -> {
 					tableColumn = new TableColumn<DataFx, LocalDate>(uniName.toString());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<DataFx, LocalDate>, ObservableValue<LocalDate>>) dataFxCellDataFeatures ->
 									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalDate()));
+					setRightAlignment(tableColumn);
 				}
 				case Time -> {
 					tableColumn = new TableColumn<DataFx, LocalTime>(uniName.toString());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<DataFx, LocalTime>, ObservableValue<LocalTime>>) dataFxCellDataFeatures ->
 									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalTime()));
+					setRightAlignment(tableColumn);
 				}
 				default ->{
 					tableColumn = new TableColumn<DataFx, Double>(uniName + " " + uniName.getUnit());
@@ -103,6 +107,18 @@ public class TableViewPaneController {
 							return new SimpleDoubleProperty(aDouble.get());
 						}
 					});
+					tableColumn.setCellFactory(c -> new TableCell<HarmoFx, Double>(){
+						@Override
+						protected void updateItem(Double balance, boolean empty) {
+							super.updateItem(balance, empty);
+							if(balance == null || empty){
+								setText(null);
+							}else{
+								setText(String.format("%.2f", balance.doubleValue()));
+							}
+						}
+					});
+					setRightAlignment(tableColumn);
 				}
 
 			}
@@ -110,6 +126,11 @@ public class TableViewPaneController {
 		});
 		return tableColumnList;
 	}
+
+	private static void setRightAlignment(TableColumn tableColumn) {
+		tableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
+	}
+
 	private void initTableHarmonics() {
 		if (!listHarmoFx.getHarmoFxObservableList().isEmpty()){
 			harmonicsTab.setDisable(false);
@@ -139,24 +160,39 @@ public class TableViewPaneController {
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<HarmoFx, String>, ObservableValue<String>>) dataFxCellDataFeatures ->
 									new SimpleStringProperty(dataFxCellDataFeatures.getValue().flagsProperty().getValue().get(uniName)));
+					setRightAlignment(tableColumn);
 				}
 				case Date -> {
 					tableColumn = new TableColumn<HarmoFx, LocalDate>(uniName.toString());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<HarmoFx, LocalDate>, ObservableValue<LocalDate>>) dataFxCellDataFeatures ->
 									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalDate()));
+					setRightAlignment(tableColumn);
 				}
 				case Time -> {
 					tableColumn = new TableColumn<HarmoFx, LocalTime>(uniName.toString());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<HarmoFx, LocalTime>, ObservableValue<LocalTime>>) dataFxCellDataFeatures ->
 									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalTime()));
+					setRightAlignment(tableColumn);
 				}
 				default ->{
 					tableColumn = new TableColumn<HarmoFx, Double>(uniName + " " + uniName.getUnit());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<HarmoFx, Double>, ObservableValue<?>>) dataFxCellDataFeatures ->
 									new SimpleDoubleProperty(dataFxCellDataFeatures.getValue().recordsProperty().getValue().get(uniName)));
+					tableColumn.setCellFactory(c -> new TableCell<HarmoFx, Double>(){
+						@Override
+						protected void updateItem(Double balance, boolean empty) {
+							super.updateItem(balance, empty);
+							if(balance == null || empty){
+								setText(null);
+							}else{
+								setText(String.format("%.2f", balance.doubleValue()));
+							}
+						}
+					});
+					setRightAlignment(tableColumn);
 				}
 			}
 			tableColumnList.add(tableColumn);
