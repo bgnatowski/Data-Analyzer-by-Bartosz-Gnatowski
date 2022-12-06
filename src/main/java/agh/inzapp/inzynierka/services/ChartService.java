@@ -1,14 +1,19 @@
 package agh.inzapp.inzynierka.services;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import com.sun.javafx.charts.Legend;
+import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.chart.*;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -17,9 +22,9 @@ import javafx.scene.paint.Color;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class ChartService {
 	private ListProperty<LineChart<String, Number>> lineChartObservableList = new SimpleListProperty<>(FXCollections.observableArrayList());
@@ -115,7 +120,8 @@ public class ChartService {
 	}
 
 	public void setDefaultStyleCss(String styleCss) {
-		currentLineChart.setStyle(styleCss);
+		currentLineChart.getScene().getStylesheets().add(styleCss);
+		currentLineChart.applyCss();
 		updateChart();
 	}
 
@@ -171,35 +177,21 @@ public class ChartService {
 
 	private void setSeriesColor(Color seriesColor){
 		Node line = currentSeries.getNode().lookup(".chart-series-line");
-		currentSeries.getNode().getStyleClass().add("chart-line-symbol");
-		Node symbol = currentSeries.getNode().lookup(".chart-line-symbol");
-//		List<String> styles = currentSeries.getNode().getStyleClass();
-//		styles.forEach(System.out::println);
+		String rgb = CommonUtils.convertToWebString(seriesColor);
+		line.setStyle("-fx-stroke: "+rgb+";");
+	}
 
-		String rgb = String.format("%d, %d, %d",
-				(int) (seriesColor.getRed() * 255),
-				(int) (seriesColor.getGreen() * 255),
-				(int) (seriesColor.getBlue() * 255));
-		symbol.setStyle("-fx-background-color: rgba(" + rgb + ", 1.0);");
-		line.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+	public void setStyleCssLegendColor(String styleCssLegendColor) {
+		currentLineChart.setStyle(styleCssLegendColor);
+		updateChart();
+	}
 
-//		for (int index = 0; index < currentSeries.getData().size(); index++) {
-//			XYChart.Data dataPoint = series.getData().get(index);
-//			Node lineSymbol = dataPoint.getNode().lookup(".chart-line-symbol");
-//			lineSymbol.setStyle("-fx-background-color: #00ff00, #000000; -fx-background-insets: 0, 2;\n" +
-//					"    -fx-background-radius: 3px;\n" +
-//					"    -fx-padding: 3px;");
+//	private void setLegendItemColor(String name, String color, Legend lg) {
+//		for (Node n : lg.getChildren()) {
+//			Label lb = (Label) n;
+//			if (lb.getText().contains(name)) {
+//				lb.getGraphic().setStyle("-fx-background-color:" + color + ";");
+//			}
 //		}
-//		Node symbols = currentSeries.getNode().lookup(".chart-line-symbol");
-//		symbols.setStyle("-background-color: rgba(" + rgb + ", 1.0);");
-	}
-
-	private void setLegendItemColor(String name, String color, Legend lg) {
-		for (Node n : lg.getChildren()) {
-			Label lb = (Label) n;
-			if (lb.getText().contains(name)) {
-				lb.getGraphic().setStyle("-fx-background-color:" + color + ";");
-			}
-		}
-	}
+//	}
 }

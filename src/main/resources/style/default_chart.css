@@ -1,16 +1,51 @@
-.chart-series-line{
-    -fx-stroke-width: 2px;
+.chart{
+    -fx-padding: 10px;
+    symbol-color0: #29B6F6;
+    symbol-color1: #f10129;
+    symbol-color2: #00ff25;
+    symbol-color3: #ff9800;
+    symbol-color4: #ff00eb;
 }
 
-.default-color0.chart-series-line{-fx-stroke: #29B6F6;}
-.default-color1.chart-series-line{-fx-stroke: #f10129;}
-.default-color2.chart-series-line{-fx-stroke: #00ff25;}
-.default-color3.chart-series-line{-fx-stroke: #ff9800;}
-.default-color4.chart-series-line{-fx-stroke: #ff00eb;}
+.chart-content{
+    -fx-padding: 10px;
+}
 
-.default-color0.chart-line-symbol{-fx-background-color: #29B6F6, white;}
-.default-color1.chart-line-symbol{-fx-background-color: #f10129, white;}
-.default-color2.chart-line-symbol{-fx-background-color: #00ff25, white;}
-.default-color3.chart-line-symbol{-fx-background-color: #ff9800, white;}
-.default-color4.chart-line-symbol{-fx-background-color: #ff00eb, white;}
+.chart-series-line{
+    -fx-stroke-width: 2px;
+    -fx-stroke: black;
+    -fx-effect: null;
+}
 
+    .default-color0.chart-series-line{-fx-stroke: #29B6F6;}
+    .default-color1.chart-series-line{-fx-stroke: #f10129;}
+    .default-color2.chart-series-line{-fx-stroke: #00ff25;}
+    .default-color3.chart-series-line{-fx-stroke: #ff9800;}
+    .default-color4.chart-series-line{-fx-stroke: #ff00eb;}
+
+.chart-line-symbol {
+    -fx-background-color: #29B6F6, white;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 5px;
+    -fx-padding: 4px;
+}
+
+    .default-color0.chart-line-symbol{-fx-background-color: symbol-color0;}
+    .default-color1.chart-line-symbol{-fx-background-color: symbol-color1;}
+    .default-color2.chart-line-symbol{-fx-background-color: symbol-color2;}
+    .default-color3.chart-line-symbol{-fx-background-color: symbol-color3;}
+    .default-color4.chart-line-symbol{-fx-background-color: symbol-color4;}
+
+
+.chart-legend {
+    -fx-background-color:  transparent;
+    -fx-padding: 20px;
+}
+
+.chart-legend-item-symbol{
+    -fx-background-radius: 0;
+}
+
+.chart-legend-item{
+    -fx-text-fill: #191970;
+}

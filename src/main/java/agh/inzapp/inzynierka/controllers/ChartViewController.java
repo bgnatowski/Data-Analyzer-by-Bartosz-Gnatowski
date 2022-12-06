@@ -21,6 +21,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import org.springframework.stereotype.Controller;
 
@@ -32,6 +33,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static agh.inzapp.inzynierka.utils.CommonUtils.convertToWebString;
 import static agh.inzapp.inzynierka.utils.CommonUtils.getDoubleTextFormatter;
 
 @Controller
@@ -185,8 +187,8 @@ public class ChartViewController {
 	}
 
 
-	//PRZYCISKI "DODAJ
 
+	//PRZYCISKI "DODAJ
 	@FXML
 	private void yAddOnAction() {
 		try {
@@ -205,12 +207,35 @@ public class ChartViewController {
 				List<Double> yDataList = getFromY(i);
 				if (!isSelectedValue(i)) break;
 				xyDataMap = CommonUtils.zipToMap(xDataList, yDataList);
-//				chartService.setDefaultStyleCss("style/default_chart.css");
+				chartService.setDefaultStyleCss("style/default_chart.css");
 				chartService.createSeries(xyDataMap, yValuesList.get(i).getValue(), yColorPickerList.get(i).getValue());
 			}
+			setLegendColors();
+
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
+	}
+
+	private void setLegendColors() {
+		ArrayList<Color> colors = getUserDefinedColors();
+		StringBuilder style = new StringBuilder();
+		for (int i = 0 ; i < colors.size() ; i++) {
+			style.append("symbol-color")
+					.append(i)
+					.append(": ")
+					.append(convertToWebString(colors.get(i)))
+					.append("; ");
+		}
+		chartService.setStyleCssLegendColor(style.toString());
+	}
+
+	private ArrayList<Color> getUserDefinedColors() {
+		ArrayList<Color> colors = new ArrayList<>();
+		for (int i = 0; i <= howManyYDData; i++) {
+			colors.add(yColorPickerList.get(i).getValue());
+		}
+		return colors;
 	}
 
 	private List<Double> getFromY(int i) throws ApplicationException {
@@ -234,8 +259,8 @@ public class ChartViewController {
 			return DataManager.findTimeSeriesByLocalDateTimeBetween(from, to);
 		throw new ApplicationException("date out of range"); //todo exception communicate
 	}
-
 	//COMBOBOX LINE CHART + NEW LINE CHART
+
 	@FXML
 	private void switchLineChartOnAction() {
 		apOfChart.getChildren().clear();
@@ -257,8 +282,8 @@ public class ChartViewController {
 		lineChartSelect.setItems(chartService.getLineChartsList());
 		lineChartSelect.getSelectionModel().selectNext();
 	}
-
 	//PRZYCISKI "+"
+
 	@FXML
 	private void yPlusOnAction() {
 		if (howManyYDData == 4) return;

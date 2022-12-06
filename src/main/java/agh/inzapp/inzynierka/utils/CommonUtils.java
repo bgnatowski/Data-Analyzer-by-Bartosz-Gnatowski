@@ -3,6 +3,7 @@ package agh.inzapp.inzynierka.utils;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 
 import java.time.LocalDate;
@@ -70,5 +71,13 @@ public class CommonUtils {
 		};
 		TextFormatter<Double> textFormatter = new TextFormatter<>(converter, 0.0, filter);
 		return textFormatter;
+	}
+
+	public static String convertToWebString(Color color) {
+		String rgb = String.format("#%02x%02x%02x",
+				(int) (color.getRed() * 255),
+				(int) (color.getGreen() * 255),
+				(int) (color.getBlue() * 255));
+		return rgb;
 	}
 }
