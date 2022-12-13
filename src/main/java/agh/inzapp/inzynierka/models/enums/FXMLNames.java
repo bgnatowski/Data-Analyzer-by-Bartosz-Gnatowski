@@ -7,7 +7,8 @@ public enum FXMLNames {
 	MAIN("/fxml/MainAppPane.fxml"),
 	MENU("/fxml/MenuButtons.fxml"),
 	TABLE_VIEW("/fxml/TableViewPane.fxml"),
-	CHART_VIEW("/fxml/ChartPane.fxml");
+	CHART_VIEW("/fxml/ChartPane.fxml"),
+	REPORT_VIEW("/fxml/ReportPane.fxml");
 
 	private final String path;
 	FXMLNames(String s) {

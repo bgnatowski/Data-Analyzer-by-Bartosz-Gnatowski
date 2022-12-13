@@ -24,6 +24,7 @@
                         </ContextMenu>
                      </contextMenu></Button>
                   <Button fx:id="chartViewButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#figuresOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.figures" />
+                  <Button fx:id="reportButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reportOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.report" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

@@ -70,6 +70,11 @@ public class ChartService {
 			lineChartObservableList.set(indexOfLineChart, currentLineChart); // ustaw w liście nowy obecny na nowy index'ie
 		}
 	}
+	public void setStyleCssLegendColor(String styleCssLegendColor) {
+		currentLineChart.setStyle(styleCssLegendColor);
+		updateChart();
+	}
+
 	public LineChart<String, Number> getSelectedLineChart(String selectedLineChart) {
 		final String[] split = selectedLineChart.split(" ");
 		int value = Integer.parseInt(split[1])-1;
@@ -89,9 +94,9 @@ public class ChartService {
 	public void clearSeriesBeforeCreatingNewOne() {
 		currentLineChart.getData().clear();
 	}
-
 	public void setLineChartTitle(String title){
 		currentLineChart.setTitle(title);
+
 		updateChart();
 	}
 
@@ -102,6 +107,7 @@ public class ChartService {
 				.setStyle("-fx-label-padding: 0 -10 0 0;");
 		updateChart();
 	}
+
 	public void setYAxisLabel(String label){
 		currentLineChart.getYAxis().setTickLabelRotation(-90);
 		currentLineChart.getYAxis().setLabel(label);
@@ -139,19 +145,20 @@ public class ChartService {
 		currentLineChart.setCreateSymbols(true);
 		updateChart();
 	}
-
 	public void switchCurrentDataPointsOff() {
 		currentLineChart.setCreateSymbols(false);
 		updateChart();
 	}
 
-	public void setAxisBounds(double min, double max) {
+	public void setAxisBounds(double min, double max, double tick) {
 		NumberAxis axis = (NumberAxis) currentLineChart.getYAxis();
 		axis.setAutoRanging(false);
 		axis.setLowerBound(min);
 		axis.setUpperBound(max);
+		axis.setTickUnit(tick);
 		updateChart();
 	}
+
 	private void setSeriesName(UniNames uniNames){
 		String seriesName = uniNames.toString()+uniNames.getUnit();
 		currentSeries.setName(seriesName);
@@ -171,27 +178,13 @@ public class ChartService {
 		updateChart();
 	}
 
-	private void updateChart() {
-		lineChartObservableList.set(indexOfLineChart, currentLineChart);
-	}
-
 	private void setSeriesColor(Color seriesColor){
 		Node line = currentSeries.getNode().lookup(".chart-series-line");
 		String rgb = CommonUtils.convertToWebString(seriesColor);
 		line.setStyle("-fx-stroke: "+rgb+";");
 	}
 
-	public void setStyleCssLegendColor(String styleCssLegendColor) {
-		currentLineChart.setStyle(styleCssLegendColor);
-		updateChart();
+	private void updateChart() {
+		lineChartObservableList.set(indexOfLineChart, currentLineChart);
 	}
-
-//	private void setLegendItemColor(String name, String color, Legend lg) {
-//		for (Node n : lg.getChildren()) {
-//			Label lb = (Label) n;
-//			if (lb.getText().contains(name)) {
-//				lb.getGraphic().setStyle("-fx-background-color:" + color + ";");
-//			}
-//		}
-//	}
 }

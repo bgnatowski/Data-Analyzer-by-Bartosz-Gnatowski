@@ -1,30 +1,28 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.models.ListDataFx;
-import agh.inzapp.inzynierka.models.ListHarmoFx;
+import agh.inzapp.inzynierka.models.enums.NumberDisplayType;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+
+import static agh.inzapp.inzynierka.models.enums.NumberDisplayType.*;
 
 @Controller
 public class TableViewPaneController {
@@ -35,6 +33,11 @@ public class TableViewPaneController {
 	private TableView<HarmoFx> harmonicsTableView;
 	@FXML
 	private TableView<DataFx> normalTableView;
+	@FXML
+	private Button leftShiftPrecisionButtonNorm, rightShiftPrecisionButtonNorm,
+			leftShiftPrecisionButtonHarmo, rightShiftPrecisionButtonHarmo;
+	@FXML
+	private ComboBox<NumberDisplayType> displayTypeNorm, displayTypeHarmo;
 	private static ListDataFx listDataFx;
 	private static ListHarmoFx listHarmoFx;
 
@@ -45,15 +48,28 @@ public class TableViewPaneController {
 		bindings();
 	}
 	private void bindings() {
-		normalTab.setDisable(false);
+		bindNormal();
+		bindHarmonics();
+	}
+
+	private void bindHarmonics() {
 		harmonicsTab.setDisable(false);
-		if (listDataFx != null) {
-			initTableNormal();
-		}
 		if (listHarmoFx != null) {
 			initTableHarmonics();
+			displayTypeHarmo.getItems().setAll(FXCollections.observableArrayList(NORMAL, SCIENTIFIC));
+			displayTypeHarmo.getSelectionModel().selectFirst();
 		}
 	}
+
+	private void bindNormal() {
+		normalTab.setDisable(false);
+		if (listDataFx != null) {
+			initTableNormal();
+			displayTypeNorm.getItems().setAll(FXCollections.observableArrayList(NORMAL, SCIENTIFIC));
+			displayTypeHarmo.getSelectionModel().selectFirst();
+		}
+	}
+
 	private void initTableNormal() {
 		if (!listDataFx.getDataFxObservableList().isEmpty()){
 			normalTab.setDisable(false);
@@ -65,6 +81,24 @@ public class TableViewPaneController {
 			normalTableView.getItems().addAll(listDataFx.getDataFxObservableList());
 		}
 	}
+	private void initTableHarmonics() {
+		if (!listHarmoFx.getHarmoFxObservableList().isEmpty()){
+			harmonicsTab.setDisable(false);
+			harmonicsTableView.setEditable(true);
+
+			final HarmoFx harmoFx = listHarmoFx.getHarmoFxList().get(0);
+			final ObservableList<UniNames> columnNames = harmoFx.getColumnNames();
+
+			List<TableColumn<HarmoFx, ?>> tableColumnList = getTableColumnsHarmonics(columnNames);
+			harmonicsTableView.getColumns().addAll(tableColumnList);
+			harmonicsTableView.getItems().addAll(listHarmoFx.getHarmoFxObservableList());
+		}
+	}
+
+	private static void setRightAlignment(TableColumn tableColumn) {
+		tableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
+	}
+
 	private static List<TableColumn<DataFx, ?>> getTableColumnsNormal(ObservableList<UniNames> columnNames) {
 		List<TableColumn<DataFx, ?>> tableColumnList = new ArrayList<>();
 
@@ -100,13 +134,13 @@ public class TableViewPaneController {
 					tableColumn = new TableColumn<DataFx, Double>(uniName + " " + uniName.getUnit());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<DataFx, Double>, ObservableValue<?>>) cellDataFeatures -> {
-						final Optional<Double> aDouble = Optional.ofNullable(cellDataFeatures.getValue().recordsProperty().getValue().get(uniName));
-						if (aDouble.isEmpty())
-							return new SimpleObjectProperty<Double>(null);
-						else{
-							return new SimpleDoubleProperty(aDouble.get());
-						}
-					});
+								final Optional<Double> aDouble = Optional.ofNullable(cellDataFeatures.getValue().recordsProperty().getValue().get(uniName));
+								if (aDouble.isEmpty())
+									return new SimpleObjectProperty<Double>(null);
+								else{
+									return new SimpleDoubleProperty(aDouble.get());
+								}
+							});
 					tableColumn.setCellFactory(c -> new TableCell<HarmoFx, Double>(){
 						@Override
 						protected void updateItem(Double balance, boolean empty) {
@@ -125,24 +159,6 @@ public class TableViewPaneController {
 			tableColumnList.add(tableColumn);
 		});
 		return tableColumnList;
-	}
-
-	private static void setRightAlignment(TableColumn tableColumn) {
-		tableColumn.setStyle("-fx-alignment: CENTER-RIGHT;");
-	}
-
-	private void initTableHarmonics() {
-		if (!listHarmoFx.getHarmoFxObservableList().isEmpty()){
-			harmonicsTab.setDisable(false);
-			harmonicsTableView.setEditable(true);
-
-			final HarmoFx harmoFx = listHarmoFx.getHarmoFxList().get(0);
-			final ObservableList<UniNames> columnNames = harmoFx.getColumnNames();
-
-			List<TableColumn<HarmoFx, ?>> tableColumnList = getTableColumnsHarmonics(columnNames);
-			harmonicsTableView.getColumns().addAll(tableColumnList);
-			harmonicsTableView.getItems().addAll(listHarmoFx.getHarmoFxObservableList());
-		}
 	}
 
 	private static List<TableColumn<HarmoFx, ?>> getTableColumnsHarmonics(ObservableList<UniNames> columnNames) {
@@ -200,5 +216,45 @@ public class TableViewPaneController {
 		return tableColumnList;
 	}
 
+	@FXML
+	private void changeDisplayTypeNorm() {
+		final NumberDisplayType type = displayTypeNorm.getValue();
 
+		switch (type){
+			case NORMAL -> {}
+			case SCIENTIFIC -> applyScientificNotationOnNormal();
+		}
+	}
+
+	private void applyScientificNotationOnNormal() {
+		final ObservableList<TableColumn<DataFx, ?>> columns = normalTableView.getColumns();
+//		columns.forEach(column ->{
+//			column.setCellFactory(param -> new TableCell<DataFx, Object>(){
+//				@Override
+//				protected void updateItem(Object item, boolean b) {
+//					super.updateItem(co);
+//				}
+//			});
+//		});
+	}
+
+	@FXML
+	private void leftShiftPrecisionNorm() {
+	}
+
+	@FXML
+	private void rightShiftPrecisionNorm() {
+	}
+
+	@FXML
+	private void changeDisplayTypeHarmo() {
+	}
+
+	@FXML
+	private void leftShiftPrecisionHarmo() {
+	}
+
+	@FXML
+	private void rightShiftPrecisionHarmo() {
+	}
 }

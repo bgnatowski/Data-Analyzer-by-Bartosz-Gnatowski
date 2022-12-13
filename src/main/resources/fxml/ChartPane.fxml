@@ -144,6 +144,7 @@
                                                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
+                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
                                                                     </rowConstraints>
                                                                      <children>
                                                                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.title">
@@ -206,7 +207,13 @@
                                                                         </Label>
                                                                         <TextField fx:id="yMin" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                                         <TextField fx:id="yMax" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                                                        <Button mnemonicParsing="false" onAction="#changeYRangeOnAction" text="%chart.pane.settings.apply" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                                        <Button mnemonicParsing="false" onAction="#changeYRangeOnAction" text="%chart.pane.settings.apply" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Y tick" GridPane.rowIndex="7">
+                                                                           <padding>
+                                                                              <Insets right="5.0" />
+                                                                           </padding>
+                                                                        </Label>
+                                                                        <TextField fx:id="yTick" GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                                                      </children>
                                                                   </GridPane>
                                                                </children>

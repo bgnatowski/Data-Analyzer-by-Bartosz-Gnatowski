@@ -3,6 +3,7 @@ package agh.inzapp.inzynierka;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.models.enums.FXMLNames;
+import com.deepoove.poi.XWPFTemplate;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.HashMap;
 
 @SpringBootApplication
 public class Main extends Application {
@@ -23,6 +28,17 @@ public class Main extends Application {
 
 	public static void main(String[] args) {
 		Application.launch(args);
+
+		File templateFile = new File("src/main/resources/data/template.docx");
+		XWPFTemplate template = XWPFTemplate.compile(templateFile.getAbsolutePath()).render(
+				new HashMap<String, Object>(){{
+					put("title", "Hi, poi-tl");
+				}});
+		try {
+			template.writeAndClose(new FileOutputStream("src/main/resources/data/output.docx"));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -39,7 +55,7 @@ public class Main extends Application {
 	}
 	@Override
 	public void start(Stage stage) {
-		final Scene scene = new Scene(root, 1200, 640);
+		final Scene scene = new Scene(root, 1280, 720);
 		stage.setScene(scene);
 		stage.setTitle(applicationTitle);
 //		stage.setMaximized(true);

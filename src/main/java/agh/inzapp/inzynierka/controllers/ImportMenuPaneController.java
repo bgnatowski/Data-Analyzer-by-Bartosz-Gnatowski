@@ -1,15 +1,14 @@
 package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.database.DataManager;
-import agh.inzapp.inzynierka.models.ListDataFx;
-import agh.inzapp.inzynierka.models.ListHarmoFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
 import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.CsvFilesList;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;

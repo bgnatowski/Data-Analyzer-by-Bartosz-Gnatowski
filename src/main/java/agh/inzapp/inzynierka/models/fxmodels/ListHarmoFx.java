@@ -1,9 +1,8 @@
-package agh.inzapp.inzynierka.models;
+package agh.inzapp.inzynierka.models.fxmodels;
 
 import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.HarmoDb;
-import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

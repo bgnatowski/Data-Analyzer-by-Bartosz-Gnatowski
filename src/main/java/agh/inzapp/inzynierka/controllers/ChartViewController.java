@@ -2,8 +2,8 @@ package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
-import agh.inzapp.inzynierka.models.ListDataFx;
-import agh.inzapp.inzynierka.models.ListHarmoFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
@@ -49,12 +49,10 @@ public class ChartViewController {
 	@FXML
 	private DatePicker xDateFrom, xDateTo;
 	private TimeSpinner xTimeFrom, xTimeTo;
-	//	@FXML
-//	private Button newChartButton, addToRaportButton, saveAsChartButton, yAddButton, yPlusButton, yMinusButton;
 	@FXML
 	private Button saveAsChartButton;
 	@FXML
-	private TextField chartTitle, xLabel, yLabel, yMin, yMax;
+	private TextField chartTitle, xLabel, yLabel, yMin, yMax, yTick;
 	@FXML
 	private ColorPicker yColor0, yColor1, yColor2, yColor3, yColor4;
 	@FXML
@@ -184,9 +182,9 @@ public class ChartViewController {
 		yMin.setTextFormatter(minTextFormatter);
 		TextFormatter<Double> maxTextFormatter = getDoubleTextFormatter();
 		yMax.setTextFormatter(maxTextFormatter);
+		TextFormatter<Double> tickTextFormatter = getDoubleTextFormatter();
+		yTick.setTextFormatter(tickTextFormatter);
 	}
-
-
 
 	//PRZYCISKI "DODAJ
 	@FXML
@@ -300,12 +298,6 @@ public class ChartViewController {
 		howManyYDData--;
 	}
 
-	//SAVE TO RAPORT
-
-	@FXML
-	private void addChartToRaportOnAction() {
-	}
-
 	@FXML
 	private void saveAsChartOnAction() {
 		try {
@@ -353,7 +345,9 @@ public class ChartViewController {
 
 	@FXML
 	private void changeYRangeOnAction() {
-		chartService.setAxisBounds(Double.parseDouble(yMin.getText()), Double.parseDouble(yMax.getText()));
+		chartService.setAxisBounds(Double.parseDouble(yMin.getText()),
+				Double.parseDouble(yMax.getText()),
+				Double.parseDouble(yTick.getText()));
 	}
 
 	private boolean isSelectedValue(int i) {
