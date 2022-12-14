@@ -6,14 +6,13 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import static agh.inzapp.inzynierka.models.enums.FXMLNames.*;
 
 @Controller
-public class MenuButtonsController {
-	private static MainAppPaneController mainAppPaneController;
+public class MenuController {
+	private static MainViewController mainAppPaneController;
 	private static final BooleanProperty toggleButtonProperty = new SimpleBooleanProperty();
 	@FXML
 	private Button tableViewButton, chartViewButton, reportButton;
@@ -52,8 +51,8 @@ public class MenuButtonsController {
 		FxmlUtils.openNewSceneFromLoader(TABLE_VIEW.getPath(), "button.tableview", 450, 450);
 	}
 	@FXML
-	void setMainController(MainAppPaneController mainAppPaneController) {
-		MenuButtonsController.mainAppPaneController = mainAppPaneController;
+	void setMainController(MainViewController mainAppPaneController) {
+		MenuController.mainAppPaneController = mainAppPaneController;
 	}
 
 	@FXML
@@ -65,6 +64,6 @@ public class MenuButtonsController {
 	}
 
 	public static void setToggleButtonProperty(boolean toggleButtonProperty) {
-		MenuButtonsController.toggleButtonProperty.setValue(toggleButtonProperty);
+		MenuController.toggleButtonProperty.setValue(toggleButtonProperty);
 	}
 }

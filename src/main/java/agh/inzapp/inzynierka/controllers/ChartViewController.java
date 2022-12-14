@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 
 import static agh.inzapp.inzynierka.utils.CommonUtils.convertToWebString;
 import static agh.inzapp.inzynierka.utils.CommonUtils.getDoubleTextFormatter;
+import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller
 public class ChartViewController {
@@ -72,13 +73,12 @@ public class ChartViewController {
 		howManyYDData = 0;
 		ListDataFx listDataFx = ListDataFx.getInstance();
 		ListHarmoFx listHarmoFx = ListHarmoFx.getInstance();
-		if (listDataFx != null || listHarmoFx != null) {
-			dataFxList = Objects.requireNonNull(listDataFx).getDataFxList();
-			harmoFxList = Objects.requireNonNull(listHarmoFx).getHarmoFxList();
-			addTimeSpinnersToGrid();
-			initLists();
-			bindings();
-		}
+
+		dataFxList = Objects.requireNonNull(listDataFx).getDataFxList();
+		harmoFxList = Objects.requireNonNull(listHarmoFx).getHarmoFxList();
+		addTimeSpinnersToGrid();
+		initLists();
+		bindings();
 	}
 
 	private void addTimeSpinnersToGrid() {
@@ -137,28 +137,6 @@ public class ChartViewController {
 		restrictDatePicker(xDateTo, startDate.toLocalDate(), endDate.toLocalDate());
 		xDateFrom.setValue(startDate.toLocalDate());
 		xDateTo.setValue(endDate.toLocalDate());
-	}
-
-	private void restrictDatePicker(DatePicker datePicker, LocalDate minDate, LocalDate maxDate) {
-		final Callback<DatePicker, DateCell> dayCellFactory = new Callback<>() {
-			@Override
-			public DateCell call(final DatePicker datePicker) {
-				return new DateCell() {
-					@Override
-					public void updateItem(LocalDate item, boolean empty) {
-						super.updateItem(item, empty);
-						if (item.isBefore(minDate)) {
-							setDisable(true);
-							setStyle("-fx-background-color: #ffc0cb;");
-						} else if (item.isAfter(maxDate)) {
-							setDisable(true);
-							setStyle("-fx-background-color: #ffc0cb;");
-						}
-					}
-				};
-			}
-		};
-		datePicker.setDayCellFactory(dayCellFactory);
 	}
 
 	private void bindValueComboBoxes() {

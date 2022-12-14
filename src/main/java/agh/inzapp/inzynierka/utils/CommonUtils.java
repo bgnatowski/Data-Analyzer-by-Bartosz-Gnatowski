@@ -1,7 +1,11 @@
 package agh.inzapp.inzynierka.utils;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
+import agh.inzapp.inzynierka.models.fxmodels.DataFx;
+import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+import javafx.collections.ObservableMap;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
@@ -79,5 +83,20 @@ public class CommonUtils {
 				(int) (color.getGreen() * 255),
 				(int) (color.getBlue() * 255));
 		return rgb;
+	}
+
+	public static List<CommonModelFx> mergeFxModelLists(List<DataFx> normalList, List<HarmoFx> harmoList) throws ApplicationException {
+		if(normalList.size() != harmoList.size()) throw new ApplicationException("cos jest nie tak z ilością kolumn wczytanych danych"); //todo
+
+		List<? extends CommonModelFx> commonList = normalList;
+		for(int i = 0; i < commonList.size(); i++){
+			final ObservableMap<UniNames, Double> records = commonList.get(i).getRecords();
+			final ObservableMap<UniNames, Double> recordsHarmo = harmoList.get(i).getRecords();
+			records.putAll(recordsHarmo);
+
+		}
+
+
+		return new ArrayList<>();
 	}
 }

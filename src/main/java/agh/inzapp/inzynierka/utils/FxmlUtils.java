@@ -3,10 +3,14 @@ package agh.inzapp.inzynierka.utils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 
 public class FxmlUtils {
@@ -52,5 +56,27 @@ public class FxmlUtils {
 		return stage;
 	}
 
+
+	public static void restrictDatePicker(DatePicker datePicker, LocalDate minDate, LocalDate maxDate) {
+		final Callback<DatePicker, DateCell> dayCellFactory = new Callback<>() {
+			@Override
+			public DateCell call(final DatePicker datePicker) {
+				return new DateCell() {
+					@Override
+					public void updateItem(LocalDate item, boolean empty) {
+						super.updateItem(item, empty);
+						if (item.isBefore(minDate)) {
+							setDisable(true);
+							setStyle("-fx-background-color: #ffc0cb;");
+						} else if (item.isAfter(maxDate)) {
+							setDisable(true);
+							setStyle("-fx-background-color: #ffc0cb;");
+						}
+					}
+				};
+			}
+		};
+		datePicker.setDayCellFactory(dayCellFactory);
+	}
 
 }

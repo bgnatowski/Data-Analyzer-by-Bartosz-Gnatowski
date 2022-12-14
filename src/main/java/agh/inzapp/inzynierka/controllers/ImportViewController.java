@@ -25,7 +25,7 @@ import static agh.inzapp.inzynierka.models.enums.DataType.NORMAL_DATA;
 import static agh.inzapp.inzynierka.models.enums.FXMLNames.*;
 
 @Controller
-public class ImportMenuPaneController {
+public class ImportViewController {
 	@FXML
 	private AnchorPane apMain;
 	@FXML
@@ -142,9 +142,9 @@ public class ImportMenuPaneController {
 			Scene scene = new Scene(loader.getRoot(), stage.getWidth(), stage.getHeight());
 			stage.setScene(scene);
 
-			MainAppPaneController controller = loader.getController();
+			MainViewController controller = loader.getController();
 			controller.setCenter(TABLE_VIEW.getPath());
-			MenuButtonsController.setToggleButtonProperty(false);
+			MenuController.setToggleButtonProperty(false);
 		} catch (IOException e) {
 			throw new ApplicationException("error.switchTableView");
 		}
