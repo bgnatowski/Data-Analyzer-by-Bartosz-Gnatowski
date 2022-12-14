@@ -8,7 +8,7 @@ import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
-import agh.inzapp.inzynierka.services.ChartService;
+import agh.inzapp.inzynierka.services.LineChartService;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
@@ -22,11 +22,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
-import javafx.util.Callback;
 import org.springframework.stereotype.Controller;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,12 +63,12 @@ public class ChartViewController {
 	/////////////////////////////////////
 	private List<DataFx> dataFxList;
 	private List<HarmoFx> harmoFxList;
-	private ChartService chartService;
+	private LineChartService chartService;
 	private int howManyYDData;
 
 	@FXML
 	public void initialize() {
-		chartService = new ChartService();
+		chartService = new LineChartService();
 		howManyYDData = 0;
 		ListDataFx listDataFx = ListDataFx.getInstance();
 		ListHarmoFx listHarmoFx = ListHarmoFx.getInstance();
@@ -82,11 +81,11 @@ public class ChartViewController {
 	}
 
 	private void addTimeSpinnersToGrid() {
-		xTimeFrom = new TimeSpinner();
+		xTimeFrom = new TimeSpinner(LocalTime.now());
 		xTimeFrom.setId("timeSpinnerFrom");
 		xTimeFrom.maxWidth(Double.MAX_VALUE);
 		xGrid.add(xTimeFrom, 0, 2);
-		xTimeTo = new TimeSpinner();
+		xTimeTo = new TimeSpinner(LocalTime.now());
 		xTimeTo.setId("timeSpinnerTo");
 		xTimeTo.maxWidth(Double.MAX_VALUE);
 		xGrid.add(xTimeTo, 1, 2);

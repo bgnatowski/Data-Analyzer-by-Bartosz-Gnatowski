@@ -1,5 +1,6 @@
 package agh.inzapp.inzynierka.controllers;
 
+import agh.inzapp.inzynierka.models.enums.FXMLNames;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -65,5 +66,10 @@ public class MenuController {
 
 	public static void setToggleButtonProperty(boolean toggleButtonProperty) {
 		MenuController.toggleButtonProperty.setValue(toggleButtonProperty);
+	}
+
+	public static void changeToHomeAfterError(){
+		mainAppPaneController.setCenter(HOME.getPath());
+		toggleButtonProperty.set(false);
 	}
 }

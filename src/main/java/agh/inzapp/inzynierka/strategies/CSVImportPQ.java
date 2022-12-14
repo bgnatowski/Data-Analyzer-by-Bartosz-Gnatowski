@@ -26,6 +26,8 @@ import java.util.stream.Stream;
 @Component
 public class CSVImportPQ implements CSVStrategy {
 	private List<DataFx> dataModels;
+	private List<String> globalRecords = List.of();
+	private List<UniNames> columnsNames = new ArrayList<>();
 
 	@Override
 	public List<DataFx> importCSVFile(String... path) throws ApplicationException {
@@ -41,7 +43,6 @@ public class CSVImportPQ implements CSVStrategy {
 					 .withCSVParser(parser)
 					 .build()
 		) {
-			List<UniNames> columnsNames = new ArrayList<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
 			long id = 0L;

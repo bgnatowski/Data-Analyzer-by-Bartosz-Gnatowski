@@ -3,8 +3,6 @@ package agh.inzapp.inzynierka.services;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
-import com.sun.javafx.charts.Legend;
-import javafx.application.Platform;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
@@ -15,29 +13,26 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Control;
-import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class ChartService {
+public class LineChartService {
 	private ListProperty<LineChart<String, Number>> lineChartObservableList = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private LineChart<String, Number> currentLineChart;
 	private XYChart.Series<String, Number> currentSeries;
 	private int indexOfLineChart;
 	private String xTickDatePattern;
 
-	public ChartService() {
+	public LineChartService() {
 		currentSeries = new XYChart.Series<>();
 		indexOfLineChart = -1;
 	}
-
 	public ObservableList<String> getLineChartsList() {
 		List<String> chartList = new ArrayList<>();
 		for(int i = 1; i <= lineChartObservableList.size(); i++){
@@ -96,7 +91,6 @@ public class ChartService {
 	}
 	public void setLineChartTitle(String title){
 		currentLineChart.setTitle(title);
-
 		updateChart();
 	}
 

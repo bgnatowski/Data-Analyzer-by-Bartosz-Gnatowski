@@ -5,6 +5,8 @@ import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.paint.Color;
@@ -85,18 +87,29 @@ public class CommonUtils {
 		return rgb;
 	}
 
-	public static List<CommonModelFx> mergeFxModelLists(List<DataFx> normalList, List<HarmoFx> harmoList) throws ApplicationException {
-		if(normalList.size() != harmoList.size()) throw new ApplicationException("cos jest nie tak z ilością kolumn wczytanych danych"); //todo
+	public static List<? extends CommonModelFx> mergeFxModelLists(List<DataFx> normalList, List<HarmoFx> harmoList) throws ApplicationException {
+		if(normalList.size() != harmoList.size()) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.merge.list"));
 
 		List<? extends CommonModelFx> commonList = normalList;
 		for(int i = 0; i < commonList.size(); i++){
-			final ObservableMap<UniNames, Double> records = commonList.get(i).getRecords();
+			final CommonModelFx commonModelFx = commonList.get(i);
+			final ObservableMap<UniNames, Double> records = commonModelFx.getRecords();
 			final ObservableMap<UniNames, Double> recordsHarmo = harmoList.get(i).getRecords();
 			records.putAll(recordsHarmo);
 
+			final ObservableList<UniNames> columnNames = commonModelFx.getColumnNames();
+			final ObservableList<UniNames> columnNamesHarmo = harmoList.get(i).getColumnNames();
+			columnNames.addAll(columnNamesHarmo);
+			final List<UniNames> collectColumnNames = columnNames.stream().distinct().collect(Collectors.toList()); //bez powtorzen
+
+			commonModelFx.setColumnNames(FXCollections.observableArrayList(collectColumnNames));
+			commonModelFx.setRecords(FXCollections.observableMap(records));
 		}
+		return commonList;
+	}
 
-
-		return new ArrayList<>();
+	public static Double percentile(List<Double> latencies, double percentile) {
+		int index = (int) Math.ceil(percentile / 100.0 * latencies.size());
+		return latencies.get(index-1);
 	}
 }

@@ -60,7 +60,6 @@ public class DataFx extends CommonModelFx {
 		map.put(Q_total,null);
 		records.setValue(FXCollections.observableMap(map));
 	}
-
 	@Override
 	public String toString() {
 		List<String> allDataToString = new ArrayList<>();

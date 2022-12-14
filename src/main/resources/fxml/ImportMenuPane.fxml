@@ -192,7 +192,7 @@
                                                                         <ContextMenu>
                                                                           <items>
                                                                             <MenuItem mnemonicParsing="false" onAction="#deleteHarmonicsFileFromListOnAction" text="%listViewContextMenu.delete" />
-                                                                              <MenuItem mnemonicParsing="false" onAction="#addHarmonicsFileFromListOnAction" text="listViewContextMenu.add" />
+                                                                              <MenuItem mnemonicParsing="false" onAction="#addHarmonicsFileFromListOnAction" text="%listViewContextMenu.add" />
                                                                           </items>
                                                                         </ContextMenu>
                                                                      </contextMenu>
