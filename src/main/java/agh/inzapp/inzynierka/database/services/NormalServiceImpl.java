@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +17,9 @@ import java.util.List;
 @Service
 @Transactional
 public class NormalServiceImpl implements CrudService {
+	@PersistenceContext
+	private EntityManager entityManager;
+
 	private final DataRepository repository;
 	@Autowired
 	public NormalServiceImpl(DataRepository repository) {
@@ -22,19 +27,35 @@ public class NormalServiceImpl implements CrudService {
 	}
 	@Override
 	public <T extends CommonDbModel> T add(T dataModel) throws ApplicationException {
-		DataDb saved;
-		if (dataModel instanceof DataDb){
-			 saved = repository.save((DataDb) dataModel);
-			 return (T) saved;
-		} else {
+		if (dataModel instanceof DataDb)
+			return (T) repository.save((DataDb) dataModel);
+		else
+			throw new ApplicationException("error.saving.datadb");
+	}
+
+	@Override
+	public void addAll(List<? extends CommonDbModel> dataModelList) throws ApplicationException {
+		if(dataModelList != null){
+			int totalObjects = dataModelList.size();
+			int batchSize = 1000;
+			for (int i = 0; i < totalObjects; i = i + batchSize) {
+				if( i+ batchSize > totalObjects){
+					List<? extends CommonDbModel> dataModelsBatch = dataModelList.subList(i, totalObjects - 1);
+					repository.saveAll((List<DataDb>)dataModelsBatch);
+					break;
+				}
+				List<? extends CommonDbModel> dataModelsBatch = dataModelList.subList(i, i + batchSize);
+				repository.saveAll((List<DataDb>)dataModelsBatch);
+			}
+		}else{
 			throw new ApplicationException("error.saving.datadb");
 		}
 	}
 
+
 	@Override
 	public List<DataDb> getAll(){
-		final List<DataDb> all = repository.findAll();
-		return all;
+		return repository.findAll();
 	}
 
 	@Override
@@ -53,12 +74,13 @@ public class NormalServiceImpl implements CrudService {
 	@Override
 	public void clearAll() {
 		repository.deleteAll();
+		repository.flush();
+//		entityManager.createNativeQuery("SELECT setval('data_db_sequence', 1, true);").executeUpdate();
+//		entityManager.createNativeQuery("ALTER SEQUENCE data_db_sequence RESTART WITH 1;").executeUpdate();
+//		entityManager.createNativeQuery("UPDATE data_db SET id=nextval('data_db_sequence') WHERE id!=null OR id>0;").executeUpdate();
 	}
 
-	@Override
-	@Transactional
+
 	public void reset() {
-		repository.reset();
 	}
-
 }

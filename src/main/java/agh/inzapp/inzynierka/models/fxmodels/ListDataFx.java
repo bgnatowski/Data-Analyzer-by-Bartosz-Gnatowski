@@ -38,16 +38,14 @@ public class ListDataFx {
 	}
 
 	public void init() {
+		Long startReading = System.currentTimeMillis();
 		List<? extends CommonDbModel> allDataDb = DataManager.getAll(DataDb.class);
+		Long endReading = System.currentTimeMillis();
+		System.out.println("FindAll normal: "+(endReading-startReading));
 		if (allDataDb != null){
 			dataFxList.clear();
-			allDataDb.forEach(dataDb -> {
-				if (dataDb instanceof DataDb){
-					DataFx dataFx = DataConverter.convertDbToFx((DataDb) dataDb);
-					dataFxList.add(dataFx);
-				}
-			});
-			dataFxObservableList.setAll(dataFxList);
+			dataFxList.addAll(DataConverter.parseListDbToFx(allDataDb));
+			dataFxObservableList.addAll(dataFxList);
 		}
 	}
 

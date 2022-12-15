@@ -1,6 +1,8 @@
 package agh.inzapp.inzynierka.models;
 
 import agh.inzapp.inzynierka.database.DataManager;
+import agh.inzapp.inzynierka.database.models.DataDb;
+import agh.inzapp.inzynierka.database.models.HarmoDb;
 import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.models.enums.DataType;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
@@ -8,6 +10,8 @@ import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
 import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
 import agh.inzapp.inzynierka.strategies.*;
 import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.converters.DataConverter;
+import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -44,7 +48,12 @@ public class CsvFilesList {
 	public void saveNormal(Analysers analyser) throws ApplicationException {
 		DataManager.clearNormal();
 		switch (analyser){
-			case PQbox -> DataManager.saveAll(importNormalDataList(new CSVImportPQ()));
+			case PQbox -> {
+				Long startReading = System.currentTimeMillis();
+				DataManager.saveAll(importNormalDataList(new CSVImportPQ()));
+				Long endReading = System.currentTimeMillis();
+				System.out.println("Save normal: "+(endReading-startReading));
+			}
 			case Sonel -> DataManager.saveAll(importNormalDataList(new CSVImportSonel()));
 		}
 		ListDataFx.getInstance().init();
@@ -63,18 +72,27 @@ public class CsvFilesList {
 		DataManager.clearHarmo();
 		switch (analyser){
 			case PQbox ->{
+				Long startReading = System.currentTimeMillis();
 				DataManager.saveAll(importNormalDataList(new CSVImportPQ()));
+				Long endReading = System.currentTimeMillis();
+				System.out.println("Save normal: "+(endReading-startReading));
+
+				ListDataFx.getInstance().init();
+
+				startReading = System.currentTimeMillis();
 				DataManager.saveAll(importHarmonicsDataList(new CSVImportPQHarmonics()));
+				endReading = System.currentTimeMillis();
+				System.out.println("Save harmo: "+(endReading-startReading));
+
+				ListHarmoFx.getInstance().init();
 			}
 			case Sonel -> {
 				DataManager.saveAll(importNormalDataList(new CSVImportSonel()));
 				DataManager.saveAll(importHarmonicsDataList(new CSVImportSonelHarmonics()));
 			}
 		}
-		ListDataFx.getInstance().init();
-		ListHarmoFx.getInstance().init();
 	}
-	private List<? extends CommonModelFx> importNormalDataList(CSVStrategy csvStrategy) {
+	private List<DataDb> importNormalDataList(CSVStrategy csvStrategy) {
 		List<CommonModelFx> modelList = new ArrayList<>();
 		listNormal.forEach(file ->
 		{
@@ -84,10 +102,10 @@ public class CsvFilesList {
 				DialogUtils.errorDialog(e.getMessage());
 			}
 		});
-		return modelList;
+		return DataConverter.parseListFxToDb(modelList);
 	}
 
-	private List<? extends CommonModelFx> importHarmonicsDataList(CSVStrategy csvStrategy) {
+	private List<HarmoDb> importHarmonicsDataList(CSVStrategy csvStrategy) {
 		List<CommonModelFx> modelList = new ArrayList<>();
 		listHarmonics.forEach(file ->
 		{
@@ -97,7 +115,7 @@ public class CsvFilesList {
 				DialogUtils.errorDialog(e.getMessage());
 			}
 		});
-		return modelList;
+		return HarmoConverter.parseListFxToDb(modelList);
 	}
 	public ObservableList<File> getListNormal() {
 		return listNormal.get();

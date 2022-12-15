@@ -7,6 +7,9 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public abstract class CommonModelFx {
 	protected LongProperty id = new SimpleLongProperty();
@@ -73,5 +76,18 @@ public abstract class CommonModelFx {
 
 	public void setColumnNames(ObservableList<UniNames> columnNames) {
 		this.columnNames.set(columnNames);
+	}
+	@Override
+	public String toString() {
+		List<String> allDataToString = new ArrayList<>();
+		allDataToString.add(String.valueOf(getId()));
+		allDataToString.add(getDate().toString());
+		allDataToString.add(getFlags().values().toString());
+
+		String s = Arrays.toString(getRecords().values().toArray());
+		String records = s.substring(1, s.length()-1);
+		allDataToString.add(records);
+
+		return allDataToString.toString();
 	}
 }

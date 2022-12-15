@@ -31,9 +31,9 @@ public class CSVImportSonelHarmonics implements CSVStrategy {
 	private static final int BLANK_COLUMNS = 2;
 	private static final int SKIP_INFO_LINES = 11;
 	@Override
-	public List<? extends CommonModelFx> importCSVFile(String... path) throws ApplicationException {
+	public List<? extends CommonModelFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
-		readFile(path[0]);
+		readFile(path);
 		return dataModels;
 	}
 	private void readFile(String path) throws ApplicationException {

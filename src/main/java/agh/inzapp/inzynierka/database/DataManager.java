@@ -8,12 +8,15 @@ import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.database.services.HarmonicsServiceImpl;
 import agh.inzapp.inzynierka.database.services.NormalServiceImpl;
+import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
 import agh.inzapp.inzynierka.utils.converters.DataConverter;
 import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -33,12 +36,11 @@ public class DataManager {
 		this.harmonicsService = harmonicsService;
 	}
 
-	public static void saveAll(List<? extends CommonModelFx> modelFxList) throws ApplicationException{
-		for (CommonModelFx commonModelFx : modelFxList) {
-			save(commonModelFx);
-		}
-		firstData = true;
-		firstHarmo = true;
+	public static void saveAll(List<? extends CommonDbModel> dbModelsList) throws ApplicationException{
+		if(!dbModelsList.isEmpty() && dbModelsList.get(0) instanceof DataDb)
+			dataService.addAll(dbModelsList);
+		else if(!dbModelsList.isEmpty() && dbModelsList.get(0) instanceof HarmoDb)
+			harmonicsService.addAll(dbModelsList);
 	}
 
 	public static <T extends CommonModelFx> void save(T modelFx) throws ApplicationException {

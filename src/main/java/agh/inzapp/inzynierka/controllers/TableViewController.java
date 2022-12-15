@@ -4,6 +4,9 @@ import agh.inzapp.inzynierka.models.enums.DataType;
 import agh.inzapp.inzynierka.models.enums.NumberDisplayType;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.*;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -97,9 +100,9 @@ public class TableViewController {
 	private List<TableColumn<CommonModelFx, Object>> getTableColumns(ObservableList<UniNames> columnNames) {
 		List<TableColumn<CommonModelFx, Object>> tableColumnList = new ArrayList<>();
 
-		TableColumn<CommonModelFx, Object> idColumn = new TableColumn<>("id");
-		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-		tableColumnList.add(idColumn);
+//		TableColumn<CommonModelFx, Object> idColumn = new TableColumn<>("id");
+//		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+//		tableColumnList.add(idColumn);
 
 		columnNames.forEach(uniName -> {
 			TableColumn tableColumn;

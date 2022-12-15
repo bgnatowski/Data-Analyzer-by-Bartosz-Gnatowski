@@ -20,20 +20,42 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 @Component
 public class CSVImportPQ implements CSVStrategy {
 	private List<DataFx> dataModels;
-	private List<String> globalRecords = List.of();
+	private List<List<String>> allRecordsList = new ArrayList<>();
 	private List<UniNames> columnsNames = new ArrayList<>();
-
 	@Override
-	public List<DataFx> importCSVFile(String... path) throws ApplicationException {
+	public List<DataFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
-		readFile(path[0]);
+
+		Long startReading = System.currentTimeMillis();
+		readFile(path);
+		Long endReading = System.currentTimeMillis();
+
+		Long startParsing = System.currentTimeMillis();
+		saveModels();
+		Long endParsing = System.currentTimeMillis();
+
+		System.out.println("CSV:" + (endReading-startReading));
+		System.out.println("Save ModelFX:" + (endParsing-startParsing));
 		return dataModels;
+	}
+
+	private void saveModels() {
+		AtomicLong id = new AtomicLong(0L);
+		allRecordsList.forEach(records ->{
+			PQNormalFx model = new PQNormalFx();
+			model.init();
+			model.setId(id.incrementAndGet());
+			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
+			setDataInModel(records, model);
+			dataModels.add(model);
+		});
 	}
 
 	private void readFile(String path) throws ApplicationException {
@@ -45,12 +67,9 @@ public class CSVImportPQ implements CSVStrategy {
 		) {
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
-			long id = 0L;
 
 			while ((oneLineValues = csvReader.readNext()) != null) {
 				List<String> allRecords = Arrays.asList(oneLineValues);
-				PQNormalFx model = new PQNormalFx();
-
 				if (allRecords.contains("")) { //bez tego wczytywało +1 wartość
 					break;
 				}
@@ -58,11 +77,8 @@ public class CSVImportPQ implements CSVStrategy {
 					columnsNames.addAll(PQParser.parseNames(allRecords));
 					isFirstLineRead = true;
 				} else {
-					model.init();
-					model.setId(++id);
-					model.setColumnNames(FXCollections.observableArrayList(columnsNames));
-					setDataInModel(allRecords, model);
-					dataModels.add(model);
+					allRecordsList.add(allRecords);
+
 				}
 			}
 		} catch (IOException | CsvValidationException e) {
@@ -75,13 +91,9 @@ public class CSVImportPQ implements CSVStrategy {
 		AtomicReference<LocalDate> localDate = new AtomicReference<>();
 		AtomicReference<LocalTime> localTime = new AtomicReference<>();
 		Stream.of(UniNames.values()).forEach(unitaryName -> {
-			Long columnID = null;
 			if (model.getColumnNames().contains(unitaryName)) {
-				columnID = Long.valueOf(model.getColumnNames().indexOf(unitaryName));
-			}
-			if (columnID != null) {
+				Long columnID = Long.valueOf(model.getColumnNames().indexOf(unitaryName));
 				final String stringRecord = recordsList.get(Math.toIntExact(columnID));
-
 				switch (unitaryName) {
 					case Date -> {
 						try {

@@ -15,5 +15,5 @@ public interface CSVStrategy {
 			.withQuoteChar('\'')
 			.withIgnoreQuotations(false)
 			.build();
-	List<? extends CommonModelFx> importCSVFile(String... path) throws ApplicationException;
+	List<? extends CommonModelFx> importCSVFile(String path) throws ApplicationException;
 }

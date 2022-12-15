@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface HarmoRepository extends JpaRepository<HarmoDb, Long> {
 	List<CommonDbModel> findAllByDateAfterAndDateBefore(LocalDateTime start, LocalDateTime end);
-
 	@Query(value = "select Date from harmo_db record WHERE record.date BETWEEN ?1 AND ?2", nativeQuery = true)
 	List<Timestamp> findByDateBetween(LocalDateTime start, LocalDateTime end);
 

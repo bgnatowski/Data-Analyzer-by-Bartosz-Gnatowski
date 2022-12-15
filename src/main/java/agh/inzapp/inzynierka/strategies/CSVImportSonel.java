@@ -33,9 +33,9 @@ public class CSVImportSonel implements CSVStrategy {
 	private List<DataFx> dataModels;
 
 	@Override
-	public List<DataFx> importCSVFile(String... path) throws ApplicationException {
+	public List<DataFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
-		readFile(path[0]);
+		readFile(path);
 		return dataModels;
 	}
 

@@ -15,12 +15,12 @@ import java.util.List;
 public interface CrudService {
 
 	<T extends CommonDbModel> T add(T dataModel) throws ApplicationException;
+	void addAll(List<? extends CommonDbModel> dataModelList) throws ApplicationException;
+
 	List<? extends CommonDbModel> getAll();
 	List<CommonDbModel> findRecordsByIdBetween(Long startId, Long endId);
 	List<Timestamp> findByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 	List<Long> findIdByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 
 	void clearAll();
-
-	void reset();
 }

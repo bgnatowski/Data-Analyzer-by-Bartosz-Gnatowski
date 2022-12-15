@@ -20,11 +20,6 @@ public interface DataRepository extends JpaRepository<DataDb, Long> {
 	@Query("select d from DataDb d where d.id between ?1 and ?2")
 	List<CommonDbModel> findAllByIdBetween(Long idStart, Long idEnd);
 
-	@Modifying
-	@Query(value = "TRUNCATE TABLE data_db RESTART IDENTITY", nativeQuery = true)
-	void reset();
-
-
 
 }
 

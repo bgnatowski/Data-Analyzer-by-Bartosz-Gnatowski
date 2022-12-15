@@ -17,15 +17,12 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @ToString
 
 @Entity(name = "HarmoDb")
-@Table(name = "harmoDb", uniqueConstraints = {
-		@UniqueConstraint(name = "harmoDb_unique", columnNames = {"date"})
-})
+@Table(name = "harmoDb")
 public class HarmoDb implements CommonDbModel{
 	@Id
-//	@SequenceGenerator(name = "harmoDb_sequence", sequenceName = "harmoDb_sequence", allocationSize = 1)
-//	@GeneratedValue(strategy = SEQUENCE, generator = "harmoDb_sequence")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", updatable = false)
+	@SequenceGenerator(name = "harmoDb_sequence", sequenceName = "harmoDb_sequence", allocationSize = 1000, initialValue = 1)
+	@GeneratedValue(strategy = SEQUENCE, generator = "harmoDb_sequence")
+	@Column(name = "id", updatable = true)
 	private Long id;
 	@Column(name = "date", columnDefinition = "TIMESTAMP", nullable = false)
 	private LocalDateTime date;

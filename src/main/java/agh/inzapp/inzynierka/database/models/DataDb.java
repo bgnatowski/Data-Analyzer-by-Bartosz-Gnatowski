@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Getter
@@ -18,15 +19,12 @@ import static javax.persistence.GenerationType.SEQUENCE;
 @ToString
 
 @Entity(name = "DataDb")
-@Table(name = "dataDb", uniqueConstraints = {
-		@UniqueConstraint(name = "dataDb_unique", columnNames = {"date"})
-})
+@Table(name = "dataDb")
 public class DataDb implements CommonDbModel{
 	@Id
-//	@SequenceGenerator(name = "dataDb_sequence", sequenceName = "dataDb_sequence", allocationSize = 1)
-//	@GeneratedValue(strategy = SEQUENCE, generator = "dataDb_sequence")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", updatable = false)
+	@SequenceGenerator(name = "data_db_sequence", sequenceName = "data_db_sequence", allocationSize = 1000, initialValue = 1)
+	@GeneratedValue(strategy = SEQUENCE, generator = "data_db_sequence")
+	@Column(name = "id")
 	private Long id;
 	@Column(name = "date", columnDefinition = "TIMESTAMP", nullable = false)
 	private LocalDateTime date;

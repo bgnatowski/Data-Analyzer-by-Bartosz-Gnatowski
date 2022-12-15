@@ -1,14 +1,18 @@
 package agh.inzapp.inzynierka.utils.converters;
 
+import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.DataDb;
 import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import javafx.collections.FXCollections;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
+import java.util.stream.Collectors;
 
 @Transactional
 public class DataConverter {
@@ -60,5 +64,15 @@ public class DataConverter {
 		}
 		map.replaceAll((k, v) -> v.equals("o") ? null : v);
 		return map;
+	}
+
+	public static List<DataDb> parseListFxToDb(List<CommonModelFx> modelList) {
+		final List<DataDb> collect = modelList.stream().map(model -> convertFxToDb((DataFx) model)).collect(Collectors.toList());
+		return collect;
+	}
+
+	public static List<DataFx> parseListDbToFx(List<? extends CommonDbModel> modelList) {
+		final List<DataFx> collect = modelList.stream().map(model -> convertDbToFx((DataDb) model)).collect(Collectors.toList());
+		return collect;
 	}
 }

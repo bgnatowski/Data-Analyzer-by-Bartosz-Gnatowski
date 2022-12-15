@@ -38,16 +38,14 @@ public class ListHarmoFx {
 	}
 
 	public void init() {
+		Long startReading = System.currentTimeMillis();
 		List<? extends CommonDbModel> allHarmoDb = DataManager.getAll(HarmoDb.class);
+		Long endReading = System.currentTimeMillis();
+		System.out.println("FindAll harmo: "+(endReading-startReading));
 		if (allHarmoDb != null){
 			harmoFxList.clear();
-			allHarmoDb.forEach(harmoDb -> {
-				if (harmoDb instanceof HarmoDb){
-					HarmoFx harmoFx = HarmoConverter.convertDbToFx((HarmoDb) harmoDb);
-					harmoFxList.add(harmoFx);
-				}
-			});
-			harmoFxObservableList.setAll(harmoFxList);
+			harmoFxList.addAll(HarmoConverter.parseListDbToFx(allHarmoDb));
+			harmoFxObservableList.addAll(harmoFxList);
 		}
 	}
 

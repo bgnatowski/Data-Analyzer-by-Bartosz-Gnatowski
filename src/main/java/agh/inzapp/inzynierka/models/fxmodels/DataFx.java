@@ -60,16 +60,4 @@ public class DataFx extends CommonModelFx {
 		map.put(Q_total,null);
 		records.setValue(FXCollections.observableMap(map));
 	}
-	@Override
-	public String toString() {
-		List<String> allDataToString = new ArrayList<>();
-		allDataToString.add(getDate().toString());
-		allDataToString.add(getFlags().values().toString());
-
-		String s = Arrays.toString(getRecords().values().toArray());
-		String records = s.substring(1, s.length()-1);
-		allDataToString.add(records);
-
-		return allDataToString.toString();
-	}
 }
