@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ListHarmoFx {
@@ -37,14 +39,14 @@ public class ListHarmoFx {
 		instance = null;
 	}
 
-	public void init() {
+	public void init(List<CommonModelFx> harmoFxes) {
 		Long startReading = System.currentTimeMillis();
-		List<? extends CommonDbModel> allHarmoDb = DataManager.getAll(HarmoDb.class);
+		final List<HarmoFx> collect = harmoFxes.stream().map(model -> (HarmoFx) model).collect(Collectors.toList());
 		Long endReading = System.currentTimeMillis();
 		System.out.println("FindAll harmo: "+(endReading-startReading));
-		if (allHarmoDb != null){
+		if (collect != null){
 			harmoFxList.clear();
-			harmoFxList.addAll(HarmoConverter.parseListDbToFx(allHarmoDb));
+			harmoFxList.addAll(collect);
 			harmoFxObservableList.addAll(harmoFxList);
 		}
 	}

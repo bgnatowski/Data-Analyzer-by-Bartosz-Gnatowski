@@ -84,9 +84,8 @@ public class TableViewController {
 			harmonicsTableView.setEditable(true);
 
 			final HarmoFx harmoFx = listHarmoFx.getHarmoFxList().get(0);
-			final ObservableList<UniNames> columnNames = harmoFx.getColumnNames();
 
-			List<TableColumn<CommonModelFx, Object>> tableColumnList = getTableColumns(columnNames);
+			List<TableColumn<CommonModelFx, Object>> tableColumnList = getTableColumns(harmoFx.getColumnNames());
 			harmonicsTableView.getColumns().addAll(tableColumnList);
 			harmonicsTableView.getItems().addAll(listHarmoFx.getHarmoFxObservableList());
 			changeDisplayTypeHarmo();

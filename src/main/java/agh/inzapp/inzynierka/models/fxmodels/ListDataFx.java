@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ListDataFx {
@@ -37,14 +39,15 @@ public class ListDataFx {
 		instance = null;
 	}
 
-	public void init() {
+	public void init(List<CommonModelFx> normalFxes) {
 		Long startReading = System.currentTimeMillis();
-		List<? extends CommonDbModel> allDataDb = DataManager.getAll(DataDb.class);
+//		List<? extends CommonDbModel> allDataDb = DataManager.getAll(DataDb.class);
+		final List<DataFx> collect = normalFxes.stream().map(model -> (DataFx) model).collect(Collectors.toList());
 		Long endReading = System.currentTimeMillis();
 		System.out.println("FindAll normal: "+(endReading-startReading));
-		if (allDataDb != null){
+		if (collect != null){
 			dataFxList.clear();
-			dataFxList.addAll(DataConverter.parseListDbToFx(allDataDb));
+			dataFxList.addAll(collect);
 			dataFxObservableList.addAll(dataFxList);
 		}
 	}
