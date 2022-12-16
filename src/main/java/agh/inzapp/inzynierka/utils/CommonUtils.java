@@ -1,9 +1,7 @@
 package agh.inzapp.inzynierka.utils;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
-import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
-import agh.inzapp.inzynierka.models.fxmodels.DataFx;
-import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
+import agh.inzapp.inzynierka.models.fxmodels.*;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -87,18 +85,22 @@ public class CommonUtils {
 		return rgb;
 	}
 
-	public static List<? extends CommonModelFx> mergeFxModelLists(List<DataFx> normalList, List<HarmoFx> harmoList) throws ApplicationException {
-		if(normalList.size() != harmoList.size()) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.merge.list"));
+	public static List<? extends CommonModelFx> mergeFxModelLists() throws ApplicationException {
+		ListDataFx listDataFx = ListDataFx.getInstance();
+		ListHarmoFx listHarmoFx = ListHarmoFx.getInstance();
+		List<DataFx> dataFxList = new ArrayList<>(Objects.requireNonNull(listDataFx).getDataFxList());
+		List<HarmoFx> harmoFxList = new ArrayList<>(Objects.requireNonNull(listHarmoFx).getHarmoFxList());
+		if(dataFxList.size() != harmoFxList.size()) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.merge.list"));
 
-		List<? extends CommonModelFx> commonList = normalList;
+		List<? extends CommonModelFx> commonList = dataFxList;
 		for(int i = 0; i < commonList.size(); i++){
 			final CommonModelFx commonModelFx = commonList.get(i);
 			final ObservableMap<UniNames, Double> records = commonModelFx.getRecords();
-			final ObservableMap<UniNames, Double> recordsHarmo = harmoList.get(i).getRecords();
+			final ObservableMap<UniNames, Double> recordsHarmo = harmoFxList.get(i).getRecords();
 			records.putAll(recordsHarmo);
 
 			final ObservableList<UniNames> columnNames = commonModelFx.getColumnNames();
-			final ObservableList<UniNames> columnNamesHarmo = harmoList.get(i).getColumnNames();
+			final ObservableList<UniNames> columnNamesHarmo = harmoFxList.get(i).getColumnNames();
 			columnNames.addAll(columnNamesHarmo);
 			final List<UniNames> collectColumnNames = columnNames.stream().distinct().collect(Collectors.toList()); //bez powtorzen
 

@@ -2,6 +2,7 @@ package agh.inzapp.inzynierka.utils;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.StackedBarChart;
 import javafx.scene.image.WritableImage;
@@ -31,7 +32,7 @@ public class SavingUtils {
 		}
 	}
 
-	public static void fastSaveBarChart(StackedBarChart<Number, Number> chart, String name) throws IOException{
+	public static void fastSaveBarChart(BarChart<String, Number> chart, String name) throws IOException{
 		Scene scene = new Scene(new AnchorPane(), 1200, 800);
 		((AnchorPane) scene.getRoot()).getChildren().add(chart);
 		WritableImage image = new WritableImage(1200, 800);

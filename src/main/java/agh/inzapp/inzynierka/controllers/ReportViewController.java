@@ -1,11 +1,9 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.database.DataManager;
-import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.models.enums.AnalyzersModels;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.*;
-import agh.inzapp.inzynierka.services.BarChartBuilder;
+import agh.inzapp.inzynierka.services.BarChartService;
 import agh.inzapp.inzynierka.services.LineChartService;
 import agh.inzapp.inzynierka.services.ReportService;
 import agh.inzapp.inzynierka.utils.CommonUtils;
@@ -49,22 +47,19 @@ public class ReportViewController {
 	@FXML
 	private AnchorPane apForPDFView, apMain;
 	private TimeSpinner timeFrom, timeTo;
-	private List<? extends CommonModelFx> dataList;
+	private List<? extends CommonModelFx> modelsList;
 	private LineChartService chartService;
-	private BarChartBuilder barChartBuilder;
+	private BarChartService barChartService;
 	private ReportService reportService;
 
 	@FXML
 	public void initialize() {
-		ListDataFx listDataFx = ListDataFx.getInstance();
-		ListHarmoFx listHarmoFx = ListHarmoFx.getInstance();
-		List<DataFx> dataFxList = Objects.requireNonNull(listDataFx).getDataFxList();
-		List<HarmoFx> harmoFxList = Objects.requireNonNull(listHarmoFx).getHarmoFxList();
 		apMain.disableProperty().bind(toggleProperty);
 		try {
-			dataList = CommonUtils.mergeFxModelLists(dataFxList, harmoFxList);
+			modelsList = CommonUtils.mergeFxModelLists();
 
 			chartService = new LineChartService();
+			barChartService = new BarChartService();
 			reportService = new ReportService();
 
 			addTimeSpinnersToGrid();
@@ -94,8 +89,8 @@ public class ReportViewController {
 	}
 
 	private void bindDatePickers() {
-		LocalDateTime startDate = dataList.get(0).getDate();
-		LocalDateTime endDate = dataList.get(dataList.size() - 1).getDate();
+		LocalDateTime startDate = modelsList.get(0).getDate();
+		LocalDateTime endDate = modelsList.get(modelsList.size() - 1).getDate();
 
 		restrictDatePicker(dateFrom, startDate.toLocalDate(), endDate.toLocalDate());
 		restrictDatePicker(dateTo, startDate.toLocalDate(), endDate.toLocalDate());
@@ -137,25 +132,29 @@ public class ReportViewController {
 		LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
 		LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
 		if (from.isBefore(to)) {
-			List<Long> allIdByDateBetween = DataManager.findIdByDateBetween(from, to);
-			List<CommonDbModel> allByIdBetween = DataManager.findAllByIdBetween(allIdByDateBetween.get(0), allIdByDateBetween.get(allIdByDateBetween.size() - 1));
-			final List<Double> avgOfL1 = getAvgOf50HarmonicsOfLine(L1, allByIdBetween);
-			final List<Double> maxOfL1 = getMaxOf50HarmonicOfLane(L1, allByIdBetween);
-			final List<Double> percentile95OfL1 = get95PercentileOfLane(L1, allByIdBetween);
+			final List<CommonModelFx> collect = modelsList.stream()
+					.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+					.collect(Collectors.toList());
+			final List<Double> avgOfL1 = getAvgOf50HarmonicsOfLine(L1, collect);
+			final List<Double> maxOfL1 = getMaxOf50HarmonicOfLane(L1, collect);
+			final List<Double> percentile95OfL1 = get95PercentileOfLane(L1, collect);
 
-			barChartBuilder.createNew();
-			barChartBuilder.setTitle("Widmo napięcia fazy L1");
-			barChartBuilder.setAvgSeries(avgOfL1);
-			barChartBuilder.setMaxSeries(maxOfL1);
-			barChartBuilder.set95Series(percentile95OfL1);
-			final StackedBarChart<Number, Number> result = barChartBuilder.getResult();
-			SavingUtils.fastSaveBarChart(result, "wykres_widmo_l1");
+			barChartService.createNew();
+			barChartService.setTitle("Widmo napięcia fazy L1");
+			barChartService.setAvgSeries(avgOfL1);
+			barChartService.setMaxSeries(maxOfL1);
+			barChartService.set95Series(percentile95OfL1);
+//			barChartService.setYAxisBounds(0, 8, 0.5);
+			final StackedBarChart<String, Number> result = barChartService.getResult();
+			apForPDFView.getChildren().add(result);
+//			SavingUtils.fastSaveBarChart(result, "wykres_widmo_l1");
+		}else{
+			throw new ApplicationException("bad value"); //todo exception communicate
 		}
-		throw new ApplicationException("bad value"); //todo exception communicate
 
 	}
 
-	private List<Double> get95PercentileOfLane(List<UniNames> L, List<CommonDbModel> allByIdBetween) {
+	private List<Double> get95PercentileOfLane(List<UniNames> L, List<CommonModelFx> allByIdBetween) {
 		List<Double> percentile95List = new ArrayList<>();
 		L.forEach(Hn -> {
 			List<Double> allHn = allByIdBetween.stream().map(record -> record.getRecords().get(Hn))
@@ -168,7 +167,7 @@ public class ReportViewController {
 		return percentile95List;
 	}
 
-	private static List<Double> getAvgOf50HarmonicsOfLine(List<UniNames> L, List<CommonDbModel> allByIdBetween) {
+	private static List<Double> getAvgOf50HarmonicsOfLine(List<UniNames> L, List<CommonModelFx> allByIdBetween) {
 		List<Double> avg50n = new ArrayList<>();
 		L.forEach(Hn -> {
 			List<Double> allHn = allByIdBetween.stream().map(record -> record.getRecords().get(Hn))
@@ -183,7 +182,7 @@ public class ReportViewController {
 		return avg50n;
 	}
 
-	private static List<Double> getMaxOf50HarmonicOfLane(List<UniNames> L, List<CommonDbModel> allByIdBetween) {
+	private static List<Double> getMaxOf50HarmonicOfLane(List<UniNames> L, List<CommonModelFx> allByIdBetween) {
 		List<Double> max50n = new ArrayList<>();
 		L.forEach(Hn -> {
 			List<Double> allHn = allByIdBetween.stream().map(record -> record.getRecords().get(Hn))
