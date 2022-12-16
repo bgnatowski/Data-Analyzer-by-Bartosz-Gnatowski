@@ -387,7 +387,8 @@ public class SonelParser {
 	}
 
 	public static LocalTime parseTime(String time) {
-		return LocalTime.parse(time);
+		final LocalTime parse = LocalTime.parse(time);
+		return LocalTime.of(parse.getHour(), parse.getMinute());
 	}
 
 	public static String parseFlag(String flag) {

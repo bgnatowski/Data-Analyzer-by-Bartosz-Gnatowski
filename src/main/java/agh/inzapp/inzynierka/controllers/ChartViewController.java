@@ -1,6 +1,5 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
 import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
@@ -218,9 +217,28 @@ public class ChartViewController {
 		LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
 		LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
 		if (from.isBefore(to)) {
-			List<Long> allIdByDateBetween = DataManager.findIdByDateBetween(from, to);
-			List<CommonDbModel> allByIdBetween = DataManager.findAllByIdBetween(allIdByDateBetween.get(0), allIdByDateBetween.get(allIdByDateBetween.size() - 1));
-			return allByIdBetween.stream().map(record -> record.getRecords().get(uniName))
+			List<Double> collect = List.of();
+			if (isBothListPresent()) {
+				collect = dataFxList.stream()
+						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+						.map(model -> model.getRecords().get(uniName))
+						.collect(Collectors.toList());
+				collect.addAll(harmoFxList.stream()
+						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+						.map(model -> model.getRecords().get(uniName))
+						.collect(Collectors.toList()));
+			} else if (isOnlyNormalDataPresent()) {
+				collect = dataFxList.stream()
+						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+						.map(model -> model.getRecords().get(uniName))
+						.collect(Collectors.toList());
+			} else if (isOnlyHarmoDataPresent()) {
+				collect = harmoFxList.stream()
+						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+						.map(model -> model.getRecords().get(uniName))
+						.collect(Collectors.toList());
+			}
+			return collect.stream()
 					.filter(Objects::nonNull)
 					.collect(Collectors.toList());
 		}
@@ -230,8 +248,26 @@ public class ChartViewController {
 	private List<LocalDateTime> getFromX() throws ApplicationException {
 		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
 		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
-		if (from.isBefore(to))
-			return DataManager.findTimeSeriesByLocalDateTimeBetween(from, to);
+		if (from.isBefore(to)){
+			List<LocalDateTime> collect = List.of();
+			if (isBothListPresent()) {
+				collect = dataFxList.stream()
+						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+						.map(model -> model.getDate())
+						.collect(Collectors.toList());
+			} else if (isOnlyNormalDataPresent()) {
+				collect = dataFxList.stream()
+						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+						.map(model -> model.getDate())
+						.collect(Collectors.toList());
+			} else if (isOnlyHarmoDataPresent()) {
+				collect = harmoFxList.stream()
+						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+						.map(model -> model.getDate())
+						.collect(Collectors.toList());
+			}
+			return collect;
+		}
 		throw new ApplicationException("date out of range"); //todo exception communicate
 	}
 	//COMBOBOX LINE CHART + NEW LINE CHART
