@@ -10,10 +10,5 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 @Component
 public interface CSVStrategy {
-	CSVParser parser = new CSVParserBuilder()
-			.withSeparator(';')
-			.withQuoteChar('\'')
-			.withIgnoreQuotations(false)
-			.build();
 	List<? extends CommonModelFx> importCSVFile(String path) throws ApplicationException;
 }

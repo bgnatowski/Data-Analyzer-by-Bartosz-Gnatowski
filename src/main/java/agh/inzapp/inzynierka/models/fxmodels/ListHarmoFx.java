@@ -55,6 +55,7 @@ public class ListHarmoFx {
 		Task save = new Task<Void>(){
 			@Override
 			protected Void call() throws Exception {
+				DataManager.clearHarmo();
 				DataManager.saveAll(HarmoConverter.parseListFxToDb(harmoFxes));
 				return null;
 			}

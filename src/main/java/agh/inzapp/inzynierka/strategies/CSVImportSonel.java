@@ -2,6 +2,7 @@ package agh.inzapp.inzynierka.strategies;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
+import agh.inzapp.inzynierka.models.fxmodels.PQNormalFx;
 import agh.inzapp.inzynierka.models.fxmodels.SonelNormalFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
@@ -22,48 +23,55 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 //todo import sonel
-public class CSVImportSonel implements CSVStrategy {
+public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {
 	private static final int BLANK_COLUMNS = 2;
 	private static final int SKIP_INFO_LINES = 11;
-	// jakby parser dać jako instancje a nie korzystac jako statyczny
 	private List<DataFx> dataModels;
 
 	@Override
 	public List<DataFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
 		readFile(path);
+		saveModels();
 		return dataModels;
 	}
 
-	private void readFile(String path) throws ApplicationException {
+	@Override
+	protected void saveModels() {
+		AtomicLong id = new AtomicLong(0L);
+		allRecordsList.forEach(records ->{
+			SonelNormalFx model = new SonelNormalFx();
+			model.init();
+			model.setId(id.incrementAndGet());
+			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
+			setDataInModel(records, model);
+			dataModels.add(model);
+		});
+	}
+
+	@Override
+	protected void readFile(String path) throws ApplicationException {
 		try (Reader reader = new FileReader(path);
 			 CSVReader csvReader = new CSVReaderBuilder(reader)
 					 .withSkipLines(SKIP_INFO_LINES)
 					 .withCSVParser(parser)
 					 .build()
 		) {
-			List<UniNames> columnsNames = new ArrayList<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
-			long id = 0L;
 
 			while ((oneLineValues = csvReader.readNext()) != null) {
-				List<String> allRecords = Arrays.asList(oneLineValues);
-				SonelNormalFx model = new SonelNormalFx();
-
+				List<String> modelLine = Arrays.asList(oneLineValues);
 				if (!isFirstLineRead) {
-					columnsNames.addAll(SonelParser.parseNames(allRecords));
+					columnsNames.addAll(SonelParser.parseNames(modelLine));
 					isFirstLineRead = true;
 				} else {
-					model.init();
-					model.setId(++id);
-					model.setColumnNames(FXCollections.observableArrayList(columnsNames));
-					setDataInModel(allRecords, model);
-					dataModels.add(model);
+					allRecordsList.add(modelLine);
 				}
 			}
 		} catch (IOException | CsvValidationException e) {
@@ -99,7 +107,7 @@ public class CSVImportSonel implements CSVStrategy {
 					default -> {
 						String optionalDouble = stringRecord;
 						if (optionalDouble.equals("")) {
-							modelRecords.put(unitaryName, 0.0);
+							modelRecords.put(unitaryName, null);
 						} else {
 							try {
 								modelRecords.put(unitaryName, SonelParser.parseDouble(optionalDouble));

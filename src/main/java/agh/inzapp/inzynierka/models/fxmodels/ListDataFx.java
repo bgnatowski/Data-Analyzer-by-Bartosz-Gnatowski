@@ -43,11 +43,7 @@ public class ListDataFx {
 	}
 
 	public void init(List<CommonModelFx> normalFxes) {
-		Long startReading = System.currentTimeMillis();
-//		List<? extends CommonDbModel> allDataDb = DataManager.getAll(DataDb.class);
 		final List<DataFx> collect = normalFxes.stream().map(model -> (DataFx) model).collect(Collectors.toList());
-		Long endReading = System.currentTimeMillis();
-		System.out.println("FindAll normal: "+(endReading-startReading));
 		if (collect != null){
 			dataFxList.clear();
 			dataFxList.addAll(collect);
@@ -57,6 +53,7 @@ public class ListDataFx {
 		Task save = new Task<Void>(){
 			@Override
 			protected Void call() throws Exception {
+				DataManager.clearNormal();
 				DataManager.saveAll(DataConverter.parseListFxToDb(normalFxes));
 				return null;
 			}

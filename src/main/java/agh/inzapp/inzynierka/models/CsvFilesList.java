@@ -44,23 +44,15 @@ public class CsvFilesList {
 		listHarmonics.add(harmo);
 	}
 
-	public void saveNormal(Analysers analyser) throws ApplicationException {
-		DataManager.clearNormal();
+	public void saveNormal(Analysers analyser) {
 		List<CommonModelFx> normalFxes = List.of();
 		switch (analyser){
-			case PQbox -> {
-				Long startReading = System.currentTimeMillis();
-				normalFxes= new ArrayList<>(importNormalDataList(new CSVImportPQ()));
-//				DataManager.saveAll(importNormalDataList(new CSVImportPQ()));
-				Long endReading = System.currentTimeMillis();
-				System.out.println("Save normal: "+(endReading-startReading));
-			}
+			case PQbox -> normalFxes= new ArrayList<>(importNormalDataList(new CSVImportPQ()));
 			case Sonel -> normalFxes= new ArrayList<>(importNormalDataList(new CSVImportSonel()));
 		}
 		ListDataFx.getInstance().init(normalFxes);
 	}
-	public void saveHarmonics(Analysers analyser) throws ApplicationException {
-		DataManager.clearHarmo();
+	public void saveHarmonics(Analysers analyser) {
 		List<CommonModelFx> harmoFxes = List.of();
 		switch (analyser){
 			case PQbox -> harmoFxes = new ArrayList<>(importHarmonicsDataList(new CSVImportPQHarmonics()));
@@ -69,30 +61,23 @@ public class CsvFilesList {
 		ListHarmoFx.getInstance().init(harmoFxes);
 	}
 
-	public void saveBoth(Analysers analyser) throws ApplicationException {
+	public void saveBoth(Analysers analyser){
 		DataManager.clearNormal();
 		DataManager.clearHarmo();
 		switch (analyser){
 			case PQbox ->{
-				Long startReading = System.currentTimeMillis();
 				List<CommonModelFx> normalFxes = importNormalDataList(new CSVImportPQ());
-//				DataManager.saveAll(importNormalDataList(new CSVImportPQ()));
-				Long endReading = System.currentTimeMillis();
-				System.out.println("Save normal: "+(endReading-startReading));
-
 				ListDataFx.getInstance().init(normalFxes);
 
-				startReading = System.currentTimeMillis();
-				final List<CommonModelFx> harmoFxes = importHarmonicsDataList(new CSVImportPQHarmonics());
-//				DataManager.saveAll(importHarmonicsDataList(new CSVImportPQHarmonics()));
-				endReading = System.currentTimeMillis();
-				System.out.println("Save harmo: "+(endReading-startReading));
-
+				List<CommonModelFx> harmoFxes = importHarmonicsDataList(new CSVImportPQHarmonics());
 				ListHarmoFx.getInstance().init(harmoFxes);
 			}
 			case Sonel -> {
-//				DataManager.saveAll(importNormalDataList(new CSVImportSonel()));
-//				DataManager.saveAll(importHarmonicsDataList(new CSVImportSonelHarmonics()));
+				List<CommonModelFx> normalFxes = importNormalDataList(new CSVImportSonel());
+				ListDataFx.getInstance().init(normalFxes);
+
+				List<CommonModelFx> harmoFxes = importHarmonicsDataList(new CSVImportSonelHarmonics());
+				ListHarmoFx.getInstance().init(harmoFxes);
 			}
 		}
 	}

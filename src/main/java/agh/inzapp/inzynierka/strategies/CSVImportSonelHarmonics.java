@@ -3,6 +3,7 @@ package agh.inzapp.inzynierka.strategies;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
 import agh.inzapp.inzynierka.models.fxmodels.SonelHarmonicFx;
+import agh.inzapp.inzynierka.models.fxmodels.SonelNormalFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
@@ -23,10 +24,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-public class CSVImportSonelHarmonics implements CSVStrategy {
+public class CSVImportSonelHarmonics extends CSVImportCommon implements CSVStrategy {
 	private List<HarmoFx> dataModels;
 	private static final int BLANK_COLUMNS = 2;
 	private static final int SKIP_INFO_LINES = 11;
@@ -34,33 +36,42 @@ public class CSVImportSonelHarmonics implements CSVStrategy {
 	public List<? extends CommonModelFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
 		readFile(path);
+		saveModels();
 		return dataModels;
 	}
-	private void readFile(String path) throws ApplicationException {
+
+	@Override
+	protected void saveModels() {
+		AtomicLong id = new AtomicLong(0L);
+		allRecordsList.forEach(records ->{
+			SonelHarmonicFx model = new SonelHarmonicFx();
+			model.init();
+			model.setId(id.incrementAndGet());
+			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
+			setDataInModel(records, model);
+			dataModels.add(model);
+		});
+	}
+
+	@Override
+	protected void readFile(String path) throws ApplicationException {
 		try (Reader reader = new FileReader(path);
 			 CSVReader csvReader = new CSVReaderBuilder(reader)
 					 .withSkipLines(SKIP_INFO_LINES)
 					 .withCSVParser(parser)
 					 .build()
 		) {
-			List<UniNames> columnsNames = new ArrayList<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
-			long id = 0L;
 
 			while ((oneLineValues = csvReader.readNext()) != null) {
-				List<String> allRecords = Arrays.asList(oneLineValues);
-				SonelHarmonicFx model = new SonelHarmonicFx();
+				List<String> modelLine = Arrays.asList(oneLineValues);
 
 				if (!isFirstLineRead) {
-					columnsNames.addAll(SonelParser.parseHarmonicsNames(allRecords));
+					columnsNames.addAll(SonelParser.parseHarmonicsNames(modelLine));
 					isFirstLineRead = true;
 				} else {
-					model.init();
-					model.setId(++id);
-					model.setColumnNames(FXCollections.observableArrayList(columnsNames));
-					setDataInModel(allRecords, model);
-					dataModels.add(model);
+					allRecordsList.add(modelLine);
 				}
 			}
 		} catch (IOException | CsvValidationException e) {

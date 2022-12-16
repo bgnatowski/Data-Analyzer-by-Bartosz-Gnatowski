@@ -25,28 +25,18 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 @Component
-public class CSVImportPQ implements CSVStrategy {
+public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 	private List<DataFx> dataModels;
-	private List<List<String>> allRecordsList = new ArrayList<>();
-	private List<UniNames> columnsNames = new ArrayList<>();
+
 	@Override
 	public List<DataFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
-
-		Long startReading = System.currentTimeMillis();
 		readFile(path);
-		Long endReading = System.currentTimeMillis();
-
-		Long startParsing = System.currentTimeMillis();
 		saveModels();
-		Long endParsing = System.currentTimeMillis();
-
-		System.out.println("CSV:" + (endReading-startReading));
-		System.out.println("Save ModelFX:" + (endParsing-startParsing));
 		return dataModels;
 	}
-
-	private void saveModels() {
+	@Override
+	protected void saveModels() {
 		AtomicLong id = new AtomicLong(0L);
 		allRecordsList.forEach(records ->{
 			PQNormalFx model = new PQNormalFx();
@@ -57,8 +47,8 @@ public class CSVImportPQ implements CSVStrategy {
 			dataModels.add(model);
 		});
 	}
-
-	private void readFile(String path) throws ApplicationException {
+	@Override
+	protected void readFile(String path) throws ApplicationException {
 		try (Reader reader = new FileReader(path);
 			 CSVReader csvReader = new CSVReaderBuilder(reader)
 					 .withSkipLines(0)
@@ -69,15 +59,15 @@ public class CSVImportPQ implements CSVStrategy {
 			boolean isFirstLineRead = false;
 
 			while ((oneLineValues = csvReader.readNext()) != null) {
-				List<String> allRecords = Arrays.asList(oneLineValues);
-				if (allRecords.contains("")) { //bez tego wczytywało +1 wartość
+				List<String> modelLine = Arrays.asList(oneLineValues);
+				if (modelLine.contains("")) { //bez tego wczytywało +1 wartość
 					break;
 				}
 				if (!isFirstLineRead) {
-					columnsNames.addAll(PQParser.parseNames(allRecords));
+					columnsNames.addAll(PQParser.parseNames(modelLine));
 					isFirstLineRead = true;
 				} else {
-					allRecordsList.add(allRecords);
+					allRecordsList.add(modelLine);
 				}
 			}
 		} catch (IOException | CsvValidationException e) {

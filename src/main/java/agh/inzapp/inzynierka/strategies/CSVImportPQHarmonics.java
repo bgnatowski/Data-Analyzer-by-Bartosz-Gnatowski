@@ -1,5 +1,6 @@
 package agh.inzapp.inzynierka.strategies;
 
+import agh.inzapp.inzynierka.models.fxmodels.PQNormalFx;
 import agh.inzapp.inzynierka.utils.parsers.PQParser;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
@@ -23,47 +24,53 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
-public class CSVImportPQHarmonics implements CSVStrategy {
+public class CSVImportPQHarmonics extends CSVImportCommon implements CSVStrategy {
 	private List<HarmoFx> dataModels;
+
 	@Override
 	public List<? extends CommonModelFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
 		readFile(path);
+		saveModels();
 		return dataModels;
 	}
-
-	private void readFile(String path) throws ApplicationException {
+	@Override
+	protected void saveModels() {
+		AtomicLong id = new AtomicLong(0L);
+		allRecordsList.forEach(records ->{
+			PQHarmonicsFx model = new PQHarmonicsFx();
+			model.init();
+			model.setId(id.incrementAndGet());
+			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
+			setDataInModel(records, model);
+			dataModels.add(model);
+		});
+	}
+	@Override
+	protected void readFile(String path) throws ApplicationException {
 		try (Reader reader = new FileReader(path);
 			 CSVReader csvReader = new CSVReaderBuilder(reader)
 					 .withSkipLines(0)
 					 .withCSVParser(parser)
 					 .build()
 		) {
-
-			List<UniNames> columnsNames = new ArrayList<>();
 			String[] oneLineValues;
 			boolean isFirstLineRead = false;
-			long id = 0L;
-
 			while ((oneLineValues = csvReader.readNext()) != null) {
-				List<String> allRecords = Arrays.asList(oneLineValues);
-				PQHarmonicsFx model = new PQHarmonicsFx();
+				List<String> modelLine = Arrays.asList(oneLineValues);
 
-				if (allRecords.contains("")) { //bez tego wczytywało +1 wartość
+				if (modelLine.contains("")) { //bez tego wczytywało +1 wartość
 					break;
 				}
 				if (!isFirstLineRead) {
-					columnsNames.addAll(PQParser.parseHarmonicsNames(allRecords));
+					columnsNames.addAll(PQParser.parseHarmonicsNames(modelLine));
 					isFirstLineRead = true;
 				} else {
-					model.init();
-					model.setId(++id);
-					model.setColumnNames(FXCollections.observableArrayList(columnsNames));
-					setDataInModel(allRecords, model);
-					dataModels.add(model);
+					allRecordsList.add(modelLine);
 				}
 			}
 		} catch (IOException | CsvValidationException e) {
@@ -108,7 +115,6 @@ public class CSVImportPQHarmonics implements CSVStrategy {
 			}
 		});
 		model.setDate(LocalDateTime.of(localDate.get(), localTime.get()));
-
 		model.setRecords(FXCollections.observableMap(harmonicsMap));
 	}
 }
