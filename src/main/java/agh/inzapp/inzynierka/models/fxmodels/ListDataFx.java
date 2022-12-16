@@ -3,9 +3,12 @@ package agh.inzapp.inzynierka.models.fxmodels;
 import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.database.models.CommonDbModel;
 import agh.inzapp.inzynierka.database.models.DataDb;
+import agh.inzapp.inzynierka.database.models.HarmoDb;
 import agh.inzapp.inzynierka.utils.converters.DataConverter;
+import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -50,6 +53,15 @@ public class ListDataFx {
 			dataFxList.addAll(collect);
 			dataFxObservableList.addAll(dataFxList);
 		}
+
+		Task save = new Task<Void>(){
+			@Override
+			protected Void call() throws Exception {
+				DataManager.saveAll(DataConverter.parseListFxToDb(normalFxes));
+				return null;
+			}
+		};
+		new Thread(save).start();
 	}
 
 	public void clear(){

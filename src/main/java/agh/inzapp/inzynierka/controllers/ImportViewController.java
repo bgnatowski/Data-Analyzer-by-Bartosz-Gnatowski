@@ -45,10 +45,21 @@ public class ImportViewController {
 	public void initialize() {
 		filesList = new CsvFilesList();
 		bindings();
+		//
+		btnImport.setDisable(false);
+		yesNormal.fire();
+		yesHarmonic.fire();
+		File normalTestFile = new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\OchotnicaTrafo.csv");
+		File harmoTestFile = new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\OchotnicaTrafo_Uharmo.csv");
+		filesList.addTestFiles(normalTestFile, harmoTestFile);
+		listViewNormal.getItems().add(normalTestFile);
+		listViewHarmonics.getItems().add(harmoTestFile);
+		//
 	}
 
 	private void bindings() {
 		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
+		comboBoxAnalyzer.getSelectionModel().selectFirst();
 		titledPaneNormal.setExpanded(true);
 		titledPaneHarmonics.setExpanded(true);
 		//list bindings
@@ -58,13 +69,12 @@ public class ImportViewController {
 		labelHarmonics.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
 		btnHarmonicsSelect.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
 		listViewHarmonics.disableProperty().bindBidirectional(noHarmonic.selectedProperty());
-		// button binding
-		btnImport.disableProperty().bind(yesNormal.selectedProperty().or(yesHarmonic.selectedProperty())
-				.and(
-						(filesList.listNormalProperty().emptyProperty().not().and(yesNormal.selectedProperty().and(noHarmonic.selectedProperty())))
-						.or(filesList.listHarmonicsProperty().emptyProperty().not().and(yesHarmonic.selectedProperty())))
-				.and(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not());
-
+//		 button binding
+//		btnImport.disableProperty().bind(yesNormal.selectedProperty().or(yesHarmonic.selectedProperty())
+//				.and(
+//						(filesList.listNormalProperty().emptyProperty().not().and(yesNormal.selectedProperty().and(noHarmonic.selectedProperty())))
+//						.or(filesList.listHarmonicsProperty().emptyProperty().not().and(yesHarmonic.selectedProperty())))
+//				.and(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not());
 	}
 	@FXML
 	void importDataFileNames() {

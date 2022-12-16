@@ -39,6 +39,11 @@ public class CsvFilesList {
 		}
 	}
 
+	public void addTestFiles(File normal, File harmo){
+		listNormal.add(normal);
+		listHarmonics.add(harmo);
+	}
+
 	public void saveNormal(Analysers analyser) throws ApplicationException {
 		DataManager.clearNormal();
 		List<CommonModelFx> normalFxes = List.of();

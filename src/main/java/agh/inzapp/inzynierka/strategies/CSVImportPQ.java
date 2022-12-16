@@ -78,7 +78,6 @@ public class CSVImportPQ implements CSVStrategy {
 					isFirstLineRead = true;
 				} else {
 					allRecordsList.add(allRecords);
-
 				}
 			}
 		} catch (IOException | CsvValidationException e) {
@@ -113,7 +112,7 @@ public class CSVImportPQ implements CSVStrategy {
 					default -> {
 						String optionalDouble = stringRecord;
 						if (optionalDouble.equals(" ")) {
-							modelRecords.put(unitaryName, 0.0);
+							modelRecords.put(unitaryName, null);
 						} else {
 							try {
 								modelRecords.put(unitaryName, PQParser.parseDouble(optionalDouble, unitaryName));

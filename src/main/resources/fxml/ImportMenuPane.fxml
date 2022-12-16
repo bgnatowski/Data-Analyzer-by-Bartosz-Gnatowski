@@ -60,19 +60,19 @@
                                                          <children>
                                                             <AnchorPane HBox.hgrow="ALWAYS">
                                                                <children>
-                                                                  <HBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                  <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                      <children>
                                                                         <Label fx:id="questionLabelNormal" text="%label.quest.normal">
                                                                            <padding>
                                                                               <Insets right="15.0" />
                                                                            </padding>
                                                                         </Label>
-                                                                        <RadioButton fx:id="yesNormal" mnemonicParsing="false" text="%radio.button.harmonics.yes">
+                                                                        <RadioButton fx:id="yesNormal" ellipsisString="%radio.button.harmonics.yes" mnemonicParsing="false" prefWidth="60.0" text="%radio.button.harmonics.yes">
                                                                            <toggleGroup>
                                                                               <ToggleGroup fx:id="normalGroup" />
                                                                            </toggleGroup>
                                                                         </RadioButton>
-                                                                        <RadioButton fx:id="noNormal" mnemonicParsing="false" selected="true" text="%radio.button.harmonics.no" toggleGroup="$normalGroup" />
+                                                                        <RadioButton fx:id="noNormal" ellipsisString="%radio.button.harmonics.no" mnemonicParsing="false" prefWidth="60.0" selected="true" text="%radio.button.harmonics.no" toggleGroup="$normalGroup" />
                                                                      </children>
                                                                   </HBox>
                                                                </children>
@@ -147,19 +147,19 @@
                                                          <children>
                                                             <AnchorPane prefHeight="18.0" prefWidth="222.0" HBox.hgrow="ALWAYS">
                                                                <children>
-                                                                  <HBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                  <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                      <children>
                                                                         <Label fx:id="questionLabelHarmonic" text="%label.quest.harmonics">
                                                                            <padding>
                                                                               <Insets right="15.0" />
                                                                            </padding>
                                                                         </Label>
-                                                                        <RadioButton fx:id="yesHarmonic" mnemonicParsing="false" text="%radio.button.harmonics.yes">
+                                                                        <RadioButton fx:id="yesHarmonic" ellipsisString="%radio.button.harmonics.yes" mnemonicParsing="false" prefWidth="60.0" text="%radio.button.harmonics.yes">
                                                                            <toggleGroup>
                                                                               <ToggleGroup fx:id="harmonicsGroup" />
                                                                            </toggleGroup>
                                                                         </RadioButton>
-                                                                        <RadioButton fx:id="noHarmonic" mnemonicParsing="false" selected="true" text="%radio.button.harmonics.no" toggleGroup="$harmonicsGroup" />
+                                                                        <RadioButton fx:id="noHarmonic" ellipsisString="%radio.button.harmonics.no" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" selected="true" text="%radio.button.harmonics.no" toggleGroup="$harmonicsGroup" />
                                                                      </children>
                                                                   </HBox>
                                                                </children>

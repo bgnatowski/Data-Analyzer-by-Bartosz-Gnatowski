@@ -200,6 +200,7 @@ public class TableViewController {
 
 	@FXML
 	private void leftShiftPrecisionNorm() {
+		if(precisionNormal==0) return;
 		precisionNormal--;
 		changeDisplayTypeNorm();
 	}
@@ -212,6 +213,7 @@ public class TableViewController {
 
 	@FXML
 	private void leftShiftPrecisionHarmo() {
+		if(precisionHarmo==0) return;
 		precisionHarmo--;
 		changeDisplayTypeHarmo();
 	}

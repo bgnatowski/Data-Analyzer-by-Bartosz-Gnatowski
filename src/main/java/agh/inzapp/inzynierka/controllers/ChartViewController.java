@@ -139,14 +139,14 @@ public class ChartViewController {
 	}
 
 	private void bindValueComboBoxes() {
-		List<UniNames> uniNamesList = new ArrayList<>();
+		List<UniNames> uniNamesList = List.of();
 		if (isBothListPresent()) {
-			uniNamesList = dataFxList.get(0).getColumnNames();
+			uniNamesList = new ArrayList<>(dataFxList.get(0).getColumnNames());
 			uniNamesList.addAll(harmoFxList.get(0).getColumnNames());
 		} else if (isOnlyNormalDataPresent()) {
-			uniNamesList = dataFxList.get(0).getColumnNames();
+			uniNamesList = new ArrayList<>(dataFxList.get(0).getColumnNames());
 		} else if (isOnlyHarmoDataPresent()) {
-			uniNamesList = harmoFxList.get(0).getColumnNames();
+			uniNamesList = new ArrayList<>(harmoFxList.get(0).getColumnNames());
 		}
 		List<UniNames> finalUniNamesList = CommonUtils.deleteNonRecordsFromUniNamesList(uniNamesList);
 		if (!finalUniNamesList.isEmpty()) {

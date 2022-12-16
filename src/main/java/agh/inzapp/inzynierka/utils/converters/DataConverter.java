@@ -37,7 +37,7 @@ public class DataConverter {
 	}
 
 	static Map<UniNames, Double> convertRecordsMap(Map<UniNames, Double> records) {
-		records.replaceAll((k, v) -> v.equals(0.0) ? null : v);
+		records.replaceAll((k, v) -> v.equals(null) ? null : v);
 		return records;
 	}
 
@@ -62,7 +62,7 @@ public class DataConverter {
 		} else {
 			map.put(UniNames.Flag, flagPattern);
 		}
-		map.replaceAll((k, v) -> v.equals("o") ? null : v);
+		map.replaceAll((k, v) -> v.equals(" ") ? " " : v);
 		return map;
 	}
 
