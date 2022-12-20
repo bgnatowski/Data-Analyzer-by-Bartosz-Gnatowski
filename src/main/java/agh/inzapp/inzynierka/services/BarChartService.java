@@ -4,54 +4,37 @@ import agh.inzapp.inzynierka.builders.BarChartBuilder;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.utils.CommonUtils;
+import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.chart.*;
-import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static agh.inzapp.inzynierka.models.enums.UniNames.getPowerLineHarmonicNames;
 
 public class BarChartService {
 	private static final int HOW_MANY_POWERLINES = 3;
-	private static final int HOW_MANY_SERIES = 3;
 	private BarChartBuilder builder;
-	public BarChartService() { builder = new BarChartBuilder(); }
+
+	public BarChartService() {
+		builder = new BarChartBuilder();
+	}
 
 	public void createHarmonicsBarCharts(List<CommonModelFx> collect) throws IOException {
 		for (int powerline = 1; powerline <= HOW_MANY_POWERLINES; powerline++) {
-			AnchorPane barGraphPane = new AnchorPane();
-			for (int seriesNumber = 0; seriesNumber < HOW_MANY_SERIES; seriesNumber++) {
-				final List<UniNames> powerLineHarmonicNames = getPowerLineHarmonicNames(powerline);
-				List<Double> data = new ArrayList<>();
-				StringBuilder seriesName = new StringBuilder();
-				switch (seriesNumber) {
-					case 0 -> {
-						data = getMaxOf50HarmonicOfLane(powerLineHarmonicNames, collect);
-						seriesName.append("max");
-					}
-					case 1 -> {
-						data = get95PercentileOfLane(powerLineHarmonicNames, collect);
-						seriesName.append("95%");
-					}
-					case 2 -> {
-						data = getAvgOf50HarmonicsOfLine(powerLineHarmonicNames, collect);
-						seriesName.append("avg");
-					}
-				}
-				builder.createNew();
-				builder.setTitle(powerline);
-				builder.setSeries(data, seriesName.toString());
-				builder.setYAxisBounds(0, 10, 1);
-				barGraphPane.getChildren().add(builder.getResult());
-			}
-			SavingUtils.fastSaveBarChart(barGraphPane, "wykres_widmo_l"+powerline);
+			AnchorPane barGraphPane = (AnchorPane) FxmlUtils.fxmlLoad("/fxml/ChartAnchorPane.fxml");
+			final List<UniNames> powerLineHarmonicNames = getPowerLineHarmonicNames(powerline);
+			builder.createNew();
+			builder.setTitle("Widmo napięcia fazy L"+powerline);
+			builder.setSeries(getMaxOf50HarmonicOfLane(powerLineHarmonicNames, collect), "max");
+			builder.setSeries(get95PercentileOfLane(powerLineHarmonicNames, collect), "95%");
+			builder.setSeries(getAvgOf50HarmonicsOfLine(powerLineHarmonicNames, collect), "avg");
+			builder.updateSeries();
+			barGraphPane.getChildren().add(builder.getResult());
+			SavingUtils.fastSaveBarChart(barGraphPane, "wykres_widmo_l" + powerline);
 		}
 	}
 
@@ -97,7 +80,6 @@ public class BarChartService {
 		});
 		return max50n;
 	}
-
 
 
 }

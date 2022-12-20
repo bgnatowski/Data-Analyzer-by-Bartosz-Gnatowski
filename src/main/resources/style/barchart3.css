@@ -24,7 +24,6 @@
     -fx-legend-visible: true;
 }
 
-
 .chart-vertical-grid-lines {
     -fx-stroke: transparent;
     -fx-stroke-dash-array: 0.25em, 0.25em;

@@ -5,19 +5,18 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 public class SavingUtils {
 	public static void saveLineChart(LineChart<String, Number> lineChart) throws IOException {
-		Scene scene = new Scene(new AnchorPane(), 1200, 800);
+		Scene scene = new Scene(FxmlUtils.fxmlLoad("/fxml/ChartAnchorPane.fxml"), 1200, 800);
 		((AnchorPane) scene.getRoot()).getChildren().add(lineChart);
+		scene.setFill(Color.WHITE);
 		WritableImage image = new WritableImage(1200, 800);
 		scene.snapshot(image);
 
@@ -34,8 +33,10 @@ public class SavingUtils {
 	}
 
 	public static void fastSaveBarChart(AnchorPane chart, String name) throws IOException{
-		Scene scene = new Scene(chart, 1200, 800);
-		WritableImage image = new WritableImage(1200, 800);
+		Scene scene = new Scene(chart, 1000, 400);
+		scene.setFill(Color.WHITE);
+
+		WritableImage image = new WritableImage(1000, 400);
 		scene.snapshot(image);
 
 		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));

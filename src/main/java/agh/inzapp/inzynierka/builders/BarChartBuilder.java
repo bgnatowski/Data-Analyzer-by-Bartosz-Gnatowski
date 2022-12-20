@@ -15,13 +15,13 @@ public class BarChartBuilder {
 	private CategoryAxis xAxis;
 	private NumberAxis yAxis;
 	private XYChart.Series<String , Number> series1;
-	private XYChart.Series<String , Number> series2 = new XYChart.Series<>();
-	private XYChart.Series<String , Number> series3 = new XYChart.Series<>();
+	private XYChart.Series<String , Number> series2;
+	private XYChart.Series<String , Number> series3;
 
 	public void createNew(){
-		series1 = new XYChart.Series<>();;
-		series2.setName("95%");
-		series3.setName("max");
+		series1 = new XYChart.Series<>();
+		series2 = new XYChart.Series<>();
+		series3 = new XYChart.Series<>();
 
 		final List<Integer> from1to50 = IntStream.rangeClosed(1, 50).boxed().collect(Collectors.toList());
 		final List<String> x = from1to50.stream().map(i -> String.valueOf(i)).collect(Collectors.toList());
@@ -42,21 +42,30 @@ public class BarChartBuilder {
 		setXAxisLabel("Harmoniczne [-]");
 		setYAxisLabel("Amplituda [%]");
 	}
-
-	public void setTitle(int i){
-		if(i<1 || i>3) return;
-		StringBuilder title = new StringBuilder("Widmo napięcia fazy L");
-		title.append(i);
-		barChart.setTitle(title.toString());
+	public void setTitle(String title){
+		barChart.setTitle(title);
 	}
 	public void setSeries(List<Double> avgHarmoList, String seriesName){
-		series1.setName(seriesName);
 		ObservableList<XYChart.Data<String , Number>> dataList = setSeriesData(avgHarmoList);
-		series1.setData(dataList);
-		barChart.getData().addAll(series1);
-		setStyleCss(seriesName);
-
-		barChart.setCategoryGap(1);
+		switch (seriesName){
+			case "max" ->{
+				series1.setName(seriesName);
+				series1.setData(dataList);
+			}
+			case "95%" ->{
+				series2.setName(seriesName);
+				series2.setData(dataList);
+			}
+			case "avg" ->{
+				series3.setName(seriesName);
+				series3.setData(dataList);
+			}
+		}
+	}
+	public void updateSeries() {
+		barChart.getData().addAll(series1, series2, series3);
+		barChart.setCategoryGap(0);
+		barChart.setBarGap(0);
 	}
 
 	public void setYAxisBounds(double min, double max, double tick) {
@@ -69,6 +78,9 @@ public class BarChartBuilder {
 
 
 	public BarChart<String, Number> getResult() {
+		barChart.getStylesheets().add("style/default_chart.css");
+		barChart.applyCss();
+
 		return barChart;
 	}
 
