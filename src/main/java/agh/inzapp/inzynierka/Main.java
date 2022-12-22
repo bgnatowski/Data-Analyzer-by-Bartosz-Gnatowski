@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import java.io.File;
@@ -20,7 +21,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashMap;
 
-@SpringBootApplication
+@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 public class Main extends Application {
 	private ConfigurableApplicationContext applicationContext;
 	private Parent root;

@@ -6,7 +6,7 @@ import javafx.scene.control.TextArea;
 import java.util.ResourceBundle;
 
 public class DialogUtils {
-	private static ResourceBundle bundle = FxmlUtils.getResourceBundle();
+	private static final ResourceBundle bundle = FxmlUtils.getResourceBundle();
 
 	public static void errorDialog(String errorMessage){
 		Alert errorAlert = new Alert(Alert.AlertType.ERROR);

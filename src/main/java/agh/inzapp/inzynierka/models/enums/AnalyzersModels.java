@@ -10,7 +10,7 @@ public enum AnalyzersModels {
 	PQM707("Sonel PQM-707"),
 	PQM710("Sonel PQM-710"),
 	PQM711("Sonel PQM-711");
-	private String name;
+	private final String name;
 	AnalyzersModels(String name) {
 		this.name = name;
 	}

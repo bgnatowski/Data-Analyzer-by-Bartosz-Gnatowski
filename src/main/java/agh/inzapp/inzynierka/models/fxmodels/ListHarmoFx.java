@@ -1,21 +1,11 @@
 package agh.inzapp.inzynierka.models.fxmodels;
 
-import agh.inzapp.inzynierka.database.DataManager;
-import agh.inzapp.inzynierka.database.models.CommonDbModel;
-import agh.inzapp.inzynierka.database.models.HarmoDb;
-import agh.inzapp.inzynierka.utils.converters.DataConverter;
-import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ListHarmoFx {
@@ -43,33 +33,10 @@ public class ListHarmoFx {
 	}
 
 	public void init(List<CommonModelFx> harmoFxes) {
-		Long startReading = System.currentTimeMillis();
-		final List<HarmoFx> collect = harmoFxes.stream().map(model -> (HarmoFx) model).collect(Collectors.toList());
-		Long endReading = System.currentTimeMillis();
-		System.out.println("FindAll harmo: "+(endReading-startReading));
-		if (collect != null){
-			harmoFxList.clear();
-			harmoFxList.addAll(collect);
-			harmoFxObservableList.addAll(harmoFxList);
-		}
-//		Task save = new Task<Void>(){
-//			@Override
-//			protected Void call() throws Exception {
-//				DataManager.clearHarmo();
-//				DataManager.saveAll(HarmoConverter.parseListFxToDb(harmoFxes));
-//				return null;
-//			}
-//		};
-//		new Thread(save).start();
-	}
-
-	public void clear(){
+		final List<HarmoFx> collect = harmoFxes.stream().map(model -> (HarmoFx) model).toList();
 		harmoFxList.clear();
-	}
-	public boolean hasRecordOfDate(LocalDateTime testedLocalDateTime){
-		if(!harmoFxList.isEmpty())
-			return harmoFxList.stream().anyMatch(record -> record.getDate().isEqual(testedLocalDateTime));
-		return false;
+		harmoFxList.addAll(collect);
+		harmoFxObservableList.addAll(harmoFxList);
 	}
 
 	public ObservableList<HarmoFx> getHarmoFxObservableList() {

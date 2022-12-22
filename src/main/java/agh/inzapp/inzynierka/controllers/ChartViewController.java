@@ -1,12 +1,7 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.database.models.CommonDbModel;
-import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
-import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
 import agh.inzapp.inzynierka.models.enums.UniNames;
-import agh.inzapp.inzynierka.models.fxmodels.DataFx;
-import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
-import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
+import agh.inzapp.inzynierka.models.fxmodels.*;
 import agh.inzapp.inzynierka.services.LineChartService;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
@@ -226,7 +221,7 @@ public class ChartViewController {
 				collect.addAll(harmoFxList.stream()
 						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
 						.map(model -> model.getRecords().get(uniName))
-						.collect(Collectors.toList()));
+						.toList());
 			} else if (isOnlyNormalDataPresent()) {
 				collect = dataFxList.stream()
 						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))

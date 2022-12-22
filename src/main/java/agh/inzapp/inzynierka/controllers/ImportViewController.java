@@ -1,13 +1,12 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.database.DataManager;
+import agh.inzapp.inzynierka.models.CsvFilesList;
+import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
 import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
-import agh.inzapp.inzynierka.models.enums.Analysers;
-import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
-import agh.inzapp.inzynierka.models.CsvFilesList;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +21,8 @@ import java.io.IOException;
 
 import static agh.inzapp.inzynierka.models.enums.DataType.HARMONICS_DATA;
 import static agh.inzapp.inzynierka.models.enums.DataType.NORMAL_DATA;
-import static agh.inzapp.inzynierka.models.enums.FXMLNames.*;
+import static agh.inzapp.inzynierka.models.enums.FXMLNames.MAIN;
+import static agh.inzapp.inzynierka.models.enums.FXMLNames.TABLE_VIEW;
 
 @Controller
 public class ImportViewController {

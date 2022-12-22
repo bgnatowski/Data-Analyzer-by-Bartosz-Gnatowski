@@ -1,9 +1,10 @@
 package agh.inzapp.inzynierka.models;
 
-import agh.inzapp.inzynierka.database.DataManager;
 import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.models.enums.DataType;
-import agh.inzapp.inzynierka.models.fxmodels.*;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
 import agh.inzapp.inzynierka.strategies.*;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
@@ -62,8 +63,6 @@ public class CsvFilesList {
 	}
 
 	public void saveBoth(Analysers analyser){
-		DataManager.clearNormal();
-		DataManager.clearHarmo();
 		switch (analyser){
 			case PQbox ->{
 				List<CommonModelFx> normalFxes = importNormalDataList(new CSVImportPQ());

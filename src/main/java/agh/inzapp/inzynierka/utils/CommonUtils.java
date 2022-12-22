@@ -59,30 +59,29 @@ public class CommonUtils {
 			}
 		};
 
-		StringConverter<Double> converter = new StringConverter<Double>() {
+		StringConverter<Double> converter = new StringConverter<>() {
 			@Override
 			public Double fromString(String s) {
 				if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s)) {
-					return 0.0 ;
+					return 0.0;
 				} else {
 					return Double.valueOf(s);
 				}
 			}
+
 			@Override
 			public String toString(Double d) {
 				return d.toString();
 			}
 		};
-		TextFormatter<Double> textFormatter = new TextFormatter<>(converter, 0.0, filter);
-		return textFormatter;
+		return new TextFormatter<>(converter, 0.0, filter);
 	}
 
 	public static String convertToWebString(Color color) {
-		String rgb = String.format("#%02x%02x%02x",
+		return String.format("#%02x%02x%02x",
 				(int) (color.getRed() * 255),
 				(int) (color.getGreen() * 255),
 				(int) (color.getBlue() * 255));
-		return rgb;
 	}
 
 	public static List<? extends CommonModelFx> mergeFxModelLists() throws ApplicationException {
@@ -92,9 +91,8 @@ public class CommonUtils {
 		List<HarmoFx> harmoFxList = new ArrayList<>(Objects.requireNonNull(listHarmoFx).getHarmoFxList());
 		if(dataFxList.size() != harmoFxList.size()) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.merge.list"));
 
-		List<? extends CommonModelFx> commonList = dataFxList;
-		for(int i = 0; i < commonList.size(); i++){
-			final CommonModelFx commonModelFx = commonList.get(i);
+		for(int i = 0; i < dataFxList.size(); i++){
+			final CommonModelFx commonModelFx = ((List<? extends CommonModelFx>) dataFxList).get(i);
 			final ObservableMap<UniNames, Double> records = commonModelFx.getRecords();
 			final ObservableMap<UniNames, Double> recordsHarmo = harmoFxList.get(i).getRecords();
 			records.putAll(recordsHarmo);
@@ -102,12 +100,12 @@ public class CommonUtils {
 			final ObservableList<UniNames> columnNames = commonModelFx.getColumnNames();
 			final ObservableList<UniNames> columnNamesHarmo = harmoFxList.get(i).getColumnNames();
 			columnNames.addAll(columnNamesHarmo);
-			final List<UniNames> collectColumnNames = columnNames.stream().distinct().collect(Collectors.toList()); //bez powtorzen
+			final List<UniNames> collectColumnNames = columnNames.stream().distinct().collect(Collectors.toList());
 
 			commonModelFx.setColumnNames(FXCollections.observableArrayList(collectColumnNames));
 			commonModelFx.setRecords(FXCollections.observableMap(records));
 		}
-		return commonList;
+		return dataFxList;
 	}
 
 	public static Double percentile(List<Double> latencies, double percentile) {

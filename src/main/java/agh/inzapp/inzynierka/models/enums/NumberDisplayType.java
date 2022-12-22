@@ -6,7 +6,7 @@ public enum NumberDisplayType {
 	NORMAL(FxmlUtils.getInternalizedPropertyByKey("display.type.normal")),
 	SCIENTIFIC(FxmlUtils.getInternalizedPropertyByKey("display.type.scientific"));
 
-	private String displayedName;
+	private final String displayedName;
 	NumberDisplayType(String displayedName) {
 		this.displayedName = displayedName;
 	}

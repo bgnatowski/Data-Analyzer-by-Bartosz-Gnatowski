@@ -1,21 +1,11 @@
 package agh.inzapp.inzynierka.models.fxmodels;
 
-import agh.inzapp.inzynierka.database.DataManager;
-import agh.inzapp.inzynierka.database.models.CommonDbModel;
-import agh.inzapp.inzynierka.database.models.DataDb;
-import agh.inzapp.inzynierka.database.models.HarmoDb;
-import agh.inzapp.inzynierka.utils.converters.DataConverter;
-import agh.inzapp.inzynierka.utils.converters.HarmoConverter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ListDataFx {
@@ -43,31 +33,11 @@ public class ListDataFx {
 	}
 
 	public void init(List<CommonModelFx> normalFxes) {
-		final List<DataFx> collect = normalFxes.stream().map(model -> (DataFx) model).collect(Collectors.toList());
-		if (collect != null){
-			dataFxList.clear();
-			dataFxList.addAll(collect);
-			dataFxObservableList.addAll(dataFxList);
-		}
-//
-//		Task save = new Task<Void>(){
-//			@Override
-//			protected Void call() throws Exception {
-//				DataManager.clearNormal();
-//				DataManager.saveAll(DataConverter.parseListFxToDb(normalFxes));
-//				return null;
-//			}
-//		};
-//		new Thread(save).start();
-	}
-
-	public void clear(){
+		final List<DataFx> collect = normalFxes.stream().map(model -> (DataFx) model).toList();
 		dataFxList.clear();
-	}
-	public boolean hasRecordOfDate(LocalDateTime testedLocalDateTime){
-		if(!dataFxList.isEmpty())
-			return dataFxList.stream().anyMatch(record -> record.getDate().isEqual(testedLocalDateTime));
-		return false;
+		dataFxList.addAll(collect);
+		dataFxObservableList.addAll(dataFxList);
+
 	}
 
 	public ObservableList<DataFx> getDataFxObservableList() {

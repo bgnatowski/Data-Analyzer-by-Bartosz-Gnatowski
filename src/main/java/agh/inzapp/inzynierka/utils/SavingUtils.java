@@ -31,7 +31,6 @@ public class SavingUtils {
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), extension, file);
 		}
 	}
-
 	public static void fastSaveBarChart(AnchorPane chart, String name) throws IOException{
 		Scene scene = new Scene(chart, 1000, 400);
 		scene.setFill(Color.WHITE);
@@ -41,9 +40,6 @@ public class SavingUtils {
 
 		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
 		File newBarChartFile = new File(tempDirectory.getAbsolutePath() + File.separator + name +".png");
-
-		if (newBarChartFile != null) {
-			ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
-		}
+		ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
 	}
 }

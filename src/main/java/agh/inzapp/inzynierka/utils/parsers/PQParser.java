@@ -249,7 +249,6 @@ public class PQParser {
 		mapHarmonicNames.put("H50_UL3_[%]", PQ_H50_UL3);
 	}
 
-	// common
 	public static List<UniNames> parseNames(List<String> names) {
 		List<UniNames> uniNamesList = new ArrayList<>();
 		names.forEach(name -> {
@@ -260,7 +259,6 @@ public class PQParser {
 		return uniNamesList;
 	}
 
-	// common
 	public static List<UniNames> parseHarmonicsNames(List<String> names) {
 		List<UniNames> uniNamesList = new ArrayList<>();
 		names.forEach(name -> {
@@ -270,8 +268,6 @@ public class PQParser {
 		});
 		return uniNamesList;
 	}
-
-	// common
 	public static LocalDate parseDate(String stringDate) throws ApplicationException {
 		AtomicReference<LocalDate> parsedDate = new AtomicReference<>();
 		final boolean isMatched = dateFormatPatterns.stream()
@@ -288,28 +284,11 @@ public class PQParser {
 		if (isMatched) return parsedDate.get();
 		else throw new ApplicationException("error.parseDate");
 	}
-
-	// common
 	public static LocalTime parseTime(String time) {
 		return LocalTime.parse(time);
 	}
-
-	// common
 	public static String parseFlag(String flag) {
 		return flag.trim().isEmpty() ? " " : "x";
-	}
-
-	// common
-	public static double parseDouble(String record) throws ParseException {
-		double d;
-		if (record.contains(",")) {
-			NumberFormat format = NumberFormat.getInstance(Locale.FRENCH);
-			Number number = format.parse(record);
-			d = number.doubleValue();
-		} else {
-			d = Double.parseDouble(record);
-		}
-		return d;
 	}
 
 	public static double parseDouble(String record, UniNames unitaryName) throws ParseException {

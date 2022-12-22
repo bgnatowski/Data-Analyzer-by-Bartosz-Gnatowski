@@ -1,20 +1,18 @@
 package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.models.enums.AnalyzersModels;
-import agh.inzapp.inzynierka.models.enums.UniNames;
-import agh.inzapp.inzynierka.models.fxmodels.*;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
+import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
 import agh.inzapp.inzynierka.services.BarChartService;
 import agh.inzapp.inzynierka.services.LineChartService;
 import agh.inzapp.inzynierka.services.ReportService;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
-import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.chart.StackedBarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -26,10 +24,9 @@ import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller

@@ -1,7 +1,6 @@
 package agh.inzapp.inzynierka.models.fxmodels;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
-import antlr.debug.ParserMatchEvent;
 import javafx.beans.property.*;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;

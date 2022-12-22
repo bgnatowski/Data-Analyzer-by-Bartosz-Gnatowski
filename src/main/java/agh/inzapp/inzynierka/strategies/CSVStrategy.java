@@ -1,10 +1,8 @@
 package agh.inzapp.inzynierka.strategies;
 
 
-import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
-import com.opencsv.CSVParser;
-import com.opencsv.CSVParserBuilder;
+import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

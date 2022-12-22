@@ -4,9 +4,6 @@ import agh.inzapp.inzynierka.models.enums.DataType;
 import agh.inzapp.inzynierka.models.enums.NumberDisplayType;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.*;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,9 +18,13 @@ import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
-import static agh.inzapp.inzynierka.models.enums.NumberDisplayType.*;
+import static agh.inzapp.inzynierka.models.enums.NumberDisplayType.NORMAL;
+import static agh.inzapp.inzynierka.models.enums.NumberDisplayType.SCIENTIFIC;
 
 @Controller
 public class TableViewController {
