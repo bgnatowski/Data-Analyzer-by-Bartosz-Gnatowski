@@ -5,15 +5,16 @@ import javafx.collections.ObservableList;
 import javafx.scene.chart.*;
 import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Component
 public class BarChartBuilder {
 	private BarChart<String, Number> barChart;
 	private CategoryAxis xAxis;
-	private NumberAxis yAxis;
 	private XYChart.Series<String , Number> series1;
 	private XYChart.Series<String , Number> series2;
 	private XYChart.Series<String , Number> series3;
@@ -23,11 +24,11 @@ public class BarChartBuilder {
 		series2 = new XYChart.Series<>();
 		series3 = new XYChart.Series<>();
 
-		final List<Integer> from1to50 = IntStream.rangeClosed(1, 50).boxed().collect(Collectors.toList());
-		final List<String> x = from1to50.stream().map(i -> String.valueOf(i)).collect(Collectors.toList());
+		final List<Integer> from1to50 = IntStream.rangeClosed(1, 50).boxed().toList();
+		final List<String> x = from1to50.stream().map(String::valueOf).collect(Collectors.toList());
 
 		xAxis = new CategoryAxis(FXCollections.observableArrayList(x));
-		yAxis = new NumberAxis();
+		NumberAxis yAxis = new NumberAxis();
 		barChart = new BarChart<>(xAxis, yAxis);
 		barChart.setLegendVisible(true);
 		barChart.setAnimated(false);
@@ -39,8 +40,8 @@ public class BarChartBuilder {
 		AnchorPane.setLeftAnchor(barChart, 0.0);
 		AnchorPane.setRightAnchor(barChart, 0.0);
 
-		setXAxisLabel("Harmoniczne [-]");
-		setYAxisLabel("Amplituda [%]");
+		setXAxisLabel();
+		setYAxisLabel();
 	}
 	public void setTitle(String title){
 		barChart.setTitle(title);
@@ -76,7 +77,6 @@ public class BarChartBuilder {
 		axis.setTickUnit(tick);
 	}
 
-
 	public BarChart<String, Number> getResult() {
 		barChart.getStylesheets().add("style/default_chart.css");
 		barChart.applyCss();
@@ -84,40 +84,21 @@ public class BarChartBuilder {
 		return barChart;
 	}
 
-	private void setXAxisLabel(String label){
-		barChart.getXAxis().setLabel(label);
+	private void setXAxisLabel(){
+		barChart.getXAxis().setLabel("Harmoniczne [-]");
 		barChart.getXAxis()
 				.lookup(".axis-label")
 				.setStyle("-fx-label-padding: 0 -10 0 0;");
 	}
 
-	private void setYAxisLabel(String label){
+	private void setYAxisLabel(){
 		barChart.getYAxis().setTickLabelRotation(-90);
-		barChart.getYAxis().setLabel(label);
+		barChart.getYAxis().setLabel("Amplituda [%]");
 		barChart.getYAxis()
 				.lookup(".axis-label")
 				.setStyle("-fx-label-padding: -10 0 0 0;");
 	}
 
-	private void setStyleCss(String seriesName) {
-		switch (seriesName){
-			case "max" ->{
-				barChart.getStylesheets().add("style/barchart1.css");
-				barChart.setBarGap(0.33);
-			}
-			case "95%" ->{
-				barChart.getStylesheets().add("style/barchart2.css");
-				barChart.setBarGap(0.66);
-			}
-			case "avg" ->{
-				barChart.getData().add(series2);
-				barChart.getData().add(series3);
-				barChart.getStylesheets().add("style/barchart3.css");
-				barChart.setBarGap(0.99);
-			}
-		}
-		barChart.applyCss();
-	}
 	private ObservableList<XYChart.Data<String, Number>> setSeriesData(List<Double> harmoList) {
 		ObservableList<XYChart.Data<String, Number>> dataList = FXCollections.observableArrayList();
 		for(int x = 0; x < harmoList.size(); x++){
@@ -126,21 +107,5 @@ public class BarChartBuilder {
 			dataList.add(data);
 		}
 		return dataList;
-	}
-
-	public void setBarWidth(double barWidth, double availableSpace) {
-		int dataSeriesCount = barChart.getData().size();
-		int categoriesCount = xAxis.getCategories().size();
-
-		if (dataSeriesCount <= 1) {
-			barChart.setBarGap(0d);
-		} else {
-			barChart.setBarGap(5d);
-		}
-
-		double barWidthSum = barWidth * (categoriesCount * dataSeriesCount);
-		double barGapSum = barChart.getBarGap() * (dataSeriesCount - 1);
-		double categorySpacing = (availableSpace - barWidthSum - barGapSum) / categoriesCount;
-		barChart.setCategoryGap(categorySpacing);
 	}
 }

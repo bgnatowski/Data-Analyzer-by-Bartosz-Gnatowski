@@ -7,6 +7,8 @@ import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
 import javafx.scene.layout.AnchorPane;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
@@ -14,10 +16,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static agh.inzapp.inzynierka.models.enums.UniNames.getPowerLineHarmonicNames;
+@Component
 
 public class BarChartService {
 	private static final int HOW_MANY_POWERLINES = 3;
-	private BarChartBuilder builder;
+	private final BarChartBuilder builder;
 
 	public BarChartService() {
 		builder = new BarChartBuilder();
