@@ -99,9 +99,9 @@ public class TableViewController {
 	private List<TableColumn<CommonModelFx, Object>> getTableColumns(ObservableList<UniNames> columnNames) {
 		List<TableColumn<CommonModelFx, Object>> tableColumnList = new ArrayList<>();
 
-//		TableColumn<CommonModelFx, Object> idColumn = new TableColumn<>("id");
-//		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
-//		tableColumnList.add(idColumn);
+		TableColumn<CommonModelFx, Object> idColumn = new TableColumn<>("id");
+		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+		tableColumnList.add(idColumn);
 
 		columnNames.forEach(uniName -> {
 			TableColumn tableColumn;

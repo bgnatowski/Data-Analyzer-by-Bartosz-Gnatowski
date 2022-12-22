@@ -1,0 +1,51 @@
+.root {
+    -fx-base: white;
+    -fx-focus-color: dodgerblue;
+}
+
+.button {
+    -fx-font-size: 20px;
+    -fx-padding: 10px;
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+}
+
+.button:hover {
+    -fx-background-color: lightgray;
+}
+
+.button:pressed {
+    -fx-background-color: dodgerblue;
+    -fx-text-fill: white;
+}
+
+.label {
+    -fx-font-size: 20px;
+    -fx-text-fill: black;
+}
+
+.text-field {
+    -fx-font-size: 20px;
+    -fx-padding: 10px;
+    -fx-border-color: black;
+    -fx-border-radius: 5px;
+    -fx-border-width: 2px;
+}
+
+.menu-bar {
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-width: 2px;
+}
+
+.menu {
+    -fx-font-size: 20px;
+    -fx-text-fill: black;
+}
+
+.menu-item {
+    -fx-font-size: 20px;
+    -fx-text-fill: black;
+}

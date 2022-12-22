@@ -20,10 +20,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -45,7 +42,6 @@ public class CSVImportSonelHarmonics extends CSVImportCommon implements CSVStrat
 		AtomicLong id = new AtomicLong(0L);
 		allRecordsList.forEach(records ->{
 			SonelHarmonicFx model = new SonelHarmonicFx();
-			model.init();
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
 			setDataInModel(records, model);
@@ -80,7 +76,7 @@ public class CSVImportSonelHarmonics extends CSVImportCommon implements CSVStrat
 	}
 
 	private void setDataInModel(List<String> recordsList, SonelHarmonicFx model) {
-		Map<UniNames, Double> harmonicsMap = model.getRecords();
+		Map<UniNames, Double> harmonicsMap = new LinkedHashMap<>();
 		AtomicReference<LocalDate> localDate = new AtomicReference<>();
 		AtomicReference<LocalTime> localTime = new AtomicReference<>();
 
@@ -90,7 +86,7 @@ public class CSVImportSonelHarmonics extends CSVImportCommon implements CSVStrat
 				columnID = Long.valueOf(model.getColumnNames().indexOf(unitaryName)) + BLANK_COLUMNS;
 			}
 			if (columnID != null) {
-				final String stringRecord = recordsList.get(Math.toIntExact(columnID));
+				final String stringRecord = recordsList.get(Math.toIntExact(columnID)).trim();
 				switch (unitaryName) {
 					case Date -> {
 						try {
@@ -101,7 +97,7 @@ public class CSVImportSonelHarmonics extends CSVImportCommon implements CSVStrat
 					}
 					case Time -> localTime.set(SonelParser.parseTime(stringRecord));
 					case Flag_A, Flag_G, Flag_E, Flag_T, Flag_P -> {
-						Map<UniNames, String> flags = model.getFlags();
+						Map<UniNames, String> flags = new LinkedHashMap<>();
 						flags.put(unitaryName, SonelParser.parseFlag(stringRecord));
 						model.setFlags(FXCollections.observableMap(flags));
 					}

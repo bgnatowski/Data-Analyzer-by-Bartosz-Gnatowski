@@ -40,7 +40,6 @@ public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 		AtomicLong id = new AtomicLong(0L);
 		allRecordsList.forEach(records ->{
 			PQNormalFx model = new PQNormalFx();
-			model.init();
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
 			setDataInModel(records, model);
@@ -76,7 +75,7 @@ public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 	}
 
 	private void setDataInModel(List<String> recordsList, PQNormalFx model) {
-		Map<UniNames, Double> modelRecords = model.getRecords();
+		Map<UniNames, Double> modelRecords = new LinkedHashMap<>();
 		AtomicReference<LocalDate> localDate = new AtomicReference<>();
 		AtomicReference<LocalTime> localTime = new AtomicReference<>();
 		Stream.of(UniNames.values()).forEach(unitaryName -> {
@@ -95,7 +94,7 @@ public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 						localTime.set(PQParser.parseTime(stringRecord));
 					}
 					case Flag -> {
-						Map<UniNames, String> flags = model.getFlags();
+						Map<UniNames, String> flags = new LinkedHashMap<>();
 						flags.put(unitaryName, PQParser.parseFlag(stringRecord));
 						model.setFlags(FXCollections.observableMap(flags));
 					}

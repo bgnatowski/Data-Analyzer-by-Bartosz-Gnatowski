@@ -52,15 +52,15 @@ public class ListHarmoFx {
 			harmoFxList.addAll(collect);
 			harmoFxObservableList.addAll(harmoFxList);
 		}
-		Task save = new Task<Void>(){
-			@Override
-			protected Void call() throws Exception {
-				DataManager.clearHarmo();
-				DataManager.saveAll(HarmoConverter.parseListFxToDb(harmoFxes));
-				return null;
-			}
-		};
-		new Thread(save).start();
+//		Task save = new Task<Void>(){
+//			@Override
+//			protected Void call() throws Exception {
+//				DataManager.clearHarmo();
+//				DataManager.saveAll(HarmoConverter.parseListFxToDb(harmoFxes));
+//				return null;
+//			}
+//		};
+//		new Thread(save).start();
 	}
 
 	public void clear(){

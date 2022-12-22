@@ -19,10 +19,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
@@ -46,7 +43,6 @@ public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {
 		AtomicLong id = new AtomicLong(0L);
 		allRecordsList.forEach(records ->{
 			SonelNormalFx model = new SonelNormalFx();
-			model.init();
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
 			setDataInModel(records, model);
@@ -80,7 +76,7 @@ public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {
 	}
 
 	private void setDataInModel(List<String> recordsList, SonelNormalFx model) {
-		Map<UniNames, Double> modelRecords = model.getRecords();
+		Map<UniNames, Double> modelRecords = new LinkedHashMap<>();
 		AtomicReference<LocalDate> localDate = new AtomicReference<>();
 		AtomicReference<LocalTime> localTime = new AtomicReference<>();
 		Stream.of(UniNames.values()).forEach(unitaryName -> {
@@ -100,7 +96,7 @@ public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {
 					}
 					case Time -> localTime.set(SonelParser.parseTime(stringRecord));
 					case Flag_A, Flag_G, Flag_E, Flag_T, Flag_P -> {
-						Map<UniNames, String> flags = model.getFlags();
+						Map<UniNames, String> flags = new LinkedHashMap<>();
 						flags.put(unitaryName, SonelParser.parseFlag(stringRecord));
 						model.setFlags(FXCollections.observableMap(flags));
 					}

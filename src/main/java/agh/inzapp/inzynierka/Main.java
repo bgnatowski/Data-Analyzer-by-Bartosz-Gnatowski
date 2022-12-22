@@ -30,15 +30,15 @@ public class Main extends Application {
 		Application.launch(args);
 
 		File templateFile = new File("src/main/resources/data/template.docx");
-		XWPFTemplate template = XWPFTemplate.compile(templateFile.getAbsolutePath()).render(
-				new HashMap<String, Object>(){{
-					put("title", "Hi, poi-tl");
-				}});
-		try {
-			template.writeAndClose(new FileOutputStream("src/main/resources/data/output.docx"));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+//		XWPFTemplate template = XWPFTemplate.compile(templateFile.getAbsolutePath()).render(
+//				new HashMap<String, Object>(){{
+//					put("title", "Hi, poi-tl");
+//				}});
+//		try {
+//			template.writeAndClose(new FileOutputStream("src/main/resources/data/output.docx"));
+//		} catch (IOException e) {
+//			throw new RuntimeException(e);
+//		}
 	}
 
 	@Override
@@ -56,6 +56,12 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		final Scene scene = new Scene(root, 1280, 720);
+
+		/*Show the location of the CSS resource file*/
+//		String css = this.getClass().getResource("/style/main.css").toExternalForm();
+		/*Add the stylesheet quickly to the many scenes*/
+//		scene.getStylesheets().add(css);
+
 		stage.setScene(scene);
 		stage.setTitle(applicationTitle);
 //		stage.setMaximized(true);

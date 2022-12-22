@@ -31,63 +31,152 @@ public class SonelParser {
 
 	static {
 		mapDataNames.put("Date", Date);
+		mapDataNames.put("Data", Date);
 		mapDataNames.put("Time (UTC±0)", Time);
+		mapDataNames.put("Czas (UTC±0)", Time);
 		mapDataNames.put("Time (UTC+1)", Time);
+		mapDataNames.put("Czas (UTC+1)", Time);
 		mapDataNames.put("Time (UTC+2)", Time);
+		mapDataNames.put("Czas (UTC+2)", Time);
 		mapDataNames.put("Time (UTC+3)", Time);
+		mapDataNames.put("Czas (UTC+3)", Time);
 		mapDataNames.put("Time (UTC+4)", Time);
+		mapDataNames.put("Czas (UTC+4)", Time);
 		mapDataNames.put("Time (UTC+5)", Time);
+		mapDataNames.put("Czas (UTC+5)", Time);
 		mapDataNames.put("Time (UTC+6)", Time);
+		mapDataNames.put("Czas (UTC+6)", Time);
 		mapDataNames.put("Time (UTC+7)", Time);
+		mapDataNames.put("Czas (UTC+7)", Time);
 		mapDataNames.put("Time (UTC+8)", Time);
+		mapDataNames.put("Czas (UTC+8)", Time);
 		mapDataNames.put("Time (UTC+9)", Time);
+		mapDataNames.put("Czas (UTC+9)", Time);
 		mapDataNames.put("Time (UTC+10)", Time);
+		mapDataNames.put("Czas (UTC+10)", Time);
 		mapDataNames.put("Time (UTC+11)", Time);
+		mapDataNames.put("Czas (UTC+11)", Time);
 		mapDataNames.put("Time (UTC+12)", Time);
+		mapDataNames.put("Czas (UTC+12)", Time);
 		mapDataNames.put("Time (UTC+13)", Time);
+		mapDataNames.put("Czas (UTC+13)", Time);
 		mapDataNames.put("Time (UTC-1)", Time);
+		mapDataNames.put("Czas (UTC-1)", Time);
 		mapDataNames.put("Time (UTC-2)", Time);
+		mapDataNames.put("Czas (UTC-2)", Time);
 		mapDataNames.put("Time (UTC-3)", Time);
+		mapDataNames.put("Czas (UTC-3)", Time);
 		mapDataNames.put("Time (UTC-4)", Time);
+		mapDataNames.put("Czas (UTC-4)", Time);
 		mapDataNames.put("Time (UTC-5)", Time);
+		mapDataNames.put("Czas (UTC-5)", Time);
 		mapDataNames.put("Time (UTC-6)", Time);
+		mapDataNames.put("Czas (UTC-6)", Time);
 		mapDataNames.put("Time (UTC-7)", Time);
+		mapDataNames.put("Czas (UTC-7)", Time);
 		mapDataNames.put("Time (UTC-8)", Time);
+		mapDataNames.put("Czas (UTC-8)", Time);
 		mapDataNames.put("Time (UTC-9)", Time);
+		mapDataNames.put("Czas (UTC-9)", Time);
 		mapDataNames.put("Time (UTC-10)", Time);
+		mapDataNames.put("Czas (UTC-10)", Time);
 		mapDataNames.put("Time (UTC-11)", Time);
+		mapDataNames.put("Czas (UTC-11)", Time);
+		mapDataNames.put("E", Flag_E);
 		mapDataNames.put("P", Flag_P);
 		mapDataNames.put("G", Flag_G);
-		mapDataNames.put("E", Flag_E);
 		mapDataNames.put("T", Flag_T);
 		mapDataNames.put("A", Flag_A);
+//		mapDataNames.put("f L1 min. 1 min [Hz]", );
+//		mapDataNames.put("f L1 max. 1 min [Hz]", );
+//		mapDataNames.put("f L1 maks. 1 min [Hz]", );
+//		mapDataNames.put("f L1 avg. 1 min [Hz]", );
+//		mapDataNames.put("f L1 śred. 1 min [Hz]", );
 		mapDataNames.put("U L12 avg [V]", U12_avg); //
+		mapDataNames.put("U L12 avg. 1 min [V]", U12_avg); //
+		mapDataNames.put("U L12 śred. 1 min [V]", U12_avg); //
 		mapDataNames.put("U L23 avg [V]", U23_avg); //
+		mapDataNames.put("U L23 avg. 1 min [V]", U23_avg); //
+		mapDataNames.put("U L23 śred. 1 min [V]", U23_avg); //
 		mapDataNames.put("U L31 avg [V]", U31_avg); //
-		mapDataNames.put("U L1 avg [V]", UL1_max); //
-		mapDataNames.put("U L2 avg [V]", UL2_max); //
-		mapDataNames.put("U L3 avg [V]", UL3_max); //
-		mapDataNames.put("U L1 max [V]", UL1_min); //
-		mapDataNames.put("U L2 max [V]", UL2_min); //
-		mapDataNames.put("U L3 max [V]", UL3_min); //
-		mapDataNames.put("U L1 min [V]", UL1_avg); //
-		mapDataNames.put("U L2 min [V]", UL2_avg); //
-		mapDataNames.put("U L3 min [V]", UL3_avg); //
+		mapDataNames.put("U L31 avg. 1 min [V]", U31_avg); //
+		mapDataNames.put("U L31 śred. 1 min [V]", U31_avg); //
+		mapDataNames.put("U L1 avg [V]", UL1_avg); //
+		mapDataNames.put("U L1 avg. 1 min [V]", UL1_avg); //
+		mapDataNames.put("U L1 śred. 1 min [V]", UL1_avg); //
+		mapDataNames.put("U L2 avg [V]", UL2_avg); //
+		mapDataNames.put("U L2 avg. 1 min [V]", UL2_avg); //
+		mapDataNames.put("U L2 śred. 1 min [V]", UL2_avg); //
+		mapDataNames.put("U L3 avg [V]", UL3_avg); //
+		mapDataNames.put("U L3 avg. 1 min [V]", UL3_avg); //
+		mapDataNames.put("U L3 śred. 1 min [V]", UL3_avg); //
+		mapDataNames.put("U L1 max [V]", UL1_max); //
+		mapDataNames.put("U L1 max. 1 min [V]", UL1_max); //
+		mapDataNames.put("U L1 maks. 1 min [V]", UL1_max); //
+		mapDataNames.put("U L2 max [V]", UL2_max); //
+		mapDataNames.put("U L2 max. 1 min [V]", UL2_max); //
+		mapDataNames.put("U L2 maks. 1 min [V]", UL2_max); //
+		mapDataNames.put("U L3 max [V]", UL3_max); //
+		mapDataNames.put("U L3 max. 1 min [V]", UL3_max); //
+		mapDataNames.put("U L3 maks. 1 min [V]", UL3_max); //
+		mapDataNames.put("U L1 min [V]", UL1_min); //
+		mapDataNames.put("U L1 min. 1 min [V]", UL1_min); //
+		mapDataNames.put("U L1 min. 1 min [V]", UL1_min); //
+		mapDataNames.put("U L2 min [V]", UL2_min); //
+		mapDataNames.put("U L2 min. 1 min [V]", UL2_min); //
+		mapDataNames.put("U L2 min. 1 min [V]", UL2_min); //
+		mapDataNames.put("U L3 min [V]", UL3_min); //
+		mapDataNames.put("U L3 min. 1 min [V]", UL3_min); //
+		mapDataNames.put("U L3 min. 1 min [V]", UL3_min); //
+
+
 		mapDataNames.put("I *L1 avg [A]", IL1_avg); //
+		mapDataNames.put("I *L1 avg. 1 min [A]\n", IL1_avg); //
+		mapDataNames.put("I *L1 śred. 1 min [A]\n", IL1_avg); //
 		mapDataNames.put("I *L2 avg [A]", IL2_avg); //
+		mapDataNames.put("I *L2 avg. 1 min [A]\n", IL2_avg); //
+		mapDataNames.put("I *L2 śred. 1 min [A]\n", IL2_avg); //
 		mapDataNames.put("I *L3 avg [A]", IL3_avg); //
+		mapDataNames.put("I *L3 avg. 1 min [A]\n", IL3_avg); //
+		mapDataNames.put("I *L3 śred. 1 min [A]\n", IL3_avg); //
 		mapDataNames.put("I *L1 max [A]", IL1_max); //
+		mapDataNames.put("I *L1 max. 1 min [A]\n", IL1_max); //
+		mapDataNames.put("I *L1 max. 1 min [A]\n", IL1_max); //
 		mapDataNames.put("I *L2 max [A]", IL2_max); //
+		mapDataNames.put("I *L2 max. 1 min [A]\n", IL2_max); //
+		mapDataNames.put("I *L2 maks. 1 min [A]\n", IL2_max); //
 		mapDataNames.put("I *L3 max [A]", IL3_max); //
+		mapDataNames.put("I *L3 max. 1 min [A]\n", IL3_max); //
+		mapDataNames.put("I *L3 maks. 1 min [A]\n", IL3_max); //
 		mapDataNames.put("I *L1 min [A]", IL1_min); //
+		mapDataNames.put("I *L1 min. 1 min [A]\n", IL1_min); //
+		mapDataNames.put("I *L1 min. 1 min [A]\n", IL1_min); //
 		mapDataNames.put("I *L2 min [A]", IL2_min); //
+		mapDataNames.put("I *L2 min. 1 min [A]\n", IL2_min); //
+		mapDataNames.put("I *L2 min. 1 min [A]\n", IL2_min); //
 		mapDataNames.put("I *L3 min [A]", IL3_min); //
+		mapDataNames.put("I *L3 min. 1 min [A]\n", IL3_min); //
+		mapDataNames.put("I *L3 min. 1 min [A]\n", IL3_min); //
 		mapDataNames.put("I *N avg [A]", IN_avg); //
+		mapDataNames.put("I *N avg. 1 min [A]\n", IN_avg); //
+		mapDataNames.put("I *N śred. 1 min [A]\n", IN_avg); //
 		mapDataNames.put("I *N max [A]", IN_max); //
+		mapDataNames.put("I *N max. 1 min [A]\n", IN_max); //
+		mapDataNames.put("I *N maks. 1 min [A]\n", IN_max); //
 		mapDataNames.put("I *N min [A]", IN_min); //
+		mapDataNames.put("I *N min. 1 min [A]\n", IN_min); //
+		mapDataNames.put("I *N min. 1 min [A]\n", IN_min); //
 		mapDataNames.put("Pst L1 inst [---]", Pst_UL1); //
+		mapDataNames.put("Pst L1 instant. 10 min [---]\n", Pst_UL1); //
+		mapDataNames.put("Pst L1 chwil. 10 min [---]\n", Pst_UL1); //
 		mapDataNames.put("Pst L2 inst [---]", Pst_UL2); //
+		mapDataNames.put("Pst L2 instant. 10 min [---]\n", Pst_UL2); //
+		mapDataNames.put("Pst L2 chwil. 10 min [---]\n", Pst_UL2); //
 		mapDataNames.put("Pst L3 inst [---]", Pst_UL3); //
+		mapDataNames.put("Pst L3 instant. 10 min [---]\n", Pst_UL3); //
+		mapDataNames.put("Pst L3 chwil. 10 min [---]\n", Pst_UL3); //
+		mapDataNames.put("P Σ avg [kW] ", P_total); //
+		mapDataNames.put("P Σ avg [kW] ", P_total); //
 		mapDataNames.put("P Σ avg [kW] ", P_total); //
 		mapDataNames.put("P Σ max [kW] ", P_max); //
 		mapDataNames.put("P Σ min [kW] ", P_min); //
@@ -393,7 +482,8 @@ public class SonelParser {
 	}
 
 	public static String parseFlag(String flag) {
-		return flag.trim().isEmpty() ? " " : "x";
+		String trimmed = flag.trim();
+		return trimmed.isEmpty() ? " " : trimmed;
 	}
 
 	public static double parseDouble(String record) throws ParseException {

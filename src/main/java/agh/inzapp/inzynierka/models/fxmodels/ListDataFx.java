@@ -49,16 +49,16 @@ public class ListDataFx {
 			dataFxList.addAll(collect);
 			dataFxObservableList.addAll(dataFxList);
 		}
-
-		Task save = new Task<Void>(){
-			@Override
-			protected Void call() throws Exception {
-				DataManager.clearNormal();
-				DataManager.saveAll(DataConverter.parseListFxToDb(normalFxes));
-				return null;
-			}
-		};
-		new Thread(save).start();
+//
+//		Task save = new Task<Void>(){
+//			@Override
+//			protected Void call() throws Exception {
+//				DataManager.clearNormal();
+//				DataManager.saveAll(DataConverter.parseListFxToDb(normalFxes));
+//				return null;
+//			}
+//		};
+//		new Thread(save).start();
 	}
 
 	public void clear(){
