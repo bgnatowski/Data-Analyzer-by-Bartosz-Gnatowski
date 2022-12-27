@@ -146,7 +146,8 @@ public class SonelParser {
 		mapDataNames.put("I *L3 śred. 1 min [A]", IL3_avg); 
 		mapDataNames.put("I *L1 max [A]", IL1_max); 
 		mapDataNames.put("I *L1 max. 1 min [A]", IL1_max);
-		mapDataNames.put("I *L2 max [A]", IL2_max); 
+		mapDataNames.put("I *L1 maks. 1 min [A]", IL1_max);
+		mapDataNames.put("I *L2 max [A]", IL2_max);
 		mapDataNames.put("I *L2 max. 1 min [A]", IL2_max); 
 		mapDataNames.put("I *L2 maks. 1 min [A]", IL2_max); 
 		mapDataNames.put("I *L3 max [A]", IL3_max); 

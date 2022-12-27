@@ -50,7 +50,7 @@ public abstract class CSVImportCommon {
 					}
 					case Time -> localTime.set(PQParser.parseTime(stringRecord));
 					case Flag -> {
-						Map<UniNames, String> flags = new LinkedHashMap<>();
+						Map<UniNames, String> flags = model.getFlags();
 						flags.put(unitaryName, PQParser.parseFlag(stringRecord));
 						model.setFlags(FXCollections.observableMap(flags));
 					}
@@ -93,7 +93,7 @@ public abstract class CSVImportCommon {
 					}
 					case Time -> localTime.set(SonelParser.parseTime(stringRecord));
 					case Flag_A, Flag_G, Flag_E, Flag_T, Flag_P -> {
-						Map<UniNames, String> flags = new LinkedHashMap<>();
+						Map<UniNames, String> flags = model.getFlags();
 						flags.put(unitaryName, SonelParser.parseFlag(stringRecord));
 						model.setFlags(FXCollections.observableMap(flags));
 					}

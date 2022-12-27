@@ -13,7 +13,8 @@ public class ListDataFx {
 	private List<DataFx> dataFxList = new ArrayList<>();
 	private static volatile ListDataFx instance;
 
-	private ListDataFx(){}
+	private ListDataFx(){
+	}
 
 	public static ListDataFx getInstance(){
 		ListDataFx result = instance;
