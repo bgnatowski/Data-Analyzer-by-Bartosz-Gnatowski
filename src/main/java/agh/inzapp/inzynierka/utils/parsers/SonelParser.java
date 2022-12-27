@@ -87,169 +87,405 @@ public class SonelParser {
 		mapDataNames.put("G", Flag_G);
 		mapDataNames.put("T", Flag_T);
 		mapDataNames.put("A", Flag_A);
-//		mapDataNames.put("f L1 min. 1 min [Hz]", );
-//		mapDataNames.put("f L1 max. 1 min [Hz]", );
-//		mapDataNames.put("f L1 maks. 1 min [Hz]", );
-//		mapDataNames.put("f L1 avg. 1 min [Hz]", );
-//		mapDataNames.put("f L1 śred. 1 min [Hz]", );
-		mapDataNames.put("U L12 avg [V]", U12_avg); //
-		mapDataNames.put("U L12 avg. 1 min [V]", U12_avg); //
-		mapDataNames.put("U L12 śred. 1 min [V]", U12_avg); //
-		mapDataNames.put("U L23 avg [V]", U23_avg); //
-		mapDataNames.put("U L23 avg. 1 min [V]", U23_avg); //
-		mapDataNames.put("U L23 śred. 1 min [V]", U23_avg); //
-		mapDataNames.put("U L31 avg [V]", U31_avg); //
-		mapDataNames.put("U L31 avg. 1 min [V]", U31_avg); //
-		mapDataNames.put("U L31 śred. 1 min [V]", U31_avg); //
-		mapDataNames.put("U L1 avg [V]", UL1_avg); //
-		mapDataNames.put("U L1 avg. 1 min [V]", UL1_avg); //
-		mapDataNames.put("U L1 śred. 1 min [V]", UL1_avg); //
-		mapDataNames.put("U L2 avg [V]", UL2_avg); //
-		mapDataNames.put("U L2 avg. 1 min [V]", UL2_avg); //
-		mapDataNames.put("U L2 śred. 1 min [V]", UL2_avg); //
-		mapDataNames.put("U L3 avg [V]", UL3_avg); //
-		mapDataNames.put("U L3 avg. 1 min [V]", UL3_avg); //
-		mapDataNames.put("U L3 śred. 1 min [V]", UL3_avg); //
-		mapDataNames.put("U L1 max [V]", UL1_max); //
-		mapDataNames.put("U L1 max. 1 min [V]", UL1_max); //
-		mapDataNames.put("U L1 maks. 1 min [V]", UL1_max); //
-		mapDataNames.put("U L2 max [V]", UL2_max); //
-		mapDataNames.put("U L2 max. 1 min [V]", UL2_max); //
-		mapDataNames.put("U L2 maks. 1 min [V]", UL2_max); //
-		mapDataNames.put("U L3 max [V]", UL3_max); //
-		mapDataNames.put("U L3 max. 1 min [V]", UL3_max); //
-		mapDataNames.put("U L3 maks. 1 min [V]", UL3_max); //
-		mapDataNames.put("U L1 min [V]", UL1_min); //
-		mapDataNames.put("U L1 min. 1 min [V]", UL1_min); //
-		mapDataNames.put("U L1 min. 1 min [V]", UL1_min); //
-		mapDataNames.put("U L2 min [V]", UL2_min); //
-		mapDataNames.put("U L2 min. 1 min [V]", UL2_min); //
-		mapDataNames.put("U L2 min. 1 min [V]", UL2_min); //
-		mapDataNames.put("U L3 min [V]", UL3_min); //
-		mapDataNames.put("U L3 min. 1 min [V]", UL3_min); //
-		mapDataNames.put("U L3 min. 1 min [V]", UL3_min); //
+		mapDataNames.put("f L1 min. 1 min [Hz]",  f_L1_min);
+		mapDataNames.put("f L1 max. 1 min [Hz]",  f_L1_max);
+		mapDataNames.put("f L1 maks. 1 min [Hz]", f_L1_max);
+		mapDataNames.put("f L1 avg. 1 min [Hz]",  f_L1_avg);
+		mapDataNames.put("f L1 śred. 1 min [Hz]", f_L1_avg);
+		mapDataNames.put("f L2 min. 1 min [Hz]",  f_L2_min);
+		mapDataNames.put("f L2 max. 1 min [Hz]",  f_L2_max);
+		mapDataNames.put("f L2 maks. 1 min [Hz]", f_L2_max);
+		mapDataNames.put("f L2 avg. 1 min [Hz]",  f_L2_avg);
+		mapDataNames.put("f L2 śred. 1 min [Hz]", f_L2_avg);
+		mapDataNames.put("f L3 min. 1 min [Hz]",  f_L3_min);
+		mapDataNames.put("f L3 max. 1 min [Hz]",  f_L3_max);
+		mapDataNames.put("f L3 maks. 1 min [Hz]", f_L3_max);
+		mapDataNames.put("f L3 avg. 1 min [Hz]",  f_L3_avg);
+		mapDataNames.put("f L3 śred. 1 min [Hz]", f_L3_avg);
+		mapDataNames.put("U L12 avg [V]", U12_avg); 
+		mapDataNames.put("U L12 avg. 1 min [V]", U12_avg); 
+		mapDataNames.put("U L12 śred. 1 min [V]", U12_avg); 
+		mapDataNames.put("U L23 avg [V]", U23_avg); 
+		mapDataNames.put("U L23 avg. 1 min [V]", U23_avg); 
+		mapDataNames.put("U L23 śred. 1 min [V]", U23_avg); 
+		mapDataNames.put("U L31 avg [V]", U31_avg); 
+		mapDataNames.put("U L31 avg. 1 min [V]", U31_avg); 
+		mapDataNames.put("U L31 śred. 1 min [V]", U31_avg); 
+		mapDataNames.put("U L1 avg [V]", UL1_avg); 
+		mapDataNames.put("U L1 avg. 1 min [V]", UL1_avg); 
+		mapDataNames.put("U L1 śred. 1 min [V]", UL1_avg); 
+		mapDataNames.put("U L2 avg [V]", UL2_avg); 
+		mapDataNames.put("U L2 avg. 1 min [V]", UL2_avg); 
+		mapDataNames.put("U L2 śred. 1 min [V]", UL2_avg); 
+		mapDataNames.put("U L3 avg [V]", UL3_avg); 
+		mapDataNames.put("U L3 avg. 1 min [V]", UL3_avg); 
+		mapDataNames.put("U L3 śred. 1 min [V]", UL3_avg); 
+		mapDataNames.put("U L1 max [V]", UL1_max); 
+		mapDataNames.put("U L1 max. 1 min [V]", UL1_max); 
+		mapDataNames.put("U L1 maks. 1 min [V]", UL1_max); 
+		mapDataNames.put("U L2 max [V]", UL2_max); 
+		mapDataNames.put("U L2 max. 1 min [V]", UL2_max); 
+		mapDataNames.put("U L2 maks. 1 min [V]", UL2_max); 
+		mapDataNames.put("U L3 max [V]", UL3_max); 
+		mapDataNames.put("U L3 max. 1 min [V]", UL3_max); 
+		mapDataNames.put("U L3 maks. 1 min [V]", UL3_max); 
+		mapDataNames.put("U L1 min [V]", UL1_min); 
+		mapDataNames.put("U L1 min. 1 min [V]", UL1_min);
+		mapDataNames.put("U L2 min [V]", UL2_min); 
+		mapDataNames.put("U L2 min. 1 min [V]", UL2_min);
+		mapDataNames.put("U L3 min [V]", UL3_min); 
+		mapDataNames.put("U L3 min. 1 min [V]", UL3_min);
+		mapDataNames.put("I *L1 avg [A]", IL1_avg); 
+		mapDataNames.put("I *L1 avg. 1 min [A]", IL1_avg); 
+		mapDataNames.put("I *L1 śred. 1 min [A]", IL1_avg); 
+		mapDataNames.put("I *L2 avg [A]", IL2_avg); 
+		mapDataNames.put("I *L2 avg. 1 min [A]", IL2_avg); 
+		mapDataNames.put("I *L2 śred. 1 min [A]", IL2_avg); 
+		mapDataNames.put("I *L3 avg [A]", IL3_avg); 
+		mapDataNames.put("I *L3 avg. 1 min [A]", IL3_avg); 
+		mapDataNames.put("I *L3 śred. 1 min [A]", IL3_avg); 
+		mapDataNames.put("I *L1 max [A]", IL1_max); 
+		mapDataNames.put("I *L1 max. 1 min [A]", IL1_max);
+		mapDataNames.put("I *L2 max [A]", IL2_max); 
+		mapDataNames.put("I *L2 max. 1 min [A]", IL2_max); 
+		mapDataNames.put("I *L2 maks. 1 min [A]", IL2_max); 
+		mapDataNames.put("I *L3 max [A]", IL3_max); 
+		mapDataNames.put("I *L3 max. 1 min [A]", IL3_max); 
+		mapDataNames.put("I *L3 maks. 1 min [A]", IL3_max); 
+		mapDataNames.put("I *L1 min [A]", IL1_min); 
+		mapDataNames.put("I *L1 min. 1 min [A]", IL1_min);
+		mapDataNames.put("I *L2 min [A]", IL2_min); 
+		mapDataNames.put("I *L2 min. 1 min [A]", IL2_min);
+		mapDataNames.put("I *L3 min [A]", IL3_min); 
+		mapDataNames.put("I *L3 min. 1 min [A]", IL3_min);
+		mapDataNames.put("I *N avg [A]", IN_avg); 
+		mapDataNames.put("I *N avg. 1 min [A]", IN_avg); 
+		mapDataNames.put("I *N śred. 1 min [A]", IN_avg); 
+		mapDataNames.put("I *N max [A]", IN_max); 
+		mapDataNames.put("I *N max. 1 min [A]", IN_max); 
+		mapDataNames.put("I *N maks. 1 min [A]", IN_max); 
+		mapDataNames.put("I *N min [A]", IN_min); 
+		mapDataNames.put("I *N min. 1 min [A]", IN_min);
+		mapDataNames.put("Pst L1 inst [---]", Pst_UL1); 
+		mapDataNames.put("Pst L1 instant. 10 min [---]", Pst_UL1); 
+		mapDataNames.put("Pst L1 chwil. 10 min [---]", Pst_UL1); 
+		mapDataNames.put("Pst L2 inst [---]", Pst_UL2); 
+		mapDataNames.put("Pst L2 instant. 10 min [---]", Pst_UL2); 
+		mapDataNames.put("Pst L2 chwil. 10 min [---]", Pst_UL2); 
+		mapDataNames.put("Pst L3 inst [---]", Pst_UL3); 
+		mapDataNames.put("Pst L3 instant. 10 min [---]", Pst_UL3); 
+		mapDataNames.put("Pst L3 chwil. 10 min [---]", Pst_UL3);
 
+		mapDataNames.put("P Σ avg [kW] ", P_total);
+		mapDataNames.put("P Σ max [kW] ", P_max);
+		mapDataNames.put("P Σ min [kW] ", P_min);
 
-		mapDataNames.put("I *L1 avg [A]", IL1_avg); //
-		mapDataNames.put("I *L1 avg. 1 min [A]\n", IL1_avg); //
-		mapDataNames.put("I *L1 śred. 1 min [A]\n", IL1_avg); //
-		mapDataNames.put("I *L2 avg [A]", IL2_avg); //
-		mapDataNames.put("I *L2 avg. 1 min [A]\n", IL2_avg); //
-		mapDataNames.put("I *L2 śred. 1 min [A]\n", IL2_avg); //
-		mapDataNames.put("I *L3 avg [A]", IL3_avg); //
-		mapDataNames.put("I *L3 avg. 1 min [A]\n", IL3_avg); //
-		mapDataNames.put("I *L3 śred. 1 min [A]\n", IL3_avg); //
-		mapDataNames.put("I *L1 max [A]", IL1_max); //
-		mapDataNames.put("I *L1 max. 1 min [A]\n", IL1_max); //
-		mapDataNames.put("I *L1 max. 1 min [A]\n", IL1_max); //
-		mapDataNames.put("I *L2 max [A]", IL2_max); //
-		mapDataNames.put("I *L2 max. 1 min [A]\n", IL2_max); //
-		mapDataNames.put("I *L2 maks. 1 min [A]\n", IL2_max); //
-		mapDataNames.put("I *L3 max [A]", IL3_max); //
-		mapDataNames.put("I *L3 max. 1 min [A]\n", IL3_max); //
-		mapDataNames.put("I *L3 maks. 1 min [A]\n", IL3_max); //
-		mapDataNames.put("I *L1 min [A]", IL1_min); //
-		mapDataNames.put("I *L1 min. 1 min [A]\n", IL1_min); //
-		mapDataNames.put("I *L1 min. 1 min [A]\n", IL1_min); //
-		mapDataNames.put("I *L2 min [A]", IL2_min); //
-		mapDataNames.put("I *L2 min. 1 min [A]\n", IL2_min); //
-		mapDataNames.put("I *L2 min. 1 min [A]\n", IL2_min); //
-		mapDataNames.put("I *L3 min [A]", IL3_min); //
-		mapDataNames.put("I *L3 min. 1 min [A]\n", IL3_min); //
-		mapDataNames.put("I *L3 min. 1 min [A]\n", IL3_min); //
-		mapDataNames.put("I *N avg [A]", IN_avg); //
-		mapDataNames.put("I *N avg. 1 min [A]\n", IN_avg); //
-		mapDataNames.put("I *N śred. 1 min [A]\n", IN_avg); //
-		mapDataNames.put("I *N max [A]", IN_max); //
-		mapDataNames.put("I *N max. 1 min [A]\n", IN_max); //
-		mapDataNames.put("I *N maks. 1 min [A]\n", IN_max); //
-		mapDataNames.put("I *N min [A]", IN_min); //
-		mapDataNames.put("I *N min. 1 min [A]\n", IN_min); //
-		mapDataNames.put("I *N min. 1 min [A]\n", IN_min); //
-		mapDataNames.put("Pst L1 inst [---]", Pst_UL1); //
-		mapDataNames.put("Pst L1 instant. 10 min [---]\n", Pst_UL1); //
-		mapDataNames.put("Pst L1 chwil. 10 min [---]\n", Pst_UL1); //
-		mapDataNames.put("Pst L2 inst [---]", Pst_UL2); //
-		mapDataNames.put("Pst L2 instant. 10 min [---]\n", Pst_UL2); //
-		mapDataNames.put("Pst L2 chwil. 10 min [---]\n", Pst_UL2); //
-		mapDataNames.put("Pst L3 inst [---]", Pst_UL3); //
-		mapDataNames.put("Pst L3 instant. 10 min [---]\n", Pst_UL3); //
-		mapDataNames.put("Pst L3 chwil. 10 min [---]\n", Pst_UL3); //
-		mapDataNames.put("P Σ avg [kW] ", P_total); //
-		mapDataNames.put("P Σ avg [kW] ", P_total); //
-		mapDataNames.put("P Σ avg [kW] ", P_total); //
-		mapDataNames.put("P Σ max [kW] ", P_max); //
-		mapDataNames.put("P Σ min [kW] ", P_min); //
-
-		//todo uzupełnic uninames
 		mapDataNames.put("Plt L1 inst [---]", Plt_L1);
+		mapDataNames.put("Plt L1 instant. 2 h [---]", Plt_L1);
+		mapDataNames.put("Plt L1 chwil. 2 h [---]", Plt_L1);
 		mapDataNames.put("Plt L2 inst [---]", Plt_L2);
+		mapDataNames.put("Plt L2 instant. 2 h [---]", Plt_L2);
+		mapDataNames.put("Plt L2 chwil. 2 h [---]", Plt_L2);
 		mapDataNames.put("Plt L3 inst [---]", Plt_L3);
+		mapDataNames.put("Plt L3 instant. 2 h [---]", Plt_L3);
+		mapDataNames.put("Plt L3 chwil. 2 h [---]", Plt_L3);
 		mapDataNames.put("U N-PE avg [V]", U_NPE_avg);
+		mapDataNames.put("U N-PE avg. 1 min [V]", U_NPE_avg);
+		mapDataNames.put("U N-PE śred. 1 min [V]", U_NPE_avg);
 		mapDataNames.put("U N-PE max [V]", U_NPE_max);
+		mapDataNames.put("U N-PE max. 1 min [V]", U_NPE_max);
+		mapDataNames.put("U N-PE maks. 1 min [V]", U_NPE_max);
 		mapDataNames.put("U N-PE min [V]", U_NPE_min);
+		mapDataNames.put("U N-PE min. 1 min [V]", U_NPE_min);
+
+
 		mapDataNames.put("U0 Σ avg [V]", U0_avg_total);
+		mapDataNames.put("U0 Σ avg. 1 min [V]", U0_avg_total);
+		mapDataNames.put("U0 Σ śred. 1 min [V]", U0_avg_total);
 		mapDataNames.put("U0 Σ max [V]", U0_max_total);
+		mapDataNames.put("U0 Σ max. 1 min [V]", U0_max_total);
+		mapDataNames.put("U0 Σ maks. 1 min [V]", U0_max_total);
 		mapDataNames.put("U0 Σ min [V]", U0_min_total);
+		mapDataNames.put("U0 Σ min. 1 min [V]", U0_min_total);
 		mapDataNames.put("U1 Σ avg [V]", U1_avg_total);
+		mapDataNames.put("U1 Σ avg. 1 min [V]", U1_avg_total);
+		mapDataNames.put("U1 Σ śred. 1 min [V]", U1_avg_total);
 		mapDataNames.put("U1 Σ max [V]", U1_max_total);
+		mapDataNames.put("U1 Σ max. 1 min [V]", U1_max_total);
+		mapDataNames.put("U1 Σ maks. 1 min [V]", U1_max_total);
 		mapDataNames.put("U1 Σ min [V]", U1_min_total);
+		mapDataNames.put("U1 Σ min. 1 min [V]", U1_min_total);
 		mapDataNames.put("U2 Σ avg [V]", U2_avg_total);
+		mapDataNames.put("U2 Σ avg. 1 min [V]", U2_avg_total);
+		mapDataNames.put("U2 Σ śred. 1 min [V]", U2_avg_total);
 		mapDataNames.put("U2 Σ max [V]", U2_max_total);
+		mapDataNames.put("U2 Σ max. 1 min [V]", U2_max_total);
+		mapDataNames.put("U2 Σ maks. 1 min [V]", U2_max_total);
 		mapDataNames.put("U2 Σ min [V]", U2_min_total);
+		mapDataNames.put("U2 Σ min. 1 min [V]", U2_min_total);
 		mapDataNames.put("I0 Σ avg [A]", I0_avg_total);
+		mapDataNames.put("I0 Σ avg. 1 min [A]", I0_avg_total);
+		mapDataNames.put("I0 Σ śred. 1 min [A]", I0_avg_total);
 		mapDataNames.put("I0 Σ max [A]", I0_max_total);
+		mapDataNames.put("I0 Σ max. 1 min [A]", I0_max_total);
+		mapDataNames.put("I0 Σ maks. 1 min [A]", I0_max_total);
 		mapDataNames.put("I0 Σ min [A]", I0_min_total);
+		mapDataNames.put("I0 Σ min. 1 min [A]", I0_min_total);
 		mapDataNames.put("I1 Σ avg [A]", I1_avg_total);
+		mapDataNames.put("I1 Σ avg. 1 min [A]", I1_avg_total);
+		mapDataNames.put("I1 Σ śred. 1 min [A]", I1_avg_total);
 		mapDataNames.put("I1 Σ max [A]", I1_max_total);
+		mapDataNames.put("I1 Σ max. 1 min [A]", I1_max_total);
+		mapDataNames.put("I1 Σ maks. 1 min [A]", I1_max_total);
 		mapDataNames.put("I1 Σ min [A]", I1_min_total);
+		mapDataNames.put("I1 Σ min. 1 min [A]", I1_min_total);
 		mapDataNames.put("I2 Σ avg [A]", I2_avg_total);
+		mapDataNames.put("I2 Σ avg. 1 min [A]", I2_avg_total);
+		mapDataNames.put("I2 Σ śred. 1 min [A]", I2_avg_total);
 		mapDataNames.put("I2 Σ max [A]", I2_max_total);
+		mapDataNames.put("I2 Σ max. 1 min [A]", I2_max_total);
+		mapDataNames.put("I2 Σ maks. 1 min [A]", I2_max_total);
 		mapDataNames.put("I2 Σ min [A]", I2_min_total);
+		mapDataNames.put("I2 Σ min. 1 min [A]", I2_min_total);
+
+		mapDataNames.put("K L1 avg. 1 min [---]",      K_L1_avg);
+		mapDataNames.put("K L1 śred. 1 min [---]",     K_L1_avg);
+		mapDataNames.put("K L2 avg. 1 min [---]",      K_L2_avg);
+		mapDataNames.put("K L2 śred. 1 min [---]",     K_L2_avg);
+		mapDataNames.put("K L3 avg. 1 min [---]",      K_L3_avg);
+		mapDataNames.put("K L3 śred. 1 min [---]",     K_L3_avg);
+		mapDataNames.put("K N avg. 1 min [---]",       K_n_avg );
+		mapDataNames.put("K N śred. 1 min [---]",      K_n_avg );
+		mapDataNames.put("CF U L1 avg. 1 min [---]",   CF_U_L1_avg);
+		mapDataNames.put("CF U L1 śred. 1 min [---]",  CF_U_L1_avg);
+		mapDataNames.put("CF U L2 avg. 1 min [---]",   CF_U_L2_avg);
+		mapDataNames.put("CF U L2 śred. 1 min [---]",  CF_U_L2_avg);
+		mapDataNames.put("CF U L3 avg. 1 min [---]",   CF_U_L3_avg);
+		mapDataNames.put("CF U L3 śred. 1 min [---]",  CF_U_L3_avg);
+		mapDataNames.put("CF U N-PE avg. 1 min [---]", CF_U_NPE_avg);
+		mapDataNames.put("CF U N-PE śred. 1 min [---]",CF_U_NPE_avg);
+		mapDataNames.put("CF I L1 avg. 1 min [---]",   CF_I_L1_avg);
+		mapDataNames.put("CF I L1 śred. 1 min [---]",  CF_I_L1_avg);
+		mapDataNames.put("CF I L2 avg. 1 min [---]",   CF_I_L2_avg);
+		mapDataNames.put("CF I L2 śred. 1 min [---]",  CF_I_L2_avg);
+		mapDataNames.put("CF I L3 avg. 1 min [---]",   CF_I_L3_avg);
+		mapDataNames.put("CF I L3 śred. 1 min [---]",  CF_I_L3_avg);
+		mapDataNames.put("CF I N avg. 1 min [---]",    CF_I_N_avg);
+		mapDataNames.put("CF I N śred. 1 min [---]",   CF_I_N_avg);
 		mapDataNames.put("PF L1 avg [---]", PF_L1_avg);
+		mapDataNames.put("PF L1 avg. 1 min [---]", PF_L1_avg);
+		mapDataNames.put("PF L1 śred. 1 min [---]", PF_L1_avg);
 		mapDataNames.put("PF L2 avg [---]", PF_L2_avg);
+		mapDataNames.put("PF L2 avg. 1 min [---]", PF_L2_avg);
+		mapDataNames.put("PF L2 śred. 1 min [---]", PF_L2_avg);
 		mapDataNames.put("PF L3 avg [---]", PF_L3_avg);
+		mapDataNames.put("PF L3 avg. 1 min [---]", PF_L3_avg);
+		mapDataNames.put("PF L3 śred. 1 min [---]", PF_L3_avg);
+		
+		mapDataNames.put("PF L1 min. 1 min [---]",       PF_L1_min);
+		mapDataNames.put("PF L2 min. 1 min [---]",       PF_L2_min);
+		mapDataNames.put("PF L3 min. 1 min [---]",       PF_L3_min);
+		mapDataNames.put("PF L1 max. 1 min [---]",       PF_L1_max);
+		mapDataNames.put("PF L1 maks. 1 min [---]",      PF_L1_max);
+		mapDataNames.put("PF L2 max. 1 min [---]",       PF_L2_max);
+		mapDataNames.put("PF L2 maks. 1 min [---]",      PF_L2_max);
+		mapDataNames.put("PF L3 max. 1 min [---]",       PF_L3_max);
+		mapDataNames.put("PF L3 maks. 1 min [---]",      PF_L3_max);
+		mapDataNames.put("PF Σ avg. 1 min [---]",        PF_total_avg);
+		mapDataNames.put("PF Σ śred. 1 min [---]",         PF_total_avg);
+		mapDataNames.put("PF Σ min. 1 min [---]",        PF_total_min);
+		mapDataNames.put("PF Σ maks. 1 min [---]",       PF_total_max);
+		mapDataNames.put("PF Σ max. 1 min [---]",          PF_total_max);
+		mapDataNames.put("cos(φ) L1 avg. 1 min [---]",   cos_phi_L1_avg);
+		mapDataNames.put("cos(φ) L1 śred. 1 min [---]",  cos_phi_L1_avg);
+		mapDataNames.put("cos(φ) L2 avg. 1 min [---]",   cos_phi_L2_avg);
+		mapDataNames.put("cos(φ) L2 śred. 1 min [---]",  cos_phi_L2_avg);
+		mapDataNames.put("cos(φ) L3 avg. 1 min [---]",   cos_phi_L3_avg);
+		mapDataNames.put("cos(φ) L3 śred. 1 min [---]",  cos_phi_L3_avg);
+		mapDataNames.put("cos(φ) Σ avg. 1 min [---]",    cos_phi_total_avg);
+		mapDataNames.put("cos(φ) Σ śred. 1 min [---]",   cos_phi_total_avg);
+		mapDataNames.put("tan(φ)L+ L1 avg. 1 min [---]", tan_phi_L1_Lplus_avg);
+		mapDataNames.put("tg(φ)L+ L1 śred. 1 min [---]", tan_phi_L1_Lplus_avg);
+		mapDataNames.put("tan(φ)L+ L2 avg. 1 min [---]", tan_phi_L2_Lplus_avg);
+		mapDataNames.put("tg(φ)L+ L2 śred. 1 min [---]", tan_phi_L2_Lplus_avg);
+		mapDataNames.put("tan(φ)L+ L3 avg. 1 min [---]", tan_phi_L3_Lplus_avg);
+		mapDataNames.put("tg(φ)L+ L3 śred. 1 min [---]", tan_phi_L3_Lplus_avg);
+		mapDataNames.put("tan(φ)L+ Σ avg. 1 min [---]",  tan_phi_total_Lplus_avg);
+		mapDataNames.put("tg(φ)L+ Σ śred. 1 min [---]",  tan_phi_total_Lplus_avg);
+		mapDataNames.put("tan(φ)L- L1 avg. 1 min [---]", tan_phi_L1_Lmin_avg);
+		mapDataNames.put("tg(φ)L- L1 śred. 1 min [---]", tan_phi_L1_Lmin_avg);
+		mapDataNames.put("tan(φ)L- L2 avg. 1 min [---]", tan_phi_L2_Lmin_avg);
+		mapDataNames.put("tg(φ)L- L2 śred. 1 min [---]", tan_phi_L2_Lmin_avg);
+		mapDataNames.put("tan(φ)L- L3 avg. 1 min [---]", tan_phi_L3_Lmin_avg);
+		mapDataNames.put("tg(φ)L- L3 śred. 1 min [---]", tan_phi_L3_Lmin_avg);
+		mapDataNames.put("tan(φ)L- Σ avg. 1 min [---]",  tan_phi_total_Lmin_avg);
+		mapDataNames.put("tan(φ)L- Σ śred. 1 min [---]",  tan_phi_total_Lmin_avg);
+		mapDataNames.put("tan(φ)C- L1 avg. 1 min [---]", tan_phi_L1_Cmin_avg);
+		mapDataNames.put("tg(φ)C- L1 śred. 1 min [---]", tan_phi_L1_Cmin_avg);
+		mapDataNames.put("tan(φ)C- L2 avg. 1 min [---]", tan_phi_L2_Cmin_avg);
+		mapDataNames.put("tg(φ)C- L2 śred. 1 min [---]", tan_phi_L2_Cmin_avg);
+		mapDataNames.put("tan(φ)C- L3 avg. 1 min [---]", tan_phi_L3_Cmin_avg);
+		mapDataNames.put("tan(φ)C- L3 śred. 1 min [---]",tan_phi_L3_Cmin_avg);
+		mapDataNames.put("tan(φ)C- Σ avg. 1 min [---]",  tan_phi_total_Cmin_avg);
+		mapDataNames.put("tg(φ)C- Σ śred. 1 min [---]",  tan_phi_total_Cmin_avg);
+		mapDataNames.put("tan(φ)C+ L1 avg. 1 min [---]", tan_phi_L1_Cplus_avg);
+		mapDataNames.put("tg(φ)C+ L1 śred. 1 min [---]", tan_phi_L1_Cplus_avg);
+		mapDataNames.put("tan(φ)C+ L2 avg. 1 min [---]", tan_phi_L2_Cplus_avg);
+		mapDataNames.put("tg(φ)C+ L2 śred. 1 min [---]", tan_phi_L2_Cplus_avg);
+		mapDataNames.put("tan(φ)C+ L3 avg. 1 min [---]", tan_phi_L3_Cplus_avg);
+		mapDataNames.put("tg(φ)C+ L3 śred. 1 min [---]", tan_phi_L3_Cplus_avg);
+		mapDataNames.put("tan(φ)C+ Σ avg. 1 min [---]",  tan_phi_total_Cplus_avg);
+		mapDataNames.put("tg(φ)C+ Σ śred. 1 min [---]",  tan_phi_total_Cplus_avg);
+
+		mapDataNames.put("P+ L1 avg. 1 min [kW]",   P_plus_L1_avg);
+		mapDataNames.put("P+ L1 śred. 1 min [kW]",  P_plus_L1_avg);
+		mapDataNames.put("P+ L2 avg. 1 min [kW]",   P_plus_L2_avg);
+		mapDataNames.put("P+ L2 śred. 1 min [kW]",  P_plus_L2_avg);
+		mapDataNames.put("P+ L3 avg. 1 min [kW]",   P_plus_L3_avg);
+		mapDataNames.put("P+ L3 śred. 1 min [kW]",  P_plus_L3_avg);
+		mapDataNames.put("P+ Σ avg. 1 min [kW]",    P_plus_total_avg);
+		mapDataNames.put("P+ Σ śred. 1 min [kW]",   P_plus_total_avg);
+		mapDataNames.put("P- L1 avg. 1 min [kW]",   P_min_L1_avg);
+		mapDataNames.put("P- L1 śred. 1 min [kW]",  P_min_L1_avg);
+		mapDataNames.put("P- L2 avg. 1 min [kW]",   P_min_L2_avg);
+		mapDataNames.put("P- L2 śred. 1 min [kW]",  P_min_L2_avg);
+		mapDataNames.put("P- L3 avg. 1 min [kW]",   P_min_L3_avg);
+		mapDataNames.put("P- L3 śred. 1 min [kW]",  P_min_L3_avg);
+		mapDataNames.put("P- Σ avg. 1 min [kW]",    P_min_total_avg);
+		mapDataNames.put("P- Σ śred. 1 min [kW]",   P_min_total_avg);
+
 		mapDataNames.put("P L1 avg [kW]", P_L1_avg);
+		mapDataNames.put("P L1 avg. 1 min [kW]", P_L1_avg);
+		mapDataNames.put("P L1 śred. 1 min [kW]", P_L1_avg);
 		mapDataNames.put("P L2 avg [kW]", P_L2_avg);
+		mapDataNames.put("P L2 avg. 1 min [kW]", P_L2_avg);
+		mapDataNames.put("P L2 śred. 1 min [kW]", P_L2_avg);
 		mapDataNames.put("P L3 avg [kW]", P_L3_avg);
+		mapDataNames.put("P L3 avg. 1 min [kW]", P_L3_avg);
+		mapDataNames.put("P L3 śred. 1 min [kW]", P_L3_avg);
 		mapDataNames.put("P L1 max [kW]", P_L1_max);
+		mapDataNames.put("P L1 max. 1 min [kW]", P_L1_max);
+		mapDataNames.put("P L1 maks. 1 min [kW]", P_L1_max);
 		mapDataNames.put("P L2 max [kW]", P_L2_max);
+		mapDataNames.put("P L2 max. 1 min [kW]", P_L2_max);
+		mapDataNames.put("P L2 maks. 1 min [kW]", P_L2_max);
 		mapDataNames.put("P L3 max [kW]", P_L3_max);
+		mapDataNames.put("P L3 max. 1 min [kW]", P_L3_max);
+		mapDataNames.put("P L3 maks. 1 min [kW]", P_L3_max);
 		mapDataNames.put("P L1 min [kW]", P_L1_min);
+		mapDataNames.put("P L1 min. 1 min [kW]", P_L1_min);
 		mapDataNames.put("P L2 min [kW]", P_L2_min);
+		mapDataNames.put("P L2 min. 1 min [kW]", P_L2_min);
 		mapDataNames.put("P L3 min [kW]", P_L3_min);
+		mapDataNames.put("P L3 min. 1 min [kW]", P_L3_min);
+
+		mapDataNames.put("P Σ min. 1 min [kW]", P_total_min);
+		mapDataNames.put("P Σ max. 1 min [kW]", P_total_max);
+		mapDataNames.put("P Σ maks. 1 min [kW]",P_total_max);
+		mapDataNames.put("P Σ avg. 1 min [kW]", P_total_avg);
+		mapDataNames.put("P Σ śred. 1 min [kW]",P_total_avg);
+
 		mapDataNames.put("Q1 L1 avg [kvar]", Q_L1_avg);
+		mapDataNames.put("Q1 L1 avg. 1 min [kvar]", Q_L1_avg);
+		mapDataNames.put("Q1 L1 śred. 1 min [kvar]", Q_L1_avg);
 		mapDataNames.put("Q1 L2 avg [kvar]", Q_L2_avg);
+		mapDataNames.put("Q1 L2 avg. 1 min [kvar]", Q_L2_avg);
+		mapDataNames.put("Q1 L2 śred. 1 min [kvar]", Q_L2_avg);
 		mapDataNames.put("Q1 L3 avg [kvar]", Q_L3_avg);
+		mapDataNames.put("Q1 L3 avg. 1 min [kvar]", Q_L3_avg);
+		mapDataNames.put("Q1 L3 śred. 1 min [kvar]", Q_L3_avg);
 		mapDataNames.put("Q1 L1 max [kvar]", Q_L1_max);
+		mapDataNames.put("Q1 L1 max. 1 min [kvar]", Q_L1_max);
+		mapDataNames.put("Q1 L1 maks. 1 min [kvar]", Q_L1_max);
 		mapDataNames.put("Q1 L2 max [kvar]", Q_L2_max);
+		mapDataNames.put("Q1 L2 max. 1 min [kvar]", Q_L2_max);
+		mapDataNames.put("Q1 L2 maks. 1 min [kvar]", Q_L2_max);
 		mapDataNames.put("Q1 L3 max [kvar]", Q_L3_max);
+		mapDataNames.put("Q1 L3 max. 1 min [kvar]", Q_L3_max);
+		mapDataNames.put("Q1 L3 maks. 1 min [kvar]", Q_L3_max);
 		mapDataNames.put("Q1 L1 min [kvar]", Q_L1_min);
+		mapDataNames.put("Q1 L1 min. 1 min [kvar]", Q_L1_min);
 		mapDataNames.put("Q1 L2 min [kvar]", Q_L2_min);
+		mapDataNames.put("Q1 L2 min. 1 min [kvar]", Q_L2_min);
 		mapDataNames.put("Q1 L3 min [kvar]", Q_L3_min);
+		mapDataNames.put("Q1 L3 min. 1 min [kvar]", Q_L3_min);
 		mapDataNames.put("Q1 Σ max [kvar]", Q_total_max);
+		mapDataNames.put("Q1 Σ max. 1 min [kvar]", Q_total_max);
+		mapDataNames.put("Q1 Σ maks. 1 min [kvar]", Q_total_max);
 		mapDataNames.put("Q1 Σ min [kvar]", Q_total_min);
+		mapDataNames.put("Q1 Σ min. 1 min [kvar]", Q_total_min);
+		mapDataNames.put("Q1 Σ avg. 1 min [kvar]", Q_total_avg);
+		mapDataNames.put("Q1 Σ śred. 1 min [kvar]", Q_total_avg);
+
+		mapDataNames.put("Sn L1 avg. 1 min [kVA]",  Sn_L1_avg);
+		mapDataNames.put("Sn L1 śred. 1 min [kVA]", Sn_L1_avg);
+		mapDataNames.put("Sn L2 avg. 1 min [kVA]",  Sn_L2_avg);
+		mapDataNames.put("Sn L2 śred. 1 min [kVA]", Sn_L2_avg);
+		mapDataNames.put("Sn L3 avg. 1 min [kVA]",  Sn_L3_avg);
+		mapDataNames.put("Sn L3 śred. 1 min [kVA]", Sn_L3_avg);
+		mapDataNames.put("Sn Σ avg. 1 min [kVA]",   Sn_total);
+		mapDataNames.put("Sn Σ śred. 1 min [kVA]",  Sn_total);
+
 		mapDataNames.put("S L1 avg [kVA]", S_L1_avg);
+		mapDataNames.put("S L1 avg. 1 min [kVA]", S_L1_avg);
+		mapDataNames.put("S L1 śred. 1 min [kVA]", S_L1_avg);
 		mapDataNames.put("S L2 avg [kVA]", S_L2_avg);
+		mapDataNames.put("S L2 avg. 1 min [kVA]", S_L2_avg);
+		mapDataNames.put("S L2 śred. 1 min [kVA]", S_L2_avg);
 		mapDataNames.put("S L3 avg [kVA]", S_L3_avg);
+		mapDataNames.put("S L3 avg. 1 min [kVA]", S_L3_avg);
+		mapDataNames.put("S L3 śred. 1 min [kVA]", S_L3_avg);
+
 		mapDataNames.put("S L1 max [kVA]", S_L1_max);
+		mapDataNames.put("S L1 max. 1 min [kVA]", S_L1_max);
+		mapDataNames.put("S L1 maks. 1 min [kVA]", S_L1_max);
 		mapDataNames.put("S L2 max [kVA]", S_L2_max);
+		mapDataNames.put("S L2 max. 1 min [kVA]", S_L2_max);
+		mapDataNames.put("S L2 maks. 1 min [kVA]", S_L2_max);
 		mapDataNames.put("S L3 max [kVA]", S_L3_max);
+		mapDataNames.put("S L3 max. 1 min [kVA]", S_L3_max);
+		mapDataNames.put("S L3 maks. 1 min [kVA]", S_L3_max);
 		mapDataNames.put("S L1 min [kVA]", S_L1_min);
+		mapDataNames.put("S L1 min. 1 min [kVA]", S_L1_min);
 		mapDataNames.put("S L2 min [kVA]", S_L2_min);
+		mapDataNames.put("S L2 min. 1 min [kVA]", S_L2_min);
 		mapDataNames.put("S L3 min [kVA]", S_L3_min);
+		mapDataNames.put("S L3 min. 1 min [kVA]", S_L3_min);
+
+		mapDataNames.put("S Σ avg. 1 min [kVA]", S_total);
+		mapDataNames.put("S Σ śred. 1 min [kVA]", S_total);
+
 		mapDataNames.put("U0/U1 Σ avg [%]",U0_U1_avg);
+		mapDataNames.put("U0/U1 Σ avg. 1 min [%]",U0_U1_avg);
+		mapDataNames.put("U0/U1 Σ śred. 1 min [%]",U0_U1_avg);
 		mapDataNames.put("U0/U1 Σ max [%]",U0_U1_max);
+		mapDataNames.put("U0/U1 Σ max. 1 min [%]",U0_U1_max);
+		mapDataNames.put("U0/U1 Σ maks. 1 min [%]",U0_U1_max);
 		mapDataNames.put("U0/U1 Σ min [%]",U0_U1_min);
+		mapDataNames.put("U0/U1 Σ min. 1 min [%]",U0_U1_min);
 		mapDataNames.put("U2/U1 Σ avg [%]",U2_U1_avg);
+		mapDataNames.put("U2/U1 Σ avg. 1 min [%]",U2_U1_avg);
+		mapDataNames.put("U2/U1 Σ śred. 1 min [%]",U2_U1_avg);
 		mapDataNames.put("U2/U1 Σ max [%]",U2_U1_max);
+		mapDataNames.put("U2/U1 Σ max. 1 min [%]",U2_U1_max);
+		mapDataNames.put("U2/U1 Σ maks. 1 min [%]",U2_U1_max);
 		mapDataNames.put("U2/U1 Σ min [%]",U2_U1_min);
+		mapDataNames.put("U2/U1 Σ min. 1 min [%]",U2_U1_min);
 		mapDataNames.put("I0/I1 Σ avg [%]",I0_I1_avg);
+		mapDataNames.put("I0/I1 Σ avg. 1 min [%]",I0_I1_avg);
 		mapDataNames.put("I0/I1 Σ max [%]",I0_I1_max);
+		mapDataNames.put("I0/I1 Σ max. 1 min [%]",I0_I1_max);
+		mapDataNames.put("I0/I1 Σ maks. 1 min [%]",I0_I1_max);
 		mapDataNames.put("I0/I1 Σ min [%]",I0_I1_min);
+		mapDataNames.put("I0/I1 Σ min. 1 min [%]",I0_I1_min);
 		mapDataNames.put("I2/I1 Σ avg [%]",I2_I1_avg);
+		mapDataNames.put("I2/I1 Σ avg. 1 min [%]",I2_I1_avg);
+		mapDataNames.put("I2/I1 Σ śred. 1 min [%]",I2_I1_avg);
 		mapDataNames.put("I2/I1 Σ max [%]",I2_I1_max);
+		mapDataNames.put("I2/I1 Σ max. 1 min [%]",I2_I1_max);
+		mapDataNames.put("I2/I1 Σ maks. 1 min [%]",I2_I1_max);
 		mapDataNames.put("I2/I1 Σ min [%]",I2_I1_min);
+		mapDataNames.put("I2/I1 Σ min. 1 min [%]",I2_I1_min);
 	}
 	static {
 		mapHarmonicNames.put("Date", Date);
