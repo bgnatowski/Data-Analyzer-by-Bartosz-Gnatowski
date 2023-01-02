@@ -6,10 +6,7 @@ import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
-import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -43,7 +40,7 @@ public class ReportChartService {
 
 				xyDataMap = CommonUtils.zipToMap(xData, yData);
 				lineChartBuilder.createSeries(xyDataMap, seriesName);
-				lineChartBuilder.setAxisBounds(min-off, max+off, (max-min)/2);
+				lineChartBuilder.setYAxisBounds(min-off, max+off, (max-min)/2);
 			}
 			lineChartBuilder.setYAxisLabel(getAxisYLabel(i));
 			lineChartBuilder.setTitle(getTitle(i));
@@ -70,17 +67,12 @@ public class ReportChartService {
 
 			xyDataMap = CommonUtils.zipToMap(xData, yData);
 			lineChartBuilder.createSeries(xyDataMap, seriesName);
-			lineChartBuilder.setAxisBounds(min-off, max+off, (max-min)/2);
+			lineChartBuilder.setYAxisBounds(min-off, max+off, (max-min)/2);
 		}
 		lineChartBuilder.setTitle("Asymetria napięciowa");
 		lineChartBuilder.setYAxisLabel("Współczynnik asymetrii [%]");
 		ap.getChildren().add(lineChartBuilder.getResult());
 		SavingUtils.fastSaveChart(ap, "wykres_asymetria");
-//		Scene scene = new Scene(ap, 1000,400);
-//		scene.setFill(Color.WHITE);
-//		Stage stage = new Stage();
-//		stage.setScene(scene);
-//		stage.show();
 	}
 
 	private UniNames getSeriesName(int i) {

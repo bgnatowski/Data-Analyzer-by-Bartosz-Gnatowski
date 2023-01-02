@@ -1,5 +1,5 @@
 .chart{
-    -fx-padding: 5px;
+    -fx-padding: 5px 5px 5px 15px;
     -fx-background-color: white;
     symbol-color0: #29B6F6;
     symbol-color1: #f10129;
@@ -112,9 +112,9 @@
 }
 
 .axis {
-    AXIS_COLOR: derive(#ececec,-20%);
+    AXIS_COLOR: derive(#ececec,-30%);
     -fx-tick-label-font-size: 0.833333em; /* 10px */
-    -fx-tick-label-fill: derive(#ececec, -35%);
+    -fx-tick-label-fill: derive(#ececec, -45%);
 }
 .axis:top {
     -fx-border-color: transparent transparent AXIS_COLOR transparent;
