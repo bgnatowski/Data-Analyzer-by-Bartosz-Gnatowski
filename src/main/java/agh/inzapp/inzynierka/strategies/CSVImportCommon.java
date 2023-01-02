@@ -78,6 +78,14 @@ public abstract class CSVImportCommon {
 		AtomicReference<LocalDate> localDate = new AtomicReference<>();
 		AtomicReference<LocalTime> localTime = new AtomicReference<>();
 
+		AtomicReference<Double> h1_l1 = new AtomicReference<>();
+		AtomicReference<Double> h1_l2 = new AtomicReference<>();
+		AtomicReference<Double> h1_l3 = new AtomicReference<>();
+
+		final List<UniNames> l1HarmoNames = UniNames.getL1HarmoNames();
+		final List<UniNames> l2HarmoNames = UniNames.getL2HarmoNames();
+		final List<UniNames> l3HarmoNames = UniNames.getL3HarmoNames();
+
 		Stream.of(UniNames.values()).forEach(unitaryName -> {
 			if (model.getColumnNames().contains(unitaryName)) {
 				long columnID = model.getColumnNames().indexOf(unitaryName) + BLANK_COLUMNS_SONEL;
@@ -97,12 +105,40 @@ public abstract class CSVImportCommon {
 						flags.put(unitaryName, SonelParser.parseFlag(stringRecord));
 						model.setFlags(FXCollections.observableMap(flags));
 					}
+					case H1_UL1 -> {
+						try {
+							h1_l1.set(SonelParser.parseDouble(stringRecord));
+							modelRecords.put(unitaryName, 100d);
+						} catch (ParseException e) {
+							DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+						}
+					}
+					case H1_UL2 -> {
+						try {
+							h1_l2.set(SonelParser.parseDouble(stringRecord));
+							modelRecords.put(unitaryName, 100d);
+						} catch (ParseException e) {
+							DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+						}
+					}
+					case H1_UL3 -> {
+						try {
+							h1_l3.set(SonelParser.parseDouble(stringRecord));
+							modelRecords.put(unitaryName, 100d);
+						} catch (ParseException e) {
+							DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+						}
+					}
 					default -> {
 						if (stringRecord.isEmpty()) {
 							modelRecords.put(unitaryName, null);
 						} else {
 							try {
-								modelRecords.put(unitaryName, SonelParser.parseDouble(stringRecord));
+								final double aDouble = SonelParser.parseDouble(stringRecord);
+								if(l1HarmoNames.contains(unitaryName)) modelRecords.put(unitaryName, (aDouble/h1_l1.get())*100);
+								else if(l2HarmoNames.contains(unitaryName)) modelRecords.put(unitaryName, (aDouble/h1_l2.get())*100);
+								else if(l3HarmoNames.contains(unitaryName)) modelRecords.put(unitaryName, (aDouble/h1_l3.get())*100);
+								else modelRecords.put(unitaryName, aDouble);
 							} catch (ParseException e) {
 								DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
 							}

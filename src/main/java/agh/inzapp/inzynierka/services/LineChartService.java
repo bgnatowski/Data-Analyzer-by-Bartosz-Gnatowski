@@ -57,6 +57,7 @@ public class LineChartService {
 		AnchorPane.setRightAnchor(newLineChart, 0.0);
 		if(currentLineChart==null){
 			indexOfLineChart++;
+			currentLineChart = newLineChart;
 			lineChartObservableList.add(indexOfLineChart, newLineChart); //dodaj nowy pierwszy
 		}else{
 			lineChartObservableList.add(indexOfLineChart, currentLineChart); //dodaj do listy ten, co aktualnie edytowany był
@@ -78,7 +79,6 @@ public class LineChartService {
 		currentLineChart = lineChart;
 		return lineChart;
 	}
-
 	public void createSeries(Map<LocalDateTime, Double> xyDataMap, UniNames seriesName, Color color){
 		currentSeries = new XYChart.Series<>();
 		setSeries(xyDataMap);
@@ -120,7 +120,7 @@ public class LineChartService {
 	}
 
 	public void setDefaultStyleCss(String styleCss) {
-		currentLineChart.getScene().getStylesheets().add(styleCss);
+		currentLineChart.getStylesheets().add(styleCss);
 		currentLineChart.applyCss();
 		updateChart();
 	}

@@ -74,10 +74,12 @@
 }
 
 .chart-vertical-grid-lines {
-    -fx-stroke: #a6a6a6;
+    -fx-stroke: derive(#ececec,-10%);
+    -fx-stroke-dash-array: 0.25em, 0.25em;
 }
 .chart-horizontal-grid-lines {
-    -fx-stroke: #a6a6a6;
+    -fx-stroke: derive(#ececec,-10%);
+    -fx-stroke-dash-array: 0.25em, 0.25em;
 }
 
 .chart-plot-background {
@@ -85,15 +87,50 @@
 }
 
 .chart-alternative-row-fill {
-    -fx-fill: #ffffff;
+    -fx-fill: null;
     -fx-stroke: transparent;
     -fx-stroke-width: 0;
+}
+
+.chart-alternative-row-fill {
+    -fx-fill: null;
+    -fx-stroke: null;
+}
+
+.chart-vertical-zero-line,
+.chart-horizontal-zero-line {
+    -fx-stroke: derive(#ececec, 40%);
 }
 
 
 .axis {
     -fx-font-size: 0.5em;
+    -fx-stroke: #1c1c1c;
     -fx-tick-label-fill: black;
     -fx-tick-length: 20;
     -fx-minor-tick-length: 10;
+}
+
+.axis {
+    AXIS_COLOR: derive(#ececec,-20%);
+    -fx-tick-label-font-size: 0.833333em; /* 10px */
+    -fx-tick-label-fill: derive(#ececec, -35%);
+}
+.axis:top {
+    -fx-border-color: transparent transparent AXIS_COLOR transparent;
+}
+.axis:right {
+    -fx-border-color: transparent transparent transparent AXIS_COLOR;
+}
+.axis:bottom {
+    -fx-border-color: AXIS_COLOR transparent transparent transparent;
+}
+.axis:left {
+    -fx-border-color: transparent AXIS_COLOR transparent transparent;
+}
+
+.axis-tick-mark,
+.axis-minor-tick-mark {
+    -fx-fill: null;
+    -fx-stroke: AXIS_COLOR;
 }

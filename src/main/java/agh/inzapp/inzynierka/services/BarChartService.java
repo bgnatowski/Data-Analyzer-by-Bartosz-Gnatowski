@@ -7,7 +7,6 @@ import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
 import javafx.scene.layout.AnchorPane;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -32,12 +31,12 @@ public class BarChartService {
 			final List<UniNames> powerLineHarmonicNames = getPowerLineHarmonicNames(powerline);
 			builder.createNew();
 			builder.setTitle("Widmo napięcia fazy L"+powerline);
-			builder.setSeries(getMaxOf50HarmonicOfLane(powerLineHarmonicNames, collect), "max");
-			builder.setSeries(get95PercentileOfLane(powerLineHarmonicNames, collect), "95%");
-			builder.setSeries(getAvgOf50HarmonicsOfLine(powerLineHarmonicNames, collect), "avg");
+			builder.setYData(getMaxOf50HarmonicOfLane(powerLineHarmonicNames, collect), "max");
+			builder.setYData(get95PercentileOfLane(powerLineHarmonicNames, collect), "95%");
+			builder.setYData(getAvgOf50HarmonicsOfLine(powerLineHarmonicNames, collect), "avg");
 			builder.updateSeries();
 			barGraphPane.getChildren().add(builder.getResult());
-			SavingUtils.fastSaveBarChart(barGraphPane, "wykres_widmo_l" + powerline);
+			SavingUtils.fastSaveChart(barGraphPane, "wykres_widmo_l" + powerline);
 		}
 	}
 

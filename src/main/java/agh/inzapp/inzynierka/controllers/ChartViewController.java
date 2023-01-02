@@ -163,9 +163,7 @@ public class ChartViewController {
 		try {
 			if (isAnyCreatedChart()) newChartOnAction();
 			chartService.clearSeriesBeforeCreatingNewOne();
-
 			List<LocalDateTime> xDataList = getFromX();
-
 			if (CommonUtils.isSameDay(xDataList.get(0), xDataList.get(xDataList.size() - 1)))
 				chartService.setXDateTickToOnlyTime();
 			else

@@ -31,11 +31,23 @@ public class SavingUtils {
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), extension, file);
 		}
 	}
-	public static void fastSaveBarChart(AnchorPane chart, String name) throws IOException{
-		Scene scene = new Scene(chart, 1000,400);
+	public static void fastSaveChart(AnchorPane chart, String name) throws IOException{
+		Scene scene = new Scene(chart, 1000,500);
 		scene.setFill(Color.WHITE);
 
-		WritableImage image = new WritableImage(1000,400);
+		WritableImage image = new WritableImage(1000,500);
+		scene.snapshot(image);
+
+		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
+		File newBarChartFile = new File(tempDirectory.getAbsolutePath() + File.separator + name +".png");
+		ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
+	}
+
+	public static void fastSaveChart(AnchorPane chart, String name, int h, int w) throws IOException{
+		Scene scene = new Scene(chart, h,w);
+		scene.setFill(Color.WHITE);
+
+		WritableImage image = new WritableImage(h,w);
 		scene.snapshot(image);
 
 		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));

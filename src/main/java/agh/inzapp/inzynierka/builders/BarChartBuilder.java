@@ -46,7 +46,7 @@ public class BarChartBuilder {
 	public void setTitle(String title){
 		barChart.setTitle(title);
 	}
-	public void setSeries(List<Double> avgHarmoList, String seriesName){
+	public void setYData(List<Double> avgHarmoList, String seriesName){
 		ObservableList<XYChart.Data<String , Number>> dataList = setSeriesData(avgHarmoList);
 		switch (seriesName){
 			case "max" ->{

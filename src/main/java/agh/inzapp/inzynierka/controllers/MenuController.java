@@ -8,6 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
+
 import static agh.inzapp.inzynierka.models.enums.FXMLNames.*;
 
 @Controller
@@ -48,7 +50,11 @@ public class MenuController {
 
 	@FXML
 	private void openInNewWindow() {
-		FxmlUtils.openNewSceneFromLoader(TABLE_VIEW.getPath(), "button.tableview", 450, 450);
+		try {
+			FxmlUtils.openNewSceneFromLoader(TABLE_VIEW.getPath(), "button.tableview", 450, 450);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	@FXML
 	void setMainController(MainViewController mainAppPaneController) {

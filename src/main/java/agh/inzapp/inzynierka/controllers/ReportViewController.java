@@ -1,10 +1,12 @@
 package agh.inzapp.inzynierka.controllers;
 
+import agh.inzapp.inzynierka.builders.LineChartBuilder;
 import agh.inzapp.inzynierka.models.enums.AnalyzersModels;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
 import agh.inzapp.inzynierka.services.BarChartService;
 import agh.inzapp.inzynierka.services.LineChartService;
+import agh.inzapp.inzynierka.services.ReportChartService;
 import agh.inzapp.inzynierka.services.ReportService;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
@@ -48,9 +50,9 @@ public class ReportViewController {
 	private StackPane pane;
 	private TimeSpinner timeFrom, timeTo;
 	private List<? extends CommonModelFx> modelsList;
-	private LineChartService chartService;
 	private BarChartService barChartService;
 	private ReportService reportService;
+	private ReportChartService reportChartService;
 
 	@FXML
 	public void initialize() {
@@ -58,7 +60,7 @@ public class ReportViewController {
 		try {
 			modelsList = CommonUtils.mergeFxModelLists();
 
-			chartService = new LineChartService();
+			reportChartService = new ReportChartService();
 			barChartService = new BarChartService();
 			reportService = new ReportService();
 
@@ -71,7 +73,6 @@ public class ReportViewController {
 			DialogUtils.errorDialog(e.getMessage());
 		}
 	}
-
 	private void bindings() {
 		modelComboBox.getItems().setAll(FXCollections.observableArrayList(AnalyzersModels.values()));
 	}
@@ -102,20 +103,21 @@ public class ReportViewController {
 	@FXML
 	private void generateOnAction() {
 		try {
-			generateBarCharts();
+			generateCharts();
 		} catch (ApplicationException | IOException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
 	}
 
-	private void generateBarCharts() throws ApplicationException, IOException {
+	private void generateCharts() throws ApplicationException, IOException {
 		LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
 		LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
 		if (from.isBefore(to)) {
-			final List<CommonModelFx> collect = modelsList.stream()
+			final List<CommonModelFx> recordsBetweenDate = modelsList.stream()
 					.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
 					.collect(Collectors.toList());
-			barChartService.createHarmonicsBarCharts(collect);
+			barChartService.createHarmonicsBarCharts(recordsBetweenDate);
+			reportChartService.createLineCharts(recordsBetweenDate);
 		} else {
 			throw new ApplicationException("error.bar.chart.generate");
 		}

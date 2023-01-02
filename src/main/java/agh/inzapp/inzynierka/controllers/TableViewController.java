@@ -40,7 +40,7 @@ public class TableViewController {
 	private ListDataFx listDataFx;
 	private ListHarmoFx listHarmoFx;
 	private int precisionNormal = 2;
-	private int precisionHarmo = 2;
+	private int precisionHarmo = 4;
 
 	@FXML
 	public void initialize(){
