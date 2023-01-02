@@ -25,8 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static agh.inzapp.inzynierka.utils.CommonUtils.convertToWebString;
-import static agh.inzapp.inzynierka.utils.CommonUtils.getDoubleTextFormatter;
+import static agh.inzapp.inzynierka.utils.CommonUtils.*;
 import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller
@@ -56,23 +55,22 @@ public class ChartViewController {
 	private List<ComboBox<UniNames>> yValuesList;
 	private List<ColorPicker> yColorPickerList;
 	/////////////////////////////////////
-	private List<DataFx> dataFxList;
-	private List<HarmoFx> harmoFxList;
+	private List<? extends CommonModelFx> modelsList;
 	private UserChartService chartService;
 	private int howManyYDData;
 
 	@FXML
 	public void initialize() {
-		chartService = new UserChartService();
-		howManyYDData = 0;
-		ListDataFx listDataFx = ListDataFx.getInstance();
-		ListHarmoFx listHarmoFx = ListHarmoFx.getInstance();
-
-		dataFxList = Objects.requireNonNull(listDataFx).getDataFxList();
-		harmoFxList = Objects.requireNonNull(listHarmoFx).getHarmoFxList();
-		addTimeSpinnersToGrid();
-		initLists();
-		bindings();
+		try {
+			modelsList = mergeFxModelLists();
+			chartService = new UserChartService();
+			howManyYDData = 0;
+			addTimeSpinnersToGrid();
+			initLists();
+			bindings();
+		} catch (ApplicationException e) {
+			DialogUtils.errorDialog(e.getMessage());
+		}
 	}
 
 	private void addTimeSpinnersToGrid() {
@@ -113,34 +111,15 @@ public class ChartViewController {
 
 	}
 	private void bindDatePickers() {
-		LocalDateTime startDate = LocalDateTime.now();
-		LocalDateTime endDate = LocalDateTime.now();
-		if (isBothListPresent()) {
-			startDate = dataFxList.get(0).getDate();
-			endDate = dataFxList.get(dataFxList.size() - 1).getDate();
-		} else if (isOnlyNormalDataPresent()) {
-			startDate = dataFxList.get(0).getDate();
-			endDate = dataFxList.get(dataFxList.size() - 1).getDate();
-		} else if (isOnlyHarmoDataPresent()) {
-			startDate = harmoFxList.get(0).getDate();
-			endDate = harmoFxList.get(harmoFxList.size() - 1).getDate();
-		}
-
+		LocalDateTime startDate = modelsList.get(0).getDate();
+		LocalDateTime endDate = modelsList.get(modelsList.size() - 1).getDate();
 		restrictDatePicker(xDateFrom, startDate.toLocalDate(), endDate.toLocalDate());
 		restrictDatePicker(xDateTo, startDate.toLocalDate(), endDate.toLocalDate());
 		xDateFrom.setValue(startDate.toLocalDate());
 		xDateTo.setValue(endDate.toLocalDate());
 	}
 	private void bindValueComboBoxes() {
-		List<UniNames> uniNamesList = List.of();
-		if (isBothListPresent()) {
-			uniNamesList = new ArrayList<>(dataFxList.get(0).getColumnNames());
-			uniNamesList.addAll(harmoFxList.get(0).getColumnNames());
-		} else if (isOnlyNormalDataPresent()) {
-			uniNamesList = new ArrayList<>(dataFxList.get(0).getColumnNames());
-		} else if (isOnlyHarmoDataPresent()) {
-			uniNamesList = new ArrayList<>(harmoFxList.get(0).getColumnNames());
-		}
+		List<UniNames> uniNamesList = modelsList.get(0).getColumnNames();
 		List<UniNames> finalUniNamesList = CommonUtils.deleteNonRecordsFromUniNamesList(uniNamesList);
 		if (!finalUniNamesList.isEmpty()) {
 			yValuesList.forEach(uniNamesComboBox -> uniNamesComboBox.setItems(FXCollections.observableArrayList(finalUniNamesList)));
@@ -159,16 +138,12 @@ public class ChartViewController {
 	private void yAddOnAction() {
 		try {
 			chartService.clearSeriesBeforeCreatingNewOne();
+			List<CommonModelFx> modelsBetweenSelectedTime = getRecordsBetweenSelectedTime();
+			if(isTheSameDay()) chartService.setXDateTickToOnlyTime();
 
-			List<LocalDateTime> xDataList = getFromX();
-			if (CommonUtils.isSameDay(xDataList.get(0), xDataList.get(xDataList.size() - 1)))
-				chartService.setXDateTickToOnlyTime();
-
-			Map<LocalDateTime, Double> xyDataMap;
 			for (int i = 0; i <= howManyYDData; i++) {
-				List<Double> yDataList = getFromY(i);
 				if (!isSelectedValue(i)) break;
-				xyDataMap = CommonUtils.zipToMap(xDataList, yDataList);
+				Map<LocalDateTime, Double> xyDataMap = getSeriesDataMap(modelsBetweenSelectedTime, i);
 				chartService.createSeries(xyDataMap, yValuesList.get(i).getValue(), yColorPickerList.get(i).getValue());
 			}
 			setLegendColors();
@@ -177,6 +152,24 @@ public class ChartViewController {
 			DialogUtils.errorDialog(e.getMessage());
 		}
 	}
+
+	private boolean isTheSameDay() {
+		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
+		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
+		return CommonUtils.isSameDay(from, to);
+	}
+	private Map<LocalDateTime, Double> getSeriesDataMap(List<CommonModelFx> modelsBetweenSelectedTime, int i) throws ApplicationException {
+		Map<LocalDateTime, Double> xyDataMap;
+		UniNames uniName = yValuesList.get(i).getValue();
+		List<LocalDateTime> xData = modelsBetweenSelectedTime.stream().map(CommonModelFx::getDate).toList();
+		List<Double> yData = modelsBetweenSelectedTime.stream()
+				.map(model -> model.getRecords().get(uniName))
+				.filter(Objects::nonNull)
+				.toList();
+		xyDataMap = CommonUtils.zipToMap(xData, yData);
+		return xyDataMap;
+	}
+
 	@FXML
 	private void switchLineChartOnAction() {
 		repaintChart();
@@ -267,63 +260,15 @@ public class ChartViewController {
 		}
 		return colors;
 	}
-	private List<Double> getFromY(int i) throws ApplicationException {
-		UniNames uniName = yValuesList.get(i).getValue();
-		LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
-		LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
-		if (from.isBefore(to)) {
-			List<Double> collect = List.of();
-			if (isBothListPresent()) {
-				collect = dataFxList.stream()
-						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
-						.map(model -> model.getRecords().get(uniName))
-						.collect(Collectors.toList());
-				collect.addAll(harmoFxList.stream()
-						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
-						.map(model -> model.getRecords().get(uniName))
-						.toList());
-			} else if (isOnlyNormalDataPresent()) {
-				collect = dataFxList.stream()
-						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
-						.map(model -> model.getRecords().get(uniName))
-						.collect(Collectors.toList());
-			} else if (isOnlyHarmoDataPresent()) {
-				collect = harmoFxList.stream()
-						.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
-						.map(model -> model.getRecords().get(uniName))
-						.collect(Collectors.toList());
-			}
-			return collect.stream()
-					.filter(Objects::nonNull)
-					.collect(Collectors.toList());
-		}
-		throw new ApplicationException("bad value"); //todo exception communicate
-	}
-	private List<LocalDateTime> getFromX() throws ApplicationException {
+	private List<CommonModelFx> getRecordsBetweenSelectedTime() throws ApplicationException {
 		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
 		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
 		if (from.isBefore(to)){
-			List<LocalDateTime> xDataList = List.of();
-			if (isBothListPresent()) {
-				xDataList = getLocalDateTimes(from, to, dataFxList);
-			} else if (isOnlyNormalDataPresent()) {
-				xDataList = getLocalDateTimes(from, to, dataFxList);
-			} else if (isOnlyHarmoDataPresent()) {
-				xDataList = getLocalDateTimes(from, to, harmoFxList);
-			}
-			return xDataList;
+			return modelsList.stream()
+					.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+					.collect(Collectors.toList());
 		}
-		throw new ApplicationException("date out of range"); //todo exception communicate
-	}
-
-	private List<LocalDateTime> getLocalDateTimes(LocalDateTime from, LocalDateTime to, List<? extends CommonModelFx> modelsList) {
-		List<LocalDateTime> list = new ArrayList<>();
-		for (CommonModelFx model : modelsList) {
-			if ((model.getDate().isAfter(from) && model.getDate().isBefore(to))) {
-				list.add(model.getDate());
-			}
-		}
-		return list;
+		throw new ApplicationException("error.date.out.of.range");
 	}
 
 	private void repaintChart() {
@@ -365,19 +310,8 @@ public class ChartViewController {
 		yMax.setText(String.valueOf((double) chartSettings.get(6)));
 		yTick.setText(String.valueOf((double) chartSettings.get(7)));
 	}
-
 	private boolean isSelectedValue(int i) {
 		return yValuesList.get(i).getValue() != null;
 	}
 
-	private boolean isOnlyHarmoDataPresent() {
-		return dataFxList.isEmpty() && !harmoFxList.isEmpty();
-	}
-
-	private boolean isOnlyNormalDataPresent() {
-		return !dataFxList.isEmpty() && harmoFxList.isEmpty();
-	}
-	private boolean isBothListPresent() {
-		return !dataFxList.isEmpty() && !harmoFxList.isEmpty();
-	}
 }

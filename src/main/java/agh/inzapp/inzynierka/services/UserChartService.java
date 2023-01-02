@@ -2,6 +2,8 @@ package agh.inzapp.inzynierka.services;
 
 import agh.inzapp.inzynierka.builders.LineChartBuilder;
 import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
+import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -18,9 +20,9 @@ import java.util.Map;
 public class UserChartService {
 	private final ListProperty<LineChart<Number, Number>> lineChartObservableList = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private final List<LineChartBuilder> buildersList;
+	private LineChart<Number, Number> currentLineChart;
 	private LineChartBuilder builder;
 	private int indexOfLineChart;
-	private LineChart<Number, Number> currentLineChart;
 
 	public UserChartService() {
 		buildersList = new ArrayList<>();
@@ -37,7 +39,6 @@ public class UserChartService {
 	public void newLineChart() {
 		builder = new LineChartBuilder();
 		buildersList.add(builder);
-
 		builder.createNew();
 		builder.setLegendVisible(false);
 		if(lineChartObservableList.isEmpty()){

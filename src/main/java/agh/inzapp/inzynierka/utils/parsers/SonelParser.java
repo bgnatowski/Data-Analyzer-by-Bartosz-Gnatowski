@@ -13,8 +13,6 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static agh.inzapp.inzynierka.models.enums.UniNames.*;
-
-//todo
 public class SonelParser {
 	private static final Map<String, UniNames> mapDataNames = new LinkedHashMap<>();
 	private static final Map<String, UniNames> mapHarmonicNames = new LinkedHashMap<>();
