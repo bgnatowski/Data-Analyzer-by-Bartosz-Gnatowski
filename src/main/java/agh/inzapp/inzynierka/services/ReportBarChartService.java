@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 import static agh.inzapp.inzynierka.models.enums.UniNames.getPowerLineHarmonicNames;
 @Component
 
-public class BarChartService {
+public class ReportBarChartService {
 	private static final int HOW_MANY_POWERLINES = 3;
 	private final BarChartBuilder builder;
 
-	public BarChartService() {
+	public ReportBarChartService() {
 		builder = new BarChartBuilder();
 	}
 
@@ -44,9 +44,7 @@ public class BarChartService {
 		List<Double> percentile95List = new ArrayList<>();
 		L.forEach(Hn -> {
 			List<Double> allHn = allByIdBetween.stream().map(record -> record.getRecords().get(Hn))
-					.filter(Objects::nonNull)
-					.collect(Collectors.toList());
-			Collections.sort(allHn);
+					.filter(Objects::nonNull).sorted().collect(Collectors.toList());
 			final Double percentile = CommonUtils.percentile(allHn, 95);
 			percentile95List.add(percentile);
 		});
@@ -58,12 +56,13 @@ public class BarChartService {
 		L.forEach(Hn -> {
 			List<Double> allHn = allByIdBetween.stream().map(record -> record.getRecords().get(Hn))
 					.filter(Objects::nonNull)
-					.collect(Collectors.toList());
+					.toList();
 			OptionalDouble average = allHn
 					.stream()
 					.mapToDouble(a -> a)
 					.average();
-			avg50n.add(average.getAsDouble());
+			if(average.isPresent())
+				avg50n.add(average.getAsDouble());
 		});
 		return avg50n;
 	}
@@ -73,12 +72,13 @@ public class BarChartService {
 		L.forEach(Hn -> {
 			List<Double> allHn = allByIdBetween.stream().map(record -> record.getRecords().get(Hn))
 					.filter(Objects::nonNull)
-					.collect(Collectors.toList());
+					.toList();
 			OptionalDouble average = allHn
 					.stream()
 					.mapToDouble(a -> a)
 					.max();
-			max50n.add(average.getAsDouble());
+			if(average.isPresent())
+				max50n.add(average.getAsDouble());
 		});
 		return max50n;
 	}

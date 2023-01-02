@@ -14,21 +14,22 @@ import java.util.*;
 
 import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 
-public class ReportChartService {
+public class ReportLineChartService {
 	private List<CommonModelFx> models;
 	private LineChartBuilder lineChartBuilder;
 
-	public ReportChartService() {
+	public ReportLineChartService() {
 		this.lineChartBuilder = new LineChartBuilder();
 	}
 	public void createLineCharts(List<CommonModelFx> recordsBetweenDate) throws ApplicationException, IOException {
 		models = recordsBetweenDate;
 		if(isTheSameDay()) lineChartBuilder.setTimeTick();
-
 		List<LocalDateTime> xData = models.stream().map(model -> model.getDate()).toList();
 		Map<LocalDateTime, Double> xyDataMap;
 		for (int i = 0; i < 6; i++) { // 6 wykresów
 			lineChartBuilder.createNew();
+			lineChartBuilder.setLegendVisible(true);
+
 			AnchorPane ap = new AnchorPane();
 			for (int j = 0; j < 3; j++) { // po 3 serie
 				UniNames seriesName = getSeriesName(i, j);
@@ -44,15 +45,8 @@ public class ReportChartService {
 			}
 			lineChartBuilder.setYAxisLabel(getAxisYLabel(i));
 			lineChartBuilder.setTitle(getTitle(i));
-
 			ap.getChildren().add(lineChartBuilder.getResult());
 			SavingUtils.fastSaveChart(ap, getFileNameTitle(i));
-
-//			Scene scene = new Scene(ap, 1000,400);
-//			scene.setFill(Color.WHITE);
-//			Stage stage = new Stage();
-//			stage.setScene(scene);
-//			stage.show();
 		}
 
 		lineChartBuilder.createNew();

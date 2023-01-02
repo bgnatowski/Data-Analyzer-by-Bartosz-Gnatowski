@@ -38,7 +38,7 @@
                                              <children>
                                                 <AnchorPane>
                                                    <children>
-                                                      <TitledPane text="%chart.pane.x.axis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                      <TitledPane text="%chart.pane.x.axis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="xPane">
                                                          <content>
                                                             <AnchorPane>
                                                                <children>
@@ -67,7 +67,7 @@
                                                 </AnchorPane>
                                                 <AnchorPane>
                                                    <children>
-                                                      <TitledPane text="%chart.pane.y.axis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                      <TitledPane fx:id="yPane" text="%chart.pane.y.axis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <content>
                                                             <AnchorPane>
                                                                <children>
@@ -177,22 +177,22 @@
                                                                         </Label>
                                                                         <HBox alignment="CENTER_RIGHT" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                                                                            <children>
-                                                                              <RadioButton mnemonicParsing="false" onAction="#switchOnLegend" selected="true" text="%button.on">
+                                                                              <RadioButton fx:id="legendOn" mnemonicParsing="false" onAction="#switchOnLegend" selected="true" text="%button.on">
                                                                                  <toggleGroup>
                                                                                     <ToggleGroup fx:id="legendButtonGroup" />
                                                                                  </toggleGroup>
                                                                               </RadioButton>
-                                                                              <RadioButton mnemonicParsing="false" onAction="#switchOffLegend" selected="true" text="%button.off" toggleGroup="$legendButtonGroup" />
+                                                                              <RadioButton fx:id="legendOff" mnemonicParsing="false" onAction="#switchOffLegend" selected="true" text="%button.off" toggleGroup="$legendButtonGroup" />
                                                                            </children>
                                                                         </HBox>
                                                                         <HBox alignment="CENTER_RIGHT" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                                                            <children>
-                                                                              <RadioButton mnemonicParsing="false" onAction="#switchOnDataPoints" selected="true" text="%button.on">
+                                                                              <RadioButton fx:id="dataOn" mnemonicParsing="false" onAction="#switchOnDataPoints" selected="true" text="%button.on">
                                                                                  <toggleGroup>
                                                                                     <ToggleGroup fx:id="dataButtonsGroup" />
                                                                                  </toggleGroup>
                                                                               </RadioButton>
-                                                                              <RadioButton mnemonicParsing="false" onAction="#switchOffDataPoints" selected="true" text="%button.off" toggleGroup="$dataButtonsGroup" />
+                                                                              <RadioButton fx:id="dataOff" mnemonicParsing="false" onAction="#switchOffDataPoints" selected="true" text="%button.off" toggleGroup="$dataButtonsGroup" />
                                                                            </children>
                                                                         </HBox>
                                                                         <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Y min" GridPane.rowIndex="5">

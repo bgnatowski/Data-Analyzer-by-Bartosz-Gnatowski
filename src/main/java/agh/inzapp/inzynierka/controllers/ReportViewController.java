@@ -1,12 +1,10 @@
 package agh.inzapp.inzynierka.controllers;
 
-import agh.inzapp.inzynierka.builders.LineChartBuilder;
 import agh.inzapp.inzynierka.models.enums.AnalyzersModels;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
-import agh.inzapp.inzynierka.services.BarChartService;
-import agh.inzapp.inzynierka.services.LineChartService;
-import agh.inzapp.inzynierka.services.ReportChartService;
+import agh.inzapp.inzynierka.services.ReportBarChartService;
+import agh.inzapp.inzynierka.services.ReportLineChartService;
 import agh.inzapp.inzynierka.services.ReportService;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
@@ -50,9 +48,9 @@ public class ReportViewController {
 	private StackPane pane;
 	private TimeSpinner timeFrom, timeTo;
 	private List<? extends CommonModelFx> modelsList;
-	private BarChartService barChartService;
+	private ReportBarChartService barChartService;
 	private ReportService reportService;
-	private ReportChartService reportChartService;
+	private ReportLineChartService reportChartService;
 
 	@FXML
 	public void initialize() {
@@ -60,8 +58,8 @@ public class ReportViewController {
 		try {
 			modelsList = CommonUtils.mergeFxModelLists();
 
-			reportChartService = new ReportChartService();
-			barChartService = new BarChartService();
+			reportChartService = new ReportLineChartService();
+			barChartService = new ReportBarChartService();
 			reportService = new ReportService();
 
 			addTimeSpinnersToGrid();

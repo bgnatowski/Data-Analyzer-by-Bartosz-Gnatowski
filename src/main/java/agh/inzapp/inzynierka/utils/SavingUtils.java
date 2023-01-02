@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class SavingUtils {
-	public static void saveLineChart(LineChart<String, Number> lineChart) throws IOException {
+	public static void saveLineChart(LineChart<Number, Number> lineChart) throws IOException {
 		Scene scene = new Scene(FxmlUtils.fxmlLoad("/fxml/ChartAnchorPane.fxml"), 1200, 800);
 		((AnchorPane) scene.getRoot()).getChildren().add(lineChart);
 		scene.setFill(Color.WHITE);

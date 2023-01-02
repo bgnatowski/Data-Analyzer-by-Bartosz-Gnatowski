@@ -14,7 +14,6 @@ import java.util.stream.IntStream;
 @Component
 public class BarChartBuilder {
 	private BarChart<String, Number> barChart;
-	private CategoryAxis xAxis;
 	private XYChart.Series<String , Number> series1;
 	private XYChart.Series<String , Number> series2;
 	private XYChart.Series<String , Number> series3;
@@ -27,7 +26,7 @@ public class BarChartBuilder {
 		final List<Integer> from1to50 = IntStream.rangeClosed(1, 50).boxed().toList();
 		final List<String> x = from1to50.stream().map(String::valueOf).collect(Collectors.toList());
 
-		xAxis = new CategoryAxis(FXCollections.observableArrayList(x));
+		CategoryAxis xAxis = new CategoryAxis(FXCollections.observableArrayList(x));
 		NumberAxis yAxis = new NumberAxis();
 		barChart = new BarChart<>(xAxis, yAxis);
 		barChart.setLegendVisible(true);
@@ -67,14 +66,6 @@ public class BarChartBuilder {
 		barChart.getData().addAll(series1, series2, series3);
 		barChart.setCategoryGap(0);
 		barChart.setBarGap(0);
-	}
-
-	public void setYAxisBounds(double min, double max, double tick) {
-		NumberAxis axis = (NumberAxis) barChart.getYAxis();
-		axis.setAutoRanging(false);
-		axis.setLowerBound(min);
-		axis.setUpperBound(max);
-		axis.setTickUnit(tick);
 	}
 
 	public BarChart<String, Number> getResult() {
