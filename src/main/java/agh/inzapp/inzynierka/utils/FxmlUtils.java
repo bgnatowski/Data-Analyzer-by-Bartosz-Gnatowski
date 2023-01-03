@@ -1,10 +1,12 @@
 package agh.inzapp.inzynierka.utils;
 
+import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -74,5 +76,4 @@ public class FxmlUtils {
 		};
 		datePicker.setDayCellFactory(dayCellFactory);
 	}
-
 }

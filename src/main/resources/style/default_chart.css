@@ -75,11 +75,11 @@
 
 .chart-vertical-grid-lines {
     -fx-stroke: derive(#ececec,-10%);
-    -fx-stroke-dash-array: 0.25em, 0.25em;
+    -fx-stroke-dash-array: 0.1em, 0.1em;
 }
 .chart-horizontal-grid-lines {
-    -fx-stroke: derive(#ececec,-10%);
-    -fx-stroke-dash-array: 0.25em, 0.25em;
+    -fx-stroke: derive(#ececec,-18%);
+    -fx-stroke-dash-array: 0.25em, 0.15em;
 }
 
 .chart-plot-background {
@@ -104,17 +104,15 @@
 
 
 .axis {
-    -fx-font-size: 0.5em;
+    AXIS_COLOR: derive(#ececec,-40%);
+    -fx-tick-label-font-size: 1em; /* 10px */
+    -fx-tick-label-fill: derive(#ececec, -65%);
+
+    -fx-font-size: 1em;
     -fx-stroke: #1c1c1c;
     -fx-tick-label-fill: black;
     -fx-tick-length: 20;
     -fx-minor-tick-length: 10;
-}
-
-.axis {
-    AXIS_COLOR: derive(#ececec,-30%);
-    -fx-tick-label-font-size: 0.833333em; /* 10px */
-    -fx-tick-label-fill: derive(#ececec, -45%);
 }
 .axis:top {
     -fx-border-color: transparent transparent AXIS_COLOR transparent;

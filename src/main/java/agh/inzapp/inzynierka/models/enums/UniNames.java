@@ -375,18 +375,22 @@ public enum UniNames{
 			H31_UL1, H32_UL1, H33_UL1, H34_UL1, H35_UL1, H36_UL1, H37_UL1, H38_UL1, H39_UL1, H40_UL1,
 			H41_UL1, H42_UL1, H43_UL1, H44_UL1, H45_UL1, H46_UL1, H47_UL1, H48_UL1, H49_UL1, H50_UL1));
 	
-	private static final List<UniNames> L2 = new ArrayList<>(Arrays.asList(
+	private static List<UniNames> L2 = new ArrayList<>(Arrays.asList(
 			H2_UL2, H3_UL2, H4_UL2, H5_UL2, H6_UL2, H7_UL2, H8_UL2, H9_UL2, H10_UL2,
 			H11_UL2, H12_UL2, H13_UL2, H14_UL2, H15_UL2, H16_UL2, H17_UL2, H18_UL2, H19_UL2, H20_UL2,
 			H21_UL2, H22_UL2, H23_UL2, H24_UL2, H25_UL2, H26_UL2, H27_UL2, H28_UL2, H29_UL2, H30_UL2,
 			H31_UL2, H32_UL2, H33_UL2, H34_UL2, H35_UL2, H36_UL2, H37_UL2, H38_UL2, H39_UL2, H40_UL2,
 			H41_UL2, H42_UL2, H43_UL2, H44_UL2, H45_UL2, H46_UL2, H47_UL2, H48_UL2, H49_UL2, H50_UL2));
-	private static final List<UniNames> L3 = new ArrayList<>(Arrays.asList(
+	private static List<UniNames> L3 = new ArrayList<>(Arrays.asList(
 			H2_UL3, H3_UL3, H4_UL3, H5_UL3, H6_UL3, H7_UL3, H8_UL3, H9_UL3, H10_UL3,
 			H11_UL3, H12_UL3, H13_UL3, H14_UL3, H15_UL3, H16_UL3, H17_UL3, H18_UL3, H19_UL3, H20_UL3,
 			H21_UL3, H22_UL3, H23_UL3, H24_UL3, H25_UL3, H26_UL3, H27_UL3, H28_UL3, H29_UL3, H30_UL3,
 			H31_UL3, H32_UL3, H33_UL3, H34_UL3, H35_UL3, H36_UL3, H37_UL3, H38_UL3, H39_UL3, H40_UL3,
 			H41_UL3, H42_UL3, H43_UL3, H44_UL3, H45_UL3, H46_UL3, H47_UL3, H48_UL3, H49_UL3, H50_UL3));
+
+	private static final List<UniNames> Q = new ArrayList<>(Arrays.asList(
+			Q_L1_avg, Q_L2_avg, Q_L3_avg, Q_L1_max, Q_L2_max, Q_L3_max, Q_L1_min, Q_L2_min, Q_L3_min, Q_total, Q_total_avg, Q_total_min, Q_total_max
+	));
 
 	UniNames(String uniName, String unit) {
 		this.uniName = uniName;
@@ -426,4 +430,5 @@ public enum UniNames{
 		return L3;
 	}
 
+	public static List<UniNames> getQ(){return Q;}
 }

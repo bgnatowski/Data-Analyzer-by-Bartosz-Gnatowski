@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -12,7 +13,6 @@ public class ListDataFx {
 	private ObservableList<DataFx> dataFxObservableList = FXCollections.observableArrayList();
 	private List<DataFx> dataFxList = new ArrayList<>();
 	private static volatile ListDataFx instance;
-
 	private ListDataFx(){
 	}
 

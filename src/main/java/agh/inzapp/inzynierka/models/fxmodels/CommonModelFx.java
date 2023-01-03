@@ -1,21 +1,47 @@
 package agh.inzapp.inzynierka.models.fxmodels;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.utils.DialogUtils;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public abstract class CommonModelFx {
+@NoArgsConstructor
+public class CommonModelFx implements Cloneable{
 	protected LongProperty id = new SimpleLongProperty();
 	protected ObjectProperty<LocalDateTime> date = new SimpleObjectProperty<>();
 	protected MapProperty<UniNames, String> flags = new SimpleMapProperty<>();
 	protected MapProperty<UniNames, Double> records = new SimpleMapProperty<>();
 	protected ListProperty<UniNames> columnNames = new SimpleListProperty<>();
+
+	public CommonModelFx(DataFx dfx, HarmoFx hfx) {
+		setId(dfx.getId());
+		setDate(dfx.getDate());
+		setFlags(dfx.getFlags());
+		final ObservableMap<UniNames, Double> recordsN = dfx.getRecords();
+		final ObservableMap<UniNames, Double> recordsH = hfx.getRecords();
+		LinkedHashMap<UniNames, Double> linkedHashMap = new LinkedHashMap<>();
+		linkedHashMap.putAll(recordsN);
+		linkedHashMap.putAll(recordsH);
+		setRecords(FXCollections.observableMap(linkedHashMap));
+
+		final ObservableList<UniNames> columnNamesN = dfx.getColumnNames();
+		final ObservableList<UniNames> columnNamesH = hfx.getColumnNames();
+		ArrayList<UniNames> columnNames = new ArrayList<>();
+		columnNames.addAll(columnNamesN);
+		columnNames.addAll(columnNamesH);
+		final List<UniNames> columnNamesDistinct = columnNames.stream().distinct().collect(Collectors.toList());
+		setColumnNames(FXCollections.observableArrayList(columnNamesDistinct));
+	}
 
 	public long getId() {
 		return id.get();
@@ -88,5 +114,16 @@ public abstract class CommonModelFx {
 		allDataToString.add(records);
 
 		return allDataToString.toString();
+	}
+
+	@Override
+	public Object clone() {
+		CommonModelFx clone = null;
+		try{
+			clone = (CommonModelFx) super.clone();
+		} catch (CloneNotSupportedException e){
+			DialogUtils.errorDialog("error.clone");
+		}
+		return clone;
 	}
 }

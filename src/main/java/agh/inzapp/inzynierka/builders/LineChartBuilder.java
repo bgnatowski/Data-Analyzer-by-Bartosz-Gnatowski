@@ -70,7 +70,14 @@ public class LineChartBuilder {
 		chart.getYAxis().setLabel(label);
 		chart.getYAxis()
 				.lookup(".axis-label")
-				.setStyle("-fx-label-padding: -10 0 0 0;");
+				.setStyle("-fx-label-padding: -15 0 0 0;");
+	}
+	//TODO rotacja - jesli sie miesci/niemiesci -dodac mozliwosc w userowej templatce
+	//TODO barcharty - gap pomiedzy lub rotacja
+	public void setYLabelsRotate90(){
+		chart.getYAxis().setTickLabelRotation(-90);
+	}
+	public void setXLabelsRotate90(){
 		chart.getYAxis().setTickLabelRotation(-90);
 	}
 

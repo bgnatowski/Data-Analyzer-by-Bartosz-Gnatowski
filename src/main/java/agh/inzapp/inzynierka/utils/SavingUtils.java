@@ -32,10 +32,10 @@ public class SavingUtils {
 		}
 	}
 	public static void fastSaveChart(AnchorPane chart, String name) throws IOException{
-		Scene scene = new Scene(chart, 1000,500);
+		Scene scene = new Scene(chart, 800,400);
 		scene.setFill(Color.WHITE);
 
-		WritableImage image = new WritableImage(1000,500);
+		WritableImage image = new WritableImage(800,400);
 		scene.snapshot(image);
 
 		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));

@@ -80,14 +80,15 @@ public class BarChartBuilder {
 		barChart.getXAxis()
 				.lookup(".axis-label")
 				.setStyle("-fx-label-padding: 0 -10 0 0;");
+		barChart.getXAxis().setTickLabelRotation(-90);
 	}
 
 	private void setYAxisLabel(){
-		barChart.getYAxis().setTickLabelRotation(-90);
 		barChart.getYAxis().setLabel("Amplituda [%]");
 		barChart.getYAxis()
 				.lookup(".axis-label")
-				.setStyle("-fx-label-padding: -10 0 0 0;");
+				.setStyle("-fx-label-padding: -15 0 0 0;");
+//		barChart.getYAxis().setTickLabelRotation(-90);
 	}
 
 	private ObservableList<XYChart.Data<String, Number>> setSeriesData(List<Double> harmoList) {

@@ -1,11 +1,7 @@
 package agh.inzapp.inzynierka.utils;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
-import agh.inzapp.inzynierka.models.fxmodels.*;
-import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
@@ -24,7 +20,7 @@ public class CommonUtils {
 		return localDate1.isEqual(localDate2);
 	}
 
-	public static <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values) throws ApplicationException {
+	public static <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values){
 		Iterator<K> keyIter = keys.iterator();
 		Iterator<V> valIter = values.iterator();
 		Map<K, V> map = new LinkedHashMap<>();
@@ -84,32 +80,71 @@ public class CommonUtils {
 				(int) (color.getBlue() * 255));
 	}
 
-	public static List<? extends CommonModelFx> mergeFxModelLists() throws ApplicationException {
-		ListDataFx listDataFx = ListDataFx.getInstance();
-		ListHarmoFx listHarmoFx = ListHarmoFx.getInstance();
-		List<DataFx> dataFxList = new ArrayList<>(Objects.requireNonNull(listDataFx).getDataFxList());
-		List<HarmoFx> harmoFxList = new ArrayList<>(Objects.requireNonNull(listHarmoFx).getHarmoFxList());
-		if(dataFxList.size() != harmoFxList.size()) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.merge.list"));
-
-		for(int i = 0; i < dataFxList.size(); i++){
-			final CommonModelFx commonModelFx = ((List<? extends CommonModelFx>) dataFxList).get(i);
-			final ObservableMap<UniNames, Double> records = commonModelFx.getRecords();
-			final ObservableMap<UniNames, Double> recordsHarmo = harmoFxList.get(i).getRecords();
-			records.putAll(recordsHarmo);
-
-			final ObservableList<UniNames> columnNames = commonModelFx.getColumnNames();
-			final ObservableList<UniNames> columnNamesHarmo = harmoFxList.get(i).getColumnNames();
-			columnNames.addAll(columnNamesHarmo);
-			final List<UniNames> collectColumnNames = columnNames.stream().distinct().collect(Collectors.toList());
-
-			commonModelFx.setColumnNames(FXCollections.observableArrayList(collectColumnNames));
-			commonModelFx.setRecords(FXCollections.observableMap(records));
-		}
-		return dataFxList;
-	}
-
 	public static Double percentile(List<Double> latencies, double percentile) {
 		int index = (int) Math.ceil(percentile / 100.0 * latencies.size());
 		return latencies.get(index-1);
+	}
+
+	public static String get95Percentile(List<CommonModelFx> recordsBetween, UniNames name) {
+		List<Double> allRecords = recordsBetween.stream().map(record -> record.getRecords().get(name))
+					.filter(Objects::nonNull).sorted().collect(Collectors.toList());
+		final Double percentile = percentile(allRecords, 95);
+		return String.format("%.2f", percentile);
+	}
+
+	public static String get5Percentile(List<CommonModelFx> recordsBetween, UniNames name) {
+		List<Double> allRecords = recordsBetween.stream().map(record -> record.getRecords().get(name))
+				.filter(Objects::nonNull).sorted().collect(Collectors.toList());
+		final Double percentile = percentile(allRecords, 5);
+		return String.format("%.2f", percentile);
+	}
+
+	public static String getAvg(List<CommonModelFx> recordsBetween, UniNames name) {
+			List<Double> column = recordsBetween.stream().map(record -> record.getRecords().get(name))
+					.filter(Objects::nonNull)
+					.toList();
+			OptionalDouble average = column
+					.stream()
+					.mapToDouble(a -> a)
+					.average();
+			if(average.isPresent())
+				return String.format("%.2f", average.getAsDouble());
+		return "";
+	}
+
+	public static String getMax(List<CommonModelFx> recordsBetween, UniNames name) {
+		List<Double> column = recordsBetween.stream().map(record -> record.getRecords().get(name))
+				.filter(Objects::nonNull)
+				.toList();
+		OptionalDouble max = column
+				.stream()
+				.mapToDouble(a -> a)
+				.max();
+		if(max.isPresent())
+			return String.format("%.2f", max.getAsDouble());
+		return "";
+	}
+
+	public static String getMin(List<CommonModelFx> recordsBetween, UniNames name) {
+		List<Double> column = recordsBetween.stream().map(record -> record.getRecords().get(name))
+				.filter(Objects::nonNull)
+				.toList();
+		OptionalDouble min = column
+				.stream()
+				.mapToDouble(a -> a)
+				.min();
+		if(min.isPresent())
+			return String.format("%.2f", min.getAsDouble());
+		return "";
+	}
+
+	public static String getTolerancePercentage(List<CommonModelFx> recordsBetween, UniNames name, Double tolerance) {
+		List<Double> column = recordsBetween.stream().map(record -> record.getRecords().get(name))
+				.filter(Objects::nonNull)
+				.toList();
+		final long amountInTolerance = column.stream().filter(result -> result <= tolerance).count();
+		final double percentage = ((double) amountInTolerance/column.size()) * 100d;
+		if(percentage>=100) return "100";
+		return String.format("%.2f", percentage);
 	}
 }

@@ -2,7 +2,6 @@ package agh.inzapp.inzynierka.models.fxmodels;
 
 import javafx.collections.FXCollections;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.LinkedHashMap;
