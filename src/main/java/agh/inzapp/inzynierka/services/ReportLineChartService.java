@@ -23,7 +23,9 @@ public class ReportLineChartService {
 	}
 	public void createLineCharts(List<CommonModelFx> recordsBetweenDate) throws ApplicationException, IOException {
 		models = recordsBetweenDate;
-		if(isTheSameDay()) lineChartBuilder.setTimeTick();
+		if(isTheSameDay()) lineChartBuilder.setXDateTickToOnlyTime();
+		else lineChartBuilder.setXDateTickToDays();
+
 		List<LocalDateTime> xData = models.stream().map(model -> model.getDate()).toList();
 		Map<LocalDateTime, Double> xyDataMap;
 		for (int i = 0; i < 6; i++) { // 6 wykresów

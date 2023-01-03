@@ -2,8 +2,6 @@ package agh.inzapp.inzynierka.services;
 
 import agh.inzapp.inzynierka.builders.LineChartBuilder;
 import agh.inzapp.inzynierka.models.enums.UniNames;
-import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
-import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -92,7 +90,10 @@ public class UserChartService {
 	}
 
 	public void setXDateTickToOnlyTime() {
-		builder.setTimeTick();
+		builder.setXDateTickToOnlyTime();
+	}
+
+	public void setXDateTickToDays() { builder.setXDateTickToDays();
 	}
 
 
@@ -105,11 +106,11 @@ public class UserChartService {
 		builder.setLegendVisible(false);
 		updateChart();
 	}
-
 	public void switchCurrentDataPointsOn() {
 		builder.setCreateSymbols(true);
 		updateChart();
 	}
+
 	public void switchCurrentDataPointsOff() {
 		builder.setCreateSymbols(false);
 		updateChart();
@@ -138,5 +139,4 @@ public class UserChartService {
 		list.add(builder.getTick());
 		return list;
 	}
-
 }

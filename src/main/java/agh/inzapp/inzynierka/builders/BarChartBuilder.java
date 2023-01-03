@@ -23,8 +23,8 @@ public class BarChartBuilder {
 		series2 = new XYChart.Series<>();
 		series3 = new XYChart.Series<>();
 
-		final List<Integer> from1to50 = IntStream.rangeClosed(1, 50).boxed().toList();
-		final List<String> x = from1to50.stream().map(String::valueOf).collect(Collectors.toList());
+		final List<Integer> from2to50 = IntStream.rangeClosed(2, 50).boxed().toList();
+		final List<String> x = from2to50.stream().map(String::valueOf).collect(Collectors.toList());
 
 		CategoryAxis xAxis = new CategoryAxis(FXCollections.observableArrayList(x));
 		NumberAxis yAxis = new NumberAxis();
@@ -64,7 +64,7 @@ public class BarChartBuilder {
 	}
 	public void updateSeries() {
 		barChart.getData().addAll(series1, series2, series3);
-		barChart.setCategoryGap(0);
+		barChart.setCategoryGap(0.1);
 		barChart.setBarGap(0);
 	}
 
@@ -80,14 +80,19 @@ public class BarChartBuilder {
 		barChart.getXAxis()
 				.lookup(".axis-label")
 				.setStyle("-fx-label-padding: 0 -10 0 0;");
+		barChart.getXAxis().setTickLabelRotation(-90);
+		barChart.getXAxis().setTickLength(1);
+		barChart.getXAxis().setTickLabelsVisible(true);
+		barChart.getXAxis().setTickLabelGap(2);
+		barChart.getXAxis().setAnimated(false);
 	}
 
 	private void setYAxisLabel(){
-		barChart.getYAxis().setTickLabelRotation(-90);
 		barChart.getYAxis().setLabel("Amplituda [%]");
 		barChart.getYAxis()
 				.lookup(".axis-label")
-				.setStyle("-fx-label-padding: -10 0 0 0;");
+				.setStyle("-fx-label-padding: -15 0 0 0;");
+//		barChart.getYAxis().setTickLabelRotation(-90);
 	}
 
 	private ObservableList<XYChart.Data<String, Number>> setSeriesData(List<Double> harmoList) {

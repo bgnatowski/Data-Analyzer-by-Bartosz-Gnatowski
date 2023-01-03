@@ -1,7 +1,9 @@
 package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
-import agh.inzapp.inzynierka.models.fxmodels.*;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
+import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
 import agh.inzapp.inzynierka.services.UserChartService;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
@@ -18,14 +20,13 @@ import javafx.scene.paint.Color;
 import org.springframework.stereotype.Controller;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
-import static agh.inzapp.inzynierka.utils.CommonUtils.*;
+import static agh.inzapp.inzynierka.utils.CommonUtils.convertToWebString;
+import static agh.inzapp.inzynierka.utils.CommonUtils.getDoubleTextFormatter;
 import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller
@@ -55,14 +56,14 @@ public class ChartViewController {
 	private List<ComboBox<UniNames>> yValuesList;
 	private List<ColorPicker> yColorPickerList;
 	/////////////////////////////////////
-	private List<? extends CommonModelFx> modelsList;
+	private ListCommonModelFx modelsList;
 	private UserChartService chartService;
 	private int howManyYDData;
 
 	@FXML
 	public void initialize() {
 		try {
-			modelsList = mergeFxModelLists();
+			modelsList = ListCommonModelFx.getInstance();
 			chartService = new UserChartService();
 			howManyYDData = 0;
 			addTimeSpinnersToGrid();
@@ -74,15 +75,17 @@ public class ChartViewController {
 	}
 
 	private void addTimeSpinnersToGrid() {
-		xTimeFrom = new TimeSpinner(LocalTime.now());
+		xTimeFrom = new TimeSpinner();
 		xTimeFrom.setId("timeSpinnerFrom");
 		xTimeFrom.maxWidth(Double.MAX_VALUE);
-		xGrid.add(xTimeFrom, 0, 2);
-		xTimeTo = new TimeSpinner(LocalTime.now());
+		xTimeTo = new TimeSpinner();
 		xTimeTo.setId("timeSpinnerTo");
 		xTimeTo.maxWidth(Double.MAX_VALUE);
+
+		xGrid.add(xTimeFrom, 0, 2);
 		xGrid.add(xTimeTo, 1, 2);
 	}
+
 	private void initLists() {
 		yValuesList = new ArrayList<>();
 		yValuesList.add(yValue0);
@@ -111,15 +114,15 @@ public class ChartViewController {
 
 	}
 	private void bindDatePickers() {
-		LocalDateTime startDate = modelsList.get(0).getDate();
-		LocalDateTime endDate = modelsList.get(modelsList.size() - 1).getDate();
+		LocalDateTime startDate = modelsList.getStartDate();
+		LocalDateTime endDate = modelsList.getEndDate();
 		restrictDatePicker(xDateFrom, startDate.toLocalDate(), endDate.toLocalDate());
 		restrictDatePicker(xDateTo, startDate.toLocalDate(), endDate.toLocalDate());
 		xDateFrom.setValue(startDate.toLocalDate());
 		xDateTo.setValue(endDate.toLocalDate());
 	}
 	private void bindValueComboBoxes() {
-		List<UniNames> uniNamesList = modelsList.get(0).getColumnNames();
+		List<UniNames> uniNamesList = modelsList.getColumnNames();
 		List<UniNames> finalUniNamesList = CommonUtils.deleteNonRecordsFromUniNamesList(uniNamesList);
 		if (!finalUniNamesList.isEmpty()) {
 			yValuesList.forEach(uniNamesComboBox -> uniNamesComboBox.setItems(FXCollections.observableArrayList(finalUniNamesList)));
@@ -140,6 +143,7 @@ public class ChartViewController {
 			chartService.clearSeriesBeforeCreatingNewOne();
 			List<CommonModelFx> modelsBetweenSelectedTime = getRecordsBetweenSelectedTime();
 			if(isTheSameDay()) chartService.setXDateTickToOnlyTime();
+			else chartService.setXDateTickToDays();
 
 			for (int i = 0; i <= howManyYDData; i++) {
 				if (!isSelectedValue(i)) break;
@@ -263,12 +267,7 @@ public class ChartViewController {
 	private List<CommonModelFx> getRecordsBetweenSelectedTime() throws ApplicationException {
 		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
 		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
-		if (from.isBefore(to)){
-			return modelsList.stream()
-					.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
-					.collect(Collectors.toList());
-		}
-		throw new ApplicationException("error.date.out.of.range");
+		return modelsList.getRecordsBetween(from, to);
 	}
 
 	private void repaintChart() {

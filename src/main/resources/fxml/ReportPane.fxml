@@ -46,23 +46,31 @@
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                           </columnConstraints>
                           <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.electric.switchboard" />
-                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.measurement.point" GridPane.rowIndex="1" />
-                              <TextField fx:id="switchboard" GridPane.columnIndex="1" />
-                              <TextField fx:id="measurementPoint" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.analyzer" GridPane.rowIndex="2" />
-                              <ComboBox fx:id="modelComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.analyzer.series" GridPane.rowIndex="3" />
-                              <TextField fx:id="serialNumber" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.electric.switchboard" GridPane.rowIndex="1" />
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.measurement.point" GridPane.rowIndex="2" />
+                              <TextField fx:id="switchboard" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField fx:id="measurementPoint" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.analyzer" GridPane.rowIndex="3" />
+                              <ComboBox fx:id="analyzersModelsComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.analyzer.series" GridPane.rowIndex="4" />
+                              <TextField fx:id="serialNumber" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.author" />
+                              <TextField fx:id="author" GridPane.columnIndex="1" />
                            </children>
                         </GridPane>
-                        <Button fx:id="generateButton" mnemonicParsing="false" onAction="#generateOnAction" text="%report.generate" />
+                        <HBox spacing="10.0">
+                           <children>
+                              <Button fx:id="generateButton" mnemonicParsing="false" onAction="#generateOnAction" text="%report.generate" />
+                              <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveAs" text="%chart.pane.save" />
+                           </children>
+                        </HBox>
                      </children>
                   </VBox>
                </children>

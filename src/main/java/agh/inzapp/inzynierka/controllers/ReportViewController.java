@@ -2,16 +2,19 @@ package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.models.enums.AnalyzersModels;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
 import agh.inzapp.inzynierka.services.ReportBarChartService;
 import agh.inzapp.inzynierka.services.ReportLineChartService;
 import agh.inzapp.inzynierka.services.ReportService;
-import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.FxmlUtils;
+import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -20,47 +23,48 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller
 public class ReportViewController {
-	private static final BooleanProperty toggleProperty = new SimpleBooleanProperty(false);
+	private BooleanProperty toggleProperty = new SimpleBooleanProperty(false);
 	@FXML
 	private GridPane timeGrid;
 	@FXML
 	private DatePicker dateFrom, dateTo;
+	private TimeSpinner timeFrom, timeTo;
 	@FXML
-	private ComboBox<AnalyzersModels> modelComboBox;
+	private ComboBox<AnalyzersModels> analyzersModelsComboBox;
 	@FXML
-	private Button generateButton;
+	private Button saveButton;
 	@FXML
-	private TextField switchboard, measurementPoint, serialNumber;
+	private TextField switchboard, measurementPoint, serialNumber, author;
 	@FXML
 	private AnchorPane apForPDFView, apMain;
-	@FXML
-	private StackPane pane;
-	private TimeSpinner timeFrom, timeTo;
-	private List<? extends CommonModelFx> modelsList;
+	private ListCommonModelFx modelsList;
 	private ReportBarChartService barChartService;
 	private ReportService reportService;
 	private ReportLineChartService reportChartService;
+	private String tmpReportPath;
 
 	@FXML
 	public void initialize() {
 		apMain.disableProperty().bind(toggleProperty);
 		try {
-			modelsList = CommonUtils.mergeFxModelLists();
+			modelsList = ListCommonModelFx.getInstance();
 
 			reportChartService = new ReportLineChartService();
 			barChartService = new ReportBarChartService();
 			reportService = new ReportService();
+			saveButton.disableProperty().bind(reportService.toggleButtonPropertyProperty());
 
 			addTimeSpinnersToGrid();
 			bindDatePickers();
@@ -70,9 +74,6 @@ public class ReportViewController {
 			toggleProperty.set(true);
 			DialogUtils.errorDialog(e.getMessage());
 		}
-	}
-	private void bindings() {
-		modelComboBox.getItems().setAll(FXCollections.observableArrayList(AnalyzersModels.values()));
 	}
 
 	private void addTimeSpinnersToGrid() {
@@ -87,9 +88,13 @@ public class ReportViewController {
 		timeGrid.add(timeTo, 1, 2);
 	}
 
+	private void bindings() {
+		analyzersModelsComboBox.getItems().setAll(FXCollections.observableArrayList(AnalyzersModels.values()));
+	}
+
 	private void bindDatePickers() {
-		LocalDateTime startDate = modelsList.get(0).getDate();
-		LocalDateTime endDate = modelsList.get(modelsList.size() - 1).getDate();
+		LocalDateTime startDate = modelsList.getStartDate();
+		LocalDateTime endDate = modelsList.getEndDate();
 
 		restrictDatePicker(dateFrom, startDate.toLocalDate(), endDate.toLocalDate());
 		restrictDatePicker(dateTo, startDate.toLocalDate(), endDate.toLocalDate());
@@ -101,25 +106,46 @@ public class ReportViewController {
 	@FXML
 	private void generateOnAction() {
 		try {
-			generateCharts();
+			LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
+			LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
+			final List<CommonModelFx> recordsBetween = modelsList.getRecordsBetween(from, to);
+
+			barChartService.createHarmonicsBarCharts(recordsBetween);
+			reportChartService.createLineCharts(recordsBetween);
+			List<String> userAdditionalData = getUserEnteredData();
+			tmpReportPath = reportService.generateReport(recordsBetween, userAdditionalData);
 		} catch (ApplicationException | IOException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
 	}
 
-	private void generateCharts() throws ApplicationException, IOException {
-		LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
-		LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
-		if (from.isBefore(to)) {
-			final List<CommonModelFx> recordsBetweenDate = modelsList.stream()
-					.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
-					.collect(Collectors.toList());
-			barChartService.createHarmonicsBarCharts(recordsBetweenDate);
-			reportChartService.createLineCharts(recordsBetweenDate);
-		} else {
-			throw new ApplicationException("error.bar.chart.generate");
-		}
+	private List<String> getUserEnteredData() {
+		List<String> userAdditionalData = new ArrayList<>();
+		if (!switchboard.getText().isEmpty()) userAdditionalData.add(switchboard.getText());
+		else userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.electric.switchboard"));
+
+		if (!measurementPoint.getText().isEmpty()) userAdditionalData.add(measurementPoint.getText());
+		else userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.measurement.point"));
+
+		if (analyzersModelsComboBox.getSelectionModel().isEmpty()) userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.analyzer"));
+		else userAdditionalData.add(analyzersModelsComboBox.getSelectionModel().getSelectedItem().toString());
+
+		if (!serialNumber.getText().isEmpty()) userAdditionalData.add(serialNumber.getText());
+		else userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.analyzer.series"));
+
+		if (!author.getText().isEmpty()) userAdditionalData.add(author.getText());
+		else userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.author"));
+
+		return userAdditionalData;
 	}
 
 
+	@FXML
+	private void saveAs() {
+		try {
+			SavingUtils.saveReport(tmpReportPath);
+		} catch (Docx4JException | IOException e) {
+			DialogUtils.errorDialog(e.getMessage());
+		}
+	}
 }

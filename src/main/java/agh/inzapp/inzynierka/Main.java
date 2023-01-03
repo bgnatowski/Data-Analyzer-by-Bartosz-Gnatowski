@@ -30,7 +30,7 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		Application.launch(args);
 
-		File templateFile = new File("src/main/resources/data/template.docx");
+//		File templateFile = new File("src/main/resources/data/template.docx");
 //		XWPFTemplate template = XWPFTemplate.compile(templateFile.getAbsolutePath()).render(
 //				new HashMap<String, Object>(){{
 //					put("title", "Hi, poi-tl");

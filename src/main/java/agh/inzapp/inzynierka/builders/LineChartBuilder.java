@@ -67,10 +67,18 @@ public class LineChartBuilder {
 	}
 
 	public void setYAxisLabel(String label){
+		chart.getYAxis().setTickLabelRotation(-90);
 		chart.getYAxis().setLabel(label);
 		chart.getYAxis()
 				.lookup(".axis-label")
-				.setStyle("-fx-label-padding: -10 0 0 0;");
+				.setStyle("-fx-label-padding: -15 0 0 0;");
+	}
+	//TODO rotacja - jesli sie miesci/niemiesci -dodac mozliwosc w userowej templatce
+	//TODO barcharty - gap pomiedzy lub rotacja
+	public void setYLabelsRotate90(){
+		chart.getYAxis().setTickLabelRotation(-90);
+	}
+	public void setXLabelsRotate90(){
 		chart.getYAxis().setTickLabelRotation(-90);
 	}
 
@@ -120,6 +128,15 @@ public class LineChartBuilder {
 
 	public void setSeriesName(UniNames name) {
 		String seriesName = name.toString()+ name.getUnit();
+		if(seriesName.contains(" śr.")){
+			seriesName = seriesName.replaceAll(" śr.", "");
+		}
+		if(seriesName.contains(" avg.")){
+			seriesName = seriesName.replaceAll(" avg.", "");
+		}
+		if(seriesName.contains(" Σ")){
+			seriesName = seriesName.replaceAll(" Σ", "");
+		}
 		series.setName(seriesName);
 	}
 
@@ -164,10 +181,6 @@ public class LineChartBuilder {
 
 	public LineChart<Number, Number> getResult() {
 		return chart;
-	}
-
-	public void setTimeTick() {
-		setXDateTickToOnlyTime();
 	}
 
 	public void setCss(String styleCss) {
