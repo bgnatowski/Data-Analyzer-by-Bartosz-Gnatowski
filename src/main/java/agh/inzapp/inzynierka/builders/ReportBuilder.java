@@ -1,9 +1,12 @@
 package agh.inzapp.inzynierka.builders;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Map;
 
+@Component
 public class ReportBuilder {
-	private Map<String, Object> reportData;
+	private final Map<String, Object> reportData;
 	public ReportBuilder(Map<String, Object> reportData) {
 		this.reportData = reportData;
 	}

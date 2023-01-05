@@ -12,6 +12,7 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
+import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -21,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class LineChartBuilder {
 	private LineChart<Number, Number> chart;
 	private XYChart.Series<Number, Number> series;
@@ -73,15 +75,6 @@ public class LineChartBuilder {
 				.lookup(".axis-label")
 				.setStyle("-fx-label-padding: -15 0 0 0;");
 	}
-	//TODO rotacja - jesli sie miesci/niemiesci -dodac mozliwosc w userowej templatce
-	//TODO barcharty - gap pomiedzy lub rotacja
-	public void setYLabelsRotate90(){
-		chart.getYAxis().setTickLabelRotation(-90);
-	}
-	public void setXLabelsRotate90(){
-		chart.getYAxis().setTickLabelRotation(-90);
-	}
-
 	public void setXAxisLabel(String label){
 		chart.getXAxis().setLabel(label);
 		chart.getXAxis()

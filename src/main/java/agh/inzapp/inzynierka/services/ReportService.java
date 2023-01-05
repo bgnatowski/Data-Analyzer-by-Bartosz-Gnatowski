@@ -4,12 +4,12 @@ import agh.inzapp.inzynierka.builders.ReportBuilder;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.utils.CommonUtils;
-import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import com.deepoove.poi.data.Pictures;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +21,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 
+@Component
 public class ReportService {
-	private BooleanProperty toggleButtonProperty = new SimpleBooleanProperty(false);
+	private final BooleanProperty toggleButtonProperty = new SimpleBooleanProperty(false);
 	private static final int IMAGES = 10;
 	private static final int USER_DATA = 5;
 	private static final int POWER_LINES = 3;
@@ -33,10 +34,10 @@ public class ReportService {
 	private static final int ALLOWABLE_PLT = 1;
 	private static final int ALLOWABLE_THD = 3;
 	private static final List<Double> ALLOWABLE_TOLERANCE_HARMONIC = List.of(8d, 2d, 5d, 1d, 6d, 0.5d, 5d, 0.5d, 1.5d, 0.5d, 3.5d, 0.5d, 3d, 0.5d, 0.5d, 0.5d, 2d, 0.5d, 1.5d, 0.5d, 0.5d, 0.5d, 1.5d, 0.5d, 1.5d);
-	private ReportBuilder reportBuilder;
+	private final ReportBuilder reportBuilder;
 	private List<String> userData;
 	private List<CommonModelFx> models;
-	private Map<UniNames, Boolean> conditionsMap = new HashMap<>();
+	private final Map<UniNames, Boolean> conditionsMap = new HashMap<>();
 
 	public ReportService() {
 		toggleButtonProperty.setValue(true);

@@ -8,7 +8,6 @@ import java.util.LinkedHashMap;
 
 @Getter
 @Setter
-
 public class DataFx extends CommonModelFx {
 
 	public DataFx() {

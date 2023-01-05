@@ -14,9 +14,9 @@ import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static agh.inzapp.inzynierka.models.enums.FXMLNames.STANDALONE_CHART_PANE;
 import static agh.inzapp.inzynierka.models.enums.UniNames.getPowerLineHarmonicNames;
 @Component
-
 public class ReportBarChartService {
 	private static final int HOW_MANY_POWERLINES = 3;
 	private final BarChartBuilder builder;
@@ -27,7 +27,7 @@ public class ReportBarChartService {
 
 	public void createHarmonicsBarCharts(List<CommonModelFx> collect) throws IOException {
 		for (int powerline = 1; powerline <= HOW_MANY_POWERLINES; powerline++) {
-			AnchorPane barGraphPane = (AnchorPane) FxmlUtils.fxmlLoad("/fxml/ChartAnchorPane.fxml");
+			AnchorPane barGraphPane = (AnchorPane) FxmlUtils.fxmlLoad(STANDALONE_CHART_PANE);
 			final List<UniNames> powerLineHarmonicNames = getPowerLineHarmonicNames(powerline);
 			builder.createNew();
 			builder.setTitle("Widmo napięcia fazy L"+powerline);

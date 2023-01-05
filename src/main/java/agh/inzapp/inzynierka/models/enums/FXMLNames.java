@@ -1,26 +1,30 @@
 package agh.inzapp.inzynierka.models.enums;
 
-public enum FXMLNames {
-	HOME("/fxml/HomePane.fxml"),
-	IMPORT_MENU("/fxml/ImportMenuPane.fxml"),
-	INFORMATION("/fxml/InformationPane.fxml"),
-	MAIN("/fxml/MainAppPane.fxml"),
-	MENU("/fxml/MenuButtons.fxml"),
-	TABLE_VIEW("/fxml/TableViewPane.fxml"),
-	CHART_VIEW("/fxml/ChartPane.fxml"),
-	REPORT_VIEW("/fxml/ReportPane.fxml");
+import java.io.File;
+import java.net.URL;
+import java.util.Objects;
 
-	private final String path;
-	FXMLNames(String s) {
-		path = s;
+public enum FXMLNames {
+	HOME(Objects.requireNonNull(FXMLNames.class.getResource("/fxml/HomePane.fxml"))),
+	IMPORT_MENU(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/ImportMenuPane.fxml")))),
+	MAIN(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/MainAppPane.fxml")))),
+	MENU(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/MenuButtons.fxml")))),
+	TABLE_VIEW(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/TableViewPane.fxml")))),
+	CHART_VIEW(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/ChartPane.fxml")))),
+	REPORT_VIEW(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/ReportPane.fxml")))),
+	STANDALONE_CHART_PANE(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/ChartAnchorPane.fxml"))));
+
+	private final URL url;
+	FXMLNames(URL s) {
+		url = s;
 	}
 
-	public String getPath() {
-		return path;
+	public URL getUrl() {
+		return url;
 	}
 
 	@Override
 	public String toString() {
-		return path;
+		return url.getPath();
 	}
 }

@@ -191,7 +191,7 @@ public class TableViewController {
 					if(item == null || empty){
 						setText(null);
 					}else if(item instanceof Double){
-						setText(String.format("%."+ finalPrecision +format, ((Double) item).doubleValue()));
+						setText(String.format("%."+ finalPrecision +format, (Double) item));
 					} else {
 						setText(item.toString());
 					}

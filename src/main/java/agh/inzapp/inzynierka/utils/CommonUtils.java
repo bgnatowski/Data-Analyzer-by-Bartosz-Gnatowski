@@ -7,7 +7,6 @@ import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -17,7 +16,7 @@ import java.util.stream.Collectors;
 public class CommonUtils {
 	public static boolean isSameDay(LocalDateTime date1, LocalDateTime date2) {
 		final Duration duration = Duration.between(date1, date2);
-		return duration.toMinutes() < 1560 ? true : false;
+		return duration.toMinutes() < 1560;
 	}
 
 	public static <K, V> Map<K, V> zipToMap(List<K> keys, List<V> values){
@@ -88,15 +87,13 @@ public class CommonUtils {
 	public static Double get95Percentile(List<CommonModelFx> recordsBetween, UniNames name) {
 		List<Double> allRecords = recordsBetween.stream().map(record -> record.getRecords().get(name))
 					.filter(Objects::nonNull).sorted().collect(Collectors.toList());
-		final Double percentile = percentile(allRecords, 95);
-		return percentile;
+		return percentile(allRecords, 95);
 	}
 
 	public static Double get5Percentile(List<CommonModelFx> recordsBetween, UniNames name) {
 		List<Double> allRecords = recordsBetween.stream().map(record -> record.getRecords().get(name))
 				.filter(Objects::nonNull).sorted().collect(Collectors.toList());
-		final Double percentile = percentile(allRecords, 5);
-		return percentile;
+		return percentile(allRecords, 5);
 	}
 
 	public static Double getAvg(List<CommonModelFx> recordsBetween, UniNames name) {
@@ -143,7 +140,6 @@ public class CommonUtils {
 				.filter(Objects::nonNull)
 				.toList();
 		final long amountInTolerance = column.stream().filter(result -> result <= tolerance).count();
-		final double percentage = ((double) amountInTolerance/column.size()) * 100d;
-		return percentage;
+		return ((double) amountInTolerance/column.size()) * 100d;
 	}
 }

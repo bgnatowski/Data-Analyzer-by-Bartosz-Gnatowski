@@ -7,16 +7,17 @@ import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.scene.layout.AnchorPane;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import static agh.inzapp.inzynierka.models.enums.UniNames.*;
-
+@Component
 public class ReportLineChartService {
 	private List<CommonModelFx> models;
-	private LineChartBuilder lineChartBuilder;
+	private final LineChartBuilder lineChartBuilder;
 
 	public ReportLineChartService() {
 		this.lineChartBuilder = new LineChartBuilder();
@@ -26,7 +27,7 @@ public class ReportLineChartService {
 		if(isTheSameDay()) lineChartBuilder.setXDateTickToOnlyTime();
 		else lineChartBuilder.setXDateTickToDays();
 
-		List<LocalDateTime> xData = models.stream().map(model -> model.getDate()).toList();
+		List<LocalDateTime> xData = models.stream().map(CommonModelFx::getDate).toList();
 		Map<LocalDateTime, Double> xyDataMap;
 		for (int i = 0; i < 6; i++) { // 6 wykresów
 			lineChartBuilder.createNew();
@@ -82,60 +83,39 @@ public class ReportLineChartService {
 	}
 
 	private String getAxisYLabel(int i) {
-		switch (i) {
-			case 0:
-				return "Napięcie [V]";
-			case 1:
-				return "Współczynnik THD [%]";
-			case 2:
-				return "Harmoniczna 3 [%]";
-			case 3:
-				return "Harmoniczna 5 [%]";
-			case 4:
-				return "Harmoniczna 7 [%]";
-			case 5:
-				return "Harmoniczna 9 [%]";
-			default:
-				throw new IllegalStateException("Unexpected value: " + i);
-		}
+		return switch (i) {
+			case 0 -> "Napięcie [V]";
+			case 1 -> "Współczynnik THD [%]";
+			case 2 -> "Harmoniczna 3 [%]";
+			case 3 -> "Harmoniczna 5 [%]";
+			case 4 -> "Harmoniczna 7 [%]";
+			case 5 -> "Harmoniczna 9 [%]";
+			default -> throw new IllegalStateException("Unexpected value: " + i);
+		};
 	}
 
 	private String getTitle(int i) {
-		switch (i) {
-			case 0:
-				return "Wartości skuteczne napięć fazowych";
-			case 1:
-				return "Współczynnik odkształcenia napięcia THD";
-			case 2:
-				return "Harmoniczna 3";
-			case 3:
-				return "Harmoniczna 5";
-			case 4:
-				return "Harmoniczna 7";
-			case 5:
-				return "Harmoniczna 9";
-			default:
-				throw new IllegalStateException("Unexpected value: " + i);
-		}
+		return switch (i) {
+			case 0 -> "Wartości skuteczne napięć fazowych";
+			case 1 -> "Współczynnik odkształcenia napięcia THD";
+			case 2 -> "Harmoniczna 3";
+			case 3 -> "Harmoniczna 5";
+			case 4 -> "Harmoniczna 7";
+			case 5 -> "Harmoniczna 9";
+			default -> throw new IllegalStateException("Unexpected value: " + i);
+		};
 	}
 
 	private String getFileNameTitle(int i){
-		switch (i) {
-			case 0:
-				return "wykres_rms";
-			case 1:
-				return "wykres_thd";
-			case 2:
-				return "wykres_harmo3";
-			case 3:
-				return "wykres_harmo5";
-			case 4:
-				return "wykres_harmo7";
-			case 5:
-				return "wykres_harmo9";
-			default:
-				throw new IllegalStateException("Unexpected value: " + i);
-		}
+		return switch (i) {
+			case 0 -> "wykres_rms";
+			case 1 -> "wykres_thd";
+			case 2 -> "wykres_harmo3";
+			case 3 -> "wykres_harmo5";
+			case 4 -> "wykres_harmo7";
+			case 5 -> "wykres_harmo9";
+			default -> throw new IllegalStateException("Unexpected value: " + i);
+		};
 	}
 
 	private UniNames getSeriesName(int i, int j) {

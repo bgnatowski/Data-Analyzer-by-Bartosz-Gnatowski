@@ -9,12 +9,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
 import javafx.scene.paint.Color;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class UserChartService {
 	private final ListProperty<LineChart<Number, Number>> lineChartObservableList = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private final List<LineChartBuilder> buildersList;

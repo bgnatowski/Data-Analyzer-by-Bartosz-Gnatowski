@@ -12,7 +12,7 @@ public class DAApplication extends Application {
 
 	@Override
 	public void init(){
-		applicationContext = new SpringApplicationBuilder(Main2.class).run();
+		applicationContext = new SpringApplicationBuilder(Main.class).run();
 	}
 
 	@Override

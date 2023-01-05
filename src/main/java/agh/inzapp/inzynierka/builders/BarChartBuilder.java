@@ -2,7 +2,10 @@ package agh.inzapp.inzynierka.builders;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.chart.*;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.stereotype.Component;
@@ -69,7 +72,8 @@ public class BarChartBuilder {
 	}
 
 	public BarChart<String, Number> getResult() {
-		barChart.getStylesheets().add("style/default_chart.css");
+//		barChart.getStylesheets().add("style/default_chart.css");
+		barChart.getStylesheets().add(getClass().getResource(("/style/default_chart.css")).getPath());
 		barChart.applyCss();
 
 		return barChart;

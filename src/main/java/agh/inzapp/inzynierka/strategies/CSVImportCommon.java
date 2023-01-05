@@ -9,6 +9,7 @@ import agh.inzapp.inzynierka.utils.parsers.SonelParser;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import javafx.collections.FXCollections;
+import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+@Component
 public abstract class CSVImportCommon {
 	private static final int BLANK_COLUMNS_SONEL = 2;
 	protected CSVParser parser = new CSVParserBuilder().withSeparator(';').withQuoteChar('\'').withIgnoreQuotations(false).build();

@@ -12,14 +12,16 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class CsvFilesList {
-	private ListProperty<File> listNormal = new SimpleListProperty<>(FXCollections.observableArrayList());
-	private ListProperty<File> listHarmonics = new SimpleListProperty<>(FXCollections.observableArrayList());
+	private final ListProperty<File> listNormal = new SimpleListProperty<>(FXCollections.observableArrayList());
+	private final ListProperty<File> listHarmonics = new SimpleListProperty<>(FXCollections.observableArrayList());
 	public void getFiles(DataType dataType) {
 		List<File> files = FileChooserRemember.showOpenMultipleDialog();
 		if (files != null) {

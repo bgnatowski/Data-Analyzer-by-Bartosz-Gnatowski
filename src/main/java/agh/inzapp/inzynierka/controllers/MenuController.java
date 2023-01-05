@@ -20,27 +20,27 @@ public class MenuController {
 	private Button tableViewButton, chartViewButton, reportButton;
 	@FXML
 	private void goHomeOnAction() {
-		mainAppPaneController.setCenter(HOME.getPath());
+		mainAppPaneController.setCenter(HOME);
 	}
 	@FXML
 	private void importCSVMenu() {
-		mainAppPaneController.setCenter(IMPORT_MENU.getPath());
-	}
-	@FXML
-	private void informationOnAction() {
-		mainAppPaneController.setCenter(INFORMATION.getPath());
+		mainAppPaneController.setCenter(IMPORT_MENU);
 	}
 	@FXML
 	private void tableViewOnAction() {
-		mainAppPaneController.setCenter(TABLE_VIEW.getPath());
+		mainAppPaneController.setCenter(TABLE_VIEW);
 	}
 	@FXML
 	private void figuresOnAction() {
-		mainAppPaneController.setCenter(CHART_VIEW.getPath());
+		mainAppPaneController.setCenter(CHART_VIEW);
 	}
 	@FXML
 	private void reportOnAction()  {
-		mainAppPaneController.setCenter(REPORT_VIEW.getPath());
+		try {
+			FxmlUtils.openNewSceneFromLoader(REPORT_VIEW, "report.view");
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	@FXML
 	private void exitAppOnAction() {
@@ -51,7 +51,7 @@ public class MenuController {
 	@FXML
 	private void openInNewWindow() {
 		try {
-			FxmlUtils.openNewSceneFromLoader(TABLE_VIEW.getPath(), "button.tableview", 450, 450);
+			FxmlUtils.openNewSceneFromLoader(TABLE_VIEW, "button.tableview", 450, 450);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

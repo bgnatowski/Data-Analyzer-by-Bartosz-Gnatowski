@@ -7,6 +7,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @NoArgsConstructor
+@Component
 public class CommonModelFx implements Cloneable{
 	protected LongProperty id = new SimpleLongProperty();
 	protected ObjectProperty<LocalDateTime> date = new SimpleObjectProperty<>();

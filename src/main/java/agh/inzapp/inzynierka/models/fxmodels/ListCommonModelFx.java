@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
 @Component
 public class ListCommonModelFx {
 	private final ObservableList<CommonModelFx> modelsFxObservableList = FXCollections.observableArrayList();

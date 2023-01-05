@@ -1,5 +1,6 @@
 package agh.inzapp.inzynierka.controllers;
 
+import agh.inzapp.inzynierka.models.enums.FXMLNames;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.fxml.FXML;
@@ -16,24 +17,23 @@ public class MainViewController {
 	@FXML
 	private BorderPane borderPane;
 
-	@FXML
 	public void initialize(){
 		menuButtonsController.setMainController(this);
-		setCenter(HOME.getPath());
-		setLeft(MENU.getPath());
+		setCenter(HOME);
+		setLeft(MENU);
 	}
 
-	private void setLeft(String fxmlPath) {
+	private void setLeft(FXMLNames fxml) {
 		try {
-			borderPane.setLeft(FxmlUtils.fxmlLoad(fxmlPath));
+			borderPane.setLeft(FxmlUtils.fxmlLoad(fxml));
 		} catch (IOException e) {
 			DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.fxmlLoad");
 		}
 	}
 
-	public void setCenter(String fxmlPath){
+	public void setCenter(FXMLNames fxml){
 		try {
-			borderPane.setCenter(FxmlUtils.fxmlLoad(fxmlPath));
+			borderPane.setCenter(FxmlUtils.fxmlLoad(fxml));
 		} catch (IOException e) {
 			DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.fxmlLoad");
 		}

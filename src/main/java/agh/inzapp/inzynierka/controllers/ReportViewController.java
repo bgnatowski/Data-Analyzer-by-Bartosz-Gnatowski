@@ -14,15 +14,10 @@ import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.springframework.stereotype.Controller;
 
@@ -35,7 +30,7 @@ import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller
 public class ReportViewController {
-	private BooleanProperty toggleProperty = new SimpleBooleanProperty(false);
+	private final BooleanProperty toggleProperty = new SimpleBooleanProperty(false);
 	@FXML
 	private GridPane timeGrid;
 	@FXML
@@ -48,7 +43,9 @@ public class ReportViewController {
 	@FXML
 	private TextField switchboard, measurementPoint, serialNumber, author;
 	@FXML
-	private AnchorPane apForPDFView, apMain;
+	private AnchorPane apMain;
+	@FXML
+	private Label info;
 	private ListCommonModelFx modelsList;
 	private ReportBarChartService barChartService;
 	private ReportService reportService;
@@ -65,7 +62,6 @@ public class ReportViewController {
 			barChartService = new ReportBarChartService();
 			reportService = new ReportService();
 			saveButton.disableProperty().bind(reportService.toggleButtonPropertyProperty());
-
 			addTimeSpinnersToGrid();
 			bindDatePickers();
 			bindings();
@@ -114,8 +110,9 @@ public class ReportViewController {
 			reportChartService.createLineCharts(recordsBetween);
 			List<String> userAdditionalData = getUserEnteredData();
 			tmpReportPath = reportService.generateReport(recordsBetween, userAdditionalData);
+			info.setText(FxmlUtils.getInternalizedPropertyByKey("report.info.succes"));
 		} catch (ApplicationException | IOException e) {
-			DialogUtils.errorDialog(e.getMessage());
+			info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));
 		}
 	}
 
@@ -144,8 +141,9 @@ public class ReportViewController {
 	private void saveAs() {
 		try {
 			SavingUtils.saveReport(tmpReportPath);
+			info.setText(FxmlUtils.getInternalizedPropertyByKey("report.info.saved"));
 		} catch (Docx4JException | IOException e) {
-			DialogUtils.errorDialog(e.getMessage());
+			info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));
 		}
 	}
 }

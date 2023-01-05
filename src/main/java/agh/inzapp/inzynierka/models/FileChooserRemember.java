@@ -10,9 +10,9 @@ import java.util.List;
 
 public class FileChooserRemember {
 	private static FileChooser instance;
-	private static SimpleObjectProperty<File> lastKnownDirectoryProperty = new SimpleObjectProperty<>();
+	private static final SimpleObjectProperty<File> lastKnownDirectoryProperty = new SimpleObjectProperty<>();
 
-	private FileChooserRemember(){};
+	private FileChooserRemember(){}
 
 	private static FileChooser getInstance(){
 		if(instance == null) {
