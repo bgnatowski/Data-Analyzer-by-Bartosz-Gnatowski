@@ -1,5 +1,6 @@
 package agh.inzapp.inzynierka.utils;
 
+import agh.inzapp.inzynierka.models.enums.FXMLNames;
 import com.deepoove.poi.XWPFTemplate;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
@@ -19,10 +20,11 @@ import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Objects;
 
 public class SavingUtils {
 	public static void saveLineChart(LineChart<Number, Number> lineChart) throws IOException {
-		Scene scene = new Scene(FxmlUtils.fxmlLoad("/fxml/ChartAnchorPane.fxml"), 1200, 800);
+		Scene scene = new Scene(FxmlUtils.fxmlLoad(FXMLNames.STANDALONE_CHART_PANE), 1200, 800);
 		((AnchorPane) scene.getRoot()).getChildren().add(lineChart);
 		scene.setFill(Color.WHITE);
 		WritableImage image = new WritableImage(1200, 800);
@@ -68,7 +70,6 @@ public class SavingUtils {
 		WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(templateInputStream);
 		MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 
-		System.out.println(outputFile.getAbsolutePath());
 		FileOutputStream os = new FileOutputStream(outputFile.getAbsolutePath());
 		Docx4J.toPDF(wordMLPackage,os);
 		os.flush();
@@ -95,9 +96,14 @@ public class SavingUtils {
 
 	public static String saveTemporaryReport(Map<String, Object> reportResult) throws IOException{
 		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
-		final String number = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdHHmm"));
-		File tempReport = new File(tempDirectory.getAbsolutePath() + File.separator + "temp_report_" + number + ".docx");
-		XWPFTemplate compile = XWPFTemplate.compile("src/main/resources/data/szablon.docx");
+
+		final String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdHHmm"));
+		File tempReport = new File(tempDirectory.getAbsolutePath() + File.separator + "temp_report_" + date + ".docx");
+
+		final String fileNameTemplate = Objects.requireNonNull(SavingUtils.class.getResource(("/data/szablon.docx"))).getFile();
+		File template = new File(fileNameTemplate);
+
+		XWPFTemplate compile = XWPFTemplate.compile(template.getAbsolutePath());
 		compile.render(reportResult);
 		compile.writeToFile(tempReport.getAbsolutePath());
 		compile.close();
