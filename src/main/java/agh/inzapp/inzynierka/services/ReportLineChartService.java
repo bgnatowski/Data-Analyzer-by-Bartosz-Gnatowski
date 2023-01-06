@@ -54,8 +54,21 @@ public class ReportLineChartService {
 
 		lineChartBuilder.createNew();
 		AnchorPane ap = new AnchorPane();
-		for(int i = 0; i<2; i++){
-			UniNames seriesName = getSeriesName(i);
+		if(models.get(0).getColumnNames().contains(U2_U1_avg)){
+			for(int i = 0; i<2; i++){
+				UniNames seriesName = getSeriesName(i);
+				List<Double> yData = getYData(seriesName);
+
+				final Double min = Collections.min(yData);
+				final Double max = Collections.max(yData);
+				final Double off = max-min;
+
+				xyDataMap = CommonUtils.zipToMap(xData, yData);
+				lineChartBuilder.createSeries(xyDataMap, seriesName);
+				lineChartBuilder.setYAxisBounds(min-off, max+off, (max-min)/2);
+			}
+		}else{
+			UniNames seriesName = Unbalanced_Voltage;
 			List<Double> yData = getYData(seriesName);
 
 			final Double min = Collections.min(yData);

@@ -142,4 +142,13 @@ public class CommonUtils {
 		final long amountInTolerance = column.stream().filter(result -> result <= tolerance).count();
 		return ((double) amountInTolerance/column.size()) * 100d;
 	}
+
+	public static double calculatePlt(List<Double> pst1) {
+		double sum = pst1
+				.stream()
+				.mapToDouble(pst -> (Math.pow(pst, 3)))
+				.sum();
+		sum = (1.0/12.0)*sum;
+		return Math.pow(sum, 1.0/3.0);
+	}
 }

@@ -26,6 +26,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static agh.inzapp.inzynierka.utils.FxmlUtils.getInternalizedPropertyByKey;
 import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller
@@ -105,7 +106,6 @@ public class ReportViewController {
 			LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
 			LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
 			final List<CommonModelFx> recordsBetween = modelsList.getRecordsBetween(from, to);
-
 			barChartService.createHarmonicsBarCharts(recordsBetween);
 			reportChartService.createLineCharts(recordsBetween);
 			List<String> userAdditionalData = getUserEnteredData();
@@ -113,6 +113,7 @@ public class ReportViewController {
 			info.setText(FxmlUtils.getInternalizedPropertyByKey("report.info.succes"));
 		} catch (ApplicationException | IOException e) {
 			info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));
+			DialogUtils.errorDialog(getInternalizedPropertyByKey(e.getMessage()));
 		}
 	}
 

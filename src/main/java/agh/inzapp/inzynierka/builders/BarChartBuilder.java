@@ -10,6 +10,7 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -72,8 +73,8 @@ public class BarChartBuilder {
 	}
 
 	public BarChart<String, Number> getResult() {
-//		barChart.getStylesheets().add("style/default_chart.css");
-		barChart.getStylesheets().add(getClass().getResource(("/style/default_chart.css")).getPath());
+		final URL resource = getClass().getResource(("/style/default_chart.css"));
+		barChart.getStylesheets().add(resource.toExternalForm());
 		barChart.applyCss();
 
 		return barChart;

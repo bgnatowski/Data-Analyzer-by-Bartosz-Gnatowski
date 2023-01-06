@@ -40,6 +40,15 @@ public class PQParser {
 		mapDataNames.put("U12_min_[V]", U12_min);
 		mapDataNames.put("U23_min_[V]", U23_min);
 		mapDataNames.put("U31_min_[V]", U31_min);
+		mapDataNames.put("UL1_[V]", UL1_avg);
+		mapDataNames.put("UL2_[V]", UL2_avg);
+		mapDataNames.put("UL3_[V]", UL3_avg);
+		mapDataNames.put("UL1_max_[V]", UL1_max);
+		mapDataNames.put("UL2_max_[V]", UL2_max);
+		mapDataNames.put("UL3_max_[V]", UL3_max);
+		mapDataNames.put("UL1_min_[V]", UL1_min);
+		mapDataNames.put("UL2_min_[V]", UL2_min);
+		mapDataNames.put("UL3_min_[V]", UL3_min);
 		mapDataNames.put("IL1_[A]", IL1_avg);
 		mapDataNames.put("IL2_[A]", IL2_avg);
 		mapDataNames.put("IL3_[A]", IL3_avg);
@@ -73,15 +82,6 @@ public class PQParser {
 		mapDataNames.put("cos(phi)", cos_phi);
 		mapDataNames.put("tan(phi)", tan_phi);
 		mapDataNames.put("QV_total_[Var]", Q_total);
-		mapDataNames.put("UL1_[V]", UL1_avg);
-		mapDataNames.put("UL2_[V]", UL2_avg);
-		mapDataNames.put("UL3_[V]", UL3_avg);
-		mapDataNames.put("UL1_max_[V]", UL1_max);
-		mapDataNames.put("UL2_max_[V]", UL2_max);
-		mapDataNames.put("UL3_max_[V]", UL3_max);
-		mapDataNames.put("UL1_min_[V]", UL1_min);
-		mapDataNames.put("UL2_min_[V]", UL2_min);
-		mapDataNames.put("UL3_min_[V]", UL3_min);
 		mapDataNames.put("Pst_UL1", Pst_UL1);
 		mapDataNames.put("Pst_UL2", Pst_UL2);
 		mapDataNames.put("Pst_UL3", Pst_UL3);
@@ -256,6 +256,9 @@ public class PQParser {
 				uniNamesList.add(mapDataNames.get(name));
 			}
 		});
+		uniNamesList.add(Plt_L1);
+		uniNamesList.add(Plt_L2);
+		uniNamesList.add(Plt_L3);
 		return uniNamesList;
 	}
 

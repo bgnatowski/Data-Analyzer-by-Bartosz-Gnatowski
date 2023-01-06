@@ -7,12 +7,10 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.input.InputEvent;
 import javafx.util.StringConverter;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
-@Component
 public class TimeSpinner extends Spinner<LocalTime>{
 	// Property containing the current editing mode:
 	private final ObjectProperty<Mode> mode = new SimpleObjectProperty<>(Mode.HOURS);

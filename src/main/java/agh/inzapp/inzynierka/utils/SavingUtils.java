@@ -41,27 +41,28 @@ public class SavingUtils {
 			ImageIO.write(SwingFXUtils.fromFXImage(image, null), extension, file);
 		}
 	}
-	public static void fastSaveChart(AnchorPane chart, String name) throws IOException{
-		Scene scene = new Scene(chart, 823,336);
+
+	public static void fastSaveChart(AnchorPane chart, String name) throws IOException {
+		Scene scene = new Scene(chart, 823, 336);
 		scene.setFill(Color.WHITE);
 
-		WritableImage image = new WritableImage(823,336);
+		WritableImage image = new WritableImage(823, 336);
 		scene.snapshot(image);
 
 		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
-		File newBarChartFile = new File(tempDirectory.getAbsolutePath() + File.separator + name +".png");
+		File newBarChartFile = new File(tempDirectory.getAbsolutePath() + File.separator + name + ".png");
 		ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
 	}
 
-	public static void fastSaveChart(AnchorPane chart, String name, int h, int w) throws IOException{
-		Scene scene = new Scene(chart, h,w);
+	public static void fastSaveChart(AnchorPane chart, String name, int h, int w) throws IOException {
+		Scene scene = new Scene(chart, h, w);
 		scene.setFill(Color.WHITE);
 
-		WritableImage image = new WritableImage(h,w);
+		WritableImage image = new WritableImage(h, w);
 		scene.snapshot(image);
 
 		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
-		File newBarChartFile = new File(tempDirectory.getAbsolutePath() + File.separator + name +".png");
+		File newBarChartFile = new File(tempDirectory.getAbsolutePath() + File.separator + name + ".png");
 		ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
 	}
 
@@ -71,7 +72,7 @@ public class SavingUtils {
 		MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
 
 		FileOutputStream os = new FileOutputStream(outputFile.getAbsolutePath());
-		Docx4J.toPDF(wordMLPackage,os);
+		Docx4J.toPDF(wordMLPackage, os);
 		os.flush();
 		os.close();
 	}
@@ -86,27 +87,28 @@ public class SavingUtils {
 		File sourceReport = new File(tmpReportPath);
 		if (outputFile != null) {
 			final String extension = fileChooser.getSelectedExtensionFilter().getDescription();
-			if(extension.equals("MS Office Documents")){
+			if (extension.equals("MS Office Documents")) {
 				FileUtils.copyFile(sourceReport, outputFile);
-			}else {
+			} else {
 				saveReportToPDF(tmpReportPath, outputFile);
 			}
 		}
 	}
 
-	public static String saveTemporaryReport(Map<String, Object> reportResult) throws IOException{
+	public static String saveTemporaryReport(Map<String, Object> reportResult) throws IOException {
 		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
 
 		final String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdHHmm"));
 		File tempReport = new File(tempDirectory.getAbsolutePath() + File.separator + "temp_report_" + date + ".docx");
 
-		final String fileNameTemplate = Objects.requireNonNull(SavingUtils.class.getResource(("/data/szablon.docx"))).getFile();
-		File template = new File(fileNameTemplate);
+		try (InputStream in = SavingUtils.class.getResourceAsStream("/data/szablon.docx");
+			 BufferedReader reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(in)))) {
+			// Use resource
+			XWPFTemplate compile = XWPFTemplate.compile(in);
+			compile.render(reportResult);
+			compile.writeToFile(tempReport.getAbsolutePath());
+		}
 
-		XWPFTemplate compile = XWPFTemplate.compile(template.getAbsolutePath());
-		compile.render(reportResult);
-		compile.writeToFile(tempReport.getAbsolutePath());
-		compile.close();
 		return tempReport.getAbsolutePath();
 	}
 }

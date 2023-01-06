@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import org.springframework.stereotype.Component;
 
+import java.net.URL;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,7 +44,7 @@ public class LineChartBuilder {
 		yMinTick = 0;
 		yMaxTick = 110;
 		yTick = 5;
-		setCss("style/default_chart.css");
+		setCss();
 		setCreateSymbols(false);
 
 		chart.setAnimated(false);
@@ -120,16 +121,22 @@ public class LineChartBuilder {
 	}
 
 	public void setSeriesName(UniNames name) {
-		String seriesName = name.toString()+ name.getUnit();
-		if(seriesName.contains(" śr.")){
-			seriesName = seriesName.replaceAll(" śr.", "");
+		String seriesName;
+		if(!name.equals(UniNames.Unbalanced_Voltage)){
+			seriesName = name.toString()+ name.getUnit();
+			if(seriesName.contains(" śr.")){
+				seriesName = seriesName.replaceAll(" śr.", "");
+			}
+			if(seriesName.contains(" avg.")){
+				seriesName = seriesName.replaceAll(" avg.", "");
+			}
+			if(seriesName.contains(" Σ")){
+				seriesName = seriesName.replaceAll(" Σ", "");
+			}
+		}else{
+			seriesName = "ku2" + name.getUnit();
 		}
-		if(seriesName.contains(" avg.")){
-			seriesName = seriesName.replaceAll(" avg.", "");
-		}
-		if(seriesName.contains(" Σ")){
-			seriesName = seriesName.replaceAll(" Σ", "");
-		}
+
 		series.setName(seriesName);
 	}
 
@@ -176,8 +183,9 @@ public class LineChartBuilder {
 		return chart;
 	}
 
-	public void setCss(String styleCss) {
-		chart.getStylesheets().add(styleCss);
+	public void setCss() {
+		final URL resource = getClass().getResource(("/style/default_chart.css"));
+		chart.getStylesheets().add(resource.toExternalForm());
 		chart.applyCss();
 	}
 

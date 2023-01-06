@@ -45,7 +45,6 @@ public class ReportService {
 	}
 
 	public String generateReport(List<CommonModelFx> recordsBetween, List<String> userAdditionalData) throws ApplicationException {
-//		reportBuilder.getReportResult().forEach((s, o) -> System.out.println("{{"+s+"}}" + " " + o.toString()));
 		try {
 			models = recordsBetween;
 			userData = userAdditionalData;
@@ -118,7 +117,7 @@ public class ReportService {
 	}
 
 	private boolean isAsymConditionFulfilled() {
-		return conditionsMap.get(U2_U1_avg);
+		return conditionsMap.containsKey(U2_U1_avg) ? conditionsMap.get(U2_U1_avg) : conditionsMap.get(Unbalanced_Voltage);
 	}
 
 	private boolean isVoltageConditionFulfilled() {
@@ -127,7 +126,10 @@ public class ReportService {
 
 	private boolean isQRegistered() {
 		AtomicBoolean anyQ = new AtomicBoolean(false);
-		UniNames.getQ().forEach(q -> anyQ.set(models.stream().allMatch(model -> model.getRecords().containsKey(q))));
+		for (UniNames q : getQ()) {
+			anyQ.set(models.stream().anyMatch(model -> model.getRecords().containsKey(q)));
+			if (anyQ.get()) break;
+		}
 		return anyQ.get();
 	}
 
@@ -194,7 +196,12 @@ public class ReportService {
 		String uL1 = conditionsMap.get(UL1_avg) ? "TAK" : "NIE";
 		String uL2 = conditionsMap.get(UL2_avg) ? "TAK" : "NIE";
 		String uL3 = conditionsMap.get(UL3_avg) ? "TAK" : "NIE";
-		String u2u1 = conditionsMap.get(U2_U1_avg) ? "TAK" : "NIE";
+		String u2u1;
+		if(conditionsMap.containsKey(U2_U1_avg)) {
+			u2u1 = conditionsMap.get(U2_U1_avg) ? "TAK" : "NIE";
+		}else{
+			u2u1 = conditionsMap.get(Unbalanced_Voltage) ? "TAK" : "NIE";
+		}
 		String plt1 = conditionsMap.get(Plt_L1) ? "TAK" : "NIE";
 		String plt2 = conditionsMap.get(Plt_L2) ? "TAK" : "NIE";
 		String plt3 = conditionsMap.get(Plt_L3) ? "TAK" : "NIE";
@@ -209,7 +216,12 @@ public class ReportService {
 	}
 
 	private void calculateTableOne() {
-		List<UniNames> tableOneNames = List.of(UL1_avg, UL2_avg, UL3_avg, U2_U1_avg, Plt_L1, Plt_L2, Plt_L3);
+		List<UniNames> tableOneNames = new ArrayList<>(Arrays.asList(UL1_avg, UL2_avg, UL3_avg, Plt_L1, Plt_L2, Plt_L3));
+		if(models.get(0).getColumnNames().contains(U2_U1_avg)){
+			tableOneNames.add(U2_U1_avg);
+		}else{
+			tableOneNames.add(Unbalanced_Voltage);
+		}
 
 		tableOneNames.forEach(name -> {
 			final Double min = CommonUtils.getMin(models, name);
@@ -244,7 +256,7 @@ public class ReportService {
 					reportBuilder.put("ul3p95", String.format("%.2f", percentile95));
 					reportBuilder.put("ul3max", String.format("%.2f", max));
 				}
-				case U2_U1_avg -> {
+				case U2_U1_avg, Unbalanced_Voltage -> {
 					condition = percentile95 < ALLOWABLE_ASYM;
 					reportBuilder.put("asymin", String.format("%.2f", min));
 					reportBuilder.put("asyp5", String.format("%.2f", percentile5));
@@ -298,12 +310,18 @@ public class ReportService {
 		else
 			formatBuilder.append("%2d dni, ");
 
-		if ((HH == 0 && MM == 30) || (HH != 0 && MM == 0)) {
-			formatBuilder.append("%2d minut");
+		if (HH == 0 && MM == 30) {
+			formatBuilder.append("%2d min.");
+			String pattern = formatBuilder.toString();
+			measurementTime = String.format(pattern, DD, MM);
+		}
+		else if(HH != 0 && MM == 0) {
+			formatBuilder.append("%2d godz.");
 			String pattern = formatBuilder.toString();
 			measurementTime = String.format(pattern, DD, HH);
-		} else {
-			formatBuilder.append("%2d godzin, %2d minut");
+		}
+		else {
+			formatBuilder.append("%2d godz., %2d min.");
 			String pattern = formatBuilder.toString();
 			measurementTime = String.format(pattern, DD, HH, MM);
 		}
