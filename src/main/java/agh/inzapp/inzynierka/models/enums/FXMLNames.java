@@ -12,6 +12,7 @@ public enum FXMLNames {
 	TABLE_VIEW(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/TableViewPane.fxml")))),
 	CHART_VIEW(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/ChartPane.fxml")))),
 	REPORT_VIEW(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/ReportPane.fxml")))),
+	INFO_VIEW(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/InfoPane.fxml")))),
 	STANDALONE_CHART_PANE(Objects.requireNonNull(FXMLNames.class.getResource(("/fxml/ChartAnchorPane.fxml"))));
 
 	private final URL url;

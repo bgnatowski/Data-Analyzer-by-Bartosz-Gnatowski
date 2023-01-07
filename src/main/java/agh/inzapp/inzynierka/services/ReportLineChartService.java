@@ -55,7 +55,8 @@ public class ReportLineChartService {
 		lineChartBuilder.createNew();
 		AnchorPane ap = new AnchorPane();
 		if(models.get(0).getColumnNames().contains(U2_U1_avg)){
-			for(int i = 0; i<2; i++){
+			int howMany = models.get(0).getColumnNames().contains(U0_U1_avg) ? 2 : 1;
+			for(int i = 0; i<howMany; i++){
 				UniNames seriesName = getSeriesName(i);
 				List<Double> yData = getYData(seriesName);
 

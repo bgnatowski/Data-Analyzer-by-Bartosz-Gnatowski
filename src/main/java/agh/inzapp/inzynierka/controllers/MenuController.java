@@ -35,6 +35,10 @@ public class MenuController {
 		mainAppPaneController.setCenter(CHART_VIEW);
 	}
 	@FXML
+	private void infoOnAction(){
+		mainAppPaneController.setCenter(INFO_VIEW);
+	}
+	@FXML
 	private void reportOnAction()  {
 		try {
 			FxmlUtils.openNewSceneFromLoader(REPORT_VIEW, "report.view");

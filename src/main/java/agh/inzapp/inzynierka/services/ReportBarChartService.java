@@ -29,7 +29,8 @@ public class ReportBarChartService {
 		for (int powerline = 1; powerline <= HOW_MANY_POWERLINES; powerline++) {
 			AnchorPane barGraphPane = (AnchorPane) FxmlUtils.fxmlLoad(STANDALONE_CHART_PANE);
 			final List<UniNames> powerLineHarmonicNames = getPowerLineHarmonicNames(powerline);
-			builder.createNew();
+			int howMany = getHowManyHarmonicAreInModels(powerLineHarmonicNames, collect.get(0));
+			builder.createNew(howMany);
 			builder.setTitle("Widmo napięcia fazy L"+powerline);
 			builder.setYData(getMaxOf50HarmonicOfLane(powerLineHarmonicNames, collect), "max");
 			builder.setYData(get95PercentileOfLane(powerLineHarmonicNames, collect), "95%");
@@ -38,6 +39,11 @@ public class ReportBarChartService {
 			barGraphPane.getChildren().add(builder.getResult());
 			SavingUtils.fastSaveChart(barGraphPane, "wykres_widmo_l" + powerline);
 		}
+	}
+
+	private int getHowManyHarmonicAreInModels(List<UniNames> L, CommonModelFx model) {
+		int count = (int) L.stream().filter(Hn -> model.getRecords().containsKey(Hn)).count() + 1;
+		return count;
 	}
 
 	private List<Double> get95PercentileOfLane(List<UniNames> L, List<CommonModelFx> allByIdBetween) {

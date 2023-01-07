@@ -39,6 +39,7 @@
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
+                  <Button fx:id="infoButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#infoOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.info" />
                   <Button fx:id="exitButton" alignment="CENTER" contentDisplay="CENTER" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#exitAppOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.exit" />
                </children>
             </VBox>

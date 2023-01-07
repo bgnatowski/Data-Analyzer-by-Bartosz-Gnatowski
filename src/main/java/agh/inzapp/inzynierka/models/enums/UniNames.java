@@ -392,6 +392,13 @@ public enum UniNames{
 			Q_L1_avg, Q_L2_avg, Q_L3_avg, Q_L1_max, Q_L2_max, Q_L3_max, Q_L1_min, Q_L2_min, Q_L3_min, Q_total, Q_total_avg, Q_total_min, Q_total_max
 	));
 
+	private static final List<UniNames> S = new ArrayList<>(Arrays.asList(
+			S_total, Sn_total, S_L1_avg, S_L2_avg, S_L3_avg, Sn_L3_avg, Sn_L2_avg, Sn_L2_avg, S_L1_min, S_L1_max, S_L2_min, S_L2_max, S_L3_min, S_L3_max
+	));
+
+	private static final List<UniNames> P = new ArrayList<>(Arrays.asList(
+			P_total, P_total_avg, P_total_max, P_total_min, P_L1_avg, P_L2_avg, P_L3_avg, P_L1_min, P_L2_min, P_L3_min, P_L1_max, P_L2_max, P_L3_max
+	));
 	UniNames(String uniName, String unit) {
 		this.uniName = uniName;
 		this.unit = unit;
@@ -431,4 +438,6 @@ public enum UniNames{
 	}
 
 	public static List<UniNames> getQ(){return Q;}
+	public static List<UniNames> getS(){return S;}
+	public static List<UniNames> getP(){return P;}
 }

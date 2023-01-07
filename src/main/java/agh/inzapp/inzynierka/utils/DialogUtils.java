@@ -21,8 +21,6 @@ public class DialogUtils {
 		StringBuilder sb = new StringBuilder();
 		final String internalizedPropertyByKey = FxmlUtils.getInternalizedPropertyByKey(bundleResourceKey);
 		sb.append(errorMessage)
-				.append(". \nCaused in class: ")
-				.append(aClass.getSimpleName())
 				.append(". \n")
 				.append(internalizedPropertyByKey);
 		DialogUtils.errorDialog(sb.toString());

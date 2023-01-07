@@ -28,11 +28,11 @@ public class ReportService {
 	private static final int USER_DATA = 5;
 	private static final int POWER_LINES = 3;
 	private static final int TABLE_3_ROWS = 25;
-	private static final int CONDITIONS = 6;
+	private static final int CONDITIONS = 8;
 	private static final int U_N = 230;
 	private static final int ALLOWABLE_ASYM = 2;
 	private static final int ALLOWABLE_PLT = 1;
-	private static final int ALLOWABLE_THD = 3;
+	private static final int ALLOWABLE_THD = 8;
 	private static final List<Double> ALLOWABLE_TOLERANCE_HARMONIC = List.of(8d, 2d, 5d, 1d, 6d, 0.5d, 5d, 0.5d, 1.5d, 0.5d, 3.5d, 0.5d, 3d, 0.5d, 0.5d, 0.5d, 2d, 0.5d, 1.5d, 0.5d, 0.5d, 0.5d, 1.5d, 0.5d, 1.5d);
 	private final ReportBuilder reportBuilder;
 	private List<String> userData;
@@ -95,9 +95,17 @@ public class ReportService {
 						builder.append("nie ");
 					builder.append("zawierają");
 				}
-				default -> {
+				case 6 -> {
 					if (isQRegistered()) builder.append("rejestrowano pojemnościową moc bierną.");
 					else builder.append("moc bierna nie była rejestrowana.");
+				}
+				case 7 -> {
+					if (isSRegistered()) builder.append("rejestrowano moc pozorną.");
+					else builder.append("moc pozorna nie była rejestrowana.");
+				}
+				case 8 -> {
+					if (isPRegistered()) builder.append("rejestrowano moc czynną.");
+					else builder.append("moc czynna nie była rejestrowana.");
 				}
 			}
 			reportBuilder.put("warunek" + i, builder.toString());
@@ -131,6 +139,24 @@ public class ReportService {
 			if (anyQ.get()) break;
 		}
 		return anyQ.get();
+	}
+
+	private boolean isSRegistered() {
+		AtomicBoolean anyS = new AtomicBoolean(false);
+		for (UniNames s : getS()) {
+			anyS.set(models.stream().anyMatch(model -> model.getRecords().containsKey(s)));
+			if (anyS.get()) break;
+		}
+		return anyS.get();
+	}
+
+	private boolean isPRegistered() {
+		AtomicBoolean anyP = new AtomicBoolean(false);
+		for (UniNames p : getP()) {
+			anyP.set(models.stream().anyMatch(model -> model.getRecords().containsKey(p)));
+			if (anyP.get()) break;
+		}
+		return anyP.get();
 	}
 
 	private void calculateTableFour() {
@@ -175,6 +201,7 @@ public class ReportService {
 				boolean conditionHarmo = percentile95 <= allowableTolerance;
 				if (!conditionHarmo) conditionsMap.put(harmonicFirst.get(i - 1), false);
 
+				//todo max lub percentyl95 do ustalenia
 				boolean conditionThd = max <= ALLOWABLE_THD;
 				if (!conditionThd) conditionsMap.put(thd.get(i - 1), false);
 

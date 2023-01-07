@@ -22,12 +22,12 @@ public class BarChartBuilder {
 	private XYChart.Series<String , Number> series2;
 	private XYChart.Series<String , Number> series3;
 
-	public void createNew(){
+	public void createNew(int howMany){
 		series1 = new XYChart.Series<>();
 		series2 = new XYChart.Series<>();
 		series3 = new XYChart.Series<>();
 
-		final List<Integer> from2to50 = IntStream.rangeClosed(2, 50).boxed().toList();
+		final List<Integer> from2to50 = IntStream.rangeClosed(2, howMany).boxed().toList();
 		final List<String> x = from2to50.stream().map(String::valueOf).collect(Collectors.toList());
 
 		CategoryAxis xAxis = new CategoryAxis(FXCollections.observableArrayList(x));
