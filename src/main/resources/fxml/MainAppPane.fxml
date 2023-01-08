@@ -12,7 +12,7 @@
          <bottom>
             <HBox BorderPane.alignment="CENTER">
                <children>
-                  <Label text="AGH Kraków 2022">
+                  <Label text="AGH Kraków 2022/23">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
