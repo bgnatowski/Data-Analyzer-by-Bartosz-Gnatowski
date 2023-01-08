@@ -31,7 +31,7 @@ import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller
 public class ReportViewController {
-	private final BooleanProperty toggleProperty = new SimpleBooleanProperty(false);
+	private final BooleanProperty toggleProperty = new SimpleBooleanProperty(true);
 	@FXML
 	private GridPane timeGrid;
 	@FXML
@@ -55,15 +55,15 @@ public class ReportViewController {
 
 	@FXML
 	public void initialize() {
-		apMain.disableProperty().bind(toggleProperty);
-		if(ListCommonModelFx.hasBoth()){
-			DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.merge.list"));
-			toggleProperty.set(false);
-		}
-		else toggleProperty.set(true);
-
 		try {
+			apMain.disableProperty().bind(toggleProperty);
+
 			modelsList = ListCommonModelFx.getInstance();
+			if(!ListCommonModelFx.hasBoth()){
+				DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.merge.list"));
+				toggleProperty.set(true);
+			}
+			else toggleProperty.set(false);
 
 			reportChartService = new ReportLineChartService();
 			barChartService = new ReportBarChartService();
