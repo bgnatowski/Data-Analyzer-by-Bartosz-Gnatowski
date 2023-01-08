@@ -13,6 +13,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import org.springframework.stereotype.Controller;
@@ -157,6 +159,38 @@ public class ImportViewController {
 			MenuController.setToggleButtonProperty(false);
 		} catch (IOException e) {
 			throw new ApplicationException("error.switchTableView");
+		}
+	}
+
+	@FXML
+	private void onDragDroppedNormal(DragEvent event) {
+		final File file = event.getDragboard().getFiles().get(0);
+		if(file.getName().endsWith(".csv")){
+			filesList.addNormal(file);
+			listViewNormal.setItems(filesList.getListNormal());
+		}
+	}
+
+	@FXML
+	private void onDragOverNormal(DragEvent event) {
+		if(event.getDragboard().hasFiles()){
+			event.acceptTransferModes(TransferMode.LINK);
+		}
+	}
+
+	@FXML
+	private void onDragDroppedHarmo(DragEvent event) {
+		final File file = event.getDragboard().getFiles().get(0);
+		if(file.getName().endsWith(".csv")){
+			filesList.addHarmo(file);
+			listViewHarmonics.setItems(filesList.getListHarmonics());
+		}
+	}
+
+	@FXML
+	private void onDragOverHarmo(DragEvent event) {
+		if(event.getDragboard().hasFiles()){
+			event.acceptTransferModes(TransferMode.LINK);
 		}
 	}
 }

@@ -47,6 +47,14 @@ public class CsvFilesList {
 		listHarmonics.add(harmo);
 	}
 
+	public void addNormal(File file){
+		listNormal.add(file);
+	}
+
+	public void addHarmo(File file){
+		listHarmonics.add(file);
+	}
+
 	public void saveNormal(Analysers analyser) {
 		List<CommonModelFx> normalFxes = List.of();
 		switch (analyser){
