@@ -1,6 +1,7 @@
 package agh.inzapp.inzynierka.strategies;
 
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
+import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.utils.parsers.SonelParser;
 import com.opencsv.CSVReader;
@@ -32,7 +33,12 @@ public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {
 			DataFx model = new DataFx();
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
-			setDataInSonelModel(records, model);
+			try {
+				setDataInSonelModel(records, model);
+			} catch (ApplicationException e) {
+				DialogUtils.errorDialog(e.getMessage());
+				throw new RuntimeException(e);
+			}
 			dataModels.add(model);
 		});
 	}

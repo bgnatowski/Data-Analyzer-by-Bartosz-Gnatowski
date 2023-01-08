@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -74,7 +75,7 @@ public class BarChartBuilder {
 
 	public BarChart<String, Number> getResult() {
 		final URL resource = getClass().getResource(("/style/default_chart.css"));
-		barChart.getStylesheets().add(resource.toExternalForm());
+		barChart.getStylesheets().add(Objects.requireNonNull(resource).toExternalForm());
 		barChart.applyCss();
 
 		return barChart;

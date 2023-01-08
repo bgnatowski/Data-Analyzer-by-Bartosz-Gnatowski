@@ -1,6 +1,8 @@
 package agh.inzapp.inzynierka.strategies;
 
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
+import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.utils.parsers.PQParser;
 import com.opencsv.CSVReader;
@@ -34,7 +36,12 @@ public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 			DataFx model = new DataFx();
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
-			setDataInPQModel(records, model);
+			try {
+				setDataInPQModel(records, model);
+			} catch (ApplicationException e) {
+				DialogUtils.errorDialog(e.getMessage());
+				throw new RuntimeException(e);
+			}
 			dataModels.add(model);
 		});
 	}
@@ -59,7 +66,7 @@ public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 
 			}
 		} catch (IOException | CsvValidationException e) {
-			throw new ApplicationException(e.getMessage());
+			throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.cannot.read.csv"));
 		}
 	}
 }

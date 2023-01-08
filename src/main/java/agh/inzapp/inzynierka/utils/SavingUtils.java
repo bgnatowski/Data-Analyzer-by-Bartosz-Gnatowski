@@ -2,6 +2,7 @@ package agh.inzapp.inzynierka.utils;
 
 import agh.inzapp.inzynierka.models.enums.FXMLNames;
 import com.deepoove.poi.XWPFTemplate;
+import com.opencsv.CSVWriter;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -19,6 +20,7 @@ import javax.imageio.ImageIO;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -110,5 +112,19 @@ public class SavingUtils {
 		}
 
 		return tempReport.getAbsolutePath();
+	}
+
+	public static void saveCSV(List<String[]> stringArray) throws IOException {
+
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(
+				new FileChooser.ExtensionFilter(
+						FxmlUtils.getResourceBundle().getString("fileChooser.extension"), "*.csv"));
+		File outputFile = fileChooser.showSaveDialog(null);
+
+		try (CSVWriter writer = new CSVWriter(new FileWriter(outputFile), ';', '"', '"', "\n")) {
+			writer.writeAll(stringArray);
+		}
+
 	}
 }

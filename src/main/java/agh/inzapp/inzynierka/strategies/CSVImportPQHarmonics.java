@@ -1,6 +1,7 @@
 package agh.inzapp.inzynierka.strategies;
 
 import agh.inzapp.inzynierka.models.fxmodels.HarmoFx;
+import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.utils.parsers.PQParser;
 import com.opencsv.CSVReader;
@@ -34,7 +35,12 @@ public class CSVImportPQHarmonics extends CSVImportCommon implements CSVStrategy
 			HarmoFx model = new HarmoFx();
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
-			setDataInPQModel(records, model);
+			try {
+				setDataInPQModel(records, model);
+			} catch (ApplicationException e) {
+				DialogUtils.errorDialog(e.getMessage());
+				throw new RuntimeException(e);
+			}
 			dataModels.add(model);
 		});
 	}

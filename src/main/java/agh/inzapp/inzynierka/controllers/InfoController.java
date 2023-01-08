@@ -7,19 +7,20 @@ import javafx.scene.web.WebView;
 
 import java.net.URL;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class InfoController implements Initializable {
 	@FXML
 	private AnchorPane ap;
-	private String infoResource;
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
 		final Locale aDefault = Locale.getDefault();
+		String infoResource;
 		if(aDefault.getCountry().equals("PL")) infoResource = "/data/infoPl.html";
 		else infoResource = "/data/infoEn.html";
-		String info = this.getClass().getResource(infoResource).toExternalForm();
+		String info = Objects.requireNonNull(this.getClass().getResource(infoResource)).toExternalForm();
 		ap.getChildren().add(buildWebView(info));
 	}
 

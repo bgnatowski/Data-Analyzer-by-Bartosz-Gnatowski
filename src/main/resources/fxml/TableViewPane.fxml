@@ -10,7 +10,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.TableViewController">
    <children>
       <TabPane tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -26,6 +25,7 @@
                                     <ComboBox fx:id="displayTypeNorm" minWidth="150.0" onAction="#changeDisplayTypeNorm" prefWidth="150.0" />
                                     <Button fx:id="leftShiftPrecisionButtonNorm" minWidth="30.0" mnemonicParsing="false" onAction="#leftShiftPrecisionNorm" text="&lt;&lt;" />
                                     <Button fx:id="rightShiftPrecisionButtonNorm" minWidth="30.0" mnemonicParsing="false" onAction="#rightShiftPrecisionNorm" text="&gt;&gt;" />
+                                    <Button fx:id="saveNormal" mnemonicParsing="false" onAction="#saveNormalOnAction" text="%chart.pane.save" />
                                  </children>
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -49,6 +49,7 @@
                                     <ComboBox fx:id="displayTypeHarmo" minWidth="150.0" onAction="#changeDisplayTypeHarmo" prefWidth="150.0" />
                                     <Button fx:id="leftShiftPrecisionButtonHarmo" minWidth="30.0" mnemonicParsing="false" onAction="#leftShiftPrecisionHarmo" text="&lt;&lt;" />
                                     <Button fx:id="rightShiftPrecisionButtonHarmo" minWidth="30.0" mnemonicParsing="false" onAction="#rightShiftPrecisionHarmo" text="&gt;&gt;" />
+                                    <Button fx:id="saveHarmo" mnemonicParsing="false" onAction="#saveHarmoOnAction" text="%chart.pane.save" />
                                  </children>
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

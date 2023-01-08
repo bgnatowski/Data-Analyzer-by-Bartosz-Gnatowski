@@ -2,6 +2,7 @@ package agh.inzapp.inzynierka.controllers;
 
 import agh.inzapp.inzynierka.models.CsvFilesList;
 import agh.inzapp.inzynierka.models.enums.Analysers;
+import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
 import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
@@ -60,7 +61,6 @@ public class ImportViewController {
 
 	private void bindings() {
 		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
-//		comboBoxAnalyzer.getSelectionModel().select(Analysers.PQbox);
 		titledPaneNormal.setExpanded(true);
 		titledPaneHarmonics.setExpanded(true);
 		//list bindings
@@ -110,6 +110,7 @@ public class ImportViewController {
 	@FXML
 	private void importData() {
 		try {
+			ListCommonModelFx.reset();
 			clearUploaded();
 			importDataFromAnalyser();
 			switchToTableViewAferImport();

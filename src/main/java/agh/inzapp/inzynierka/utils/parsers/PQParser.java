@@ -1,6 +1,7 @@
 package agh.inzapp.inzynierka.utils.parsers;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 
 import java.text.NumberFormat;
@@ -285,7 +286,7 @@ public class PQParser {
 					}
 				});
 		if (isMatched) return parsedDate.get();
-		else throw new ApplicationException("error.parseDate");
+		else throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.parse.model"));
 	}
 	public static LocalTime parseTime(String time) {
 		return LocalTime.parse(time);

@@ -1,11 +1,11 @@
 package agh.inzapp.inzynierka.models.fxmodels;
 
+import agh.inzapp.inzynierka.models.enums.UniNames;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -58,5 +58,13 @@ public class ListHarmoFx {
 
 	public static void setInstance(ListHarmoFx instance) {
 		ListHarmoFx.instance = instance;
+	}
+
+	public String[] getColumNamesArray(){
+		final ObservableList<UniNames> columnNames = harmoFxList.get(0).getColumnNames();
+		List<String> strings = new ArrayList<>();
+		strings.add("id");
+		columnNames.forEach(uniNames -> strings.add(uniNames.toString()));
+		return strings.toArray(new String[0]);
 	}
 }

@@ -10,8 +10,10 @@ import javafx.scene.layout.AnchorPane;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 
 import static agh.inzapp.inzynierka.models.enums.FXMLNames.STANDALONE_CHART_PANE;
@@ -42,8 +44,7 @@ public class ReportBarChartService {
 	}
 
 	private int getHowManyHarmonicAreInModels(List<UniNames> L, CommonModelFx model) {
-		int count = (int) L.stream().filter(Hn -> model.getRecords().containsKey(Hn)).count() + 1;
-		return count;
+		return (int) L.stream().filter(Hn -> model.getRecords().containsKey(Hn)).count() + 1;
 	}
 
 	private List<Double> get95PercentileOfLane(List<UniNames> L, List<CommonModelFx> allByIdBetween) {

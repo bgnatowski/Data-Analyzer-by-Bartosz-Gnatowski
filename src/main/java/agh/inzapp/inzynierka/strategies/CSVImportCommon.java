@@ -4,6 +4,7 @@ import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.utils.parsers.PQParser;
 import agh.inzapp.inzynierka.utils.parsers.SonelParser;
@@ -40,7 +41,7 @@ public abstract class CSVImportCommon {
 
 	abstract protected void saveModels();
 
-	protected void setDataInPQModel(List<String> recordsList, CommonModelFx model) {
+	protected void setDataInPQModel(List<String> recordsList, CommonModelFx model) throws ApplicationException {
 		Map<UniNames, Double> modelRecords = new LinkedHashMap<>();
 		AtomicReference<LocalDate> localDate = new AtomicReference<>();
 		AtomicReference<LocalTime> localTime = new AtomicReference<>();
@@ -49,94 +50,97 @@ public abstract class CSVImportCommon {
 				.filter(uniNames -> !uniNames.equals(Plt_L2))
 				.filter(uniNames -> !uniNames.equals(Plt_L3))
 				.forEach(unitaryName -> {
-			if (model.getColumnNames().contains(unitaryName)) {
-				long columnID = model.getColumnNames().indexOf(unitaryName);
-				final String stringRecord = recordsList.get(Math.toIntExact(columnID)).trim();
-				switch (unitaryName) {
-					case Date -> {
-						try {
-							localDate.set(PQParser.parseDate(stringRecord));
-						} catch (ApplicationException e) {
-							DialogUtils.errorDialog(e.getMessage());
-						}
-					}
-					case Time -> localTime.set(PQParser.parseTime(stringRecord));
-					case Flag -> {
-						Map<UniNames, String> flags = model.getFlags();
-						flags.put(unitaryName, PQParser.parseFlag(stringRecord));
-						model.setFlags(FXCollections.observableMap(flags));
-					}
-					case Pst_UL1 -> {
-						Double aDouble;
-						try {
-							aDouble = PQParser.parseDouble(stringRecord, unitaryName);
-							modelRecords.put(unitaryName, aDouble);
-							pst1.add(aDouble);
-							if (pst1.size() == 12) {
-								double plt = CommonUtils.calculatePlt(pst1);
-								modelRecords.put(Plt_L1, plt);
-								pst1.clear();
-							} else {
-								modelRecords.put(Plt_L1, null);
+					if (model.getColumnNames().contains(unitaryName)) {
+						long columnID = model.getColumnNames().indexOf(unitaryName);
+						final String stringRecord = recordsList.get(Math.toIntExact(columnID)).trim();
+						switch (unitaryName) {
+							case Date -> {
+								try {
+									localDate.set(PQParser.parseDate(stringRecord));
+								} catch (ApplicationException e) {
+									DialogUtils.errorDialog(e.getMessage());
+								}
 							}
-						} catch (ParseException e) {
-							DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
-						}
-					}
-					case Pst_UL2 -> {
-						Double aDouble;
-						try {
-							aDouble = PQParser.parseDouble(stringRecord, unitaryName);
-							modelRecords.put(unitaryName, aDouble);
-							pst2.add(aDouble);
-							if (pst2.size() == 12) {
-								double plt = CommonUtils.calculatePlt(pst2);
-								modelRecords.put(Plt_L2, plt);
-								pst2.clear();
-							} else {
-								modelRecords.put(Plt_L2, null);
+							case Time -> localTime.set(PQParser.parseTime(stringRecord));
+							case Flag -> {
+								Map<UniNames, String> flags = model.getFlags();
+								flags.put(unitaryName, PQParser.parseFlag(stringRecord));
+								model.setFlags(FXCollections.observableMap(flags));
 							}
-						} catch (ParseException e) {
-							DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
-						}
-					}
-					case Pst_UL3 -> {
-						Double aDouble;
-						try {
-							aDouble = PQParser.parseDouble(stringRecord, unitaryName);
-							modelRecords.put(unitaryName, aDouble);
-							pst3.add(aDouble);
-							if (pst3.size() == 12) {
-								double plt = CommonUtils.calculatePlt(pst3);
-								modelRecords.put(Plt_L3, plt);
-								pst3.clear();
-							} else {
-								modelRecords.put(Plt_L3, null);
+							case Pst_UL1 -> {
+								Double aDouble;
+								try {
+									aDouble = PQParser.parseDouble(stringRecord, unitaryName);
+									modelRecords.put(unitaryName, aDouble);
+									pst1.add(aDouble);
+									if (pst1.size() == 12) {
+										double plt = CommonUtils.calculatePlt(pst1);
+										modelRecords.put(Plt_L1, plt);
+										pst1.clear();
+									} else {
+										modelRecords.put(Plt_L1, null);
+									}
+								} catch (ParseException e) {
+									DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+								}
 							}
-						} catch (ParseException e) {
-							DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
-						}
-					}
-					default -> {
-						if (stringRecord.isEmpty()) {
-							modelRecords.put(unitaryName, null);
-						} else {
-							try {
-								modelRecords.put(unitaryName, PQParser.parseDouble(stringRecord, unitaryName));
-							} catch (ParseException e) {
-								DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+							case Pst_UL2 -> {
+								Double aDouble;
+								try {
+									aDouble = PQParser.parseDouble(stringRecord, unitaryName);
+									modelRecords.put(unitaryName, aDouble);
+									pst2.add(aDouble);
+									if (pst2.size() == 12) {
+										double plt = CommonUtils.calculatePlt(pst2);
+										modelRecords.put(Plt_L2, plt);
+										pst2.clear();
+									} else {
+										modelRecords.put(Plt_L2, null);
+									}
+								} catch (ParseException e) {
+									DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+								}
+							}
+							case Pst_UL3 -> {
+								Double aDouble;
+								try {
+									aDouble = PQParser.parseDouble(stringRecord, unitaryName);
+									modelRecords.put(unitaryName, aDouble);
+									pst3.add(aDouble);
+									if (pst3.size() == 12) {
+										double plt = CommonUtils.calculatePlt(pst3);
+										modelRecords.put(Plt_L3, plt);
+										pst3.clear();
+									} else {
+										modelRecords.put(Plt_L3, null);
+									}
+								} catch (ParseException e) {
+									DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+								}
+							}
+							default -> {
+								if (stringRecord.isEmpty()) {
+									modelRecords.put(unitaryName, null);
+								} else {
+									try {
+										modelRecords.put(unitaryName, PQParser.parseDouble(stringRecord, unitaryName));
+									} catch (ParseException e) {
+										DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
+									}
+								}
 							}
 						}
 					}
-				}
-
-			}
-		});
+				});
+		if(localDate.get() == null || localTime.get() == null){
+			throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.parse.model"));
+		}
+		if(modelRecords.keySet().size() < 8) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.parse.model"));
 		model.setDate(LocalDateTime.of(localDate.get(), localTime.get()));
 		model.setRecords(FXCollections.observableMap(modelRecords));
 	}
 
-	protected void setDataInSonelModel(List<String> recordsList, CommonModelFx model) {
+	protected void setDataInSonelModel(List<String> recordsList, CommonModelFx model) throws ApplicationException {
 		Map<UniNames, Double> modelRecords = new LinkedHashMap<>();
 		AtomicReference<LocalDate> localDate = new AtomicReference<>();
 		AtomicReference<LocalTime> localTime = new AtomicReference<>();
@@ -213,6 +217,10 @@ public abstract class CSVImportCommon {
 				}
 			}
 		});
+		if(localDate.get() == null || localTime.get() == null){
+			throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.parse.model"));
+		}
+		if(modelRecords.keySet().size() < 8) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.parse.model"));
 		model.setDate(LocalDateTime.of(localDate.get(), localTime.get()));
 		model.setRecords(FXCollections.observableMap(modelRecords));
 	}

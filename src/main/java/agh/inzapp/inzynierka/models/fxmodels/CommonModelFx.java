@@ -45,6 +45,20 @@ public class CommonModelFx implements Cloneable{
 		setColumnNames(FXCollections.observableArrayList(columnNamesDistinct));
 	}
 
+	public CommonModelFx(CommonModelFx dfx) {
+		setId(dfx.getId());
+		setDate(dfx.getDate());
+		setFlags(dfx.getFlags());
+		final ObservableMap<UniNames, Double> recordsN = dfx.getRecords();
+		LinkedHashMap<UniNames, Double> linkedHashMap = new LinkedHashMap<>(recordsN);
+		setRecords(FXCollections.observableMap(linkedHashMap));
+
+		final ObservableList<UniNames> columnNamesN = dfx.getColumnNames();
+		ArrayList<UniNames> columnNames = new ArrayList<>(columnNamesN);
+		final List<UniNames> columnNamesDistinct = columnNames.stream().distinct().collect(Collectors.toList());
+		setColumnNames(FXCollections.observableArrayList(columnNamesDistinct));
+	}
+
 	public long getId() {
 		return id.get();
 	}

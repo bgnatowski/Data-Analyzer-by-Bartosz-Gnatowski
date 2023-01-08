@@ -22,6 +22,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Component
 public class LineChartBuilder {
@@ -123,7 +124,7 @@ public class LineChartBuilder {
 	public void setSeriesName(UniNames name) {
 		String seriesName;
 		if(!name.equals(UniNames.Unbalanced_Voltage)){
-			seriesName = name.toString()+ name.getUnit();
+			seriesName = name + name.getUnit();
 			if(seriesName.contains(" śr.")){
 				seriesName = seriesName.replaceAll(" śr.", "");
 			}
@@ -185,7 +186,7 @@ public class LineChartBuilder {
 
 	public void setCss() {
 		final URL resource = getClass().getResource(("/style/default_chart.css"));
-		chart.getStylesheets().add(resource.toExternalForm());
+		chart.getStylesheets().add(Objects.requireNonNull(resource).toExternalForm());
 		chart.applyCss();
 	}
 

@@ -4,6 +4,8 @@ import agh.inzapp.inzynierka.models.enums.DataType;
 import agh.inzapp.inzynierka.models.enums.NumberDisplayType;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.*;
+import agh.inzapp.inzynierka.utils.DialogUtils;
+import agh.inzapp.inzynierka.utils.SavingUtils;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -16,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
 import org.springframework.stereotype.Controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -28,7 +31,6 @@ import static agh.inzapp.inzynierka.models.enums.NumberDisplayType.SCIENTIFIC;
 
 @Controller
 public class TableViewController {
-
 	@FXML
 	private Tab harmonicsTab, normalTab;
 	@FXML
@@ -41,6 +43,8 @@ public class TableViewController {
 	private ListHarmoFx listHarmoFx;
 	private int precisionNormal = 2;
 	private int precisionHarmo = 4;
+	private String formatHarmo = "f";
+	private String formatNormal = "f";
 
 	@FXML
 	public void initialize(){
@@ -152,8 +156,14 @@ public class TableViewController {
 		final NumberDisplayType type = displayTypeNorm.getValue();
 
 		switch (type){
-			case NORMAL -> applyNotation(DataType.NORMAL_DATA, "f");
-			case SCIENTIFIC -> applyNotation(DataType.NORMAL_DATA, "E");
+			case NORMAL -> {
+				applyNotation(DataType.NORMAL_DATA, "f");
+				formatNormal = "f";
+			}
+			case SCIENTIFIC -> {
+				applyNotation(DataType.NORMAL_DATA, "E");
+				formatNormal = "E";
+			}
 		}
 	}
 
@@ -162,8 +172,14 @@ public class TableViewController {
 		final NumberDisplayType type = displayTypeHarmo.getValue();
 
 		switch (type){
-			case NORMAL -> applyNotation(DataType.HARMONICS_DATA, "f");
-			case SCIENTIFIC -> applyNotation(DataType.HARMONICS_DATA, "E");
+			case NORMAL -> {
+				applyNotation(DataType.HARMONICS_DATA, "f");
+				formatHarmo = "f";
+			}
+			case SCIENTIFIC -> {
+				applyNotation(DataType.HARMONICS_DATA, "E");
+				formatHarmo = "E";
+			}
 		}
 	}
 
@@ -191,7 +207,7 @@ public class TableViewController {
 					if(item == null || empty){
 						setText(null);
 					}else if(item instanceof Double){
-						setText(String.format("%."+ finalPrecision +format, (Double) item));
+						setText(String.format("%."+ finalPrecision +format, item));
 					} else {
 						setText(item.toString());
 					}
@@ -224,4 +240,84 @@ public class TableViewController {
 		precisionHarmo++;
 		changeDisplayTypeHarmo();
 	}
+
+	@FXML
+	private void saveNormalOnAction() {
+		final List<String[]> tableViewValues = getNormalValues(normalTableView);
+		tableViewValues.add(0, listDataFx.getColumNamesArray());
+		try {
+			SavingUtils.saveCSV(tableViewValues);
+		} catch (IOException e) {
+			DialogUtils.errorDialog("error.save.csv");
+		}
+	}
+
+	@FXML
+	private void saveHarmoOnAction() {
+		final List<String[]> tableViewValues = getHarmonicsValues(harmonicsTableView);
+		tableViewValues.add(0, listHarmoFx.getColumNamesArray());
+		try {
+			SavingUtils.saveCSV(tableViewValues);
+		} catch (IOException e) {
+			DialogUtils.errorDialog("error.save.csv");
+		}
+	}
+
+
+	private List<String[]> getNormalValues(TableView tableView) {
+		List<String[]> values = new ArrayList<>();
+		ArrayList<String> rowData = new ArrayList<>();
+		ObservableList<TableColumn> columns = tableView.getColumns();
+
+		for(int i = 0; i<tableView.getItems().size(); i++){
+			Object row = tableView.getItems().get(i);
+			for (TableColumn column : columns) {
+				final Object value = column.getCellObservableValue(row).getValue();
+				String s;
+				if(value instanceof Double){
+					s = String.format("%."+ precisionNormal + formatNormal, value);
+				}else{
+					s = String.valueOf(value);
+				}
+				rowData.add(s);
+			}
+			values.add(rowData.toArray(new String[0]));
+			rowData.clear();
+		}
+		return values;
+	}
+
+	private List<String[]> getHarmonicsValues(TableView tableView) {
+		List<String[]> values = new ArrayList<>();
+		ArrayList<String> rowData = new ArrayList<>();
+		ObservableList<TableColumn> columns = tableView.getColumns();
+
+		for(int i = 0; i<tableView.getItems().size(); i++){
+			Object row = tableView.getItems().get(i);
+			for (TableColumn column : columns) {
+				final Object value = column.getCellObservableValue(row).getValue();
+				String s;
+				if(value instanceof Double){
+					s = String.format("%."+ precisionHarmo + formatHarmo, value);
+				}else{
+					s = String.valueOf(value);
+				}
+				rowData.add(s);
+			}
+			values.add(rowData.toArray(new String[0]));
+			rowData.clear();
+		}
+		return values;
+	}
+//	final Button export = new Button("Export to Excel");
+//        export.setOnAction(new EventHandler<ActionEvent>() {
+//
+//		@Override
+//		public void handle(ActionEvent e)  {
+//			try {
+//				writeExcel();
+//			}
+//			catch (Exception ex) {
+//				ex.printStackTrace();
+//			}
 }

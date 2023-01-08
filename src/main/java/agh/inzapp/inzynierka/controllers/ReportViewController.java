@@ -56,6 +56,12 @@ public class ReportViewController {
 	@FXML
 	public void initialize() {
 		apMain.disableProperty().bind(toggleProperty);
+		if(ListCommonModelFx.hasBoth()){
+			DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.merge.list"));
+			toggleProperty.set(false);
+		}
+		else toggleProperty.set(true);
+
 		try {
 			modelsList = ListCommonModelFx.getInstance();
 
@@ -66,9 +72,7 @@ public class ReportViewController {
 			addTimeSpinnersToGrid();
 			bindDatePickers();
 			bindings();
-			toggleProperty.set(false);
 		} catch (ApplicationException e) {
-			toggleProperty.set(true);
 			DialogUtils.errorDialog(e.getMessage());
 		}
 	}

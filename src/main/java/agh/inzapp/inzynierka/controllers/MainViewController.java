@@ -20,12 +20,12 @@ public class MainViewController {
 	public void initialize(){
 		menuButtonsController.setMainController(this);
 		setCenter(HOME);
-		setLeft(MENU);
+		setLeft();
 	}
 
-	private void setLeft(FXMLNames fxml) {
+	private void setLeft() {
 		try {
-			borderPane.setLeft(FxmlUtils.fxmlLoad(fxml));
+			borderPane.setLeft(FxmlUtils.fxmlLoad(FXMLNames.MENU));
 		} catch (IOException e) {
 			DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.fxmlLoad");
 		}

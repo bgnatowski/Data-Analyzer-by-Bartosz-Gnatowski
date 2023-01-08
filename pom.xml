@@ -102,12 +102,6 @@
             <artifactId>docx4j-export-fo</artifactId>
             <version>8.0.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.dlsc.pdfviewfx/pdfviewfx -->
-<!--        <dependency>-->
-<!--            <groupId>com.dlsc.pdfviewfx</groupId>-->
-<!--            <artifactId>pdfviewfx</artifactId>-->
-<!--            <version>1.9.0</version>-->
-<!--        </dependency>-->
     </dependencies>
 
     <build>
