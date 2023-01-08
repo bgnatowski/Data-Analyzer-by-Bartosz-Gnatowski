@@ -37,7 +37,7 @@ Aby wygenerować raport ważny, oba typy danych zostały zaimportowane. Dodatkow
 ## Instalacja
 
 Aplikacje można zainstalować z pliku instalacyjnego do pobrania pod linkiem:
-* https://tinyurl.com/DataAnalyzerInstaller
+* https://tinyurl.com/InstallerOfDataAnalyzer
 
 Uruchomić plik *DataAnalyzer_setup.exe*. Włączy on pakiet instalacyjny, który przeprowadzi przez proces instalacji.
 Plik instalacyjny może wzbudzić alert aplikacji antywirusowej, jednakże po przeskanowaniu alert znika.
@@ -81,7 +81,7 @@ To generate the report it is important that both types of data have been importe
 ## Installation
 
 The applications can be installed from the downloadable installation file at the link:
-* https://tinyurl.com/DataAnalyzerInstaller
+* https://tinyurl.com/InstallerOfDataAnalyzer
 
 Run the *DataAnalyzer_setup.exe* file. It will enable the installation package, which will guide you through the installation process.
 The installation file may raise an antivirus application alert, however, after scanning the alert disappears.
