@@ -1,6 +1,7 @@
 package agh.inzapp.inzynierka;
 
 import agh.inzapp.inzynierka.models.enums.FXMLNames;
+import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,6 +21,7 @@ import static agh.inzapp.inzynierka.DAApplication.StageReadyEvent;
 public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 	private final String applicationTitle;
 	private final ApplicationContext applicationContext;
+
 
 	public StageInitializer(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
@@ -45,7 +47,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 			stage.setTitle(applicationTitle);
 			stage.show();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.main"));
 		}
 	}
 }
