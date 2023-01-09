@@ -39,6 +39,9 @@ Aby wygenerować raport ważny, oba typy danych zostały zaimportowane. Dodatkow
 Aplikacje można zainstalować z pliku instalacyjnego do pobrania pod linkiem:
 * https://tinyurl.com/InstallerOfDataAnalyzer
 
+lub:
+* https://github.com/bgnatowski/Data-Analyzer-by-Bartosz-Gnatowski/releases
+
 Uruchomić plik *DataAnalyzer_setup.exe*. Włączy on pakiet instalacyjny, który przeprowadzi przez proces instalacji.
 Plik instalacyjny może wzbudzić alert aplikacji antywirusowej, jednakże po przeskanowaniu alert znika.
 
@@ -82,6 +85,10 @@ To generate the report it is important that both types of data have been importe
 
 The applications can be installed from the downloadable installation file at the link:
 * https://tinyurl.com/InstallerOfDataAnalyzer
+
+or:
+* https://github.com/bgnatowski/Data-Analyzer-by-Bartosz-Gnatowski/releases
+
 
 Run the *DataAnalyzer_setup.exe* file. It will enable the installation package, which will guide you through the installation process.
 The installation file may raise an antivirus application alert, however, after scanning the alert disappears.

@@ -57,7 +57,6 @@
             <artifactId>javafx-web</artifactId>
             <version>19</version>
         </dependency>
-
         <!--        generacja worda-->
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
         <dependency>
