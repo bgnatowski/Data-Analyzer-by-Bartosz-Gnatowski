@@ -107,6 +107,7 @@ public class ChartViewController {
 		bindYRangingTextField();
 	}
 	private void bindSettings() {
+		settingsPane.setExpanded(false);
 		settingsPane.disableProperty().bind(lineChartSelect.valueProperty().isNull());
 		xPane.disableProperty().bind(lineChartSelect.valueProperty().isNull());
 		yPane.disableProperty().bind(lineChartSelect.valueProperty().isNull());

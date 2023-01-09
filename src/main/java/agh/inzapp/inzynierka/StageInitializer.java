@@ -36,7 +36,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 			Parent parent = loader.load();
 
 			Stage stage = event.getStage();
-			stage.setScene(new Scene(parent,1280, 720));
+			stage.setScene(new Scene(parent,1120, 620));
 			stage.getIcons().addAll(
 					new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/ikona.png"))),
 					new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/ikona48.png"))),
@@ -45,6 +45,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 			);
 
 			stage.setTitle(applicationTitle);
+			stage.setMaximized(true);
 			stage.show();
 		} catch (IOException e) {
 			DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.main"));

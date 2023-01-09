@@ -22,7 +22,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.ChartViewController">
    <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <content>
           <AnchorPane>
                <children>
@@ -30,235 +30,254 @@
                      <children>
                         <AnchorPane>
                            <children>
-                              <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <content>
+                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
                                     <AnchorPane>
                                        <children>
-                                          <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
+                                          <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <content>
                                                 <AnchorPane>
                                                    <children>
-                                                      <TitledPane text="%chart.pane.x.axis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="xPane">
-                                                         <content>
-                                                            <AnchorPane>
-                                                               <children>
-                                                                  <GridPane hgap="5.0" vgap="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="xGrid">
-                                                                    <columnConstraints>
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="125.0" />
-                                                                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="125.0" />
-                                                                    </columnConstraints>
-                                                                    <rowConstraints>
-                                                                      <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                                      <RowConstraints vgrow="SOMETIMES" />
-                                                                      <RowConstraints vgrow="SOMETIMES" />
-                                                                    </rowConstraints>
-                                                                     <children>
-                                                                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="OD" />
-                                                                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="DO" GridPane.columnIndex="1" />
-                                                                        <DatePicker maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" fx:id="xDateFrom" />
-                                                                        <DatePicker maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="xDateTo" />
-                                                                     </children>
-                                                                  </GridPane>
-                                                               </children>
-                                                            </AnchorPane>
-                                                         </content>
-                                                      </TitledPane>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <TitledPane fx:id="yPane" text="%chart.pane.y.axis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <content>
-                                                            <AnchorPane>
-                                                               <children>
-                                                                  <GridPane fx:id="yGrid" hgap="5.0" vgap="4.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                    <columnConstraints>
-                                                                        <ColumnConstraints hgrow="ALWAYS" maxWidth="150.0" minWidth="-Infinity" prefWidth="100.0" />
-                                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="100.0" minWidth="50.0" prefWidth="100.0" />
-                                                                      <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="-Infinity" />
-                                                                    </columnConstraints>
-                                                                    <rowConstraints>
-                                                                        <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints vgrow="SOMETIMES" />
-                                                                      <RowConstraints vgrow="SOMETIMES" />
-                                                                      <RowConstraints vgrow="SOMETIMES" />
-                                                                      <RowConstraints vgrow="SOMETIMES" />
-                                                                        <RowConstraints vgrow="SOMETIMES" />
-                                                                    </rowConstraints>
-                                                                     <children>
-                                                                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.x.value" />
-                                                                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.x.color" GridPane.columnIndex="1" />
-                                                                        <Button fx:id="yPlusButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yPlusOnAction" text="+" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-                                                                        <ComboBox fx:id="yValue0" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" />
-                                                                        <ColorPicker fx:id="yColor0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                                                           <value>
-                                                                              <Color red="0.16078431904315948" green="0.7137255072593689" blue="0.9647058844566345" />
-                                                                           </value></ColorPicker>
-                                                                        <Button fx:id="yAddButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yAddOnAction" text="%chart.pane.x.add.button" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                                                                        <ComboBox fx:id="yValue2" maxWidth="1.7976931348623157E308" minWidth="100.0" visible="false" GridPane.rowIndex="3" />
-                                                                        <ComboBox fx:id="yValue3" maxWidth="1.7976931348623157E308" minWidth="100.0" visible="false" GridPane.rowIndex="4" />
-                                                                        <ComboBox fx:id="yValue4" maxWidth="1.7976931348623157E308" minWidth="100.0" visible="false" GridPane.rowIndex="5" />
-                                                                        <ComboBox fx:id="yValue1" maxWidth="1.7976931348623157E308" minWidth="100.0" visible="false" GridPane.rowIndex="2" />
-                                                                        <ColorPicker fx:id="yColor1" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                                                           <value>
-                                                                              <Color red="0.9450980424880981" green="0.003921568859368563" blue="0.16078431904315948" />
-                                                                           </value></ColorPicker>
-                                                                        <ColorPicker fx:id="yColor2" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                                           <value>
-                                                                              <Color green="1.0" blue="0.14509804546833038" />
-                                                                           </value></ColorPicker>
-                                                                        <ColorPicker fx:id="yColor3" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                                                           <value>
-                                                                              <Color red="1.0" green="0.5960784554481506" />
-                                                                           </value></ColorPicker>
-                                                                        <ColorPicker fx:id="yColor4" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                                                                           <value>
-                                                                              <Color red="1.0" blue="0.9215686321258545" />
-                                                                           </value></ColorPicker>
-                                                                        <Button fx:id="yMinusButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yMinusOnAction" text="-" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                                                                     </children>
-                                                                  </GridPane>
-                                                               </children>
-                                                            </AnchorPane>
-                                                         </content>
-                                                      </TitledPane>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <TitledPane fx:id="settingsPane" animated="false" text="%chart.pane.settings.name" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                        <content>
-                                                          <AnchorPane>
-                                                               <children>
-                                                                  <GridPane hgap="5.0" layoutX="21.0" layoutY="45.0" vgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                    <columnConstraints>
-                                                                      <ColumnConstraints minWidth="10.0" />
-                                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                    </columnConstraints>
-                                                                    <rowConstraints>
-                                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
-                                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
-                                                                      <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
-                                                                    </rowConstraints>
-                                                                     <children>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.title">
-                                                                           <padding>
-                                                                              <Insets right="5.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.x.label" GridPane.rowIndex="1">
-                                                                           <padding>
-                                                                              <Insets right="5.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.y.label" GridPane.rowIndex="2">
-                                                                           <padding>
-                                                                              <Insets right="5.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <TextField fx:id="chartTitle" onKeyTyped="#setTitleOnKeyTyped" GridPane.columnIndex="1" />
-                                                                        <TextField onKeyTyped="#xLabelOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="xLabel" />
-                                                                        <TextField fx:id="yLabel" onKeyTyped="#yLabelOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.legend" GridPane.rowIndex="3">
-                                                                           <padding>
-                                                                              <Insets right="5.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.data.points" GridPane.rowIndex="4">
-                                                                           <padding>
-                                                                              <Insets right="5.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <HBox alignment="CENTER_RIGHT" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                                                                           <children>
-                                                                              <RadioButton fx:id="legendOn" mnemonicParsing="false" onAction="#switchOnLegend" selected="true" text="%button.on">
-                                                                                 <toggleGroup>
-                                                                                    <ToggleGroup fx:id="legendButtonGroup" />
-                                                                                 </toggleGroup>
-                                                                              </RadioButton>
-                                                                              <RadioButton fx:id="legendOff" mnemonicParsing="false" onAction="#switchOffLegend" selected="true" text="%button.off" toggleGroup="$legendButtonGroup" />
-                                                                           </children>
-                                                                        </HBox>
-                                                                        <HBox alignment="CENTER_RIGHT" spacing="20.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                                                           <children>
-                                                                              <RadioButton fx:id="dataOn" mnemonicParsing="false" onAction="#switchOnDataPoints" selected="true" text="%button.on">
-                                                                                 <toggleGroup>
-                                                                                    <ToggleGroup fx:id="dataButtonsGroup" />
-                                                                                 </toggleGroup>
-                                                                              </RadioButton>
-                                                                              <RadioButton fx:id="dataOff" mnemonicParsing="false" onAction="#switchOffDataPoints" selected="true" text="%button.off" toggleGroup="$dataButtonsGroup" />
-                                                                           </children>
-                                                                        </HBox>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Y min" GridPane.rowIndex="5">
-                                                                           <padding>
-                                                                              <Insets right="5.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Y max" GridPane.rowIndex="6">
-                                                                           <padding>
-                                                                              <Insets right="5.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <TextField fx:id="yMin" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                                                                        <TextField fx:id="yMax" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                                                                        <Button mnemonicParsing="false" onAction="#changeYRangeOnAction" text="%chart.pane.settings.apply" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-                                                                        <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Y tick" GridPane.rowIndex="7">
-                                                                           <padding>
-                                                                              <Insets right="5.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <TextField fx:id="yTick" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-                                                                     </children>
-                                                                  </GridPane>
-                                                               </children>
-                                                            </AnchorPane>
-                                                        </content>
-                                                      </TitledPane>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane VBox.vgrow="ALWAYS">
-                                                   <children>
-                                                      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                                      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                          <children>
-                                                            <HBox alignment="BOTTOM_RIGHT" spacing="5.0" VBox.vgrow="ALWAYS">
+                                                            <AnchorPane>
                                                                <children>
-                                                                  <Button fx:id="newChartButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#newChartOnAction" text="%chart.pane.new" HBox.hgrow="ALWAYS" />
-                                                                  <ComboBox fx:id="lineChartSelect" maxWidth="1.7976931348623157E308" minWidth="125.0" onAction="#switchLineChartOnAction" HBox.hgrow="ALWAYS" />
-                                                                  <Button fx:id="saveAsChartButton" maxWidth="1.7976931348623157E308" minWidth="90.0" mnemonicParsing="false" onAction="#saveAsChartOnAction" text="%chart.pane.save" HBox.hgrow="ALWAYS" />
+                                                                  <TitledPane text="%chart.pane.x.axis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" fx:id="xPane">
+                                                                     <content>
+                                                                        <AnchorPane>
+                                                                           <children>
+                                                                              <GridPane hgap="5.0" vgap="3.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="-5.0" AnchorPane.topAnchor="-5.0" fx:id="xGrid">
+                                                                                <columnConstraints>
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="95.0" prefWidth="95.0" />
+                                                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="95.0" />
+                                                                                </columnConstraints>
+                                                                                <rowConstraints>
+                                                                                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                                  <RowConstraints vgrow="SOMETIMES" />
+                                                                                  <RowConstraints vgrow="SOMETIMES" />
+                                                                                </rowConstraints>
+                                                                                 <children>
+                                                                                    <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.x.date.start" />
+                                                                                    <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.x.date.stop" GridPane.columnIndex="1" />
+                                                                                    <DatePicker maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" fx:id="xDateFrom" />
+                                                                                    <DatePicker maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="xDateTo" />
+                                                                                 </children>
+                                                                              </GridPane>
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                     </content>
+                                                                  </TitledPane>
                                                                </children>
-                                                               <padding>
-                                                                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                                                               </padding>
-                                                            </HBox>
-                                                            <HBox spacing="5.0">
-                                                               <padding>
-                                                                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-                                                               </padding>
-                                                            </HBox>
+                                                            </AnchorPane>
+                                                            <AnchorPane>
+                                                               <children>
+                                                                  <TitledPane fx:id="yPane" text="%chart.pane.y.axis" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                     <content>
+                                                                        <AnchorPane>
+                                                                           <children>
+                                                                              <GridPane fx:id="yGrid" hgap="5.0" vgap="3.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="-5.0" AnchorPane.topAnchor="-5.0">
+                                                                                <columnConstraints>
+                                                                                    <ColumnConstraints hgrow="ALWAYS" maxWidth="150.0" minWidth="-Infinity" prefWidth="95.0" />
+                                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="40.0" prefWidth="10.0" />
+                                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="-Infinity" />
+                                                                                </columnConstraints>
+                                                                                <rowConstraints>
+                                                                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints vgrow="SOMETIMES" />
+                                                                                  <RowConstraints vgrow="SOMETIMES" />
+                                                                                  <RowConstraints vgrow="SOMETIMES" />
+                                                                                  <RowConstraints vgrow="SOMETIMES" />
+                                                                                    <RowConstraints vgrow="SOMETIMES" />
+                                                                                </rowConstraints>
+                                                                                 <children>
+                                                                                    <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.x.value" />
+                                                                                    <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.x.color" GridPane.columnIndex="1" />
+                                                                                    <Button fx:id="yPlusButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yPlusOnAction" text="+" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                                                                    <ComboBox fx:id="yValue0" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" />
+                                                                                    <ColorPicker fx:id="yColor0" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                                                       <value>
+                                                                                          <Color red="0.16078431904315948" green="0.7137255072593689" blue="0.9647058844566345" />
+                                                                                       </value>
+                                                                                    </ColorPicker>
+                                                                                    <Button fx:id="yAddButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yAddOnAction" text="%chart.pane.x.add.button" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                                                    <ComboBox fx:id="yValue2" maxWidth="1.7976931348623157E308" minWidth="100.0" visible="false" GridPane.rowIndex="3" />
+                                                                                    <ComboBox fx:id="yValue3" maxWidth="1.7976931348623157E308" minWidth="100.0" visible="false" GridPane.rowIndex="4" />
+                                                                                    <ComboBox fx:id="yValue4" maxWidth="1.7976931348623157E308" minWidth="100.0" visible="false" GridPane.rowIndex="5" />
+                                                                                    <ComboBox fx:id="yValue1" maxWidth="1.7976931348623157E308" minWidth="100.0" visible="false" GridPane.rowIndex="2" />
+                                                                                    <ColorPicker fx:id="yColor1" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                                       <value>
+                                                                                          <Color red="0.9450980424880981" green="0.003921568859368563" blue="0.16078431904315948" />
+                                                                                       </value>
+                                                                                    </ColorPicker>
+                                                                                    <ColorPicker fx:id="yColor2" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                                                       <value>
+                                                                                          <Color green="1.0" blue="0.14509804546833038" />
+                                                                                       </value>
+                                                                                    </ColorPicker>
+                                                                                    <ColorPicker fx:id="yColor3" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                                                       <value>
+                                                                                          <Color red="1.0" green="0.5960784554481506" />
+                                                                                       </value>
+                                                                                    </ColorPicker>
+                                                                                    <ColorPicker fx:id="yColor4" maxWidth="1.7976931348623157E308" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                                                                       <value>
+                                                                                          <Color red="1.0" blue="0.9215686321258545" />
+                                                                                       </value>
+                                                                                    </ColorPicker>
+                                                                                    <Button fx:id="yMinusButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#yMinusOnAction" text="-" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                                                                                 </children>
+                                                                              </GridPane>
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                     </content>
+                                                                  </TitledPane>
+                                                               </children>
+                                                            </AnchorPane>
+                                                            <AnchorPane>
+                                                               <children>
+                                                                  <TitledPane fx:id="settingsPane" animated="false" text="%chart.pane.settings.name" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                    <content>
+                                                                      <AnchorPane>
+                                                                           <children>
+                                                                              <GridPane hgap="5.0" layoutX="21.0" layoutY="45.0" vgap="3.0" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="-5.0" AnchorPane.rightAnchor="-5.0" AnchorPane.topAnchor="-5.0">
+                                                                                <columnConstraints>
+                                                                                  <ColumnConstraints minWidth="10.0" />
+                                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="105.0" prefWidth="105.0" />
+                                                                                </columnConstraints>
+                                                                                <rowConstraints>
+                                                                                  <RowConstraints maxHeight="-Infinity" minHeight="25.0" vgrow="SOMETIMES" />
+                                                                                  <RowConstraints maxHeight="-Infinity" minHeight="25.0" vgrow="SOMETIMES" />
+                                                                                  <RowConstraints maxHeight="-Infinity" minHeight="25.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="-Infinity" minHeight="25.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="-Infinity" minHeight="25.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="-Infinity" minHeight="25.0" vgrow="SOMETIMES" />
+                                                                                    <RowConstraints maxHeight="-Infinity" minHeight="25.0" vgrow="SOMETIMES" />
+                                                                                </rowConstraints>
+                                                                                 <children>
+                                                                                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.title">
+                                                                                       <padding>
+                                                                                          <Insets right="5.0" />
+                                                                                       </padding>
+                                                                                    </Label>
+                                                                                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.x.label" GridPane.rowIndex="1">
+                                                                                       <padding>
+                                                                                          <Insets right="5.0" />
+                                                                                       </padding>
+                                                                                    </Label>
+                                                                                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.y.label" GridPane.rowIndex="2">
+                                                                                       <padding>
+                                                                                          <Insets right="5.0" />
+                                                                                       </padding>
+                                                                                    </Label>
+                                                                                    <TextField fx:id="chartTitle" onKeyTyped="#setTitleOnKeyTyped" GridPane.columnIndex="1" />
+                                                                                    <TextField onKeyTyped="#xLabelOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="xLabel" />
+                                                                                    <TextField fx:id="yLabel" onKeyTyped="#yLabelOnKeyTyped" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.legend" GridPane.rowIndex="3">
+                                                                                       <padding>
+                                                                                          <Insets right="5.0" />
+                                                                                       </padding>
+                                                                                    </Label>
+                                                                                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.settings.data.points" GridPane.rowIndex="4">
+                                                                                       <padding>
+                                                                                          <Insets right="5.0" />
+                                                                                       </padding>
+                                                                                    </Label>
+                                                                                    <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                                                                                       <children>
+                                                                                          <RadioButton fx:id="legendOn" mnemonicParsing="false" onAction="#switchOnLegend" selected="true" text="%button.on">
+                                                                                             <toggleGroup>
+                                                                                                <ToggleGroup fx:id="legendButtonGroup" />
+                                                                                             </toggleGroup>
+                                                                                          </RadioButton>
+                                                                                          <RadioButton fx:id="legendOff" mnemonicParsing="false" onAction="#switchOffLegend" selected="true" text="%button.off" toggleGroup="$legendButtonGroup" />
+                                                                                       </children>
+                                                                                    </HBox>
+                                                                                    <HBox alignment="CENTER_RIGHT" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                                                                       <children>
+                                                                                          <RadioButton fx:id="dataOn" mnemonicParsing="false" onAction="#switchOnDataPoints" selected="true" text="%button.on">
+                                                                                             <toggleGroup>
+                                                                                                <ToggleGroup fx:id="dataButtonsGroup" />
+                                                                                             </toggleGroup>
+                                                                                          </RadioButton>
+                                                                                          <RadioButton fx:id="dataOff" mnemonicParsing="false" onAction="#switchOffDataPoints" selected="true" text="%button.off" toggleGroup="$dataButtonsGroup" />
+                                                                                       </children>
+                                                                                    </HBox>
+                                                                                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Y min" GridPane.rowIndex="5">
+                                                                                       <padding>
+                                                                                          <Insets right="5.0" />
+                                                                                       </padding>
+                                                                                    </Label>
+                                                                                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Y max" GridPane.rowIndex="6">
+                                                                                       <padding>
+                                                                                          <Insets right="5.0" />
+                                                                                       </padding>
+                                                                                    </Label>
+                                                                                    <TextField fx:id="yMin" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                                    <TextField fx:id="yMax" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                                    <Button mnemonicParsing="false" onAction="#changeYRangeOnAction" text="%chart.pane.settings.apply" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                                                    <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Y tick" GridPane.rowIndex="7">
+                                                                                       <padding>
+                                                                                          <Insets right="5.0" />
+                                                                                       </padding>
+                                                                                    </Label>
+                                                                                    <TextField fx:id="yTick" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                                                 </children>
+                                                                              </GridPane>
+                                                                           </children>
+                                                                        </AnchorPane>
+                                                                    </content>
+                                                                  </TitledPane>
+                                                               </children>
+                                                            </AnchorPane>
                                                          </children>
                                                       </VBox>
                                                    </children>
                                                 </AnchorPane>
+                                             </content>
+                                          </ScrollPane>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane fx:id="saveap" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <VBox minWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                                             <children>
+                                                <HBox alignment="BOTTOM_RIGHT" spacing="5.0" VBox.vgrow="ALWAYS">
+                                                   <children>
+                                                      <Button fx:id="newChartButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#newChartOnAction" text="%chart.pane.new" HBox.hgrow="ALWAYS" />
+                                                      <ComboBox fx:id="lineChartSelect" maxWidth="1.7976931348623157E308" minWidth="120.0" onAction="#switchLineChartOnAction" HBox.hgrow="ALWAYS" />
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+                                                   </padding>
+                                                </HBox>
+                                                <HBox spacing="5.0">
+                                                   <padding>
+                                                      <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                                                   </padding>
+                                                   <children>
+                                                      <Button fx:id="saveAsChartButton" maxWidth="1.7976931348623157E308" minWidth="90.0" mnemonicParsing="false" onAction="#saveAsChartOnAction" text="%chart.pane.save" HBox.hgrow="ALWAYS">
+                                                         <padding>
+                                                            <Insets bottom="4.0" left="4.0" right="4.0" top="4.0" />
+                                                         </padding>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
                                              </children>
                                           </VBox>
                                        </children>
                                     </AnchorPane>
-                                 </content>
-                              </ScrollPane>
+                                 </children>
+                              </VBox>
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="apOfChart" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
                            <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </padding>
                            <HBox.margin>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                              <Insets />
                            </HBox.margin>
                         </AnchorPane>
                      </children>
