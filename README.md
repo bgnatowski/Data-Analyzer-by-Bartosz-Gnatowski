@@ -29,7 +29,14 @@ Aby wygenerować raport ważny, oba typy danych zostały zaimportowane. Dodatkow
 * Współczynnik uciążliwości migotania światła P_lt dla każdej z 3 faz (zbierany przez analizator Sonel, wyliczany ze współczynnika P_st dla analizatorów firmy A-Eberle),
 * Sprawdź współczynnik zawartości harmonicznych THD dla każdej z 3 faz,
 * Sprawdź poziom każdej z harmonicznych mocy (min. do 40) dla każdej z 3 faz.
-  W przypadku wystąpienia raportu będzie niepełny, zostanie wygenerowany nieprawidłowo lub nie będzie możliwe wygenerowanie i zapisanie raportu.
+
+W przypadku wystąpienia raportu będzie niepełny, zostanie wygenerowany nieprawidłowo lub nie będzie możliwe wygenerowanie i zapisanie raportu.
+
+Dodatkowo:
+* Opcja przeciągnij i upuść pliki csv w obrębie listy, aby zaimportować.
+* Podgląd danych możliwy w osobnym oknie poprzez kliknięcie menu prawym przyciskiem myszy po czym "otwórz w nowym oknie".
+* Możliwość zapisu do csv w innym formacie reprezentacji liczb (naukowy, zmiennoprzecinkowy) poprzez przycisk "zapisz jako..." w menu podglądu danych. 
+
 ## Licencja
 
 [APACHE LICENSE, VERSION 2.0](https://www.apache.org/licenses/LICENSE-2.0)
@@ -66,16 +73,20 @@ Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical E
   * b)	A-Eberle – standard network data and harmonic content data with THD, in separate ".csv" files exported from WinPQ mobil (version 6.1.2.1). Service in English possible.
 * Preview of the above-mentioned data with saving to a text file in various formats of representation of numbers (i.e. floating point and scientific format).
 * A simple and functional creator of line charts from imported data with the option of saving them.
-* Report generator in ". docx” in Polish, containing the assessment of compliance of parameters based on the Regulation of the Minister of Economy of May 4, 2007 on detailed conditions for the operation of the power system, Journal of Laws No. 93, item 623.
+* Report generator in ".docx" in Polish, containing the assessment of compliance of parameters based on the Regulation of the Minister of Economy of May 4, 2007, on detailed conditions for the operation of the power system, Journal of Laws No. 93, item 623.
 
 
 To generate the report it is important that both types of data have been imported. Additionally, they should include at least:
 * Average RMS values of phase voltages (each phase: L1 , L2 , L3 ),
 * Native sequence voltage unbalance factor,
-* Light flicker nuisance coefficient P_ltfor each of the 3 phases (collected by Sonel analyzers, calculated from the coefficient P_stfor A-Eberle analysers),
+* Light flicker nuisance coefficient P_lt for each of the 3 phases (collected by Sonel analyzers, calculated from the coefficient P_st for A-Eberle analyzers),
 * The value of the harmonic distortion factor THD for each of the 3 phases,
 * Value of the level of each of the voltage harmonics (min. up to 40) for each of the 3 phases.
 
+Extra:
+* Drag and drop csv files to the list to import.
+* Data can be previewed in a separate window by clicking the right mouse button in the menu and then "open in new window"
+* The ability to save to csv in a different format of representation of numbers (scientific, floating point) via the "save as..." button in the data preview menu.
 
 ## License
 
