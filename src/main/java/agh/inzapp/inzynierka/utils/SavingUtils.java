@@ -11,10 +11,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import org.apache.commons.io.FileUtils;
-import org.docx4j.Docx4J;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
-import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 
 import javax.imageio.ImageIO;
 import java.io.*;
@@ -68,32 +64,14 @@ public class SavingUtils {
 		ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
 	}
 
-	private static void saveReportToPDF(String tmpReportPath, File outputFile) throws IOException, Docx4JException {
-		InputStream templateInputStream = new FileInputStream(tmpReportPath);
-		WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.load(templateInputStream);
-		MainDocumentPart documentPart = wordMLPackage.getMainDocumentPart();
-
-		FileOutputStream os = new FileOutputStream(outputFile.getAbsolutePath());
-		Docx4J.toPDF(wordMLPackage, os);
-		os.flush();
-		os.close();
-	}
-
-	public static void saveReport(String tmpReportPath) throws IOException, Docx4JException {
+	public static void saveReport(String tmpReportPath) throws IOException {
 		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().addAll(
-				new FileChooser.ExtensionFilter("MS Office Documents", "*.docx"),
-				new FileChooser.ExtensionFilter("PDF Documents", "*.pdf")
-		);
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MS Office Documents", "*.docx"));
 		File outputFile = fileChooser.showSaveDialog(null);
 		File sourceReport = new File(tmpReportPath);
 		if (outputFile != null) {
 			final String extension = fileChooser.getSelectedExtensionFilter().getDescription();
-			if (extension.equals("MS Office Documents")) {
-				FileUtils.copyFile(sourceReport, outputFile);
-			} else {
-				saveReportToPDF(tmpReportPath, outputFile);
-			}
+			FileUtils.copyFile(sourceReport, outputFile);
 		}
 	}
 

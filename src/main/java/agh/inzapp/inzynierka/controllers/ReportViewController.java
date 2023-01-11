@@ -18,7 +18,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.springframework.stereotype.Controller;
 
 import java.io.IOException;
@@ -147,7 +146,7 @@ public class ReportViewController {
 		try {
 			SavingUtils.saveReport(tmpReportPath);
 			info.setText(FxmlUtils.getInternalizedPropertyByKey("report.info.saved"));
-		} catch (Docx4JException | IOException e) {
+		} catch (IOException e) {
 			info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));
 		}
 	}
