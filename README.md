@@ -18,7 +18,7 @@ Wydział Elektrotechniki, Automatyki, Informatyki i Inżynierii Biomedycznej
 
 * Import danych wyeksportowanych z analizatorów sieci elektroenergetycznych firma:
   * Sonel – dane standardowe dla sieci i dane harmonicznych zawartości wraz z THD, w osobnych plikach „.csv” eksportowanych z programu Sonel Analiza wersja 4.6.x (min. wersja 4.6.0). Możliwa obsługa w języku angielskim i polskim.
-  * A-Eberle – dane standardowe dla sieci i dane zawartości harmonicznych wraz z THD, w osobnych plikach „.csv” eksportowanych z programu WinPQ mobil (wersja 6.1.2.1). Możliwa obsługa w języku angielskim.
+  * A-Eberle – dane standardowe dla sieci i dane zawartości harmonicznych wraz z THD, w osobnych plikach „.csv” eksportowanych z programu WinPQ mobil (wersja 6.1.2.1). Możliwa obsługa w języku angielskim. WAŻNE. Przy eksporcie z WinPQ mobil zaznaczyć opcję *"Suppress Headers"*.
 * Podgląd wyżej wymienione dane z zapisem do pliku tekstowego w różnych formatach liczbowych (tj. format zmiennoprzecinkowy oraz naukowy).
 * Prosty i zysk kreator wykresów liniowych z zaimportowanych danych wraz z ich zapisaniem.
 * Generator w formacie „. docx” w języku polskim zawiera ocenę zgodności parametrów w zestawieniu o Rozporządzenia Ministra Gospodarki z dnia 4 maja 2007 r. w sprawie wpływu warunków funkcjonowania systemu elektroenergetycznego, Dziennik Ustaw Nr 93, poz. 623.
@@ -28,7 +28,7 @@ Aby wygenerować raport ważny, oba typy danych zostały zaimportowane. Dodatkow
 * Współczynnik asymetrii mocy składowej przeciwnej,
 * Współczynnik uciążliwości migotania światła P_lt dla każdej z 3 faz (zbierany przez analizator Sonel, wyliczany ze współczynnika P_st dla analizatorów firmy A-Eberle),
 * Sprawdź współczynnik zawartości harmonicznych THD dla każdej z 3 faz,
-* Sprawdź poziom każdej z harmonicznych mocy (min. do 40) dla każdej z 3 faz.
+* Sprawdź poziom każdej z harmonicznych mocy (min. do 40) dla każdej z 3 faz (SonelAnaliza - export danych w [%], WinPQ - export danych w [V]).
 
 W przypadku wystąpienia raportu będzie niepełny, zostanie wygenerowany nieprawidłowo lub nie będzie możliwe wygenerowanie i zapisanie raportu.
 
@@ -69,8 +69,8 @@ Faculty of Electrical Engineering, Automatics, Computer Science and Biomedical E
 ## Features
 
 * Import of data exported from power network analyzers of companies:
-  * a)	Sonel - standard data for the network and harmonic content data with THD, in separate ".csv" files exported from the Sonel Analysis program version 4.6.x (at least version 4.6.0). Possible service in English and Polish.
-  * b)	A-Eberle – standard network data and harmonic content data with THD, in separate ".csv" files exported from WinPQ mobil (version 6.1.2.1). Service in English possible.
+  * a)	Sonel - standard data for the network and harmonic content data with THD, in separate ".csv" files exported from the Sonel Analysis program version 4.6.x (at least version 4.6.0). Possible import in English and Polish.
+  * b)	A-Eberle – standard network data and harmonic content data with THD, in separate ".csv" files exported from WinPQ mobil (version 6.1.2.1). Possible import in English. IMPORTANT. When exporting from WinPQ mobil, check the *"Suppress Headers "* option.
 * Preview of the above-mentioned data with saving to a text file in various formats of representation of numbers (i.e. floating point and scientific format).
 * A simple and functional creator of line charts from imported data with the option of saving them.
 * Report generator in ".docx" in Polish, containing the assessment of compliance of parameters based on the Regulation of the Minister of Economy of May 4, 2007, on detailed conditions for the operation of the power system, Journal of Laws No. 93, item 623.
@@ -81,7 +81,7 @@ To generate the report it is important that both types of data have been importe
 * Native sequence voltage unbalance factor,
 * Light flicker nuisance coefficient P_lt for each of the 3 phases (collected by Sonel analyzers, calculated from the coefficient P_st for A-Eberle analyzers),
 * The value of the harmonic distortion factor THD for each of the 3 phases,
-* Value of the level of each of the voltage harmonics (min. up to 40) for each of the 3 phases.
+* Value of the level of each of the voltage harmonics (min. up to 40) for each of the 3 phases (SonelAnalysis - data export in [%], WinPQ - data export in [V]).
 
 Extra:
 * Drag and drop csv files to the list to import.
