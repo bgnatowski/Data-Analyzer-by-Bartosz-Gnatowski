@@ -28,7 +28,7 @@ Aby wygenerować raport ważny, oba typy danych zostały zaimportowane. Dodatkow
 * Współczynnik asymetrii mocy składowej przeciwnej,
 * Współczynnik uciążliwości migotania światła P_lt dla każdej z 3 faz (zbierany przez analizator Sonel, wyliczany ze współczynnika P_st dla analizatorów firmy A-Eberle),
 * Sprawdź współczynnik zawartości harmonicznych THD dla każdej z 3 faz,
-* Sprawdź poziom każdej z harmonicznych mocy (min. do 40) dla każdej z 3 faz (SonelAnaliza - export danych w [%], WinPQ - export danych w [V]).
+* Sprawdź poziom każdej z harmonicznych mocy (min. do 40) dla każdej z 3 faz (SonelAnaliza — export danych w %, WinPQ — export danych w V).
 
 W przypadku wystąpienia raportu będzie niepełny, zostanie wygenerowany nieprawidłowo lub nie będzie możliwe wygenerowanie i zapisanie raportu.
 
@@ -43,14 +43,25 @@ Dodatkowo:
 
 ## Instalacja
 
-Aplikacje można zainstalować z pliku instalacyjnego do pobrania pod linkiem:
-* https://tinyurl.com/InstallerOfDataAnalyzer
+Aplikacje można pobrać pod linkiem:
 
-lub:
 * https://github.com/bgnatowski/Data-Analyzer-by-Bartosz-Gnatowski/releases
 
-Uruchomić plik *DataAnalyzer_setup.exe*. Włączy on pakiet instalacyjny, który przeprowadzi przez proces instalacji.
-Plik instalacyjny może wzbudzić alert aplikacji antywirusowej, jednakże po przeskanowaniu alert znika.
+Są dwie opcje:
+
+* Uruchomić plik wykonywalny *DataAnalyzer_setup.exe*. Włączy on pakiet instalacyjny, który przeprowadzi przez proces instalacji.
+Plik instalacyjny może wzbudzić alert aplikacji antywirusowej, jednakże po przeskanowaniu alert znika. Uruchom zainstalowaną aplikację.
+
+lub
+
+* Po pobraniu pliku *.jar* uruchomić za pomocą komendy:
+```
+java -jar DataAnalyzer_v1.1.jar
+```
+z folderu gdzie wypakowano plik.\
+Konieczne jest posiadanie JRE 1.7+. (dołączone do JDK 17+, możliwość pobrania na https://www.oracle.com/pl/java/technologies/downloads/#java17)
+
+
 
 ### EN
 
@@ -81,7 +92,7 @@ To generate the report it is important that both types of data have been importe
 * Native sequence voltage unbalance factor,
 * Light flicker nuisance coefficient P_lt for each of the 3 phases (collected by Sonel analyzers, calculated from the coefficient P_st for A-Eberle analyzers),
 * The value of the harmonic distortion factor THD for each of the 3 phases,
-* Value of the level of each of the voltage harmonics (min. up to 40) for each of the 3 phases (SonelAnalysis - data export in [%], WinPQ - data export in [V]).
+* Value of the level of each of the voltage harmonics (min. up to 40) for each of the 3 phases (SonelAnalysis - data export in %, WinPQ - data export in V).
 
 Extra:
 * Drag and drop csv files to the list to import.
@@ -94,12 +105,20 @@ Extra:
 
 ## Installation
 
-The applications can be installed from the downloadable installation file at the link:
-* https://tinyurl.com/InstallerOfDataAnalyzer
+The applications can be downloaded from:
 
-or:
 * https://github.com/bgnatowski/Data-Analyzer-by-Bartosz-Gnatowski/releases
 
+You have two ways:
 
-Run the *DataAnalyzer_setup.exe* file. It will enable the installation package, which will guide you through the installation process.
+* Run the executable *DataAnalyzer_setup.exe* file. It will enable the installation package, which will guide you through the installation process.
 The installation file may raise an antivirus application alert, however, after scanning the alert disappears.
+
+or 
+
+* After you download the jar file, you can run it using
+```
+java -jar DataAnalyzer_v1.1.jar
+```
+from the directory you uncompressed it to.\
+You have to have JRE 1.7+. (bundled with JDK 17+, download at https://www.oracle.com/pl/java/technologies/downloads/#java17)
