@@ -23,6 +23,14 @@ import java.util.concurrent.atomic.AtomicLong;
 @Component
 public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 	private List<CommonModelFx> dataModels;
+	public CSVImportPQ() {
+		allRecordsList = new ArrayList<>();
+		columnsNames = new ArrayList<>();
+		pst1 = new ArrayList<>();
+		pst2 = new ArrayList<>();
+		pst3 = new ArrayList<>();
+	}
+
 	@Override
 	public List<CommonModelFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
