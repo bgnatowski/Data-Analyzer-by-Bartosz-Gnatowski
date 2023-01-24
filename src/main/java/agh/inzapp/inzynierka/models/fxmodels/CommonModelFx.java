@@ -18,11 +18,12 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Component
-public class CommonModelFx implements Cloneable{
+public class CommonModelFx {
 	protected LongProperty id = new SimpleLongProperty();
 	protected ObjectProperty<LocalDateTime> date = new SimpleObjectProperty<>();
-	protected MapProperty<UniNames, String> flags = new SimpleMapProperty<>();
+	protected MapProperty<UniNames, String> flags = new SimpleMapProperty<>(FXCollections.observableMap(new LinkedHashMap<>()));
 	protected MapProperty<UniNames, Double> records = new SimpleMapProperty<>();
+	protected MapProperty<UniNames, Double> harmonics = new SimpleMapProperty<>();
 	protected ListProperty<UniNames> columnNames = new SimpleListProperty<>();
 
 	public CommonModelFx(DataFx dfx, HarmoFx hfx) {
@@ -57,6 +58,18 @@ public class CommonModelFx implements Cloneable{
 		ArrayList<UniNames> columnNames = new ArrayList<>(columnNamesN);
 		final List<UniNames> columnNamesDistinct = columnNames.stream().distinct().collect(Collectors.toList());
 		setColumnNames(FXCollections.observableArrayList(columnNamesDistinct));
+	}
+
+	public ObservableMap<UniNames, Double> getHarmonics() {
+		return harmonics.get();
+	}
+
+	public MapProperty<UniNames, Double> harmonicsProperty() {
+		return harmonics;
+	}
+
+	public void setHarmonics(ObservableMap<UniNames, Double> harmonics) {
+		this.harmonics.set(harmonics);
 	}
 
 	public long getId() {

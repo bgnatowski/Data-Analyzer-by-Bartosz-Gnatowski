@@ -23,8 +23,6 @@
                               <HBox prefWidth="200.0" spacing="5.0" VBox.vgrow="NEVER">
                                  <children>
                                     <ComboBox fx:id="displayTypeNorm" minWidth="150.0" onAction="#changeDisplayTypeNorm" prefWidth="150.0" />
-                                    <Button fx:id="leftShiftPrecisionButtonNorm" minWidth="30.0" mnemonicParsing="false" onAction="#leftShiftPrecisionNorm" text="&lt;&lt;" />
-                                    <Button fx:id="rightShiftPrecisionButtonNorm" minWidth="30.0" mnemonicParsing="false" onAction="#rightShiftPrecisionNorm" text="&gt;&gt;" />
                                     <Button fx:id="saveNormal" mnemonicParsing="false" onAction="#saveNormalOnAction" text="%chart.pane.save" />
                                  </children>
                                  <padding>
@@ -47,8 +45,6 @@
                               <HBox spacing="5.0" VBox.vgrow="NEVER">
                                  <children>
                                     <ComboBox fx:id="displayTypeHarmo" minWidth="150.0" onAction="#changeDisplayTypeHarmo" prefWidth="150.0" />
-                                    <Button fx:id="leftShiftPrecisionButtonHarmo" minWidth="30.0" mnemonicParsing="false" onAction="#leftShiftPrecisionHarmo" text="&lt;&lt;" />
-                                    <Button fx:id="rightShiftPrecisionButtonHarmo" minWidth="30.0" mnemonicParsing="false" onAction="#rightShiftPrecisionHarmo" text="&gt;&gt;" />
                                     <Button fx:id="saveHarmo" mnemonicParsing="false" onAction="#saveHarmoOnAction" text="%chart.pane.save" />
                                  </children>
                                  <padding>

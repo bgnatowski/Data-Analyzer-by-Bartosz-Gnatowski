@@ -1,11 +1,10 @@
 package agh.inzapp.inzynierka.models;
 
 import agh.inzapp.inzynierka.models.enums.Analysers;
-import agh.inzapp.inzynierka.models.enums.DataType;
-import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
-import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
-import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
-import agh.inzapp.inzynierka.strategies.*;
+import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
+import agh.inzapp.inzynierka.strategies.CSVImportPQ;
+import agh.inzapp.inzynierka.strategies.CSVImportSonel;
+import agh.inzapp.inzynierka.strategies.CSVStrategy;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.beans.property.ListProperty;
@@ -15,127 +14,78 @@ import javafx.collections.ObservableList;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class CsvFilesList {
-	private final ListProperty<File> listNormal = new SimpleListProperty<>(FXCollections.observableArrayList());
-	private final ListProperty<File> listHarmonics = new SimpleListProperty<>(FXCollections.observableArrayList());
-	public void getFiles(DataType dataType) {
+	private final ListProperty<File> filesList = new SimpleListProperty<>(FXCollections.observableArrayList());
+	private static CsvFilesList instance;
+	public static CsvFilesList getInstance() {
+		CsvFilesList result = instance;
+		if (result != null) {
+			return result;
+		}
+		synchronized (CsvFilesList.class) {
+			if (instance == null) {
+				instance = new CsvFilesList();
+			}
+			return instance;
+		}
+	}
+	public void getFilesFromChooser() {
 		List<File> files = FileChooserRemember.showOpenMultipleDialog();
 		if (files != null) {
 			files.forEach(file -> {
-				switch (dataType) {
-					case NORMAL_DATA -> {
-						if (!listNormal.contains(file)) {
-							listNormal.add(file);
-						}
-					}
-					case HARMONICS_DATA -> {
-						if (!listHarmonics.contains(file)) {
-							listHarmonics.add(file);
-						}
-					}
+				if (!filesList.contains(file)) {
+					filesList.add(file);
 				}
 			});
 		}
 	}
-
-	public void addTestFiles(File normal, File harmo){
-		listNormal.add(normal);
-		listHarmonics.add(harmo);
-	}
-
-	public void addNormal(File file){
-		listNormal.add(file);
-	}
-
-	public void addHarmo(File file){
-		listHarmonics.add(file);
-	}
-
-	public void saveNormal(Analysers analyser) {
-		List<CommonModelFx> normalFxes = List.of();
-		switch (analyser){
-			case PQbox -> normalFxes= new ArrayList<>(importNormalDataList(new CSVImportPQ()));
-			case Sonel -> normalFxes= new ArrayList<>(importNormalDataList(new CSVImportSonel()));
+	public void addFileToList(File file){
+		if (!filesList.contains(file)) {
+			filesList.add(file);
 		}
-		ListDataFx.getInstance().init(normalFxes);
 	}
-	public void saveHarmonics(Analysers analyser) {
-		List<CommonModelFx> harmoFxes = List.of();
-		switch (analyser){
-			case PQbox -> harmoFxes = new ArrayList<>(importHarmonicsDataList(new CSVImportPQHarmonics()));
-			case Sonel -> harmoFxes = new ArrayList<>(importHarmonicsDataList(new CSVImportSonelHarmonics()));
-		}
-		ListHarmoFx.getInstance().init(harmoFxes);
+	public void clear() {
+		filesList.clear();
 	}
 
-	public void saveBoth(Analysers analyser){
+	public void saveBoth(Analysers analyser) throws ApplicationException {
+		final ListCommonModelFx modelsFxList = ListCommonModelFx.getInstance();
 		switch (analyser){
-			case PQbox ->{
-				List<CommonModelFx> normalFxes = importNormalDataList(new CSVImportPQ());
-				ListDataFx.getInstance().init(normalFxes);
-
-				List<CommonModelFx> harmoFxes = importHarmonicsDataList(new CSVImportPQHarmonics());
-				ListHarmoFx.getInstance().init(harmoFxes);
+			case PQbox -> {
+				filesList.forEach(file ->
+				{
+					try {
+						modelsFxList.addModelList(new CSVImportPQ().importCSVFile(file.getAbsolutePath()));
+					} catch (ApplicationException e) {
+						DialogUtils.errorDialog(e.getMessage());
+					}
+				});
 			}
 			case Sonel -> {
-				List<CommonModelFx> normalFxes = importNormalDataList(new CSVImportSonel());
-				ListDataFx.getInstance().init(normalFxes);
-
-				List<CommonModelFx> harmoFxes = importHarmonicsDataList(new CSVImportSonelHarmonics());
-				ListHarmoFx.getInstance().init(harmoFxes);
+				filesList.forEach(file ->
+				{
+					try {
+						modelsFxList.addModelList(new CSVImportSonel().importCSVFile(file.getAbsolutePath()));
+					} catch (ApplicationException e) {
+						DialogUtils.errorDialog(e.getMessage());
+					}
+				});
 			}
 		}
 	}
-	private List<CommonModelFx> importNormalDataList(CSVStrategy csvStrategy) {
-		List<CommonModelFx> modelList = new ArrayList<>();
-		listNormal.forEach(file ->
-		{
-			try {
-				modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
-			} catch (ApplicationException e) {
-				DialogUtils.errorDialog(e.getMessage());
-			}
-		});
-		return modelList;
+
+	public ObservableList<File> getFilesList() {
+		return filesList.get();
 	}
 
-	private List<CommonModelFx> importHarmonicsDataList(CSVStrategy csvStrategy) {
-		List<CommonModelFx> modelList = new ArrayList<>();
-		listHarmonics.forEach(file ->
-		{
-			try {
-				modelList.addAll(csvStrategy.importCSVFile(file.getAbsolutePath()));
-			} catch (ApplicationException e) {
-				DialogUtils.errorDialog(e.getMessage());
-			}
-		});
-		return modelList;
-	}
-	public ObservableList<File> getListNormal() {
-		return listNormal.get();
+	public ListProperty<File> filesListProperty() {
+		return filesList;
 	}
 
-	public ListProperty<File> listNormalProperty() {
-		return listNormal;
-	}
-
-	public void setListNormal(ObservableList<File> listNormal) {
-		this.listNormal.set(listNormal);
-	}
-
-	public ObservableList<File> getListHarmonics() {
-		return listHarmonics.get();
-	}
-
-	public ListProperty<File> listHarmonicsProperty() {
-		return listHarmonics;
-	}
-
-	public void setListHarmonics(ObservableList<File> listHarmonics) {
-		this.listHarmonics.set(listHarmonics);
+	public void setFilesList(ObservableList<File> filesList) {
+		this.filesList.set(filesList);
 	}
 }

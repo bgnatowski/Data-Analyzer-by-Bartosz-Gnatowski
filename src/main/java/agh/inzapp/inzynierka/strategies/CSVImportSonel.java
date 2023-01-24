@@ -1,5 +1,7 @@
 package agh.inzapp.inzynierka.strategies;
 
+import agh.inzapp.inzynierka.models.enums.UniNames;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
@@ -17,9 +19,18 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {
 	private static final int SKIP_INFO_LINES = 11;
-	private List<DataFx> dataModels;
+	private List<CommonModelFx> dataModels;
+
+	public CSVImportSonel() {
+		allRecordsList = new ArrayList<>();
+		columnsNames = new ArrayList<>();
+		pst1 = new ArrayList<>();
+		pst2 = new ArrayList<>();
+		pst3 = new ArrayList<>();
+	}
+
 	@Override
-	public List<DataFx> importCSVFile(String path) throws ApplicationException {
+	public List<CommonModelFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
 		readFile(path);
 		saveModels();
@@ -30,8 +41,8 @@ public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {
 	protected void saveModels() {
 		AtomicLong id = new AtomicLong(0L);
 		allRecordsList.forEach(records ->{
-			DataFx model = new DataFx();
-			model.setId(id.incrementAndGet());
+			CommonModelFx model = new CommonModelFx();
+ 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
 			try {
 				setDataInSonelModel(records, model);
@@ -59,7 +70,6 @@ public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {
 					columnsNames.addAll(SonelParser.parseNames(modelLine));
 					isFirstLineRead = true;
 				} else allRecordsList.add(modelLine);
-
 			}
 		} catch (IOException | CsvValidationException e) {
 			throw new ApplicationException(e.getMessage());

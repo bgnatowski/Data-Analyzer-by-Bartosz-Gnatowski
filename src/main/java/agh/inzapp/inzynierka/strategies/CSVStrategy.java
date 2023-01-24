@@ -8,5 +8,5 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 @Component
 public interface CSVStrategy {
-	List<? extends CommonModelFx> importCSVFile(String path) throws ApplicationException;
+	List<CommonModelFx> importCSVFile(String path) throws ApplicationException;
 }

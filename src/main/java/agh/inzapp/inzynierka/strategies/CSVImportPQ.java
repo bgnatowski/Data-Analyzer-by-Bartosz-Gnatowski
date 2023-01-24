@@ -1,5 +1,6 @@
 package agh.inzapp.inzynierka.strategies;
 
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
@@ -21,9 +22,9 @@ import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
-	private List<DataFx> dataModels;
+	private List<CommonModelFx> dataModels;
 	@Override
-	public List<DataFx> importCSVFile(String path) throws ApplicationException {
+	public List<CommonModelFx> importCSVFile(String path) throws ApplicationException {
 		dataModels = new ArrayList<>();
 		readFile(path);
 		saveModels();

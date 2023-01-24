@@ -1,18 +1,19 @@
 package agh.inzapp.inzynierka.controllers;
 
+import agh.inzapp.inzynierka.models.enums.FXMLNames;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
 import static agh.inzapp.inzynierka.models.enums.FXMLNames.*;
 
-@Controller
+@Component
 public class MenuController {
 	private static MainViewController mainAppPaneController;
 	private static final BooleanProperty toggleButtonProperty = new SimpleBooleanProperty();
@@ -75,5 +76,9 @@ public class MenuController {
 
 	public static void setToggleButtonProperty(boolean toggleButtonProperty) {
 		MenuController.toggleButtonProperty.setValue(toggleButtonProperty);
+	}
+
+	public static void switchSceneTo(FXMLNames fxml){
+		mainAppPaneController.setCenter(fxml);
 	}
 }

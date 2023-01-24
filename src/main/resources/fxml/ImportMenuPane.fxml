@@ -7,10 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -48,188 +45,73 @@
                               <Insets right="10.0" />
                            </VBox.margin>
                            <children>
-                            <TitledPane fx:id="titledPaneNormal" text="%titled.normal" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <content>
+                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
                                     <AnchorPane>
                                        <children>
-                                          <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                          <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <children>
-                                                <AnchorPane>
+                                                <AnchorPane HBox.hgrow="ALWAYS" />
+                                             </children>
+                                             <padding>
+                                                <Insets left="10.0" right="10.0" />
+                                             </padding>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
+                                    <AnchorPane>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </AnchorPane>
+                                    <AnchorPane VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <HBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <AnchorPane HBox.hgrow="ALWAYS">
                                                    <children>
-                                                      <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <children>
-                                                            <AnchorPane HBox.hgrow="ALWAYS">
-                                                               <children>
-                                                                  <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                     <children>
-                                                                        <Label fx:id="questionLabelNormal" text="%label.quest.normal">
-                                                                           <padding>
-                                                                              <Insets right="15.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <RadioButton fx:id="yesNormal" ellipsisString="%radio.button.harmonics.yes" mnemonicParsing="false" prefWidth="60.0" text="%radio.button.harmonics.yes">
-                                                                           <toggleGroup>
-                                                                              <ToggleGroup fx:id="normalGroup" />
-                                                                           </toggleGroup>
-                                                                        </RadioButton>
-                                                                        <RadioButton fx:id="noNormal" ellipsisString="%radio.button.harmonics.no" mnemonicParsing="false" prefWidth="60.0" selected="true" text="%radio.button.harmonics.no" toggleGroup="$normalGroup" />
-                                                                     </children>
-                                                                  </HBox>
-                                                               </children>
-                                                            </AnchorPane>
-                                                         </children>
-                                                         <padding>
-                                                            <Insets left="10.0" right="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane>
-                                                   <VBox.margin>
-                                                      <Insets />
-                                                   </VBox.margin>
-                                                   <children>
-                                                      <Label fx:id="labelNormal" disable="true" text="%label.data.normal" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="10.0" right="10.0" />
-                                                         </padding>
-                                                      </Label>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane VBox.vgrow="ALWAYS">
-                                                   <children>
-                                                      <HBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <children>
-                                                            <AnchorPane HBox.hgrow="ALWAYS">
-                                                               <children>
-                                                                  <Button fx:id="btnNormalSelect" disable="true" mnemonicParsing="false" onAction="#importDataFileNames" text="%button.import.csv" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                                  <ListView fx:id="listViewNormal" disable="true" layoutX="102.40000343322754" onDragDropped="#onDragDroppedNormal" onDragOver="#onDragOverNormal" prefHeight="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                     <contextMenu>
-                                                                        <ContextMenu>
-                                                                          <items>
-                                                                             <MenuItem fx:id="addMenuItem" mnemonicParsing="false" onAction="#addNormalFileFromListOnAction" text="%listViewContextMenu.add" />
-                                                                             <MenuItem mnemonicParsing="false" onAction="#deleteNormalFileFromListOnAction" text="%listViewContextMenu.delete" />
-                                                                          </items>
-                                                                        </ContextMenu>
-                                                                     </contextMenu>
-                                                                  </ListView>
-                                                               </children>
-                                                            </AnchorPane>
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="10.0" left="10.0" right="10.0" />
-                                                         </padding>
-                                                      </HBox>
+                                                      <Button fx:id="btnNormalSelect" mnemonicParsing="false" onAction="#chooseFilesOnAction" text="%button.import.csv" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                                      <ListView fx:id="listView" layoutX="102.40000343322754" onDragDropped="#onDragDroppedNormal" onDragOver="#onDragOverNormal" prefHeight="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <contextMenu>
+                                                            <ContextMenu>
+                                                              <items>
+                                                                 <MenuItem fx:id="addMenuItem" mnemonicParsing="false" onAction="#popupAddFileOnAction" text="%listViewContextMenu.add" />
+                                                                 <MenuItem mnemonicParsing="false" onAction="#deleteFileFromListOnAction" text="%listViewContextMenu.delete" />
+                                                              </items>
+                                                            </ContextMenu>
+                                                         </contextMenu>
+                                                      </ListView>
                                                    </children>
                                                 </AnchorPane>
                                              </children>
-                                          </VBox>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" />
+                                             </padding>
+                                          </HBox>
                                        </children>
                                     </AnchorPane>
-                                 </content>
-                              </TitledPane>
+                                 </children>
+                              </VBox>
                            </children>
                         </AnchorPane>
                         <AnchorPane>
                            <VBox.margin>
                               <Insets right="10.0" />
                            </VBox.margin>
-                           <children>
-                            <TitledPane fx:id="titledPaneHarmonics" text="%titled.harmonics" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <content>
-                                    <AnchorPane>
-                                       <children>
-                                          <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <children>
-                                                            <AnchorPane prefHeight="18.0" prefWidth="222.0" HBox.hgrow="ALWAYS">
-                                                               <children>
-                                                                  <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                     <children>
-                                                                        <Label fx:id="questionLabelHarmonic" text="%label.quest.harmonics">
-                                                                           <padding>
-                                                                              <Insets right="15.0" />
-                                                                           </padding>
-                                                                        </Label>
-                                                                        <RadioButton fx:id="yesHarmonic" ellipsisString="%radio.button.harmonics.yes" mnemonicParsing="false" prefWidth="60.0" text="%radio.button.harmonics.yes">
-                                                                           <toggleGroup>
-                                                                              <ToggleGroup fx:id="harmonicsGroup" />
-                                                                           </toggleGroup>
-                                                                        </RadioButton>
-                                                                        <RadioButton fx:id="noHarmonic" ellipsisString="%radio.button.harmonics.no" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="60.0" selected="true" text="%radio.button.harmonics.no" toggleGroup="$harmonicsGroup" />
-                                                                     </children>
-                                                                  </HBox>
-                                                               </children>
-                                                            </AnchorPane>
-                                                         </children>
-                                                         <padding>
-                                                            <Insets left="10.0" right="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane>
-                                                   <children>
-                                                      <Label fx:id="labelHarmonics" disable="true" text="%label.data.harmonics" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <padding>
-                                                            <Insets bottom="5.0" left="10.0" right="10.0" />
-                                                         </padding>
-                                                      </Label>
-                                                   </children>
-                                                </AnchorPane>
-                                                <AnchorPane VBox.vgrow="ALWAYS">
-                                                   <children>
-                                                      <HBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <children>
-                                                            <AnchorPane HBox.hgrow="ALWAYS">
-                                                               <children>
-                                                                  <Button fx:id="btnHarmonicsSelect" disable="true" mnemonicParsing="false" onAction="#importHarmonicsFileNames" text="%button.import.csv" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                                  <ListView fx:id="listViewHarmonics" disable="true" layoutX="102.40000343322754" onDragDropped="#onDragDroppedHarmo" onDragOver="#onDragOverHarmo" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                                     <contextMenu>
-                                                                        <ContextMenu>
-                                                                          <items>
-                                                                              <MenuItem mnemonicParsing="false" onAction="#addHarmonicsFileFromListOnAction" text="%listViewContextMenu.add" />
-                                                                              <MenuItem mnemonicParsing="false" onAction="#deleteHarmonicsFileFromListOnAction" text="%listViewContextMenu.delete" />
-                                                                          </items>
-                                                                        </ContextMenu>
-                                                                     </contextMenu>
-                                                                  </ListView>
-                                                               </children>
-                                                            </AnchorPane>
-                                                         </children>
-                                                         <padding>
-                                                            <Insets bottom="10.0" left="10.0" right="10.0" />
-                                                         </padding>
-                                                      </HBox>
-                                                   </children>
-                                                </AnchorPane>
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </AnchorPane>
-                                 </content>
-                              </TitledPane>
-                           </children>
                         </AnchorPane>
                         <AnchorPane>
                            <VBox.margin>
                               <Insets bottom="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
                            <children>
-                              <HBox alignment="CENTER_RIGHT" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <HBox alignment="CENTER_LEFT" prefWidth="700.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <AnchorPane>
-                                       <children>
-                                          <Button fx:id="btnImport" disable="true" mnemonicParsing="false" onAction="#importData" text="%button.import" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </AnchorPane>
+                                    <Button fx:id="btnImport" disable="true" mnemonicParsing="false" onAction="#importDataModelOnAction" text="%button.import" />
+                                    <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearOnAction" text="%button.clear" />
                                  </children>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
                               </HBox>
                            </children>
                         </AnchorPane>

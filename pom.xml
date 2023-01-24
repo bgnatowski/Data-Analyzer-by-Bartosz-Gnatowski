@@ -10,7 +10,7 @@
     </parent>
     <groupId>agh.inzapp</groupId>
     <artifactId>Inzynierka</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>DataAnalyzer_v1.1</version>
     <name>Inzynierka</name>
     <description>Inzynierka</description>
     <properties>
@@ -25,6 +25,21 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
+            <version>19</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>19</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>19</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
             <version>19</version>
         </dependency>
         <dependency>
@@ -46,17 +61,7 @@
             <artifactId>opencsv</artifactId>
             <version>5.7.1</version>
         </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>19</version>
-        </dependency>
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-web -->
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-web</artifactId>
-            <version>19</version>
-        </dependency>
         <!--        generacja worda-->
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
         <dependency>
@@ -75,11 +80,6 @@
             <groupId>com.deepoove</groupId>
             <artifactId>poi-tl</artifactId>
             <version>1.12.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-swing</artifactId>
-            <version>19</version>
         </dependency>
     </dependencies>
 

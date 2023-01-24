@@ -22,7 +22,6 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 	private final String applicationTitle;
 	private final ApplicationContext applicationContext;
 
-
 	public StageInitializer(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 		this.applicationTitle = FxmlUtils.getInternalizedPropertyByKey("application.title");
