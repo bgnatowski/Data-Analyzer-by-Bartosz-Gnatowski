@@ -67,8 +67,8 @@ public class PQParser {
 		mapDataNames.put("Plt_U12", Plt_U12);
 		mapDataNames.put("Plt_U23", Plt_U23);
 		mapDataNames.put("Plt_U31", Plt_U31);
-		mapDataNames.put("Unbalance_-_Voltage_(_Neg./Pos.)_[%]", Unbalanced_Voltage);
-		mapDataNames.put("Unbalance_-_Current_(_Neg./Pos.)_[%]", Unbalanced_Current);
+		mapDataNames.put("Unbalance_-_Voltage_(_Neg./Pos.)_[%]", U2_U1_avg);
+		mapDataNames.put("Unbalance_-_Current_(_Neg./Pos.)_[%]", I2_I1_avg);
 		mapDataNames.put("F_[Hz]", f);
 		mapDataNames.put("P_total_min_[W]", P_min);
 		mapDataNames.put("P_total_[W]", P_total);

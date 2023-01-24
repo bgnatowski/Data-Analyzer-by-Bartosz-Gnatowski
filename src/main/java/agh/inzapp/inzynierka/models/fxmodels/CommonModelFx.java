@@ -26,26 +26,6 @@ public class CommonModelFx {
 	protected MapProperty<UniNames, Double> harmonics = new SimpleMapProperty<>();
 	protected ListProperty<UniNames> columnNames = new SimpleListProperty<>();
 
-	public CommonModelFx(DataFx dfx, HarmoFx hfx) {
-		setId(dfx.getId());
-		setDate(dfx.getDate());
-		setFlags(dfx.getFlags());
-		final ObservableMap<UniNames, Double> recordsN = dfx.getRecords();
-		final ObservableMap<UniNames, Double> recordsH = hfx.getRecords();
-		LinkedHashMap<UniNames, Double> linkedHashMap = new LinkedHashMap<>();
-		linkedHashMap.putAll(recordsN);
-		linkedHashMap.putAll(recordsH);
-		setRecords(FXCollections.observableMap(linkedHashMap));
-
-		final ObservableList<UniNames> columnNamesN = dfx.getColumnNames();
-		final ObservableList<UniNames> columnNamesH = hfx.getColumnNames();
-		ArrayList<UniNames> columnNames = new ArrayList<>();
-		columnNames.addAll(columnNamesN);
-		columnNames.addAll(columnNamesH);
-		final List<UniNames> columnNamesDistinct = columnNames.stream().distinct().collect(Collectors.toList());
-		setColumnNames(FXCollections.observableArrayList(columnNamesDistinct));
-	}
-
 	public CommonModelFx(CommonModelFx dfx) {
 		setId(dfx.getId());
 		setDate(dfx.getDate());

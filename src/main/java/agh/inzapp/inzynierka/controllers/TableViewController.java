@@ -11,9 +11,14 @@ import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import org.springframework.stereotype.Controller;
 
@@ -50,8 +55,9 @@ public class TableViewController {
 			modelList = ListCommonModelFx.getInstance();
 			bindNormal();
 			bindHarmonics();
+			showInfoDialog();
 		} catch (ApplicationException e) {
-			throw new RuntimeException(e);
+			DialogUtils.errorDialog(e.getMessage());
 		}
 	}
 
@@ -128,7 +134,7 @@ public class TableViewController {
 					tableColumnList.add(tableColumn);
 				}
 				case Time -> {
-					tableColumn = new TableColumn<DataFx, LocalTime>(uniName.toString());
+					tableColumn = new TableColumn<CommonModelFx, LocalTime>(uniName.toString());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<CommonModelFx, LocalTime>, ObservableValue<LocalTime>>) dataFxCellDataFeatures ->
 									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalTime()));
@@ -199,7 +205,7 @@ public class TableViewController {
 					tableColumnList.add(tableColumn);
 				}
 				case Time -> {
-					tableColumn = new TableColumn<DataFx, LocalTime>(uniName.toString());
+					tableColumn = new TableColumn<CommonModelFx, LocalTime>(uniName.toString());
 					tableColumn.setCellValueFactory(
 							(Callback<TableColumn.CellDataFeatures<CommonModelFx, LocalTime>, ObservableValue<LocalTime>>) dataFxCellDataFeatures ->
 									new SimpleObjectProperty<>(dataFxCellDataFeatures.getValue().dateProperty().getValue().toLocalTime()));
@@ -376,4 +382,38 @@ public class TableViewController {
 		return values;
 	}
 
+	@FXML
+	private void infoNormalOnAction() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Statystyki - dane standardowe");
+		alert.setHeaderText("Statystyki:");
+		TextArea textArea = new TextArea(modelList.getNormalStatistics());
+		textArea.setEditable(false);
+		alert.getDialogPane().setContent(textArea);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.showAndWait();
+	}
+
+	@FXML
+	private void infoHarmoOnAction() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Statystyki - dane wyższych harmonicznych");
+		alert.setHeaderText("Statystyki:");
+		TextArea textArea = new TextArea(modelList.getHarmoStatistics());
+		textArea.setEditable(false);
+		alert.getDialogPane().setContent(textArea);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.showAndWait();
+	}
+
+	private void showInfoDialog(){
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Statystyki - import");
+		alert.setHeaderText("Zaimportowano poprawnie.\nStatystyki pomiarów:");
+		TextArea textArea = new TextArea(modelList.getImportedStatistics());
+		textArea.setEditable(false);
+		alert.getDialogPane().setContent(textArea);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.showAndWait();
+	}
 }

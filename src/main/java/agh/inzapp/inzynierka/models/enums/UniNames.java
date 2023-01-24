@@ -3,6 +3,7 @@ package agh.inzapp.inzynierka.models.enums;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 import static agh.inzapp.inzynierka.utils.FxmlUtils.getInternalizedPropertyByKey;
@@ -417,6 +418,21 @@ public enum UniNames{
 			H21_UL3, H22_UL3, H23_UL3, H24_UL3, H25_UL3, H26_UL3, H27_UL3, H28_UL3, H29_UL3, H30_UL3,
 			H31_UL3, H32_UL3, H33_UL3, H34_UL3, H35_UL3, H36_UL3, H37_UL3, H38_UL3, H39_UL3, H40_UL3,
 			H41_UL3, H42_UL3, H43_UL3, H44_UL3, H45_UL3, H46_UL3, H47_UL3, H48_UL3, H49_UL3, H50_UL3));
+
+	private static final List<UniNames> HARMONICS_ENOUGH = new ArrayList<>(Arrays.asList(
+			THD_L1, THD_L2, THD_L3,
+			H1_UL1, H2_UL1, H3_UL1, H4_UL1, H5_UL1, H6_UL1, H7_UL1, H8_UL1, H9_UL1, H10_UL1,
+			H11_UL1, H12_UL1, H13_UL1, H14_UL1, H15_UL1, H16_UL1, H17_UL1, H18_UL1, H19_UL1, H20_UL1,
+			H21_UL1, H22_UL1, H23_UL1, H24_UL1, H25_UL1,
+			H1_UL2, H2_UL2, H3_UL2, H4_UL2, H5_UL2, H6_UL2, H7_UL2, H8_UL2, H9_UL2, H10_UL2,
+			H11_UL2, H12_UL2, H13_UL2, H14_UL2, H15_UL2, H16_UL2, H17_UL2, H18_UL2, H19_UL2, H20_UL2,
+			H21_UL2, H22_UL2, H23_UL2, H24_UL2, H25_UL2,
+			H1_UL3, H2_UL3, H3_UL3, H4_UL3, H5_UL3, H6_UL3, H7_UL3, H8_UL3, H9_UL3, H10_UL3,
+			H11_UL3, H12_UL3, H13_UL3, H14_UL3, H15_UL3, H16_UL3, H17_UL3, H18_UL3, H19_UL3, H20_UL3,
+			H21_UL3, H22_UL3, H23_UL3, H24_UL3, H25_UL3));
+
+	private static final List<UniNames> NORMAL_ENOUGH = new ArrayList<>(Arrays.asList(
+			UL1_avg, UL2_avg, UL3_avg, U2_U1_avg, Plt_L1, Plt_L2, Plt_L3));
 	UniNames(String uniName, String unit) {
 		this.uniName = uniName;
 		this.unit = unit;
@@ -425,8 +441,8 @@ public enum UniNames{
 	public String getUnit() {
 		return unit;
 	}
-	public String getUniName() { return uniName;}
 
+	public String getUniName() { return uniName;}
 	@Override
 	public String toString() {
 		return this.uniName;
@@ -456,7 +472,12 @@ public enum UniNames{
 	}
 
 	public static List<UniNames> getQ(){return Q;}
+
 	public static List<UniNames> getS(){return S;}
 	public static List<UniNames> getP(){return P;}
 	public static List<UniNames> getHarmonics(){return HARMONICS;}
+	public static List<UniNames> getHarmonicsEnough(){return HARMONICS_ENOUGH;}
+	public static List<UniNames> getNormalEnough() {
+		return NORMAL_ENOUGH;
+	}
 }

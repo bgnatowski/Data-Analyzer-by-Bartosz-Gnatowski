@@ -3,8 +3,6 @@ package agh.inzapp.inzynierka.controllers;
 import agh.inzapp.inzynierka.models.CsvFilesList;
 import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
-import agh.inzapp.inzynierka.models.fxmodels.ListDataFx;
-import agh.inzapp.inzynierka.models.fxmodels.ListHarmoFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.collections.FXCollections;
@@ -78,8 +76,7 @@ public class ImportViewController {
 	}
 
 	private void clearUploaded() {
-		ListHarmoFx.reset();
-		ListDataFx.reset();
+		ListCommonModelFx.reset();
 	}
 
 	private void importDataFromAnalyser() throws ApplicationException {

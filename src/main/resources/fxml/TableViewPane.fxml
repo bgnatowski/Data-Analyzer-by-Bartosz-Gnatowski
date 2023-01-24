@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -23,7 +25,23 @@
                               <HBox prefWidth="200.0" spacing="5.0" VBox.vgrow="NEVER">
                                  <children>
                                     <ComboBox fx:id="displayTypeNorm" minWidth="150.0" onAction="#changeDisplayTypeNorm" prefWidth="150.0" />
-                                    <Button fx:id="saveNormal" mnemonicParsing="false" onAction="#saveNormalOnAction" text="%chart.pane.save" />
+                                    <Button fx:id="infoButtonNormal" mnemonicParsing="false" onAction="#infoNormalOnAction">
+                                       <graphic>
+                                          <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/info.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="saveNormal" mnemonicParsing="false" onAction="#saveNormalOnAction" text="%chart.pane.save">
+                                       <graphic>
+                                          <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/save.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Button>
                                  </children>
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -45,7 +63,23 @@
                               <HBox spacing="5.0" VBox.vgrow="NEVER">
                                  <children>
                                     <ComboBox fx:id="displayTypeHarmo" minWidth="150.0" onAction="#changeDisplayTypeHarmo" prefWidth="150.0" />
-                                    <Button fx:id="saveHarmo" mnemonicParsing="false" onAction="#saveHarmoOnAction" text="%chart.pane.save" />
+                                    <Button fx:id="infoButtonHarmo" mnemonicParsing="false" onAction="#infoHarmoOnAction">
+                                       <graphic>
+                                          <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/info.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="saveHarmo" mnemonicParsing="false" onAction="#saveHarmoOnAction" text="%chart.pane.save">
+                                       <graphic>
+                                          <ImageView fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/save.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Button>
                                  </children>
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

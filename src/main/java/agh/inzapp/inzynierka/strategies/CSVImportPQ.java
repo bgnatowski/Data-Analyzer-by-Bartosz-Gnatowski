@@ -1,7 +1,6 @@
 package agh.inzapp.inzynierka.strategies;
 
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
-import agh.inzapp.inzynierka.models.fxmodels.DataFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
@@ -42,7 +41,7 @@ public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 	protected void saveModels() {
 		AtomicLong id = new AtomicLong(0L);
 		allRecordsList.forEach(records ->{
-			DataFx model = new DataFx();
+			CommonModelFx model = new CommonModelFx();
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
 			try {
