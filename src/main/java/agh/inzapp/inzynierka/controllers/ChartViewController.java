@@ -167,10 +167,18 @@ public class ChartViewController {
 		Map<LocalDateTime, Double> xyDataMap;
 		UniNames uniName = yValuesList.get(i).getValue();
 		List<LocalDateTime> xData = modelsBetweenSelectedTime.stream().map(CommonModelFx::getDate).toList();
-		List<Double> yData = modelsBetweenSelectedTime.stream()
-				.map(model -> model.getRecords().get(uniName))
-				.filter(Objects::nonNull)
-				.toList();
+		List<Double> yData = new ArrayList<>();
+		if(modelsBetweenSelectedTime.get(0).getHarmonics().containsKey(uniName)){
+			yData = modelsBetweenSelectedTime.stream()
+					.map(model -> model.getHarmonics().get(uniName))
+					.filter(Objects::nonNull)
+					.toList();
+		}else if(modelsBetweenSelectedTime.get(0).getRecords().containsKey(uniName)){
+			yData = modelsBetweenSelectedTime.stream()
+					.map(model -> model.getRecords().get(uniName))
+					.filter(Objects::nonNull)
+					.toList();
+		}
 		xyDataMap = CommonUtils.zipToMap(xData, yData);
 		return xyDataMap;
 	}

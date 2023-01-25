@@ -8,7 +8,11 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import org.springframework.stereotype.Component;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -78,10 +82,16 @@ public class ListCommonModelFx {
 	}
 
 	public List<CommonModelFx> getRecordsBetween(LocalDateTime from, LocalDateTime to) throws ApplicationException {
-		if (!from.isBefore(to)) throw new ApplicationException("error.date.out.of.range");
+		if (!from.isBefore(to)) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.date.out.of.range"));
 		if (modelsFxObservableList.isEmpty()) return modelsFxObservableList;
+		final long start = from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		final long end = to.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+
 		return modelsFxObservableList.stream()
-				.filter(model -> (model.getDate().isAfter(from) && model.getDate().isBefore(to)))
+				.filter(model -> {
+					final long date = model.getDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+					return date >= start && date <= end;
+				})
 				.collect(Collectors.toList());
 	}
 

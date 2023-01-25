@@ -44,10 +44,15 @@ public class ImportViewController {
 
 	private void bindings() {
 		btnImport.setDisable(false);
-		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
-		btnImport.disableProperty().bind(filesList.filesListProperty().emptyProperty().not().and(
-				comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not()
-		);
+
+		comboBoxAnalyzer.getSelectionModel().select(Analysers.Sonel);
+		filesList.addFileToList(new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\DabrowaTrafo_Uharmo.csv"));
+		filesList.addFileToList(new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\DabrowaTrafo.csv"));
+		updateListView();
+//		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
+//		btnImport.disableProperty().bind(filesList.filesListProperty().emptyProperty().not().and(
+//				comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not()
+//		);
 	}
 
 	@FXML

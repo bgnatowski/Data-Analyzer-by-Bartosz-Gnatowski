@@ -28,7 +28,7 @@ import java.util.Objects;
 public class LineChartBuilder {
 	private LineChart<Number, Number> chart;
 	private XYChart.Series<Number, Number> series;
-	private NumberAxis xAxis;
+	private NumberAxis xAxis, yAxis;
 	private String xTickDatePattern;
 	private double yMinTick, yMaxTick, yTick;
 
@@ -38,9 +38,10 @@ public class LineChartBuilder {
 
 	public void createNew(){
 		xAxis = new NumberAxis();
-		NumberAxis yAxis = new NumberAxis();
+		yAxis = new NumberAxis();
 		yAxis.setAutoRanging(true);
 		xAxis.setAutoRanging(true);
+		setTickLabelFormatterOnY();
 		chart = new LineChart<>(xAxis, yAxis);
 		yMinTick = 0;
 		yMaxTick = 110;
@@ -101,13 +102,13 @@ public class LineChartBuilder {
 	}
 
 	private void setYAxisTick(Map<LocalDateTime, Double> xyDataMap) {
-		Double min = Collections.min(xyDataMap.values());
-		Double max = Collections.max(xyDataMap.values());
-		double off = max-min;
+//		Double min = 0d;
+//		Double max = Collections.max(xyDataMap.values());
+//		double off = max-min;
 
-		yMinTick = min-off;
-		yMaxTick = max+off;
-		yTick = (max-min)/2;
+		yMinTick = 0d;
+		yMaxTick = Collections.max(xyDataMap.values());
+		yTick = (yMaxTick-yMinTick)/2;
 		setYAxisBounds(yMinTick, yMaxTick, yTick);
 		setTickLabelFormatterOnX();
 	}
@@ -154,21 +155,38 @@ public class LineChartBuilder {
 		});
 	}
 
+	private void setTickLabelFormatterOnY() {
+		yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+			@Override
+			public Number fromString(String string) {
+				return Double.parseDouble(string);
+			}
+
+			@Override
+			public String toString(Number value) {
+				return String.format("%2.2f", value.doubleValue());
+			}
+
+		});
+	}
+
+
+
 	public void setXDateTickToOnlyTime() { xTickDatePattern = "HH:mm";}
 	public void setXDateTickToDays() {
 		xTickDatePattern = "d-MM HH:mm";
 	}
 
 	public void setYAxisBounds(double min, double max, double tick) {
+		yMinTick = min;
+		yMaxTick = max;
+		yTick = tick;
+
 		NumberAxis axis = (NumberAxis) chart.getYAxis();
 		axis.setAutoRanging(false);
 		axis.setLowerBound(min);
 		axis.setUpperBound(max);
 		axis.setTickUnit(tick);
-
-		yMinTick = min;
-		yMaxTick = max;
-		yTick = tick;
 	}
 
 	public void setXAxisBounds(double min, double max, double tick) {
