@@ -7,6 +7,7 @@ import agh.inzapp.inzynierka.models.fxmodels.*;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
+import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -55,7 +56,11 @@ public class TableViewController {
 			modelList = ListCommonModelFx.getInstance();
 			bindNormal();
 			bindHarmonics();
-			showInfoDialog();
+			Platform.runLater(new Runnable() {
+				@Override public void run() {
+					showInfoDialog();
+				}
+			});
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}

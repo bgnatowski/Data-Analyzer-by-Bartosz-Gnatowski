@@ -38,20 +38,15 @@ public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 		return dataModels;
 	}
 	@Override
-	protected void saveModels() {
+	protected void saveModels() throws ApplicationException {
 		AtomicLong id = new AtomicLong(0L);
-		allRecordsList.forEach(records ->{
+		for (List<String> records : allRecordsList) {
 			CommonModelFx model = new CommonModelFx();
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
-			try {
-				setDataInPQModel(records, model);
-			} catch (ApplicationException e) {
-				DialogUtils.errorDialog(e.getMessage());
-				throw new RuntimeException(e);
-			}
+			setDataInPQModel(records, model);
 			dataModels.add(model);
-		});
+		}
 	}
 	@Override
 	protected void readFile(String path) throws ApplicationException {

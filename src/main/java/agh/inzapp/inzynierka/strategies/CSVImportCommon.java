@@ -17,7 +17,6 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,7 @@ public abstract class CSVImportCommon {
 
 	abstract protected void readFile(String path) throws ApplicationException;
 
-	abstract protected void saveModels();
+	abstract protected void saveModels() throws ApplicationException;
 
 	protected void setDataInPQModel(List<String> recordsList, CommonModelFx model) throws ApplicationException {
 		Map<UniNames, Double> modelRecords = new LinkedHashMap<>();

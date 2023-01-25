@@ -55,24 +55,14 @@ public class CsvFilesList {
 		final ListCommonModelFx modelsFxList = ListCommonModelFx.getInstance();
 		switch (analyser){
 			case PQbox -> {
-				filesList.forEach(file ->
-				{
-					try {
-						modelsFxList.addModelList(new CSVImportPQ().importCSVFile(file.getAbsolutePath()));
-					} catch (ApplicationException e) {
-						DialogUtils.errorDialog(e.getMessage());
-					}
-				});
+				for (File file : filesList) {
+					modelsFxList.addModelList(new CSVImportPQ().importCSVFile(file.getAbsolutePath()));
+				}
 			}
 			case Sonel -> {
-				filesList.forEach(file ->
-				{
-					try {
-						modelsFxList.addModelList(new CSVImportSonel().importCSVFile(file.getAbsolutePath()));
-					} catch (ApplicationException e) {
-						DialogUtils.errorDialog(e.getMessage());
-					}
-				});
+				for (File file : filesList) {
+					modelsFxList.addModelList(new CSVImportSonel().importCSVFile(file.getAbsolutePath()));
+				}
 			}
 		}
 	}
