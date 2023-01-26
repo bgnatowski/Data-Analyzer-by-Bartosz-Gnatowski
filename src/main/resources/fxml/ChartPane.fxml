@@ -78,7 +78,7 @@
                                             </graphic>
                                         </Button>
                                     </GridPane>
-                                    <Button fx:id="buttonAddLine" onAction="#addLine" mnemonicParsing="false" text="%chart.pane.x.add.button" />
+                                    <Button fx:id="buttonAddLine" mnemonicParsing="false" onAction="#addLine" text="%chart.pane.x.add.button" />
                                 </VBox>
                             </TitledPane>
                             <TitledPane fx:id="settingsPane" animated="false" text="%chart.pane.settings.name">
@@ -131,10 +131,10 @@
                                                 <ToggleGroup fx:id="legendButtonGroup" />
                                             </toggleGroup>
                                         </RadioButton>
-                                        <RadioButton fx:id="legendOff" mnemonicParsing="false" onAction="#switchOffLegend" selected="true" text="%button.off" toggleGroup="$legendButtonGroup" />
+                                        <RadioButton fx:id="legendOff" mnemonicParsing="false" onAction="#switchOffLegend" text="%button.off" toggleGroup="$legendButtonGroup" />
                                     </HBox>
                                     <HBox alignment="CENTER_RIGHT" minWidth="-Infinity" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                        <RadioButton fx:id="dataOn" mnemonicParsing="false" onAction="#switchOnDataPoints" selected="true" text="%button.on">
+                                        <RadioButton fx:id="dataOn" mnemonicParsing="false" onAction="#switchOnDataPoints" text="%button.on">
                                             <toggleGroup>
                                                 <ToggleGroup fx:id="dataButtonsGroup" />
                                             </toggleGroup>

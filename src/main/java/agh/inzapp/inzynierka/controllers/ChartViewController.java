@@ -62,13 +62,11 @@ public class ChartViewController {
 	/////////////////////////////////////
 	private ListCommonModelFx modelsList;
 	private UserChartService chartService;
-	private int howManyYDData;
 
 	public void initialize() {
 		try {
 			modelsList = ListCommonModelFx.getInstance();
 			chartService = new UserChartService();
-			howManyYDData = 0;
 			addTimeSpinnersToGrid();
 			initLists();
 			bindings();
@@ -225,7 +223,6 @@ public class ChartViewController {
 
 			for (int i = 0; i < yValuesList.size(); i++) {
 				if (!isSelectedValue(i)) break;
-				System.out.println("Iteruje po yValueList: " + i + "/"+yValuesList.size());
 				Map<LocalDateTime, Double> xyDataMap = getSeriesDataMap(modelsInSelectedTime, i);
 				chartService.createSeries(xyDataMap, yValuesList.get(i).getValue(), yColorPickerList.get(i).getValue());
 			}
@@ -395,7 +392,7 @@ public class ChartViewController {
 	}
 	private ArrayList<Color> getUserDefinedColors() {
 		ArrayList<Color> colors = new ArrayList<>();
-		for (int i = 0; i <= howManyYDData; i++) {
+		for (int i = 0; i < yColorPickerList.size(); i++) {
 			colors.add(yColorPickerList.get(i).getValue());
 		}
 		return colors;
@@ -416,6 +413,6 @@ public class ChartViewController {
 
 
 	//todo usuwanie wykresu
-	//todo zapisywanie ustawien wszysktich poiedzy przelaczaniem
+	//todo zapisywanie ustawien wszysktich poiedzy przelaczaniem idk czy to zrobie
 
 }
