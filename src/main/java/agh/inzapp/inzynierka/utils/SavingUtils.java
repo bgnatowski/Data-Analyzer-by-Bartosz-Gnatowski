@@ -1,6 +1,7 @@
 package agh.inzapp.inzynierka.utils;
 
 import agh.inzapp.inzynierka.models.enums.FXMLNames;
+import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
 import com.deepoove.poi.XWPFTemplate;
 import com.opencsv.CSVWriter;
 import javafx.embed.swing.SwingFXUtils;
@@ -88,7 +89,6 @@ public class SavingUtils {
 			compile.render(reportResult);
 			compile.writeToFile(tempReport.getAbsolutePath());
 		}
-
 		return tempReport.getAbsolutePath();
 	}
 

@@ -24,8 +24,6 @@ import static agh.inzapp.inzynierka.models.enums.FXMLNames.TABLE_VIEW;
 @Controller
 public class ImportViewController {
 	@FXML
-	private AnchorPane apMain;
-	@FXML
 	private HBox progressBar;
 	@FXML
 	private ComboBox<Analysers> comboBoxAnalyzer;
@@ -43,9 +41,8 @@ public class ImportViewController {
 	}
 
 	private void bindings() {
-		btnImport.setDisable(false);
-
 		comboBoxAnalyzer.getSelectionModel().select(Analysers.Sonel);
+		btnImport.setDisable(false);
 		filesList.addFileToList(new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\DabrowaTrafo_Uharmo.csv"));
 		filesList.addFileToList(new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\DabrowaTrafo.csv"));
 		updateListView();

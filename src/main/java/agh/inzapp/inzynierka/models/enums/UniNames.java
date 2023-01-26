@@ -81,8 +81,6 @@ public enum UniNames{
 	Plt_L1(getInternalizedPropertyByKey("Plt_L1"), getInternalizedPropertyByKey("unit.percentage")),
 	Plt_L2(getInternalizedPropertyByKey("Plt_L2"), getInternalizedPropertyByKey("unit.percentage")),
 	Plt_L3(getInternalizedPropertyByKey("Plt_L3"), getInternalizedPropertyByKey("unit.percentage")),
-	Unbalanced_Voltage(getInternalizedPropertyByKey("Unbalanced_Voltage"), getInternalizedPropertyByKey("unit.percentage")),
-	Unbalanced_Current(getInternalizedPropertyByKey("Unbalanced_Current"), getInternalizedPropertyByKey("unit.percentage")),
 	f(getInternalizedPropertyByKey("f"), getInternalizedPropertyByKey("unit.hz")),
 	cos_phi(getInternalizedPropertyByKey("cos_phi"), getInternalizedPropertyByKey("unit.none")),
 	tan_phi(getInternalizedPropertyByKey("tan_phi"), getInternalizedPropertyByKey("unit.none")),

@@ -30,7 +30,6 @@ import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller
 public class ReportViewController {
-	private final BooleanProperty toggleProperty = new SimpleBooleanProperty(true);
 	@FXML
 	private GridPane timeGrid;
 	@FXML
@@ -55,15 +54,7 @@ public class ReportViewController {
 	@FXML
 	public void initialize() {
 		try {
-			apMain.disableProperty().bind(toggleProperty);
-
 			modelsList = ListCommonModelFx.getInstance();
-			if(!ListCommonModelFx.hasBoth()){
-				DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.merge.list"));
-				toggleProperty.set(true);
-			}
-			else toggleProperty.set(false);
-
 			reportChartService = new ReportLineChartService();
 			barChartService = new ReportBarChartService();
 			reportService = new ReportService();
@@ -109,10 +100,23 @@ public class ReportViewController {
 			LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
 			LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
 			final List<CommonModelFx> recordsBetween = modelsList.getRecordsBetween(from, to);
-			barChartService.createHarmonicsBarCharts(recordsBetween);
-			reportChartService.createLineCharts(recordsBetween);
-			List<String> userAdditionalData = getUserEnteredData();
-			tmpReportPath = reportService.generateReport(recordsBetween, userAdditionalData);
+
+			if(modelsList.hasBoth()){
+				barChartService.createHarmonicsBarCharts(recordsBetween);
+				reportChartService.createLineChartsStandard(recordsBetween);
+				reportChartService.createLineChartsHarmo(recordsBetween);
+				List<String> userAdditionalData = getUserEnteredData();
+				tmpReportPath = reportService.generateReport(recordsBetween, userAdditionalData);
+			}else if(modelsList.hasOnlyHarmonics()){
+				barChartService.createHarmonicsBarCharts(recordsBetween);
+				reportChartService.createLineChartsHarmo(recordsBetween);
+				List<String> userAdditionalData = getUserEnteredData();
+				tmpReportPath = reportService.generateReportHarmo(recordsBetween, userAdditionalData);
+			}else if(modelsList.hasOnlyStandard()){
+				reportChartService.createLineChartsStandard(recordsBetween);
+				List<String> userAdditionalData = getUserEnteredData();
+				tmpReportPath = reportService.generateReportStandard(recordsBetween, userAdditionalData);
+			}
 			info.setText(FxmlUtils.getInternalizedPropertyByKey("report.info.succes"));
 		} catch (ApplicationException | IOException e) {
 			info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));

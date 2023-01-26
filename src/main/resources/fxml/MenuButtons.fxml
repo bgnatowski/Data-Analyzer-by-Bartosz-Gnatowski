@@ -22,7 +22,8 @@
                             <MenuItem mnemonicParsing="false" onAction="#openInNewWindow" text="%menu.open.new.window" />
                           </items>
                         </ContextMenu>
-                     </contextMenu></Button>
+                     </contextMenu>
+                  </Button>
                   <Button fx:id="chartViewButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#figuresOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.figures" />
                   <Button fx:id="reportButton" alignment="CENTER" contentDisplay="CENTER" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#reportOnAction" prefHeight="30.0" prefWidth="140.0" text="%button.report" />
                </children>

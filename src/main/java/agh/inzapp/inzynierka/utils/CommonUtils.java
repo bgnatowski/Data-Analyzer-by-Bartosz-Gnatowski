@@ -84,22 +84,17 @@ public class CommonUtils {
 		return latencies.get(index-1);
 	}
 
-	public static Double get95Percentile(List<CommonModelFx> recordsBetween, UniNames name) {
-		List<Double> allRecords = recordsBetween.stream().map(record -> record.getRecords().get(name))
-					.filter(Objects::nonNull).sorted().collect(Collectors.toList());
-		return percentile(allRecords, 95);
+	public static Double get95Percentile(List<Double> column, UniNames name) {
+		final List<Double> sortedColumn = column.stream().sorted().toList();
+		return percentile(sortedColumn, 95);
 	}
 
-	public static Double get5Percentile(List<CommonModelFx> recordsBetween, UniNames name) {
-		List<Double> allRecords = recordsBetween.stream().map(record -> record.getRecords().get(name))
-				.filter(Objects::nonNull).sorted().collect(Collectors.toList());
-		return percentile(allRecords, 5);
+	public static Double get5Percentile(List<Double> column, UniNames name) {
+		final List<Double> sortedColumn = column.stream().sorted().toList();
+		return percentile(sortedColumn, 5);
 	}
 
-	public static Double getAvg(List<CommonModelFx> recordsBetween, UniNames name) {
-			List<Double> column = recordsBetween.stream().map(record -> record.getRecords().get(name))
-					.filter(Objects::nonNull)
-					.toList();
+	public static Double getAvg(List<Double> column, UniNames name) {
 			OptionalDouble average = column
 					.stream()
 					.mapToDouble(a -> a)
@@ -109,10 +104,7 @@ public class CommonUtils {
 		return 0d;
 	}
 
-	public static Double getMax(List<CommonModelFx> recordsBetween, UniNames name) {
-		List<Double> column = recordsBetween.stream().map(record -> record.getRecords().get(name))
-				.filter(Objects::nonNull)
-				.toList();
+	public static Double getMax(List<Double> column, UniNames name) {
 		OptionalDouble max = column
 				.stream()
 				.mapToDouble(a -> a)
@@ -122,10 +114,7 @@ public class CommonUtils {
 		return 0d;
 	}
 
-	public static Double getMin(List<CommonModelFx> recordsBetween, UniNames name) {
-		List<Double> column = recordsBetween.stream().map(record -> record.getRecords().get(name))
-				.filter(Objects::nonNull)
-				.toList();
+	public static Double getMin(List<Double> column, UniNames name) {
 		OptionalDouble min = column
 				.stream()
 				.mapToDouble(a -> a)
@@ -135,10 +124,7 @@ public class CommonUtils {
 		return 0d;
 	}
 
-	public static Double getTolerancePercentage(List<CommonModelFx> recordsBetween, UniNames name, Double tolerance) {
-		List<Double> column = recordsBetween.stream().map(record -> record.getRecords().get(name))
-				.filter(Objects::nonNull)
-				.toList();
+	public static Double getTolerancePercentage(List<Double> column, UniNames name, Double tolerance) {
 		final long amountInTolerance = column.stream().filter(result -> result <= tolerance).count();
 		return ((double) amountInTolerance/column.size()) * 100d;
 	}

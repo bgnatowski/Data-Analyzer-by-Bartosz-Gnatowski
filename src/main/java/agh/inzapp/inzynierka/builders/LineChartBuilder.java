@@ -36,7 +36,7 @@ public class LineChartBuilder {
 		setXDateTickToDays();
 	}
 
-	public void createNew(){
+	public void createNew() {
 		xAxis = new NumberAxis();
 		yAxis = new NumberAxis();
 		yAxis.setAutoRanging(true);
@@ -59,14 +59,14 @@ public class LineChartBuilder {
 		AnchorPane.setRightAnchor(chart, 0.0);
 	}
 
-	public void createSeries(Map<LocalDateTime, Double> xyDataMap, UniNames name){
+	public void createSeries(Map<LocalDateTime, Double> xyDataMap, UniNames name) {
 		series = new XYChart.Series<>();
 		setSeriesName(name);
 
 		ObservableList<XYChart.Data<Number, Number>> dataList = FXCollections.observableArrayList();
-		xyDataMap.forEach((x,y)->{
+		xyDataMap.forEach((x, y) -> {
 			final long longDateOnX = x.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-			XYChart.Data<Number, Number> data = new XYChart.Data<>(longDateOnX,y);
+			XYChart.Data<Number, Number> data = new XYChart.Data<>(longDateOnX, y);
 			dataList.add(data);
 		});
 		setTimeAxisTick(xyDataMap);
@@ -79,7 +79,7 @@ public class LineChartBuilder {
 	private void setYAxisTick(Map<LocalDateTime, Double> xyDataMap) {
 		yMin = 0d;
 		yMax = Collections.max(xyDataMap.values());
-		yTick = (yMax - yMin)/2;
+		yTick = (yMax - yMin) / 2;
 		setYAxisBounds();
 		setTickLabelFormatterOnX();
 	}
@@ -87,27 +87,22 @@ public class LineChartBuilder {
 	private void setTimeAxisTick(Map<LocalDateTime, Double> xyDataMap) {
 		final List<LocalDateTime> localDateTimes = xyDataMap.keySet().stream().toList();
 		long min = localDateTimes.get(0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		long max = localDateTimes.get(localDateTimes.size()-1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		long off = max-min;
-		setXAxisBounds(min, max, off/(localDateTimes.size()/2d));
+		long max = localDateTimes.get(localDateTimes.size() - 1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		long off = max - min;
+		setXAxisBounds(min, max, off / (localDateTimes.size() / 2d));
 		setTickLabelFormatterOnX();
 	}
 
 	public void setSeriesName(UniNames name) {
-		String seriesName;
-		if(!name.equals(UniNames.Unbalanced_Voltage)){
-			seriesName = name + name.getUnit();
-			if(seriesName.contains(" śr.")){
-				seriesName = seriesName.replaceAll(" śr.", "");
-			}
-			if(seriesName.contains(" avg.")){
-				seriesName = seriesName.replaceAll(" avg.", "");
-			}
-			if(seriesName.contains(" Σ")){
-				seriesName = seriesName.replaceAll(" Σ", "");
-			}
-		}else{
-			seriesName = "ku2" + name.getUnit();
+		String seriesName = name + name.getUnit();
+		if (seriesName.contains(" śr.")) {
+			seriesName = seriesName.replaceAll(" śr.", "");
+		}
+		if (seriesName.contains(" avg.")) {
+			seriesName = seriesName.replaceAll(" avg.", "");
+		}
+		if (seriesName.contains(" Σ")) {
+			seriesName = seriesName.replaceAll(" Σ", "");
 		}
 
 		series.setName(seriesName);
@@ -119,6 +114,7 @@ public class LineChartBuilder {
 			public String toString(Number number) {
 				return Instant.ofEpochMilli(number.longValue()).atZone(ZoneId.systemDefault()).toLocalDateTime().format(DateTimeFormatter.ofPattern(xTickDatePattern));
 			}
+
 			@Override
 			public Number fromString(String s) {
 				return LocalDateTime.parse(s, DateTimeFormatter.ofPattern(xTickDatePattern)).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -141,7 +137,10 @@ public class LineChartBuilder {
 		});
 	}
 
-	public void setXDateTickToOnlyTime() { xTickDatePattern = "HH:mm";}
+	public void setXDateTickToOnlyTime() {
+		xTickDatePattern = "HH:mm";
+	}
+
 	public void setXDateTickToDays() {
 		xTickDatePattern = "d-MM HH:mm";
 	}
@@ -177,7 +176,7 @@ public class LineChartBuilder {
 	public void setSeriesColor(Color seriesColor) {
 		Node line = series.getNode().lookup(".chart-series-line");
 		String rgb = CommonUtils.convertToWebString(seriesColor);
-		line.setStyle("-fx-stroke: "+rgb+";");
+		line.setStyle("-fx-stroke: " + rgb + ";");
 	}
 
 	public void clear() {
@@ -190,18 +189,19 @@ public class LineChartBuilder {
 		chart.setLegendVisible(param);
 	}
 
-	public void setCreateSymbols(boolean param){
+	public void setCreateSymbols(boolean param) {
 		chart.setCreateSymbols(param);
 	}
 
-	public String getTitle(){
+	public String getTitle() {
 		return chart.getTitle();
 	}
 
-	public void setTitle(String title){
+	public void setTitle(String title) {
 		chart.setTitle(title);
 	}
-	public void setYAxisLabel(String label){
+
+	public void setYAxisLabel(String label) {
 		chart.getYAxis().setTickLabelRotation(-90);
 		chart.getYAxis()
 				.lookup(".axis-label")
@@ -210,7 +210,8 @@ public class LineChartBuilder {
 		chart.getYAxis().setLabel(label);
 		setYAxisBounds();
 	}
-	public void setXAxisLabel(String label){
+
+	public void setXAxisLabel(String label) {
 		chart.getXAxis()
 				.lookup(".axis-label")
 				.setStyle("-fx-label-padding: 0 -10 0 0;");
@@ -218,18 +219,20 @@ public class LineChartBuilder {
 		chart.getXAxis().setLabel(label);
 
 	}
-	public String getXLabel(){
+
+	public String getXLabel() {
 		return chart.getXAxis().getLabel();
 	}
-	public String getYLabel(){
+
+	public String getYLabel() {
 		return chart.getYAxis().getLabel();
 	}
 
-	public boolean isLegendVisible(){
+	public boolean isLegendVisible() {
 		return chart.isLegendVisible();
 	}
 
-	public boolean isCreatedSymbols(){
+	public boolean isCreatedSymbols() {
 		return chart.getCreateSymbols();
 	}
 
@@ -237,10 +240,12 @@ public class LineChartBuilder {
 		this.yMin = yMin;
 		setYAxisBounds();
 	}
+
 	public void setYMax(double yMax) {
 		this.yMax = yMax;
 		setYAxisBounds();
 	}
+
 	public void setYTick(double yTick) {
 		this.yTick = yTick;
 		setYAxisBounds();
@@ -253,6 +258,7 @@ public class LineChartBuilder {
 	public double getYMax() {
 		return yMax;
 	}
+
 	public double getYTick() {
 		return yTick;
 	}

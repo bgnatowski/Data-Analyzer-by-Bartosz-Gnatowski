@@ -8,11 +8,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import org.springframework.stereotype.Component;
 
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
@@ -21,8 +18,8 @@ import java.util.stream.Collectors;
 public class ListCommonModelFx {
 	private ObservableList<CommonModelFx> modelsFxObservableList;
 	private List<CommonModelFx> modelsFx;
+	private boolean hasBoth;
 	private static volatile ListCommonModelFx instance;
-	private static boolean hasBoth;
 
 	private ListCommonModelFx() {
 		modelsFx = new ArrayList<>();
@@ -60,14 +57,31 @@ public class ListCommonModelFx {
 				});
 			}
 		}
+		testHasBoth();
 		modelsFxObservableList.setAll(modelsFx);
+	}
+
+	private void testHasBoth() {
+		final CommonModelFx commonModelFx = modelsFx.get(0);
+		if(!commonModelFx.getRecords().isEmpty() && !commonModelFx.getHarmonics().isEmpty())
+			hasBoth=true;
 	}
 
 	public static void reset() {
 		instance = null;
 	}
 
-	public static boolean hasBoth() {
+	public boolean hasOnlyHarmonics() {
+		final CommonModelFx commonModelFx = modelsFx.get(0);
+		return commonModelFx.getRecords().isEmpty() && !commonModelFx.getHarmonics().isEmpty();
+	}
+
+	public boolean hasOnlyStandard() {
+		final CommonModelFx commonModelFx = modelsFx.get(0);
+		return !commonModelFx.getRecords().isEmpty() && commonModelFx.getHarmonics().isEmpty();
+	}
+
+	public boolean hasBoth() {
 		return hasBoth;
 	}
 
@@ -106,26 +120,6 @@ public class ListCommonModelFx {
 
 	public void setModelsFxObservableList(ObservableList<CommonModelFx> modelsFxObservableList) {
 		this.modelsFxObservableList = modelsFxObservableList;
-	}
-
-	public List<CommonModelFx> getModelsFx() {
-		return modelsFx;
-	}
-
-	public void setModelsFx(List<CommonModelFx> modelsFx) {
-		this.modelsFx = modelsFx;
-	}
-
-	public static void setInstance(ListCommonModelFx instance) {
-		ListCommonModelFx.instance = instance;
-	}
-
-	public static boolean isHasBoth() {
-		return hasBoth;
-	}
-
-	public static void setHasBoth(boolean hasBoth) {
-		ListCommonModelFx.hasBoth = hasBoth;
 	}
 
 	public String[] getColumStandardNamesArray() {

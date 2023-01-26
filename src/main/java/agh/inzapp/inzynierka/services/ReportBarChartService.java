@@ -44,13 +44,13 @@ public class ReportBarChartService {
 	}
 
 	private int getHowManyHarmonicAreInModels(List<UniNames> L, CommonModelFx model) {
-		return (int) L.stream().filter(Hn -> model.getRecords().containsKey(Hn)).count() + 1;
+		return (int) L.stream().filter(Hn -> model.getHarmonics().containsKey(Hn)).count() + 1;
 	}
 
 	private List<Double> get95PercentileOfLane(List<UniNames> L, List<CommonModelFx> allByIdBetween) {
 		List<Double> percentile95List = new ArrayList<>();
 		L.forEach(Hn -> {
-			List<Double> allHn = allByIdBetween.stream().map(record -> record.getRecords().get(Hn))
+			List<Double> allHn = allByIdBetween.stream().map(record -> record.getHarmonics().get(Hn))
 					.filter(Objects::nonNull).sorted().collect(Collectors.toList());
 			final Double percentile = CommonUtils.percentile(allHn, 95);
 			percentile95List.add(percentile);
@@ -61,7 +61,7 @@ public class ReportBarChartService {
 	private List<Double> getAvgOf50HarmonicsOfLine(List<UniNames> L, List<CommonModelFx> allByIdBetween) {
 		List<Double> avg50n = new ArrayList<>();
 		L.forEach(Hn -> {
-			List<Double> allHn = allByIdBetween.stream().map(record -> record.getRecords().get(Hn))
+			List<Double> allHn = allByIdBetween.stream().map(record -> record.getHarmonics().get(Hn))
 					.filter(Objects::nonNull)
 					.toList();
 			OptionalDouble average = allHn
@@ -77,7 +77,7 @@ public class ReportBarChartService {
 	private List<Double> getMaxOf50HarmonicOfLane(List<UniNames> L, List<CommonModelFx> allByIdBetween) {
 		List<Double> max50n = new ArrayList<>();
 		L.forEach(Hn -> {
-			List<Double> allHn = allByIdBetween.stream().map(record -> record.getRecords().get(Hn))
+			List<Double> allHn = allByIdBetween.stream().map(record -> record.getHarmonics().get(Hn))
 					.filter(Objects::nonNull)
 					.toList();
 			OptionalDouble average = allHn

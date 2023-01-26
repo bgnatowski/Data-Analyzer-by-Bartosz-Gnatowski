@@ -8,125 +8,81 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="apMain" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.ImportViewController">
+
+<VBox maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.ImportViewController">
    <children>
-      <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <content>
-            <AnchorPane>
+      <HBox alignment="CENTER_LEFT" fillHeight="false" spacing="15.0">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="%label.analyzer" />
+            <ComboBox fx:id="comboBoxAnalyzer" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" left="10.0" right="10.0" top="10.0" />
+         </VBox.margin>
+      </HBox>
+      <Button fx:id="btnNormalSelect" contentDisplay="RIGHT" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#chooseFilesOnAction" text="%button.import.csv">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/box_in.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <VBox.margin>
+            <Insets bottom="5.0" left="10.0" />
+         </VBox.margin>
+      </Button>
+      <ListView fx:id="listView" onDragDropped="#onDragDroppedNormal" onDragOver="#onDragOverNormal" prefHeight="150.0" VBox.vgrow="ALWAYS">
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                 <MenuItem fx:id="addMenuItem" mnemonicParsing="false" onAction="#popupAddFileOnAction" text="%listViewContextMenu.add" />
+                 <MenuItem mnemonicParsing="false" onAction="#deleteFileFromListOnAction" text="%listViewContextMenu.delete" />
+              </items>
+            </ContextMenu>
+         </contextMenu>
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
+      </ListView>
+      <HBox alignment="CENTER_LEFT" fillHeight="false" spacing="10.0">
+         <children>
+            <Button fx:id="btnImport" contentDisplay="RIGHT" disable="true" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#importDataModelOnAction" text="%button.import">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/box_in.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btnClear" contentDisplay="RIGHT" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#clearOnAction" text="%button.clear">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/trash.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <HBox fx:id="progressBar" alignment="CENTER" minHeight="-Infinity" minWidth="-Infinity" spacing="10.0" visible="false">
                <children>
-                  <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <children>
-                        <AnchorPane>
-                           <VBox.margin>
-                              <Insets right="10.0" top="5.0" />
-                           </VBox.margin>
-                           <children>
-                              <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="349.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AnchorPane>
-                                       <children>
-                                          <ComboBox fx:id="comboBoxAnalyzer" layoutX="120.79999732971191" prefWidth="200.0" AnchorPane.leftAnchor="120.79999732971191" AnchorPane.rightAnchor="2.6702880973061838E-6" AnchorPane.topAnchor="0.0" />
-                                          <Label alignment="CENTER" contentDisplay="CENTER" layoutY="4.0" text="%label.analyzer" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="4.0" />
-                                       </children>
-                                    </AnchorPane>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                              </HBox>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane>
-                           <VBox.margin>
-                              <Insets right="10.0" />
-                           </VBox.margin>
-                           <children>
-                              <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <AnchorPane>
-                                       <children>
-                                          <HBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane HBox.hgrow="ALWAYS" />
-                                             </children>
-                                             <padding>
-                                                <Insets left="10.0" right="10.0" />
-                                             </padding>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane>
-                                       <VBox.margin>
-                                          <Insets />
-                                       </VBox.margin>
-                                    </AnchorPane>
-                                    <AnchorPane VBox.vgrow="ALWAYS">
-                                       <children>
-                                          <HBox spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                             <children>
-                                                <AnchorPane HBox.hgrow="ALWAYS">
-                                                   <children>
-                                                      <Button fx:id="btnNormalSelect" mnemonicParsing="false" onAction="#chooseFilesOnAction" text="%button.import.csv" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                                                      <ListView fx:id="listView" layoutX="102.40000343322754" onDragDropped="#onDragDroppedNormal" onDragOver="#onDragOverNormal" prefHeight="150.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                                         <contextMenu>
-                                                            <ContextMenu>
-                                                              <items>
-                                                                 <MenuItem fx:id="addMenuItem" mnemonicParsing="false" onAction="#popupAddFileOnAction" text="%listViewContextMenu.add" />
-                                                                 <MenuItem mnemonicParsing="false" onAction="#deleteFileFromListOnAction" text="%listViewContextMenu.delete" />
-                                                              </items>
-                                                            </ContextMenu>
-                                                         </contextMenu>
-                                                      </ListView>
-                                                   </children>
-                                                </AnchorPane>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" />
-                                             </padding>
-                                          </HBox>
-                                       </children>
-                                    </AnchorPane>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane>
-                           <VBox.margin>
-                              <Insets right="10.0" />
-                           </VBox.margin>
-                        </AnchorPane>
-                        <AnchorPane>
-                           <VBox.margin>
-                              <Insets bottom="10.0" right="10.0" top="10.0" />
-                           </VBox.margin>
-                           <children>
-                              <HBox alignment="CENTER_LEFT" prefWidth="700.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <Button fx:id="btnImport" disable="true" mnemonicParsing="false" onAction="#importDataModelOnAction" text="%button.import" />
-                                    <Button fx:id="btnClear" mnemonicParsing="false" onAction="#clearOnAction" text="%button.clear" />
-                                    <HBox fx:id="progressBar" alignment="CENTER" spacing="10.0" visible="false">
-                                       <children>
-                                          <ProgressIndicator prefHeight="19.0" prefWidth="20.0" />
-                                          <Label text="%progress.import" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                                 <padding>
-                                    <Insets left="10.0" />
-                                 </padding>
-                              </HBox>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </VBox>
+                  <ProgressIndicator prefHeight="19.0" prefWidth="20.0" />
+                  <Label text="%progress.import" />
                </children>
-            </AnchorPane>
-         </content>
-      </ScrollPane>
+            </HBox>
+         </children>
+         <padding>
+            <Insets bottom="10.0" left="10.0" />
+         </padding>
+         <VBox.margin>
+            <Insets top="5.0" />
+         </VBox.margin>
+      </HBox>
    </children>
-</AnchorPane>
+</VBox>

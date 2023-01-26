@@ -7,7 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -49,6 +51,8 @@ public class FxmlUtils {
 		Stage stage = new Stage();
 		stage.setTitle(FxmlUtils.getInternalizedPropertyByKey(bundleKey));
 		stage.setScene(new Scene(root));
+		stage.initStyle(StageStyle.UTILITY);
+		stage.initModality(Modality.WINDOW_MODAL);
 		stage.show();
 		return root;
 	}

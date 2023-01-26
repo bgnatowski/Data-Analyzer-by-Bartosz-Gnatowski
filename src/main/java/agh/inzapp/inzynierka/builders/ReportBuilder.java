@@ -11,7 +11,6 @@ public class ReportBuilder {
 	public void put(String tag, Object object){
 		reportData.put(tag, object);
 	}
-
 	public Map<String, Object> getReportResult(){
 		return reportData;
 	}
