@@ -3,8 +3,6 @@ package agh.inzapp.inzynierka.services;
 import agh.inzapp.inzynierka.builders.LineChartBuilder;
 import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.LineChart;
@@ -18,19 +16,16 @@ import java.util.Map;
 
 @Component
 public class UserChartService {
-	private final ListProperty<LineChart<Number, Number>> lineChartObservableList = new SimpleListProperty<>(FXCollections.observableArrayList());
 	private final List<LineChartBuilder> buildersList;
 	private LineChart<Number, Number> currentLineChart;
 	private LineChartBuilder builder;
-	private int indexOfLineChart;
 
 	public UserChartService() {
 		buildersList = new ArrayList<>();
-		indexOfLineChart = -1;
 	}
 	public ObservableList<String> getLineChartsList() {
 		List<String> chartList = new ArrayList<>();
-		for(int i = 1; i <= lineChartObservableList.size(); i++){
+		for(int i = 1; i <= buildersList.size(); i++){
 			final String e = FxmlUtils.getInternalizedPropertyByKey("chart.name") + i;
 			chartList.add(e);
 		}
@@ -40,27 +35,19 @@ public class UserChartService {
 		builder = new LineChartBuilder();
 		buildersList.add(builder);
 		builder.createNew();
-		builder.setLegendVisible(false);
-		if(lineChartObservableList.isEmpty()){
-			indexOfLineChart++;
-			currentLineChart = builder.getResult();
-			lineChartObservableList.add(indexOfLineChart, currentLineChart); //dodaj nowy pierwszy
-		}else{
-			lineChartObservableList.add(indexOfLineChart, currentLineChart); //dodaj do listy ten, co aktualnie edytowany był
-			indexOfLineChart++;	//zwiększ index na next nowy
-			currentLineChart = builder.getResult(); //nowy wykres jest obecnym
-			lineChartObservableList.set(indexOfLineChart, currentLineChart); // ustaw w liście nowy obecny na nowy index'ie
-		}
+		builder.setLegendVisible(true);
+		currentLineChart = builder.getResult();
 	}
 	public void setStyleCssLegendColor(String styleCssLegendColor) {
 		currentLineChart.setStyle(styleCssLegendColor);
 		updateChart();
 	}
 
-	public void deleteChart() {
-		buildersList.remove(builder);
-		lineChartObservableList.remove(currentLineChart);
-		indexOfLineChart--;
+	public void deleteChart(String selectedLineChart) {
+		final String[] split = selectedLineChart.split(" ");
+		int value = Integer.parseInt(split[1])-1;
+
+		buildersList.remove(value);
 		updateChart();
 	}
 
@@ -127,11 +114,10 @@ public class UserChartService {
 
 	private void updateChart() {
 		currentLineChart = builder.getResult();
-		lineChartObservableList.set(indexOfLineChart, currentLineChart);
 	}
 
 	public List<Object> getChartSettings() {
-		if(lineChartObservableList.isEmpty()) {return List.of();}
+		if(buildersList.isEmpty()) {return List.of();}
 		List<Object> list = new ArrayList<>();
 		list.add(builder.getTitle());
 		list.add(builder.getXLabel());

@@ -163,14 +163,18 @@ public class ChartViewController {
 	private void newChart() {
 		chartService.newLineChart();
 		chartCombo.setItems(chartService.getLineChartsList());
-		chartCombo.getSelectionModel().selectNext();
+		chartCombo.getSelectionModel().selectLast();
 	}
 
 	@FXML
 	private void deleteChart(ActionEvent actionEvent) {
 		if(!chartCombo.getSelectionModel().isEmpty()){
 			chartCombo.getItems().remove(chartCombo.getValue());
-			chartService.deleteChart();
+			chartService.deleteChart(chartCombo.getValue());
+
+			chartCombo.setItems(chartService.getLineChartsList());
+			chartCombo.getSelectionModel().selectPrevious();
+			chartService.getSelectedLineChart(chartCombo.getValue());
 			repaintChart();
 		}
 	}
