@@ -45,6 +45,8 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
 			stage.setTitle(applicationTitle);
 			stage.setMaximized(true);
+			stage.setMinHeight(500);
+			stage.setMinWidth(800);
 			stage.show();
 		} catch (IOException e) {
 			DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.main"));

@@ -57,6 +57,13 @@ public class UserChartService {
 		updateChart();
 	}
 
+	public void deleteChart() {
+		buildersList.remove(builder);
+		lineChartObservableList.remove(currentLineChart);
+		indexOfLineChart--;
+		updateChart();
+	}
+
 	public LineChart<Number, Number> getSelectedLineChart(String selectedLineChart) {
 		final String[] split = selectedLineChart.split(" ");
 		int value = Integer.parseInt(split[1])-1;
@@ -71,11 +78,11 @@ public class UserChartService {
 		builder.setSeriesColor(color);
 		updateChart();
 	}
-
 	public void clearSeriesBeforeCreatingNewOne() {
 		builder.clear();
 		updateChart();
 	}
+
 	public void setLineChartTitle(String title){
 		builder.setTitle(title);
 		updateChart();
@@ -98,16 +105,15 @@ public class UserChartService {
 	public void setXDateTickToDays() { builder.setXDateTickToDays();
 	}
 
-
 	public void switchCurrentLegendOn() {
 		builder.setLegendVisible(true);
 		updateChart();
 	}
-
 	public void switchCurrentLegendOff() {
 		builder.setLegendVisible(false);
 		updateChart();
 	}
+
 	public void switchCurrentDataPointsOn() {
 		builder.setCreateSymbols(true);
 		updateChart();
@@ -118,10 +124,6 @@ public class UserChartService {
 		updateChart();
 	}
 
-	public void setAxisBounds(double min, double max, double tick) {
-		builder.setYAxisBounds(min, max, tick);
-		updateChart();
-	}
 
 	private void updateChart() {
 		currentLineChart = builder.getResult();
@@ -136,9 +138,24 @@ public class UserChartService {
 		list.add(builder.getYLabel());
 		list.add(builder.isLegendVisible());
 		list.add(builder.isCreatedSymbols());
-		list.add(builder.getMinY());
-		list.add(builder.getMaxY());
-		list.add(builder.getTick());
+		list.add(builder.getYMin());
+		list.add(builder.getYMax());
+		list.add(builder.getYTick());
 		return list;
+	}
+
+	public void setYMin(double min) {
+		builder.setYMin(min);
+		updateChart();
+	}
+
+	public void setYMax(double max) {
+		builder.setYMax(max);
+		updateChart();
+	}
+
+	public void setYTick(double tick) {
+		builder.setYTick(tick);
+		updateChart();
 	}
 }

@@ -44,7 +44,10 @@ public class ReportLineChartService {
 
 				xyDataMap = CommonUtils.zipToMap(xData, yData);
 				lineChartBuilder.createSeries(xyDataMap, seriesName);
-				lineChartBuilder.setYAxisBounds(min-off, max+off, (max-min)/2);
+
+				lineChartBuilder.setYMin(min-off);
+				lineChartBuilder.setYMax(max+off);
+				lineChartBuilder.setYTick(off/2);
 			}
 			lineChartBuilder.setYAxisLabel(getAxisYLabel(i));
 			lineChartBuilder.setTitle(getTitle(i));
@@ -66,7 +69,9 @@ public class ReportLineChartService {
 
 				xyDataMap = CommonUtils.zipToMap(xData, yData);
 				lineChartBuilder.createSeries(xyDataMap, seriesName);
-				lineChartBuilder.setYAxisBounds(min-off, max+off, (max-min)/2);
+				lineChartBuilder.setYMin(min-off);
+				lineChartBuilder.setYMax(max+off);
+				lineChartBuilder.setYTick(off/2);
 			}
 		}else{
 			UniNames seriesName = Unbalanced_Voltage;
@@ -78,7 +83,9 @@ public class ReportLineChartService {
 
 			xyDataMap = CommonUtils.zipToMap(xData, yData);
 			lineChartBuilder.createSeries(xyDataMap, seriesName);
-			lineChartBuilder.setYAxisBounds(min-off, max+off, (max-min)/2);
+			lineChartBuilder.setYMin(min-off);
+			lineChartBuilder.setYMax(max+off);
+			lineChartBuilder.setYTick(off/2);
 		}
 		lineChartBuilder.setTitle("Asymetria napięciowa");
 		lineChartBuilder.setYAxisLabel("Współczynnik asymetrii [%]");

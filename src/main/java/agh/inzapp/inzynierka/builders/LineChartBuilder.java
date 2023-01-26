@@ -30,7 +30,7 @@ public class LineChartBuilder {
 	private XYChart.Series<Number, Number> series;
 	private NumberAxis xAxis, yAxis;
 	private String xTickDatePattern;
-	private double yMinTick, yMaxTick, yTick;
+	private double yMin, yMax, yTick;
 
 	public LineChartBuilder() {
 		setXDateTickToDays();
@@ -43,8 +43,8 @@ public class LineChartBuilder {
 		xAxis.setAutoRanging(true);
 		setTickLabelFormatterOnY();
 		chart = new LineChart<>(xAxis, yAxis);
-		yMinTick = 0;
-		yMaxTick = 110;
+		yMin = 0;
+		yMax = 110;
 		yTick = 5;
 		setCss();
 		setCreateSymbols(false);
@@ -57,32 +57,6 @@ public class LineChartBuilder {
 		AnchorPane.setBottomAnchor(chart, 0.0);
 		AnchorPane.setLeftAnchor(chart, 0.0);
 		AnchorPane.setRightAnchor(chart, 0.0);
-	}
-
-	public void setLegendVisible(boolean param) {
-		chart.setLegendVisible(param);
-	}
-
-	public void setCreateSymbols(boolean param){
-		chart.setCreateSymbols(param);
-	}
-
-	public void setTitle(String title){
-		chart.setTitle(title);
-	}
-
-	public void setYAxisLabel(String label){
-		chart.getYAxis().setTickLabelRotation(-90);
-		chart.getYAxis().setLabel(label);
-		chart.getYAxis()
-				.lookup(".axis-label")
-				.setStyle("-fx-label-padding: -15 0 0 0;");
-	}
-	public void setXAxisLabel(String label){
-		chart.getXAxis().setLabel(label);
-		chart.getXAxis()
-				.lookup(".axis-label")
-				.setStyle("-fx-label-padding: 0 -10 0 0;");
 	}
 
 	public void createSeries(Map<LocalDateTime, Double> xyDataMap, UniNames name){
@@ -99,17 +73,14 @@ public class LineChartBuilder {
 		setYAxisTick(xyDataMap);
 		series.setData(dataList);
 		chart.getData().add(series);
+
 	}
 
 	private void setYAxisTick(Map<LocalDateTime, Double> xyDataMap) {
-//		Double min = 0d;
-//		Double max = Collections.max(xyDataMap.values());
-//		double off = max-min;
-
-		yMinTick = 0d;
-		yMaxTick = Collections.max(xyDataMap.values());
-		yTick = (yMaxTick-yMinTick)/2;
-		setYAxisBounds(yMinTick, yMaxTick, yTick);
+		yMin = 0d;
+		yMax = Collections.max(xyDataMap.values());
+		yTick = (yMax - yMin)/2;
+		setYAxisBounds();
 		setTickLabelFormatterOnX();
 	}
 
@@ -170,23 +141,17 @@ public class LineChartBuilder {
 		});
 	}
 
-
-
 	public void setXDateTickToOnlyTime() { xTickDatePattern = "HH:mm";}
 	public void setXDateTickToDays() {
 		xTickDatePattern = "d-MM HH:mm";
 	}
 
-	public void setYAxisBounds(double min, double max, double tick) {
-		yMinTick = min;
-		yMaxTick = max;
-		yTick = tick;
-
+	private void setYAxisBounds() {
 		NumberAxis axis = (NumberAxis) chart.getYAxis();
 		axis.setAutoRanging(false);
-		axis.setLowerBound(min);
-		axis.setUpperBound(max);
-		axis.setTickUnit(tick);
+		axis.setLowerBound(yMin);
+		axis.setUpperBound(yMax);
+		axis.setTickUnit(yTick);
 	}
 
 	public void setXAxisBounds(double min, double max, double tick) {
@@ -199,6 +164,7 @@ public class LineChartBuilder {
 	}
 
 	public LineChart<Number, Number> getResult() {
+		setYAxisBounds();
 		return chart;
 	}
 
@@ -218,28 +184,45 @@ public class LineChartBuilder {
 		chart.getData().clear();
 	}
 
+
+	//SETTING
+	public void setLegendVisible(boolean param) {
+		chart.setLegendVisible(param);
+	}
+
+	public void setCreateSymbols(boolean param){
+		chart.setCreateSymbols(param);
+	}
+
 	public String getTitle(){
 		return chart.getTitle();
 	}
 
+	public void setTitle(String title){
+		chart.setTitle(title);
+	}
+	public void setYAxisLabel(String label){
+		chart.getYAxis().setTickLabelRotation(-90);
+		chart.getYAxis()
+				.lookup(".axis-label")
+				.setStyle("-fx-label-padding: -15 0 0 0;");
+		chart.getYAxis().applyCss();
+		chart.getYAxis().setLabel(label);
+		setYAxisBounds();
+	}
+	public void setXAxisLabel(String label){
+		chart.getXAxis()
+				.lookup(".axis-label")
+				.setStyle("-fx-label-padding: 0 -10 0 0;");
+		chart.getXAxis().applyCss();
+		chart.getXAxis().setLabel(label);
+
+	}
 	public String getXLabel(){
 		return chart.getXAxis().getLabel();
 	}
-
 	public String getYLabel(){
 		return chart.getYAxis().getLabel();
-	}
-
-	public double getTick(){
-		return yTick;
-	}
-
-	public double getMinY(){
-		return yMinTick;
-	}
-
-	public double getMaxY(){
-		return yMaxTick;
 	}
 
 	public boolean isLegendVisible(){
@@ -250,5 +233,27 @@ public class LineChartBuilder {
 		return chart.getCreateSymbols();
 	}
 
+	public void setYMin(double yMin) {
+		this.yMin = yMin;
+		setYAxisBounds();
+	}
+	public void setYMax(double yMax) {
+		this.yMax = yMax;
+		setYAxisBounds();
+	}
+	public void setYTick(double yTick) {
+		this.yTick = yTick;
+		setYAxisBounds();
+	}
 
+	public double getYMin() {
+		return yMin;
+	}
+
+	public double getYMax() {
+		return yMax;
+	}
+	public double getYTick() {
+		return yTick;
+	}
 }
