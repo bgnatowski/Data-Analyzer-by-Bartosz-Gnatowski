@@ -14,7 +14,6 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -55,10 +54,10 @@ public class ChartViewController {
 	private ColorPicker yColor0;
 	@FXML
 	private ComboBox<UniNames> yValue0;
-	public ToggleGroup legendButtonGroup, dataButtonsGroup;
 	////////////////////////////////////
 	private List<ComboBox<UniNames>> yValuesList;
 	private List<ColorPicker> yColorPickerList;
+	private List<Button> deletingButtons;
 	/////////////////////////////////////
 	private ListCommonModelFx modelsList;
 	private UserChartService chartService;
@@ -93,21 +92,24 @@ public class ChartViewController {
 		yValuesList.add(yValue0);
 		yColorPickerList = new ArrayList<>();
 		yColorPickerList.add(yColor0);
+		deletingButtons = new ArrayList<>();
 	}
+
 	private void bindings() {
 		bindValueComboBoxes();
 		bindDatePickers();
 		bindSettings();
 		bindYRangingTextField();
 	}
+
 	private void bindSettings() {
 		settingsPane.setExpanded(false);
 		settingsPane.disableProperty().bind(chartCombo.valueProperty().isNull());
 		xPane.disableProperty().bind(chartCombo.valueProperty().isNull());
 		yPane.disableProperty().bind(chartCombo.valueProperty().isNull());
 		saveAsChartButton.disableProperty().bind(chartCombo.valueProperty().isNull());
-
 	}
+
 	private void bindDatePickers() {
 		LocalDateTime startDate = modelsList.getStartDate();
 		LocalDateTime endDate = modelsList.getEndDate();
@@ -116,6 +118,7 @@ public class ChartViewController {
 		xDateFrom.setValue(startDate.toLocalDate());
 		xDateTo.setValue(endDate.toLocalDate());
 	}
+
 	private void bindValueComboBoxes() {
 		List<UniNames> uniNamesList = modelsList.getColumnNames();
 		List<UniNames> finalUniNamesList = CommonUtils.deleteNonRecordsFromUniNamesList(uniNamesList);
@@ -123,6 +126,7 @@ public class ChartViewController {
 			yValuesList.forEach(uniNamesComboBox -> uniNamesComboBox.setItems(FXCollections.observableArrayList(finalUniNamesList)));
 		}
 	}
+
 	private void bindYRangingTextField() {
 		TextFormatter<Double> minTextFormatter = getDoubleTextFormatter();
 		yMin.setTextFormatter(minTextFormatter);
@@ -137,12 +141,12 @@ public class ChartViewController {
 		UniNames uniName = yValuesList.get(i).getValue();
 		List<LocalDateTime> xData = modelsBetweenSelectedTime.stream().map(CommonModelFx::getDate).toList();
 		List<Double> yData = new ArrayList<>();
-		if(modelsBetweenSelectedTime.get(0).getHarmonics().containsKey(uniName)){
+		if (modelsBetweenSelectedTime.get(0).getHarmonics().containsKey(uniName)) {
 			yData = modelsBetweenSelectedTime.stream()
 					.map(model -> model.getHarmonics().get(uniName))
 					.filter(Objects::nonNull)
 					.toList();
-		}else if(modelsBetweenSelectedTime.get(0).getRecords().containsKey(uniName)){
+		} else if (modelsBetweenSelectedTime.get(0).getRecords().containsKey(uniName)) {
 			yData = modelsBetweenSelectedTime.stream()
 					.map(model -> model.getRecords().get(uniName))
 					.filter(Objects::nonNull)
@@ -153,43 +157,44 @@ public class ChartViewController {
 	}
 
 	@FXML
-	private void switchLineChart() {
-		repaintChart();
-		setSettings();
-	}
-	@FXML
 	private void newChart() {
 		chartService.newLineChart();
 		chartCombo.setItems(chartService.getLineChartsList());
 		chartCombo.getSelectionModel().selectLast();
+		setSettingsPane();
+		yValuesList.forEach(value -> value.getSelectionModel().clearSelection());
 	}
 
 	@FXML
-	private void deleteChart(ActionEvent actionEvent) {
-		if(!chartCombo.getSelectionModel().isEmpty()){
-			chartCombo.getItems().remove(chartCombo.getValue());
+	private void deleteChart() {
+		if (chartCombo.getItems().size() > 1 && chartCombo.getSelectionModel().getSelectedItem() != null) {
 			chartService.deleteChart(chartCombo.getValue());
-
+			chartCombo.getItems().remove(chartCombo.getValue());
 			chartCombo.setItems(chartService.getLineChartsList());
-			chartCombo.getSelectionModel().selectPrevious();
+			chartCombo.getSelectionModel().selectFirst();
 			chartService.getSelectedLineChart(chartCombo.getValue());
 			repaintChart();
 		}
 	}
+
+	@FXML
+	private void switchLineChart(ActionEvent event) {
+		repaintChart();
+		setSettings();
+	}
+
 	@FXML
 	private void saveAsChartOnAction() {
 		try {
-			SavingUtils.saveLineChart(getCurrentSelectedLineChart());
-			switchLineChart();
+			final LineChart<Number, Number> currentSelectedLineChart = getCurrentSelectedLineChart();
+			if (currentSelectedLineChart != null) {
+				SavingUtils.saveLineChart(currentSelectedLineChart);
+				repaintChart();
+				setSettings();
+			}
 		} catch (Exception e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
-	}
-
-	private List<CommonModelFx> getRecordsBetweenSelectedTime() throws ApplicationException {
-		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
-		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
-		return modelsList.getRecordsBetween(from, to);
 	}
 
 	@FXML
@@ -213,35 +218,44 @@ public class ChartViewController {
 	}
 
 	private void setCurrentChart() {
-		System.out.println("setCurrentChart()");
+		final boolean b = yValuesList.stream().noneMatch(value -> value.getSelectionModel().isEmpty());
+		if(!b) return;
 		try {
 			chartService.clearSeriesBeforeCreatingNewOne();
 			List<CommonModelFx> modelsInSelectedTime = getRecordsBetweenSelectedTime();
-			
-			if(isTheSameDay()) chartService.setXDateTickToOnlyTime();
+
+			if (isTheSameDay()) chartService.setXDateTickToOnlyTime();
 			else chartService.setXDateTickToDays();
 
+			ArrayList<UniNames> yToSave = new ArrayList<>();
+			ArrayList<Color> yColorsToSave = new ArrayList<>();
 			for (int i = 0; i < yValuesList.size(); i++) {
 				if (!isSelectedValue(i)) break;
 				Map<LocalDateTime, Double> xyDataMap = getSeriesDataMap(modelsInSelectedTime, i);
-				chartService.createSeries(xyDataMap, yValuesList.get(i).getValue(), yColorPickerList.get(i).getValue());
+				final UniNames name = yValuesList.get(i).getValue();
+				final Color color = yColorPickerList.get(i).getValue();
+				chartService.createSeries(xyDataMap, name, color);
+				yToSave.add(name);
+				yColorsToSave.add(color);
 			}
+			chartService.saveCurrentSettings(yToSave, yColorsToSave);
 			setLegendColors();
-			setSettings();
+			setSettingsPane();
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
+
 	}
 
 	@FXML // "Dodaj" dodaje linie w grid y
-	private void addLine(ActionEvent actionEvent) {
+	private void addLine() {
 		int row = yGrid.getRowCount();
-		if(row<6){
+//		if (row < 7) { //ograniczenie - można zlikwidować raczej;
 			final ComboBox<UniNames> newComboBox = getUniNamesComboBox();
 			final ColorPicker newColorPicker = getColorPicker();
-			final Button newDelete = createButton(row+1, newComboBox, newColorPicker);
+			final Button newDelete = createButton(row + 1, newComboBox, newColorPicker);
 			yGrid.addRow(row, newComboBox, newColorPicker, newDelete);
-		}
+//		}
 	}
 
 	private ColorPicker getColorPicker() {
@@ -250,7 +264,7 @@ public class ChartViewController {
 		int rand_num = obj.nextInt(0xffffff + 1);
 		String colorCode = String.format("#%06x", rand_num);
 		newColorPicker.setValue(Color.web(colorCode));
-		newColorPicker.setOnAction(e->setCurrentChart());
+		newColorPicker.setOnAction(e -> setCurrentChart());
 		yColorPickerList.add(newColorPicker);
 		return newColorPicker;
 	}
@@ -264,7 +278,7 @@ public class ChartViewController {
 		return newComboBox;
 	}
 
-	private Button createButton(int row, ComboBox<UniNames> newComboBox, ColorPicker newColorPicker){
+	private Button createButton(int row, ComboBox<UniNames> newComboBox, ColorPicker newColorPicker) {
 		Button button = new Button();
 		Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/sign_x.png")));
 		ImageView imageView = new ImageView(image);
@@ -275,77 +289,88 @@ public class ChartViewController {
 			GridPaneUtils.removeRow(yGrid, GridPane.getRowIndex(button));
 			yColorPickerList.remove(newColorPicker);//delete from list color picker
 			yValuesList.remove(newComboBox);//delete from list color picker
+			deletingButtons.remove(button);
 			setCurrentChart();
 		});
+		deletingButtons.add(button);
 		return button;
 	}
 
 	@FXML
 	private void setTitle(KeyEvent keyEvent) {
-		if(keyEvent.getCode().equals(KeyCode.ENTER)){
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			chartService.setLineChartTitle(chartTitle.getText());
 			repaintChart();
 		}
 	}
+
 	@FXML
 	private void setXLabel(KeyEvent keyEvent) {
-		if(keyEvent.getCode().equals(KeyCode.ENTER)){
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			chartService.setXAxisLabel(xLabel.getText());
 			repaintChart();
 		}
 	}
+
 	@FXML
 	private void setYLabel(KeyEvent keyEvent) {
-		if(keyEvent.getCode().equals(KeyCode.ENTER)){
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			chartService.setYAxisLabel(yLabel.getText());
 			repaintChart();
 		}
 	}
+
 	@FXML
 	private void setYMin(KeyEvent keyEvent) {
-		if(keyEvent.getCode().equals(KeyCode.ENTER)){
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			chartService.setYMin(Double.parseDouble(yMin.getText()));
 			repaintChart();
 		}
 	}
+
 	@FXML
 	private void setYMax(KeyEvent keyEvent) {
-		if(keyEvent.getCode().equals(KeyCode.ENTER)){
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			chartService.setYMax(Double.parseDouble(yMax.getText()));
 			repaintChart();
 		}
 	}
+
 	@FXML
 	private void setYTick(KeyEvent keyEvent) {
-		if(keyEvent.getCode().equals(KeyCode.ENTER)){
+		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
 			chartService.setYTick(Double.parseDouble(yTick.getText()));
 			repaintChart();
 		}
 	}
+
 	@FXML
 	private void switchOnLegend() {
 		chartService.switchCurrentLegendOn();
 		repaintChart();
 	}
+
 	@FXML
 	private void switchOffLegend() {
 		chartService.switchCurrentLegendOff();
 		repaintChart();
 	}
+
 	@FXML
 	private void switchOnDataPoints() {
 		chartService.switchCurrentDataPointsOn();
 		repaintChart();
 	}
+
 	@FXML
 	private void switchOffDataPoints() {
 		chartService.switchCurrentDataPointsOff();
 		repaintChart();
 	}
 
-	private void setSettings() {
-		final List<Object> chartSettings = chartService.getChartSettings();
-		if (chartSettings.isEmpty()){
+	private void setSettingsPane(){
+		final List<Object> chartSettings = chartService.getChartSettingsPane();
+		if (chartSettings.isEmpty()) {
 			chartTitle.setText("");
 			xLabel.setText("");
 			yLabel.setText("");
@@ -354,20 +379,58 @@ public class ChartViewController {
 			yMin.setText("");
 			yMax.setText("");
 			yTick.setText("");
+			return;
 		}
-		chartTitle.setText((String)chartSettings.get(0));
-		xLabel.setText((String)chartSettings.get(1));
-		yLabel.setText((String)chartSettings.get(2));
+		chartTitle.setText((String) chartSettings.get(0));
+		xLabel.setText((String) chartSettings.get(1));
+		yLabel.setText((String) chartSettings.get(2));
 
-		if((boolean) chartSettings.get(3)) legendOn.setSelected(true);
+		if ((boolean) chartSettings.get(3)) legendOn.setSelected(true);
 		else legendOff.setSelected(true);
-		if((boolean) chartSettings.get(4)) dataOn.setSelected(true);
+		if ((boolean) chartSettings.get(4)) dataOn.setSelected(true);
 		else dataOff.setSelected(true);
 
 		yMin.setText(String.valueOf((double) chartSettings.get(5)));
 		yMax.setText(String.valueOf((double) chartSettings.get(6)));
 		yTick.setText(String.valueOf((double) chartSettings.get(7)));
 	}
+
+	private void setSettings() {
+		setSettingsPane();
+		final List<Object> chartSettings = chartService.getChartYDataSettings();
+		if (!chartSettings.isEmpty()) {
+			List<UniNames> savedValues = new ArrayList<>((List<UniNames>) chartSettings.get(0));
+			List<Color> savedColors = new ArrayList<>((List<Color>) chartSettings.get(1));
+			if (savedValues.isEmpty() && savedColors.isEmpty()){
+				yValuesList.forEach(value -> value.getSelectionModel().clearSelection());
+				return;
+			}
+			if (yValuesList.size() <= savedValues.size()) {
+				for(int i = yValuesList.size() ; i < savedValues.size();i++){
+					addLine();
+				}
+			}else if (deletingButtons.size() > savedValues.size()-1) {
+				for(int i = deletingButtons.size(); i > savedValues.size()-1;i--){
+					deletingButtons.get(i-1).fire();
+				}
+			}
+			final Iterator<ComboBox<UniNames>> comboBoxIterator = yValuesList.iterator();
+			final Iterator<ColorPicker> colorPickerIterator = yColorPickerList.iterator();
+			final Iterator<UniNames> namesI = savedValues.iterator();
+			final Iterator<Color> colorIterator = savedColors.iterator();
+			while (comboBoxIterator.hasNext() && namesI.hasNext()) {
+				comboBoxIterator.next().setValue(namesI.next());
+				colorPickerIterator.next().setValue(colorIterator.next());
+			}
+		}
+	}
+
+	private List<CommonModelFx> getRecordsBetweenSelectedTime() throws ApplicationException {
+		final LocalDateTime from = LocalDateTime.of(xDateFrom.getValue(), xTimeFrom.getValue());
+		final LocalDateTime to = LocalDateTime.of(xDateTo.getValue(), xTimeTo.getValue());
+		return modelsList.getRecordsBetween(from, to);
+	}
+
 	private boolean isSelectedValue(int i) {
 		return yValuesList.get(i).getValue() != null;
 	}
@@ -381,7 +444,7 @@ public class ChartViewController {
 	private void setLegendColors() {
 		ArrayList<Color> colors = getUserDefinedColors();
 		StringBuilder style = new StringBuilder();
-		for (int i = 0 ; i < colors.size() ; i++) {
+		for (int i = 0; i < colors.size(); i++) {
 			style.append("symbol-color")
 					.append(i)
 					.append(": ")
@@ -390,6 +453,7 @@ public class ChartViewController {
 		}
 		chartService.setStyleCssLegendColor(style.toString());
 	}
+
 	private ArrayList<Color> getUserDefinedColors() {
 		ArrayList<Color> colors = new ArrayList<>();
 		for (ColorPicker colorPicker : yColorPickerList) {
@@ -399,8 +463,11 @@ public class ChartViewController {
 	}
 
 	private void repaintChart() {
-		apOfChart.getChildren().clear();
-		apOfChart.getChildren().add(getCurrentSelectedLineChart());
+		final LineChart<Number, Number> currentSelectedLineChart = getCurrentSelectedLineChart();
+		if (currentSelectedLineChart != null) {
+			apOfChart.getChildren().clear();
+			apOfChart.getChildren().add(currentSelectedLineChart);
+		}
 	}
 
 	private LineChart<Number, Number> getCurrentSelectedLineChart() {
@@ -408,11 +475,9 @@ public class ChartViewController {
 		if (selectedLineChart != null)
 			return chartService.getSelectedLineChart(selectedLineChart);
 		else
-			return new LineChart<>(new NumberAxis(), new NumberAxis());
+			return null;
 	}
 
-
-	//todo usuwanie wykresu
 	//todo zapisywanie ustawień wszystkich pomiędzy przełączaniem idk czy to zrobić
 
 }

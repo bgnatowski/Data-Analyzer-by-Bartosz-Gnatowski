@@ -50,36 +50,43 @@
                                     <DatePicker onAction="#setXEnd" GridPane.columnIndex="1" GridPane.rowIndex="1" fx:id="xDateTo" />
                                 </GridPane>
                             </TitledPane>
-                            <TitledPane fx:id="yPane" text="%chart.pane.y.axis">
-                                <VBox spacing="5.0">
-                                    <GridPane fx:id="yGrid" hgap="5.0" vgap="3.0">
-                                        <columnConstraints>
-                                            <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" />
-                                            <ColumnConstraints maxWidth="-Infinity" minWidth="40.0" prefWidth="10.0" />
-                                            <ColumnConstraints />
-                                        </columnConstraints>
-                                        <rowConstraints>
-                                            <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
-                                            <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
-                                        </rowConstraints>
-                                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.x.value" />
-                                        <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.x.color" GridPane.columnIndex="1" />
-                                        <ComboBox fx:id="yValue0" maxWidth="1.7976931348623157E308" onAction="#setValue" GridPane.rowIndex="1" />
-                                        <ColorPicker fx:id="yColor0" maxWidth="1.7976931348623157E308" onAction="#setColor" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                            <value>
-                                                <Color red="0.16078431904315948" green="0.7137255072593689" blue="0.9647058844566345" />
-                                            </value>
-                                        </ColorPicker>
-                                        <Button disable="true" mnemonicParsing="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                            <graphic>
-                                                <ImageView fitHeight="17.0" fitWidth="17.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
-                                                    <Image url="@../images/sign_x.png" />
-                                                </ImageView>
-                                            </graphic>
-                                        </Button>
-                                    </GridPane>
-                                    <Button fx:id="buttonAddLine" mnemonicParsing="false" onAction="#addLine" text="%chart.pane.x.add.button" />
-                                </VBox>
+                            <TitledPane fx:id="yPane" maxHeight="300.0" text="%chart.pane.y.axis">
+                        <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER">
+                           <content>
+                                      <VBox maxHeight="300.0" spacing="5.0">
+                                          <GridPane fx:id="yGrid" hgap="5.0" vgap="3.0">
+                                              <columnConstraints>
+                                                  <ColumnConstraints minWidth="-Infinity" prefWidth="160.0" />
+                                                  <ColumnConstraints maxWidth="-Infinity" minWidth="40.0" prefWidth="10.0" />
+                                                  <ColumnConstraints />
+                                              </columnConstraints>
+                                              <rowConstraints>
+                                                  <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+                                                  <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+                                              </rowConstraints>
+                                              <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.x.value" />
+                                              <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.pane.x.color" GridPane.columnIndex="1" />
+                                              <ComboBox fx:id="yValue0" maxWidth="1.7976931348623157E308" onAction="#setValue" GridPane.rowIndex="1" />
+                                              <ColorPicker fx:id="yColor0" maxWidth="1.7976931348623157E308" onAction="#setColor" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                  <value>
+                                                      <Color red="0.16078431904315948" green="0.7137255072593689" blue="0.9647058844566345" />
+                                                  </value>
+                                              </ColorPicker>
+                                              <Button disable="true" mnemonicParsing="false" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                  <graphic>
+                                                      <ImageView fitHeight="17.0" fitWidth="17.0" focusTraversable="true" pickOnBounds="true" preserveRatio="true">
+                                                          <Image url="@../images/sign_x.png" />
+                                                      </ImageView>
+                                                  </graphic>
+                                              </Button>
+                                          </GridPane>
+                                          <Button fx:id="buttonAddLine" mnemonicParsing="false" onAction="#addLine" text="%chart.pane.x.add.button" />
+                                 <padding>
+                                    <Insets bottom="5.0" left="10.0" top="5.0" />
+                                 </padding>
+                                      </VBox>
+                           </content>
+                        </ScrollPane>
                             </TitledPane>
                             <TitledPane fx:id="settingsPane" animated="false" text="%chart.pane.settings.name">
                                 <GridPane hgap="5.0" vgap="3.0">

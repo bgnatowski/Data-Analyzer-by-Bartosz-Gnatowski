@@ -19,10 +19,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class LineChartBuilder {
@@ -31,6 +28,9 @@ public class LineChartBuilder {
 	private NumberAxis xAxis, yAxis;
 	private String xTickDatePattern;
 	private double yMin, yMax, yTick;
+	private LocalDateTime xMin, xMax;
+	private List<UniNames> seriesNames;
+	private List<Color> seriesColors;
 
 	public LineChartBuilder() {
 		setXDateTickToDays();
@@ -57,6 +57,9 @@ public class LineChartBuilder {
 		AnchorPane.setBottomAnchor(chart, 0.0);
 		AnchorPane.setLeftAnchor(chart, 0.0);
 		AnchorPane.setRightAnchor(chart, 0.0);
+
+		seriesNames = new ArrayList<>();
+		seriesColors = new ArrayList<>();
 	}
 
 	public void createSeries(Map<LocalDateTime, Double> xyDataMap, UniNames name) {
@@ -70,24 +73,24 @@ public class LineChartBuilder {
 			dataList.add(data);
 		});
 		setTimeAxisTick(xyDataMap);
-		setYAxisTick(xyDataMap);
+		if(yMin==0d) setYAxisTick(xyDataMap);
 		series.setData(dataList);
 		chart.getData().add(series);
-
 	}
 
 	private void setYAxisTick(Map<LocalDateTime, Double> xyDataMap) {
 		yMin = 0d;
 		yMax = Collections.max(xyDataMap.values());
 		yTick = (yMax - yMin) / 2;
-		setYAxisBounds();
-		setTickLabelFormatterOnX();
+		setYAxisBounds() ;
 	}
 
 	private void setTimeAxisTick(Map<LocalDateTime, Double> xyDataMap) {
 		final List<LocalDateTime> localDateTimes = xyDataMap.keySet().stream().toList();
-		long min = localDateTimes.get(0).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		long max = localDateTimes.get(localDateTimes.size() - 1).atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		xMin = localDateTimes.get(0);
+		xMax =localDateTimes.get(localDateTimes.size() - 1);
+		long min = xMin.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		long max = xMax.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		long off = max - min;
 		setXAxisBounds(min, max, off / (localDateTimes.size() / 2d));
 		setTickLabelFormatterOnX();
@@ -104,7 +107,6 @@ public class LineChartBuilder {
 		if (seriesName.contains(" Σ")) {
 			seriesName = seriesName.replaceAll(" Σ", "");
 		}
-
 		series.setName(seriesName);
 	}
 
@@ -143,6 +145,13 @@ public class LineChartBuilder {
 
 	public void setXDateTickToDays() {
 		xTickDatePattern = "d-MM HH:mm";
+	}
+	private void setYAxisBounds(double min, double max, double tick) {
+		NumberAxis axis = (NumberAxis) chart.getYAxis();
+		axis.setAutoRanging(false);
+		axis.setLowerBound(min);
+		axis.setUpperBound(max);
+		axis.setTickUnit(tick);
 	}
 
 	private void setYAxisBounds() {
@@ -261,5 +270,34 @@ public class LineChartBuilder {
 
 	public double getYTick() {
 		return yTick;
+	}
+
+	public LocalDateTime getXMin() {
+		return xMin;
+	}
+
+	public LocalDateTime getXMax() {
+		return xMax;
+	}
+
+	public List<UniNames> getSeriesName() {
+		return seriesNames;
+	}
+
+	public List<Color> getSeriesColors() {
+		return seriesColors;
+	}
+
+	public void clearSettings() {
+		seriesColors.clear();
+		seriesNames.clear();
+	}
+
+	public void setSeriesNames(List<UniNames> seriesNames) {
+		this.seriesNames = seriesNames;
+	}
+
+	public void setSeriesColors(List<Color> seriesColors) {
+		this.seriesColors = seriesColors;
 	}
 }

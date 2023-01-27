@@ -25,8 +25,8 @@ public class UserChartService {
 	}
 	public ObservableList<String> getLineChartsList() {
 		List<String> chartList = new ArrayList<>();
-		for(int i = 1; i <= buildersList.size(); i++){
-			final String e = FxmlUtils.getInternalizedPropertyByKey("chart.name") + i;
+		for(int i = 0; i < buildersList.size(); i++){
+			final String e = FxmlUtils.getInternalizedPropertyByKey("chart.name") + (i+1);
 			chartList.add(e);
 		}
 		return FXCollections.observableList(chartList);
@@ -67,6 +67,7 @@ public class UserChartService {
 	}
 	public void clearSeriesBeforeCreatingNewOne() {
 		builder.clear();
+		builder.clearSettings();
 		updateChart();
 	}
 
@@ -111,13 +112,12 @@ public class UserChartService {
 		updateChart();
 	}
 
-
 	private void updateChart() {
 		currentLineChart = builder.getResult();
 	}
 
-	public List<Object> getChartSettings() {
-		if(buildersList.isEmpty()) {return List.of();}
+	public List<Object> getChartSettingsPane() {
+		if(buildersList.size()<1) {return List.of();}
 		List<Object> list = new ArrayList<>();
 		list.add(builder.getTitle());
 		list.add(builder.getXLabel());
@@ -127,6 +127,17 @@ public class UserChartService {
 		list.add(builder.getYMin());
 		list.add(builder.getYMax());
 		list.add(builder.getYTick());
+		updateChart();
+		return list;
+	}
+
+
+	public List<Object> getChartYDataSettings(){
+		if(buildersList.size()<2) {return List.of();}
+		List<Object> list = new ArrayList<>();
+		list.add(builder.getSeriesName());
+		list.add(builder.getSeriesColors());
+		updateChart();
 		return list;
 	}
 
@@ -142,6 +153,12 @@ public class UserChartService {
 
 	public void setYTick(double tick) {
 		builder.setYTick(tick);
+		updateChart();
+	}
+
+	public void saveCurrentSettings(ArrayList<UniNames> yToSave, ArrayList<Color> yColorsToSave) {
+		builder.setSeriesNames(yToSave);
+		builder.setSeriesColors(yColorsToSave);
 		updateChart();
 	}
 }
