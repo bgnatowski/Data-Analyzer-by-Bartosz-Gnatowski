@@ -257,7 +257,7 @@ public class ListCommonModelFx {
 						H31_UL3, H32_UL3, H33_UL3, H34_UL3, H35_UL3, H36_UL3, H37_UL3, H38_UL3, H39_UL3, H40_UL3,
 						H41_UL3, H42_UL3, H43_UL3, H44_UL3, H45_UL3, H46_UL3, H47_UL3, H48_UL3, H49_UL3, H50_UL3 -> {}
 				default -> {
-					sb.append(column).append(" / ");
+					sb.append(column).append(" ").append(column.getUnit()).append(" / ");
 					final List<Double> columnRecords = modelsFx.stream()
 							.map(model -> model.getRecords().get(column))
 							.filter(Objects::nonNull)
@@ -303,7 +303,7 @@ public class ListCommonModelFx {
 						H31_UL3, H32_UL3, H33_UL3, H34_UL3, H35_UL3, H36_UL3, H37_UL3, H38_UL3, H39_UL3, H40_UL3,
 						H41_UL3, H42_UL3, H43_UL3, H44_UL3, H45_UL3, H46_UL3, H47_UL3, H48_UL3, H49_UL3, H50_UL3 ->
 				{
-					sb.append(column).append(" / ");
+					sb.append(column).append(" ").append(column.getUnit()).append(" / ");
 					final List<Double> columnRecords = modelsFx.stream()
 							.map(model -> model.getHarmonics().get(column))
 							.filter(Objects::nonNull)

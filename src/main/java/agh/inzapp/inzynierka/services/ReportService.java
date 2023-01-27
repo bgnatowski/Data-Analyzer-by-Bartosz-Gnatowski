@@ -103,8 +103,9 @@ public class ReportService {
 			putMeasurementTime();
 			putImagesHarmo();
 
-			calculateTableOne();
-			calculateTableTwo();
+			calculateTableThree();
+			calculateTableFour();
+
 			conclusionStandard(false);
 			conclusionHarmo(true);
 			conclusionAdded();
@@ -118,7 +119,7 @@ public class ReportService {
 	}
 
 	private void conclusionStandard(boolean is) {
-		for (int i = 1; i < 3; i++) {
+		for (int i = 1; i < 4; i++) {
 			StringBuilder builder = new StringBuilder();
 			if(is){
 				switch (i) {
@@ -132,37 +133,38 @@ public class ReportService {
 							builder.append("nie ");
 						builder.append("mieszczą się w dopuszczalnym przedziale tolerancji w całym okresie pomiarowym,");
 					}
+					case 3 -> {
+						if (!isPltConditionFulfilled())
+							builder.append("nie ");
+						builder.append("zawierają się w dopuszczalnym przedziale tolerancji w całym okresie pomiarowym,");
+					}
 				}
 			}else{
-				builder.append("– brak danych");
+				builder.append("- brak danych");
 			}
 			reportBuilder.put("warunek" + i, builder.toString());
 		}
 	}
 
 	private void conclusionHarmo(boolean is){
-		for(int i = 3; i < 6; i++){
+		for(int i = 4; i < 6; i++){
 			StringBuilder builder = new StringBuilder();
 			if(is){
 				switch (i){
-					case 5 -> {
-						if (!isHarmonicConditionFulfilled())
-							builder.append("nie ");
-						builder.append("mieszczą się w dopuszczalnych przedziałach tolerancji,");
-					}
-					case 3 -> {
-						if (!isPltConditionFulfilled())
-							builder.append("nie ");
-						builder.append("zawierają się w dopuszczalnym przedziale tolerancji w całym okresie pomiarowym,");
-					}
 					case 4 -> {
 						if (!isTHDConditionFulfilled())
 							builder.append("nie ");
 						builder.append("zawierają się w dopuszczalnym przedziale tolerancji przez cały okresu pomiarowy,");
 					}
+					case 5 -> {
+						if (!isHarmonicConditionFulfilled()) {
+							builder.append("nie ");
+						}
+						builder.append("mieszczą się w dopuszczalnych przedziałach tolerancji,");
+					}
 				}
 			}else{
-				builder.append("– brak danych");
+				builder.append("- brak danych");
 			}
 			reportBuilder.put("warunek" + i, builder.toString());
 		}
@@ -334,7 +336,6 @@ public class ReportService {
 		// zakładamy, że są zgodne
 		thd.forEach(key -> conditionsMap.put(key, true));
 		harmonicFirst.forEach(key -> conditionsMap.put(key, true));
-
 
 		for (int i = 1; i <= POWER_LINES; i++) {
 			List<UniNames> names = new ArrayList<>(Collections.singleton(thd.get(i - 1)));

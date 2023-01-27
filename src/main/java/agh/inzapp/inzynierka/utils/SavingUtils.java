@@ -1,9 +1,9 @@
 package agh.inzapp.inzynierka.utils;
 
 import agh.inzapp.inzynierka.models.enums.FXMLNames;
-import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
 import com.deepoove.poi.XWPFTemplate;
 import com.opencsv.CSVWriter;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -42,15 +42,21 @@ public class SavingUtils {
 	}
 
 	public static void fastSaveChart(AnchorPane chart, String name) throws IOException {
-		Scene scene = new Scene(chart, 823, 336);
-		scene.setFill(Color.WHITE);
+		Platform.runLater(()->{
+			Scene scene = new Scene(chart, 823, 336);
+			scene.setFill(Color.WHITE);
 
-		WritableImage image = new WritableImage(823, 336);
-		scene.snapshot(image);
+			WritableImage image = new WritableImage(823, 336);
+			scene.snapshot(image);
 
-		File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
-		File newBarChartFile = new File(tempDirectory.getAbsolutePath() + File.separator + name + ".png");
-		ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
+			File tempDirectory = new File(System.getProperty("java.io.tmpdir"));
+			File newBarChartFile = new File(tempDirectory.getAbsolutePath() + File.separator + name + ".png");
+			try {
+				ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
+			} catch (IOException e) {
+			}
+		});
+
 	}
 
 	public static void fastSaveChart(AnchorPane chart, String name, int h, int w) throws IOException {
@@ -65,13 +71,9 @@ public class SavingUtils {
 		ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
 	}
 
-	public static void saveReport(String tmpReportPath) throws IOException {
-		FileChooser fileChooser = new FileChooser();
-		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MS Office Documents", "*.docx"));
-		File outputFile = fileChooser.showSaveDialog(null);
+	public static void saveReport(String tmpReportPath, File outputFile) throws IOException {
 		File sourceReport = new File(tmpReportPath);
 		if (outputFile != null) {
-			final String extension = fileChooser.getSelectedExtensionFilter().getDescription();
 			FileUtils.copyFile(sourceReport, outputFile);
 		}
 	}
@@ -89,6 +91,7 @@ public class SavingUtils {
 			compile.render(reportResult);
 			compile.writeToFile(tempReport.getAbsolutePath());
 		}
+
 		return tempReport.getAbsolutePath();
 	}
 

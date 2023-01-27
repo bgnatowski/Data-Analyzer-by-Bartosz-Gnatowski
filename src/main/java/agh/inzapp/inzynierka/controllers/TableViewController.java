@@ -9,6 +9,7 @@ import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.application.Platform;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -413,9 +414,15 @@ public class TableViewController {
 
 	private void showInfoDialog(){
 		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setWidth(620);
+		alert.setHeight(420);
 		alert.setTitle("Statystyki - import");
 		alert.setHeaderText("Zaimportowano poprawnie.\nStatystyki pomiarów:");
 		TextArea textArea = new TextArea(modelList.getImportedStatistics());
+		textArea.setPrefColumnCount(40);
+		textArea.setPrefRowCount(20);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
 		textArea.setEditable(false);
 		alert.getDialogPane().setContent(textArea);
 		alert.initStyle(StageStyle.UTILITY);

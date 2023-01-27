@@ -11,15 +11,18 @@ import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import org.springframework.stereotype.Controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,6 +48,11 @@ public class ReportViewController {
 	private AnchorPane apMain;
 	@FXML
 	private Label info;
+	@FXML
+	private ProgressIndicator progress;
+	@FXML
+	private VBox vBox;
+
 	private ListCommonModelFx modelsList;
 	private ReportBarChartService barChartService;
 	private ReportService reportService;
@@ -55,9 +63,11 @@ public class ReportViewController {
 	public void initialize() {
 		try {
 			modelsList = ListCommonModelFx.getInstance();
+
 			reportChartService = new ReportLineChartService();
 			barChartService = new ReportBarChartService();
 			reportService = new ReportService();
+
 			saveButton.disableProperty().bind(reportService.toggleButtonPropertyProperty());
 			addTimeSpinnersToGrid();
 			bindDatePickers();
@@ -96,31 +106,50 @@ public class ReportViewController {
 
 	@FXML
 	private void generateOnAction() {
-		try {
-			LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
-			LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
-			final List<CommonModelFx> recordsBetween = modelsList.getRecordsBetween(from, to);
-
-			if(modelsList.hasBoth()){
-				barChartService.createHarmonicsBarCharts(recordsBetween);
-				reportChartService.createLineChartsStandard(recordsBetween);
-				reportChartService.createLineChartsHarmo(recordsBetween);
-				List<String> userAdditionalData = getUserEnteredData();
-				tmpReportPath = reportService.generateReport(recordsBetween, userAdditionalData);
-			}else if(modelsList.hasOnlyHarmonics()){
-				barChartService.createHarmonicsBarCharts(recordsBetween);
-				reportChartService.createLineChartsHarmo(recordsBetween);
-				List<String> userAdditionalData = getUserEnteredData();
-				tmpReportPath = reportService.generateReportHarmo(recordsBetween, userAdditionalData);
-			}else if(modelsList.hasOnlyStandard()){
-				reportChartService.createLineChartsStandard(recordsBetween);
-				List<String> userAdditionalData = getUserEnteredData();
-				tmpReportPath = reportService.generateReportStandard(recordsBetween, userAdditionalData);
+		progress.setVisible(true);
+		info.setText(FxmlUtils.getInternalizedPropertyByKey("info.generating"));
+		Task task = new Task<Void>() {
+			@Override
+			public Void call() throws ApplicationException, IOException {
+				generateProperReport();
+				return null;
 			}
+		};
+		new Thread(task).start();
+		task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
+			if(newValue instanceof Exception) {
+				Exception ex = (Exception) newValue;
+				progress.setVisible(false);
+				info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));
+				DialogUtils.errorDialog(ex.getMessage());
+			}
+		});
+		task.setOnSucceeded(e -> {
 			info.setText(FxmlUtils.getInternalizedPropertyByKey("report.info.succes"));
-		} catch (ApplicationException | IOException e) {
-			info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));
-			DialogUtils.errorDialog(getInternalizedPropertyByKey(e.getMessage()));
+			progress.setVisible(false);
+		});
+
+	}
+
+	private void generateProperReport() throws ApplicationException, IOException {
+		LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
+		LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
+		final List<CommonModelFx> recordsBetween = modelsList.getRecordsBetween(from, to);
+		if(modelsList.hasBoth()){
+			barChartService.createHarmonicsBarCharts(recordsBetween);
+			reportChartService.createLineChartsStandard(recordsBetween);
+			reportChartService.createLineChartsHarmo(recordsBetween);
+			List<String> userAdditionalData = getUserEnteredData();
+			tmpReportPath = reportService.generateReport(recordsBetween, userAdditionalData);
+		}else if(modelsList.hasOnlyHarmonics()){
+			barChartService.createHarmonicsBarCharts(recordsBetween);
+			reportChartService.createLineChartsHarmo(recordsBetween);
+			List<String> userAdditionalData = getUserEnteredData();
+			tmpReportPath = reportService.generateReportHarmo(recordsBetween, userAdditionalData);
+		}else if(modelsList.hasOnlyStandard()){
+			reportChartService.createLineChartsStandard(recordsBetween);
+			List<String> userAdditionalData = getUserEnteredData();
+			tmpReportPath = reportService.generateReportStandard(recordsBetween, userAdditionalData);
 		}
 	}
 
@@ -144,14 +173,31 @@ public class ReportViewController {
 		return userAdditionalData;
 	}
 
-
 	@FXML
 	private void saveAs() {
-		try {
-			SavingUtils.saveReport(tmpReportPath);
+		progress.setVisible(true);
+		info.setText(FxmlUtils.getInternalizedPropertyByKey("info.saving"));
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MS Office Documents", "*.docx"));
+		File outputFile = fileChooser.showSaveDialog(vBox.getScene().getWindow());
+		Task task = new Task<Void>() {
+			@Override public Void call() throws IOException {
+				if(outputFile==null) throw new IOException();
+				SavingUtils.saveReport(tmpReportPath, outputFile);
+				return null;
+			}
+		};
+		task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
+			if(newValue instanceof Exception) {
+				Exception ex = (Exception) newValue;
+				progress.setVisible(false);
+				info.setText(FxmlUtils.getInternalizedPropertyByKey("error.saving"));
+			}
+		});
+		task.setOnSucceeded(e -> {
 			info.setText(FxmlUtils.getInternalizedPropertyByKey("report.info.saved"));
-		} catch (IOException e) {
-			info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));
-		}
+			progress.setVisible(false);
+		});
+		new Thread(task).start();
 	}
 }

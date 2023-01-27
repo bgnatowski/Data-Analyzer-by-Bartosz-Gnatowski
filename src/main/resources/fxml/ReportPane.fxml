@@ -6,90 +6,96 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="apMain" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.ReportViewController">
+
+<VBox fx:id="vBox" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="agh.inzapp.inzynierka.controllers.ReportViewController">
    <children>
-      <VBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                            <GridPane fx:id="timeGrid" hgap="5.0" minHeight="-Infinity" minWidth="-Infinity" vgap="5.0">
+                                <columnConstraints>
+                                    <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" />
+                                    <ColumnConstraints maxWidth="-Infinity" minWidth="-Infinity" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                    <RowConstraints vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                <children>
+                                    <Label alignment="BOTTOM_LEFT" minHeight="-Infinity" minWidth="-Infinity" text="%chart.x.date.start" />
+                                    <Label alignment="BOTTOM_LEFT" minHeight="-Infinity" minWidth="-Infinity" text="%chart.x.date.stop" GridPane.columnIndex="1" />
+                                    <DatePicker fx:id="dateFrom" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.rowIndex="1" />
+                                    <DatePicker fx:id="dateTo" minHeight="-Infinity" minWidth="-Infinity" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                </children>
+         <VBox.margin>
+            <Insets bottom="5.0" />
+         </VBox.margin>
+                            </GridPane>
+      <GridPane hgap="5.0" vgap="5.0">
+        <columnConstraints>
+          <ColumnConstraints minWidth="-Infinity" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="-Infinity" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="-Infinity" />
+          <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="-Infinity" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-                                  <GridPane fx:id="timeGrid" hgap="5.0" vgap="5.0">
-                                      <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="125.0" />
-                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="125.0" />
-                                      </columnConstraints>
-                                      <rowConstraints>
-                                          <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                                          <RowConstraints vgrow="SOMETIMES" />
-                                          <RowConstraints vgrow="SOMETIMES" />
-                                      </rowConstraints>
-                                      <children>
-                                          <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.x.date.start" />
-                                          <Label alignment="BOTTOM_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%chart.x.date.stop" GridPane.columnIndex="1" />
-                                          <DatePicker fx:id="dateFrom" maxWidth="1.7976931348623157E308" GridPane.rowIndex="1" />
-                                          <DatePicker fx:id="dateTo" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                      </children>
-                                  </GridPane>
-            <GridPane hgap="5.0">
-              <columnConstraints>
-                <ColumnConstraints minWidth="10.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-              </columnConstraints>
-              <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              </rowConstraints>
-               <children>
-                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.electric.switchboard" GridPane.rowIndex="1" />
-                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.measurement.point" GridPane.rowIndex="2" />
-                  <TextField fx:id="switchboard" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <TextField fx:id="measurementPoint" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.analyzer" GridPane.rowIndex="3" />
-                  <ComboBox fx:id="analyzersModelsComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.analyzer.series" GridPane.rowIndex="4" />
-                  <TextField fx:id="serialNumber" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                  <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.author" />
-                  <TextField fx:id="author" GridPane.columnIndex="1" />
-               </children>
-            </GridPane>
-            <HBox nodeOrientation="LEFT_TO_RIGHT" spacing="10.0">
-               <children>
-                  <Button fx:id="generateButton" mnemonicParsing="false" onAction="#generateOnAction" text="%report.generate">
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/cogs.png" />
-                           </image>
-                           <viewport>
-                              <Rectangle2D />
-                           </viewport>
-                        </ImageView>
-                     </graphic></Button>
-                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveAs" text="%chart.pane.save">
-                     <graphic>
-                        <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/save.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-                  <Label fx:id="info" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" textAlignment="RIGHT" HBox.hgrow="ALWAYS" />
-               </children>
-            </HBox>
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.electric.switchboard" GridPane.rowIndex="1" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.measurement.point" GridPane.rowIndex="2" />
+            <TextField fx:id="switchboard" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="measurementPoint" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.analyzer" GridPane.rowIndex="3" />
+            <ComboBox fx:id="analyzersModelsComboBox" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.analyzer.series" GridPane.rowIndex="4" />
+            <TextField fx:id="serialNumber" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="%report.author" />
+            <TextField fx:id="author" GridPane.columnIndex="1" />
          </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
-      </VBox>
+      </GridPane>
+      <HBox minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" spacing="5.0">
+         <children>
+            <Button fx:id="generateButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#generateOnAction" text="%report.generate">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/cogs.png" />
+                     </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="saveButton" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveAs" text="%chart.pane.save">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/save.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <ProgressIndicator fx:id="progress" minHeight="-Infinity" minWidth="-Infinity" prefHeight="20.0" prefWidth="20.0" visible="false" />
+            <Label fx:id="info" alignment="CENTER_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" textAlignment="RIGHT" HBox.hgrow="ALWAYS" />
+         </children>
+         <VBox.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </VBox.margin>
+      </HBox>
    </children>
-</AnchorPane>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</VBox>

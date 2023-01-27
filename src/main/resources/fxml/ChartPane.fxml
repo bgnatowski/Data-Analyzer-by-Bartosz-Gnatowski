@@ -194,7 +194,7 @@
                     </AnchorPane>
                 </VBox>
             </AnchorPane>
-            <AnchorPane fx:id="apOfChart" minWidth="500.0" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
+            <AnchorPane fx:id="apOfChart" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: white;" HBox.hgrow="ALWAYS">
                 <padding>
                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                 </padding>

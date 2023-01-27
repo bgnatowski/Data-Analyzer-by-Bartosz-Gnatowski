@@ -5,15 +5,14 @@ import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import org.springframework.stereotype.Controller;
 
@@ -33,7 +32,6 @@ public class ImportViewController {
 	private Button btnImport, btnClear;
 	private CsvFilesList filesList;
 
-	@FXML
 	public void initialize() {
 		filesList = CsvFilesList.getInstance();
 		listView.getItems().addAll(filesList.getFilesList());
@@ -41,15 +39,11 @@ public class ImportViewController {
 	}
 
 	private void bindings() {
-		comboBoxAnalyzer.getSelectionModel().select(Analysers.Sonel);
-		btnImport.setDisable(false);
-		filesList.addFileToList(new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\DabrowaTrafo_Uharmo.csv"));
-		filesList.addFileToList(new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\DabrowaTrafo.csv"));
 		updateListView();
-//		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
-//		btnImport.disableProperty().bind(filesList.filesListProperty().emptyProperty().not().and(
-//				comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not()
-//		);
+		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
+		btnImport.disableProperty().bind(filesList.filesListProperty().emptyProperty().not().and(
+				comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not()
+		);
 	}
 
 	@FXML
@@ -93,7 +87,6 @@ public class ImportViewController {
 				filesList.saveBoth(analyser);
 				return null;
 			}
-
 		};
 		task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
 			if(newValue instanceof ApplicationException) {

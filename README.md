@@ -41,6 +41,11 @@ Dodatkowo:
 
 [APACHE LICENSE, VERSION 2.0](https://www.apache.org/licenses/LICENSE-2.0)
 
+Ikony aplikacji użyte i nieedytowane zgodnie z licencjami:
+* small-n-flat icon pack by Paomedia (https://www.iconfinder.com/iconsets/small-n-flat)
+na licencji [Creative Commons (Attribution 3.0 Unported) (CC BY 3.0)](https://creativecommons.org/licenses/by/3.0/)
+* exit icon by Alessandro Rei (https://www.iconfinder.com/icons/6035/exit_icon#) na licencji [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
+
 ## Instalacja
 
 Aplikacje można pobrać pod linkiem:
@@ -102,6 +107,12 @@ Extra:
 ## License
 
 [APACHE LICENSE, VERSION 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+Application icons used and unedited according to the licenses:
+* small-n-flat icon pack by Paomedia (https://www.iconfinder.com/iconsets/small-n-flat)
+  na licencji [Creative Commons (Attribution 3.0 Unported) (CC BY 3.0)](https://creativecommons.org/licenses/by/3.0/)
+* exit icon by Alessandro Rei (https://www.iconfinder.com/icons/6035/exit_icon#) na licencji [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
+
 
 ## Installation
 
