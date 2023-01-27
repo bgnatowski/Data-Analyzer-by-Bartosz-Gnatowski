@@ -40,8 +40,8 @@ public class GridPaneUtils {
 		// Remove row constraints
 		try{
 			grid.getRowConstraints().remove(targetRowIndex);
-		}catch (IndexOutOfBoundsException e){
-
+		}catch (IndexOutOfBoundsException e) {
+			//ignore - working with exception
 		}
 	}
 }

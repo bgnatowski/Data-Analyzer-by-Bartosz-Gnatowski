@@ -233,7 +233,7 @@ public class ChartViewController {
 		}
 	}
 
-	@FXML // "Dodaj" dodaje linie w Ygrid
+	@FXML // "Dodaj" dodaje linie w grid y
 	private void addLine(ActionEvent actionEvent) {
 		int row = yGrid.getRowCount();
 		if(row<6){
@@ -266,15 +266,15 @@ public class ChartViewController {
 
 	private Button createButton(int row, ComboBox<UniNames> newComboBox, ColorPicker newColorPicker){
 		Button button = new Button();
-		Image image = new Image(getClass().getResource("/images/sign_x.png").toString());
+		Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/sign_x.png")));
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(17);
 		imageView.setFitWidth(17);
 		button.setGraphic(imageView);
 		button.setOnAction(event -> {
 			GridPaneUtils.removeRow(yGrid, GridPane.getRowIndex(button));
-			yColorPickerList.remove(newColorPicker);//delete from list colorpicker
-			yValuesList.remove(newComboBox);//delete from list colorpicker
+			yColorPickerList.remove(newColorPicker);//delete from list color picker
+			yValuesList.remove(newComboBox);//delete from list color picker
 			setCurrentChart();
 		});
 		return button;
@@ -392,8 +392,8 @@ public class ChartViewController {
 	}
 	private ArrayList<Color> getUserDefinedColors() {
 		ArrayList<Color> colors = new ArrayList<>();
-		for (int i = 0; i < yColorPickerList.size(); i++) {
-			colors.add(yColorPickerList.get(i).getValue());
+		for (ColorPicker colorPicker : yColorPickerList) {
+			colors.add(colorPicker.getValue());
 		}
 		return colors;
 	}
@@ -413,6 +413,6 @@ public class ChartViewController {
 
 
 	//todo usuwanie wykresu
-	//todo zapisywanie ustawien wszysktich poiedzy przelaczaniem idk czy to zrobie
+	//todo zapisywanie ustawień wszystkich pomiędzy przełączaniem idk czy to zrobić
 
 }

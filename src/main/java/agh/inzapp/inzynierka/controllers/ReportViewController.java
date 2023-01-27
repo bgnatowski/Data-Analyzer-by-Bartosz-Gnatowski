@@ -11,7 +11,6 @@ import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -28,7 +27,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static agh.inzapp.inzynierka.utils.FxmlUtils.getInternalizedPropertyByKey;
 import static agh.inzapp.inzynierka.utils.FxmlUtils.restrictDatePicker;
 
 @Controller
@@ -117,8 +115,7 @@ public class ReportViewController {
 		};
 		new Thread(task).start();
 		task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
-			if(newValue instanceof Exception) {
-				Exception ex = (Exception) newValue;
+			if(newValue instanceof Exception ex) {
 				progress.setVisible(false);
 				info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));
 				DialogUtils.errorDialog(ex.getMessage());
@@ -188,8 +185,7 @@ public class ReportViewController {
 			}
 		};
 		task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
-			if(newValue instanceof Exception) {
-				Exception ex = (Exception) newValue;
+			if(newValue instanceof Exception ex) {
 				progress.setVisible(false);
 				info.setText(FxmlUtils.getInternalizedPropertyByKey("error.saving"));
 			}

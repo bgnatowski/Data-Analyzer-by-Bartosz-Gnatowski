@@ -123,7 +123,7 @@ public class LineChartBuilder {
 	}
 
 	private void setTickLabelFormatterOnY() {
-		yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+		yAxis.setTickLabelFormatter(new StringConverter<>() {
 			@Override
 			public Number fromString(String string) {
 				return Double.parseDouble(string);

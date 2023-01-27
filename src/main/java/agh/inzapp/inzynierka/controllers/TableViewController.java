@@ -3,23 +3,22 @@ package agh.inzapp.inzynierka.controllers;
 import agh.inzapp.inzynierka.models.enums.DataType;
 import agh.inzapp.inzynierka.models.enums.NumberDisplayType;
 import agh.inzapp.inzynierka.models.enums.UniNames;
-import agh.inzapp.inzynierka.models.fxmodels.*;
+import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
+import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.application.Platform;
-import javafx.beans.property.*;
-import javafx.beans.value.ChangeListener;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import org.springframework.stereotype.Controller;
@@ -57,11 +56,7 @@ public class TableViewController {
 			modelList = ListCommonModelFx.getInstance();
 			bindNormal();
 			bindHarmonics();
-			Platform.runLater(new Runnable() {
-				@Override public void run() {
-					showInfoDialog();
-				}
-			});
+			Platform.runLater(this::showInfoDialog);
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}

@@ -1,7 +1,6 @@
 package agh.inzapp.inzynierka.strategies;
 
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
-import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import agh.inzapp.inzynierka.utils.parsers.SonelParser;
 import com.opencsv.CSVReader;
@@ -12,7 +11,9 @@ import javafx.collections.FXCollections;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {

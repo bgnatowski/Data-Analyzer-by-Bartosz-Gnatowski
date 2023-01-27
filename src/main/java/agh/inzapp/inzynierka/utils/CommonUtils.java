@@ -1,7 +1,6 @@
 package agh.inzapp.inzynierka.utils;
 
 import agh.inzapp.inzynierka.models.enums.UniNames;
-import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.paint.Color;
 import javafx.util.StringConverter;

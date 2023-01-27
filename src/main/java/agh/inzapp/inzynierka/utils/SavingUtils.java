@@ -41,7 +41,7 @@ public class SavingUtils {
 		}
 	}
 
-	public static void fastSaveChart(AnchorPane chart, String name) throws IOException {
+	public static void fastSaveChart(AnchorPane chart, String name) {
 		Platform.runLater(()->{
 			Scene scene = new Scene(chart, 823, 336);
 			scene.setFill(Color.WHITE);
@@ -54,6 +54,7 @@ public class SavingUtils {
 			try {
 				ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
 			} catch (IOException e) {
+				DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.generating"));
 			}
 		});
 

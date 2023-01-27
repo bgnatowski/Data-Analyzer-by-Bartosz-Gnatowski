@@ -41,9 +41,16 @@ public class ImportViewController {
 	private void bindings() {
 		updateListView();
 		comboBoxAnalyzer.setItems(FXCollections.observableArrayList(Analysers.PQbox, Analysers.Sonel));
-		btnImport.disableProperty().bind(filesList.filesListProperty().emptyProperty().not().and(
-				comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not()
-		);
+
+		comboBoxAnalyzer.getSelectionModel().select(Analysers.Sonel);
+		filesList.addFileToList(new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\DabrowaTrafo.csv"));
+		filesList.addFileToList(new File("E:\\glowneRepo\\inz\\src\\main\\resources\\data\\DabrowaTrafo_UHarmo.csv"));
+		updateListView();
+		btnImport.setDisable(false);
+
+//		btnImport.disableProperty().bind(filesList.filesListProperty().emptyProperty().not().and(
+//				comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.PQbox).or(comboBoxAnalyzer.valueProperty().isEqualTo(Analysers.Sonel))).not()
+//		);
 	}
 
 	@FXML
@@ -89,15 +96,12 @@ public class ImportViewController {
 			}
 		};
 		task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
-			if(newValue instanceof ApplicationException) {
-				ApplicationException ex = (ApplicationException) newValue;
+			if(newValue instanceof ApplicationException ex) {
 				progressBar.setVisible(false);
 				DialogUtils.errorDialog(ex.getMessage());
 			}
 		});
-		task.setOnSucceeded(e -> {
-			switchToTableViewAferImport();
-		});
+		task.setOnSucceeded(e -> switchToTableViewAferImport());
 		new Thread(task).start();
 	}
 

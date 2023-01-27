@@ -184,8 +184,8 @@ public class ListCommonModelFx {
 		List<Long> ilePustychPltL3 = calculateEmptyPltL3();
 		final ObservableList<UniNames> standardColumns = getColumStandardNames();
 		final ObservableList<UniNames> harmoColumns = getColumHarmonicNames();
-		boolean czyNapiecia = standardColumns.containsAll(UniNames.getNormalEnough());
-		boolean czyHarmoniczne = harmoColumns.containsAll(UniNames.getHarmonicsEnough());
+		boolean czyNapiecia = new HashSet<>(standardColumns).containsAll(UniNames.getNormalEnough());
+		boolean czyHarmoniczne = new HashSet<>(harmoColumns).containsAll(UniNames.getHarmonicsEnough());
 		boolean czyCaly = czyHarmoniczne && czyNapiecia;
 
 		return FxmlUtils.getInternalizedPropertyByKey("stat.column") + ileKolumn + "\n" +

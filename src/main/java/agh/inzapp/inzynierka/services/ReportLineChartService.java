@@ -8,9 +8,10 @@ import agh.inzapp.inzynierka.utils.SavingUtils;
 import javafx.scene.layout.AnchorPane;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 @Component
@@ -22,7 +23,7 @@ public class ReportLineChartService {
 		this.lineChartBuilder = new LineChartBuilder();
 	}
 
-	public void createLineChartsStandard(List<CommonModelFx> recordsBetweenDate) throws IOException{
+	public void createLineChartsStandard(List<CommonModelFx> recordsBetweenDate) {
 		models = recordsBetweenDate;
 		if(isTheSameDay()) lineChartBuilder.setXDateTickToOnlyTime();
 		else lineChartBuilder.setXDateTickToDays();
@@ -78,7 +79,7 @@ public class ReportLineChartService {
 
 	}
 
-	public void createLineChartsHarmo(List<CommonModelFx> recordsBetweenDate) throws IOException {
+	public void createLineChartsHarmo(List<CommonModelFx> recordsBetweenDate) {
 		models = recordsBetweenDate;
 		if(isTheSameDay()) lineChartBuilder.setXDateTickToOnlyTime();
 		else lineChartBuilder.setXDateTickToDays();

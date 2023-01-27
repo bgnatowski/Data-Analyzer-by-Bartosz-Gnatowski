@@ -4,8 +4,6 @@ import agh.inzapp.inzynierka.models.enums.Analysers;
 import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
 import agh.inzapp.inzynierka.strategies.CSVImportPQ;
 import agh.inzapp.inzynierka.strategies.CSVImportSonel;
-import agh.inzapp.inzynierka.strategies.CSVStrategy;
-import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.exceptions.ApplicationException;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
