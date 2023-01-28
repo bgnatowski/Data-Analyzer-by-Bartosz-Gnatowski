@@ -5,26 +5,26 @@
     <title>Information</title>
 </head>
 <body>
-<p>The application has:</p>
+<p>Features</p>
 <ul>
-  <li>Import of data exported from power network analyzers of companies:
+  <li>Import of standard and higher harmonic data exported in ".csv" files from power network analyzers of the companies:
     <ol start="4">
-      <li>Sonel &ndash; standard data for the network and harmonic content data with THD, in separate ".csv" files exported from the <em>Sonel Analysis program</em> <em>version 4.6.x </em>(at least version 4.6.0). Possible import in English and Polish.</li>
-      <li>A-Eberle &ndash; standard network data and harmonic content data with THD, in separate ".csv" files exported from <em>WinPQ mobil </em>(version 6.1.2.1). Possible import in English. IMPORTANT. When exporting from WinPQ mobil, check the <i>"Suppress Headers "</i> option.</li>
+      <li>Sonel &ndash; export from the <em>Sonel Analysis program</em> <em>version 4.6.x </em>(at least version 4.6.0). Possible import in English and Polish.</li>
+      <li>A-Eberle &ndash; export from <em>WinPQ mobil</em> (version 6.1.2.1). Possible import in English. IMPORTANT. When exporting from <em>WinPQ mobil</em>, check the <i>"Suppress Headers "</i> option.</li>
     </ol>
   </li>
-  <li>Preview of the above-mentioned data with saving to a text file in various formats of representation of numbers (i.e. floating point and scientific format).</li>
-  <li>A simple and functional creator of line charts from imported data with the option of saving them.</li>
-  <li>Report generator in <em>". </em>docx&rdquo; in Polish, containing the assessment of compliance of parameters based <br />on the Regulation of the Minister of Economy of May 4, 2007 on detailed conditions for the operation of the power system, Journal of Laws No. 93, item 623.</li>
+  <li>Preview imported data with saving to text file in floating point and scientific format.</li>
+  <li>A simple and useful line chart creator allowing saving charts to ".png" .</li>
+  <li>A report generator that allows automatic creation of a document in Polish in ".docx" format containing an assessment of parameter compliance in accordance with the "Rozporządzenie Ministra Gospodarki z dnia 4 maja 2007 r. w sprawie wpływu warunków funkcjonowania systemu elektroenergetycznego, Dziennik Ustaw Nr 93, poz. 623"</li>
 </ul>
-<p>To generate the report it is important that both types of data have been imported. Additionally, they should include at least:</p>
+<p>To generate a full report, it is important that both types of data are imported. In addition, they must include parameters:</p>
 <ul>
-  <li>Average RMS values of phase voltages (each phase: <em>L1 </em>, <em>L2 </em>, <em>L3 </em>),</li>
-  <li>Negative sequence voltage unbalance factor,</li>
-  <li>Light flicker nuisance coefficient for each of the 3 phases (collected by Sonel analyzers, calculated from the coefficient for A-Eberle analysers),</li>
+  <li>Average RMS values of phase voltages (each phase: L1 , L2 , L3),</li>
+  <li>Power asymmetry factor of the opposite component,</li>
+  <li>Flicker P<sub>lt</sub> for each of the 3 phases (collected by Sonel analyzer, calculated from P<sub>st</sub> factor for A-Eberle analyzers),</li>
   <li>The value of the harmonic distortion factor THD for each of the 3 phases,</li>
-  <li>Value of the level of each of the voltage harmonics (min. up to 40) for each of the 3 phases (SonelAnalysis - data export in [%], WinPQ - data export in [V])/</li>
+  <li>Value of the level of each of the voltage harmonics (min. up to 25) for each of the 3 phases (SonelAnalysis - data export in %, WinPQ - data export in V).</li>
 </ul>
-<p>Otherwise, the report will be incomplete, will be generated incorrectly or it will not be possible to generate and save the report.</p>
+<p>If any of the parameters are missing, the generated report will be incomplete</p>
 </body>
 </html>

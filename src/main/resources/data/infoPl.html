@@ -12,24 +12,31 @@
 <body>
 <p>Aplikacja umożliwia:</p>
 <ul>
-    <li>Import danych wyeksportowanych z analizator&oacute;w sieci elektroenergetycznych firm:
+    <li>Import danych standardowych i danych wyższych harmonicznych wyeksportowanych w plikach ".csv" z analizatorów sieci elektroenergetycznych firm:
         <ol>
-            <li>Sonel &ndash; dane standardowe dla sieci i dane zawartości harmonicznych wraz z THD, w osobnych plikach &bdquo;.csv&rdquo; eksportowanych z programu <em>Sonel Analiza</em> <em>wersja 4.6.x</em> (min. wersja 4.6.0). Możliwa obsługa w języku angielskim i polskim.</li>
-            <li>A-Eberle &ndash; dane standardowe dla sieci i dane zawartości harmonicznych wraz z THD, w osobnych plikach &bdquo;.csv&rdquo; eksportowanych z programu <em>WinPQ mobil</em> (wersja 6.1.2.1). Możliwa obsługa w języku angielskim. WAŻNE. Przy eksporcie z WinPQ mobil zaznaczyć opcję <i>"Suppress Headers"</i>.</li>
+            <li>Sonel &ndash; eksport z programu  <em>Sonel Analiza</em> <em>wersja 4.6.x</em> (min. wersja 4.6.0). Możliwa obsługa w języku angielskim i polskim.</li>
+            <li>A-Eberle &ndash; eksport z programu <em>WinPQ mobil</em> (wersja 6.1.2.1). Możliwa obsługa w języku angielskim. <b>WAŻNE</b>> Przy eksporcie z <em>WinPQ mobil</em>  zaznaczyć opcję "Bez nagłówka" <i>"Suppress Headers"</i>.</li>
         </ol>
     </li>
-    <li>Podgląd wyżej wymienionych danych wraz z zapisem do pliku tekstowego w r&oacute;żnych formatach reprezentacji liczb (tj. format zmiennoprzecinkowy oraz naukowy).</li>
-    <li>Tworzenie wykresów poprzez prosty i funkcjonalny kreator wykres&oacute;w liniowych z zaimportowanych danych wraz z możliwością ich zapisania.</li>
-    <li>Tworzenie raportu poprzez w formacie <em>&bdquo;.</em>docx&rdquo; w języku polskim zawierający ocenę zgodności parametr&oacute;w w oparciu <br />o Rozporządzenia Ministra Gospodarki z dnia 4 maja 2007 r. w sprawie szczeg&oacute;łowych warunk&oacute;w funkcjonowania systemu elektroenergetycznego, Dziennik Ustaw Nr 93, poz. 623.</li>
+    <li>Podgląd zaimportowanych danych wraz z zapisem do pliku tekstowego w formacie zmiennoprzecinkowym i naukowym.</li>
+    <li>Tworzenie w kreatorze wykresów liniowych oraz ich zapis do plików ".png".</li>
+    <li>Automatyczne tworzenie dokumentu w języku polskim w formacie „.docx” zawierającego ocenę zgodności parametrów zgodnie z Rozporządzeniem Ministra Gospodarki z dnia 4 maja 2007 r. w sprawie wpływu warunków funkcjonowania systemu elektroenergetycznego, Dziennik Ustaw Nr 93, poz. 623. poprzez wygodny generator raportu</li>
 </ul>
-<p>Aby wygenerować raport ważne jest, oba rodzaje danych zostały zaimportowane. Dodatkowo w ich skład powinny wejść minimum:</p>
+<p>Aby wygenerować pełny raport ważne jest, aby oba typy danych zostały zaimportowane. Dodatkowo w ich skład muszą wchodzić parametry:</p>
 <ul>
-    <li>Uśrednione wartości skuteczne napięć fazowych (każdej z fazy: <em>L1</em>, <em>L2</em>, <em>L3</em>),</li>
-    <li>Wsp&oacute;łczynnik asymetrii napięcia składowej rzeciwnej,</li>
-    <li>Wsp&oacute;łczynnik uciążliwości migotania światła dla każdej z 3 faz (zbierany przez analizatory Sonel, wyliczany ze wsp&oacute;łczynnika dla analizator&oacute;w firmy A-Eberle),</li>
-    <li>Wartość wsp&oacute;łczynnika zawartości harmonicznych THD dla każdej z 3 faz,</li>
-    <li>Wartość poziomu każdej z harmonicznych napięcia (min. do 40) dla każdej z 3 faz (SonelAnaliza - export danych w [%], WinPQ - export danych w [V]).</li>
+    <li>Uśrednione wartości skuteczne napięć fazowych (każdej z faz: L1 , L2 , L3),</li>
+    <li>Współczynnik asymetrii mocy składowej przeciwnej,</li>
+    <li>Współczynnik uciążliwości migotania światła P<sub>lt</sub> dla każdej z 3 faz (zbierany przez analizator Sonel, wyliczany ze współczynnika P<sub>st</sub> dla analizatorów firmy A-Eberle),</li>
+    <li>Współczynnik zawartości harmonicznych THD dla każdej z 3 faz,</li>
+    <li>Wartość poziomu każdej z harmonicznych napięcia (min. do 25) dla każdej z 3 faz (SonelAnaliza — export danych w %, WinPQ — export danych w V).</li>
 </ul>
-<p>W przeciwnym wypadku raport będzie niepełny, zostanie wygenerowany nieprawidłowo lub nie będzie możliwe wygenerowanie i zapisanie raportu.</p>
+<p>W przypadku braku któregoś z parametru wygenerowany raport będzie niepełny.</p>
+
+<p>Dodatkowo:</p>
+<ul>
+    <li>Opcja przeciągnij i upuść pliki csv w obrębie listy, aby zaimportować.</li>
+    <li>Podgląd danych możliwy w osobnym oknie poprzez kliknięcie menu prawym przyciskiem myszy po czym "otwórz w nowym oknie".</li>
+    <li>Możliwość zapisu do csv w innym formacie reprezentacji liczb (naukowy, zmiennoprzecinkowy) poprzez przycisk "zapisz jako..." w menu podglądu danych.</li>
+</ul>
 </body>
 </html>
