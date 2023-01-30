@@ -92,7 +92,13 @@ public class LineChartBuilder {
 		long min = xMin.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		long max = xMax.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		long off = max - min;
-		setXAxisBounds(min, max, off / (localDateTimes.size() / 2d));
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime plusHours = now.plusHours(1);
+		final long l1 = now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		final long l2 = plusHours.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
+		long tick = l2-l1;
+//		setXAxisBounds(min, max, off / (localDateTimes.size() / 2d));
+		setXAxisBounds(min, max, tick);
 		setTickLabelFormatterOnX();
 	}
 
