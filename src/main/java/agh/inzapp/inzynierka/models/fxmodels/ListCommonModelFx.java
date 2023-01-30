@@ -176,16 +176,20 @@ public class ListCommonModelFx {
 
 	public String getImportedStatistics() {
 		//Przydałaby się lista zaimportowanych danych wraz z krótką statystyką:
-		int ileKolumn = getColumnNames().size();
+		final List<UniNames> columnNames = getColumnNames();
+		int ileKolumn = columnNames.size();
 		int ileWierszy = modelsFx.size();
 		List<Long> ilePustychFlag = calculateEmptyFlags();
 		List<Long> ilePustychPltL1 = calculateEmptyPltL1();
 		List<Long> ilePustychPltL2 = calculateEmptyPltL2();
 		List<Long> ilePustychPltL3 = calculateEmptyPltL3();
-		final ObservableList<UniNames> standardColumns = getColumStandardNames();
-		final ObservableList<UniNames> harmoColumns = getColumHarmonicNames();
-		boolean czyNapiecia = new HashSet<>(standardColumns).containsAll(UniNames.getNormalEnough());
-		boolean czyHarmoniczne = new HashSet<>(harmoColumns).containsAll(UniNames.getHarmonicsEnough());
+
+//		String listString = columnNames.stream().map(Object::toString)
+//				.collect(Collectors.joining(", "));
+//		DialogUtils.errorDialog(listString);
+
+		final boolean czyNapiecia = UniNames.getNormalEnough().stream().allMatch(columnNames::contains);
+		final boolean czyHarmoniczne = UniNames.getHarmonicsEnough().stream().allMatch(columnNames::contains);
 		boolean czyCaly = czyHarmoniczne && czyNapiecia;
 
 		return FxmlUtils.getInternalizedPropertyByKey("stat.column") + ileKolumn + "\n" +

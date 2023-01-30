@@ -44,6 +44,7 @@ public class CSVImportSonel extends CSVImportCommon implements CSVStrategy {
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
 			setDataInSonelModel(records, model);
+			model.deleteNone();
 			dataModels.add(model);
 		}
 	}

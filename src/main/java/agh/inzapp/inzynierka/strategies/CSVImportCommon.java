@@ -27,7 +27,7 @@ import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 
 @Component
 public abstract class CSVImportCommon {
-	private static final int BLANK_COLUMNS_SONEL = 2;
+	private static int BLANK_COLUMNS_SONEL = 0;
 	protected CSVParser parser = new CSVParserBuilder().withSeparator(';').withQuoteChar('\'').withIgnoreQuotations(false).build();
 	protected List<List<String>> allRecordsList;
 	protected List<UniNames> columnsNames;
@@ -177,8 +177,10 @@ public abstract class CSVImportCommon {
 
 		Stream.of(values()).forEach(unitaryName -> {
 			if (model.getColumnNames().contains(unitaryName)) {
+				if(unitaryName.equals(NONE)){
+					return;
+				}
 				long columnID = model.getColumnNames().indexOf(unitaryName) + BLANK_COLUMNS_SONEL;
-
 				String stringRecord = recordsList.get(Math.toIntExact(columnID)).trim();
 				switch (unitaryName) {
 					case Date -> {
@@ -240,7 +242,8 @@ public abstract class CSVImportCommon {
 						}else{
 							try {
 								double aDouble = SonelParser.parseDouble(stringRecord);
-								modelHarmo.put(unitaryName, (aDouble / h1_l1.get()) * 100);
+								double percentage = (aDouble / h1_l1.get()) * 100;
+								modelHarmo.put(unitaryName, percentage);
 							} catch (ParseException e) {
 								DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
 							}
@@ -256,7 +259,8 @@ public abstract class CSVImportCommon {
 						}else{
 							try {
 								double aDouble = SonelParser.parseDouble(stringRecord);
-								modelHarmo.put(unitaryName, (aDouble / h1_l2.get()) * 100);
+								double percentage = (aDouble / h1_l2.get()) * 100;
+								modelHarmo.put(unitaryName, percentage);
 							} catch (ParseException e) {
 								DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
 							}
@@ -273,7 +277,8 @@ public abstract class CSVImportCommon {
 						}else{
 							try {
 								double aDouble = SonelParser.parseDouble(stringRecord);
-								modelHarmo.put(unitaryName, (aDouble / h1_l3.get()) * 100);
+								double percentage = (aDouble / h1_l3.get()) * 100;
+								modelHarmo.put(unitaryName, percentage);
 							} catch (ParseException e) {
 								DialogUtils.errorDialog(e.getMessage(), e.getClass(), "error.parsingDouble");
 							}

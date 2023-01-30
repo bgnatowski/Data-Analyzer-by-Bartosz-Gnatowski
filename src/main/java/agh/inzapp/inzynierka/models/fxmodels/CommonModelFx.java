@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @Component
-public class CommonModelFx {
+public class CommonModelFx implements Cloneable{
 	protected LongProperty id = new SimpleLongProperty();
 	protected ObjectProperty<LocalDateTime> date = new SimpleObjectProperty<>();
 	protected MapProperty<UniNames, String> flags = new SimpleMapProperty<>(FXCollections.observableMap(new LinkedHashMap<>()));
@@ -139,5 +139,11 @@ public class CommonModelFx {
 			DialogUtils.errorDialog("error.clone");
 		}
 		return clone;
+	}
+
+	public void deleteNone() {
+		if(columnNames.contains(UniNames.NONE)){
+			columnNames.removeAll(UniNames.NONE);
+		}
 	}
 }

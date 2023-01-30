@@ -12,10 +12,13 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static agh.inzapp.inzynierka.models.enums.UniNames.*;
+import static agh.inzapp.inzynierka.models.enums.UniNames.tan_phi_L3_Cmin_avg;
+
 public class SonelParser {
-	private static final Map<String, UniNames> mapDataNames = new LinkedHashMap<>();
 	private static final List<String> dateFormatPatterns = new ArrayList<>();
 
 	static {
@@ -25,628 +28,697 @@ public class SonelParser {
 		dateFormatPatterns.add("yyyy/MM/d");
 		dateFormatPatterns.add("yyyy-MM-d");
 	}
-	static {
-		mapDataNames.put("Date", Date);
-		mapDataNames.put("Data", Date);
-		mapDataNames.put("Time (UTC±0)", Time);
-		mapDataNames.put("Czas (UTC±0)", Time);
-		mapDataNames.put("Time (UTC+1)", Time);
-		mapDataNames.put("Czas (UTC+1)", Time);
-		mapDataNames.put("Time (UTC+2)", Time);
-		mapDataNames.put("Czas (UTC+2)", Time);
-		mapDataNames.put("Time (UTC+3)", Time);
-		mapDataNames.put("Czas (UTC+3)", Time);
-		mapDataNames.put("Time (UTC+4)", Time);
-		mapDataNames.put("Czas (UTC+4)", Time);
-		mapDataNames.put("Time (UTC+5)", Time);
-		mapDataNames.put("Czas (UTC+5)", Time);
-		mapDataNames.put("Time (UTC+6)", Time);
-		mapDataNames.put("Czas (UTC+6)", Time);
-		mapDataNames.put("Time (UTC+7)", Time);
-		mapDataNames.put("Czas (UTC+7)", Time);
-		mapDataNames.put("Time (UTC+8)", Time);
-		mapDataNames.put("Czas (UTC+8)", Time);
-		mapDataNames.put("Time (UTC+9)", Time);
-		mapDataNames.put("Czas (UTC+9)", Time);
-		mapDataNames.put("Time (UTC+10)", Time);
-		mapDataNames.put("Czas (UTC+10)", Time);
-		mapDataNames.put("Time (UTC+11)", Time);
-		mapDataNames.put("Czas (UTC+11)", Time);
-		mapDataNames.put("Time (UTC+12)", Time);
-		mapDataNames.put("Czas (UTC+12)", Time);
-		mapDataNames.put("Time (UTC+13)", Time);
-		mapDataNames.put("Czas (UTC+13)", Time);
-		mapDataNames.put("Time (UTC-1)", Time);
-		mapDataNames.put("Czas (UTC-1)", Time);
-		mapDataNames.put("Time (UTC-2)", Time);
-		mapDataNames.put("Czas (UTC-2)", Time);
-		mapDataNames.put("Time (UTC-3)", Time);
-		mapDataNames.put("Czas (UTC-3)", Time);
-		mapDataNames.put("Time (UTC-4)", Time);
-		mapDataNames.put("Czas (UTC-4)", Time);
-		mapDataNames.put("Time (UTC-5)", Time);
-		mapDataNames.put("Czas (UTC-5)", Time);
-		mapDataNames.put("Time (UTC-6)", Time);
-		mapDataNames.put("Czas (UTC-6)", Time);
-		mapDataNames.put("Time (UTC-7)", Time);
-		mapDataNames.put("Czas (UTC-7)", Time);
-		mapDataNames.put("Time (UTC-8)", Time);
-		mapDataNames.put("Czas (UTC-8)", Time);
-		mapDataNames.put("Time (UTC-9)", Time);
-		mapDataNames.put("Czas (UTC-9)", Time);
-		mapDataNames.put("Time (UTC-10)", Time);
-		mapDataNames.put("Czas (UTC-10)", Time);
-		mapDataNames.put("Time (UTC-11)", Time);
-		mapDataNames.put("Czas (UTC-11)", Time);
-		mapDataNames.put("E", Flag_E);
-		mapDataNames.put("P", Flag_P);
-		mapDataNames.put("G", Flag_G);
-		mapDataNames.put("T", Flag_T);
-		mapDataNames.put("A", Flag_A);
-		mapDataNames.put("f L1 min. 1 min [Hz]",  f_L1_min);
-		mapDataNames.put("f L1 max. 1 min [Hz]",  f_L1_max);
-		mapDataNames.put("f L1 maks. 1 min [Hz]", f_L1_max);
-		mapDataNames.put("f L1 avg. 1 min [Hz]",  f_L1_avg);
-		mapDataNames.put("f L1 śred. 1 min [Hz]", f_L1_avg);
-		mapDataNames.put("f L2 min. 1 min [Hz]",  f_L2_min);
-		mapDataNames.put("f L2 max. 1 min [Hz]",  f_L2_max);
-		mapDataNames.put("f L2 maks. 1 min [Hz]", f_L2_max);
-		mapDataNames.put("f L2 avg. 1 min [Hz]",  f_L2_avg);
-		mapDataNames.put("f L2 śred. 1 min [Hz]", f_L2_avg);
-		mapDataNames.put("f L3 min. 1 min [Hz]",  f_L3_min);
-		mapDataNames.put("f L3 max. 1 min [Hz]",  f_L3_max);
-		mapDataNames.put("f L3 maks. 1 min [Hz]", f_L3_max);
-		mapDataNames.put("f L3 avg. 1 min [Hz]",  f_L3_avg);
-		mapDataNames.put("f L3 śred. 1 min [Hz]", f_L3_avg);
-		mapDataNames.put("U L12 avg [V]", U12_avg); 
-		mapDataNames.put("U L12 avg. 1 min [V]", U12_avg); 
-		mapDataNames.put("U L12 śred. 1 min [V]", U12_avg); 
-		mapDataNames.put("U L23 avg [V]", U23_avg); 
-		mapDataNames.put("U L23 avg. 1 min [V]", U23_avg); 
-		mapDataNames.put("U L23 śred. 1 min [V]", U23_avg); 
-		mapDataNames.put("U L31 avg [V]", U31_avg); 
-		mapDataNames.put("U L31 avg. 1 min [V]", U31_avg); 
-		mapDataNames.put("U L31 śred. 1 min [V]", U31_avg); 
-		mapDataNames.put("U L1 avg [V]", UL1_avg); 
-		mapDataNames.put("U L1 avg. 1 min [V]", UL1_avg); 
-		mapDataNames.put("U L1 śred. 1 min [V]", UL1_avg); 
-		mapDataNames.put("U L2 avg [V]", UL2_avg); 
-		mapDataNames.put("U L2 avg. 1 min [V]", UL2_avg); 
-		mapDataNames.put("U L2 śred. 1 min [V]", UL2_avg); 
-		mapDataNames.put("U L3 avg [V]", UL3_avg); 
-		mapDataNames.put("U L3 avg. 1 min [V]", UL3_avg); 
-		mapDataNames.put("U L3 śred. 1 min [V]", UL3_avg); 
-		mapDataNames.put("U L1 max [V]", UL1_max); 
-		mapDataNames.put("U L1 max. 1 min [V]", UL1_max); 
-		mapDataNames.put("U L1 maks. 1 min [V]", UL1_max); 
-		mapDataNames.put("U L2 max [V]", UL2_max); 
-		mapDataNames.put("U L2 max. 1 min [V]", UL2_max); 
-		mapDataNames.put("U L2 maks. 1 min [V]", UL2_max); 
-		mapDataNames.put("U L3 max [V]", UL3_max); 
-		mapDataNames.put("U L3 max. 1 min [V]", UL3_max); 
-		mapDataNames.put("U L3 maks. 1 min [V]", UL3_max); 
-		mapDataNames.put("U L1 min [V]", UL1_min); 
-		mapDataNames.put("U L1 min. 1 min [V]", UL1_min);
-		mapDataNames.put("U L2 min [V]", UL2_min); 
-		mapDataNames.put("U L2 min. 1 min [V]", UL2_min);
-		mapDataNames.put("U L3 min [V]", UL3_min); 
-		mapDataNames.put("U L3 min. 1 min [V]", UL3_min);
-		mapDataNames.put("I *L1 avg [A]", IL1_avg); 
-		mapDataNames.put("I *L1 avg. 1 min [A]", IL1_avg); 
-		mapDataNames.put("I *L1 śred. 1 min [A]", IL1_avg); 
-		mapDataNames.put("I *L2 avg [A]", IL2_avg); 
-		mapDataNames.put("I *L2 avg. 1 min [A]", IL2_avg); 
-		mapDataNames.put("I *L2 śred. 1 min [A]", IL2_avg); 
-		mapDataNames.put("I *L3 avg [A]", IL3_avg); 
-		mapDataNames.put("I *L3 avg. 1 min [A]", IL3_avg); 
-		mapDataNames.put("I *L3 śred. 1 min [A]", IL3_avg); 
-		mapDataNames.put("I *L1 max [A]", IL1_max); 
-		mapDataNames.put("I *L1 max. 1 min [A]", IL1_max);
-		mapDataNames.put("I *L1 maks. 1 min [A]", IL1_max);
-		mapDataNames.put("I *L2 max [A]", IL2_max);
-		mapDataNames.put("I *L2 max. 1 min [A]", IL2_max); 
-		mapDataNames.put("I *L2 maks. 1 min [A]", IL2_max); 
-		mapDataNames.put("I *L3 max [A]", IL3_max); 
-		mapDataNames.put("I *L3 max. 1 min [A]", IL3_max); 
-		mapDataNames.put("I *L3 maks. 1 min [A]", IL3_max); 
-		mapDataNames.put("I *L1 min [A]", IL1_min); 
-		mapDataNames.put("I *L1 min. 1 min [A]", IL1_min);
-		mapDataNames.put("I *L2 min [A]", IL2_min); 
-		mapDataNames.put("I *L2 min. 1 min [A]", IL2_min);
-		mapDataNames.put("I *L3 min [A]", IL3_min); 
-		mapDataNames.put("I *L3 min. 1 min [A]", IL3_min);
-		mapDataNames.put("I *N avg [A]", IN_avg); 
-		mapDataNames.put("I *N avg. 1 min [A]", IN_avg); 
-		mapDataNames.put("I *N śred. 1 min [A]", IN_avg); 
-		mapDataNames.put("I *N max [A]", IN_max); 
-		mapDataNames.put("I *N max. 1 min [A]", IN_max); 
-		mapDataNames.put("I *N maks. 1 min [A]", IN_max); 
-		mapDataNames.put("I *N min [A]", IN_min); 
-		mapDataNames.put("I *N min. 1 min [A]", IN_min);
-		mapDataNames.put("Pst L1 inst [---]", Pst_UL1); 
-		mapDataNames.put("Pst L1 instant. 10 min [---]", Pst_UL1); 
-		mapDataNames.put("Pst L1 chwil. 10 min [---]", Pst_UL1); 
-		mapDataNames.put("Pst L2 inst [---]", Pst_UL2); 
-		mapDataNames.put("Pst L2 instant. 10 min [---]", Pst_UL2); 
-		mapDataNames.put("Pst L2 chwil. 10 min [---]", Pst_UL2); 
-		mapDataNames.put("Pst L3 inst [---]", Pst_UL3); 
-		mapDataNames.put("Pst L3 instant. 10 min [---]", Pst_UL3); 
-		mapDataNames.put("Pst L3 chwil. 10 min [---]", Pst_UL3);
-
-		mapDataNames.put("P Σ avg [kW] ", P_total);
-		mapDataNames.put("P Σ max [kW] ", P_max);
-		mapDataNames.put("P Σ min [kW] ", P_min);
-
-		mapDataNames.put("Plt L1 inst [---]", Plt_L1);
-		mapDataNames.put("Plt L1 instant. 2 h [---]", Plt_L1);
-		mapDataNames.put("Plt L1 chwil. 2 h [---]", Plt_L1);
-		mapDataNames.put("Plt L2 inst [---]", Plt_L2);
-		mapDataNames.put("Plt L2 instant. 2 h [---]", Plt_L2);
-		mapDataNames.put("Plt L2 chwil. 2 h [---]", Plt_L2);
-		mapDataNames.put("Plt L3 inst [---]", Plt_L3);
-		mapDataNames.put("Plt L3 instant. 2 h [---]", Plt_L3);
-		mapDataNames.put("Plt L3 chwil. 2 h [---]", Plt_L3);
-		mapDataNames.put("U N-PE avg [V]", U_NPE_avg);
-		mapDataNames.put("U N-PE avg. 1 min [V]", U_NPE_avg);
-		mapDataNames.put("U N-PE śred. 1 min [V]", U_NPE_avg);
-		mapDataNames.put("U N-PE max [V]", U_NPE_max);
-		mapDataNames.put("U N-PE max. 1 min [V]", U_NPE_max);
-		mapDataNames.put("U N-PE maks. 1 min [V]", U_NPE_max);
-		mapDataNames.put("U N-PE min [V]", U_NPE_min);
-		mapDataNames.put("U N-PE min. 1 min [V]", U_NPE_min);
-
-
-		mapDataNames.put("U0 Σ avg [V]", U0_avg_total);
-		mapDataNames.put("U0 Σ avg. 1 min [V]", U0_avg_total);
-		mapDataNames.put("U0 Σ śred. 1 min [V]", U0_avg_total);
-		mapDataNames.put("U0 Σ max [V]", U0_max_total);
-		mapDataNames.put("U0 Σ max. 1 min [V]", U0_max_total);
-		mapDataNames.put("U0 Σ maks. 1 min [V]", U0_max_total);
-		mapDataNames.put("U0 Σ min [V]", U0_min_total);
-		mapDataNames.put("U0 Σ min. 1 min [V]", U0_min_total);
-		mapDataNames.put("U1 Σ avg [V]", U1_avg_total);
-		mapDataNames.put("U1 Σ avg. 1 min [V]", U1_avg_total);
-		mapDataNames.put("U1 Σ śred. 1 min [V]", U1_avg_total);
-		mapDataNames.put("U1 Σ max [V]", U1_max_total);
-		mapDataNames.put("U1 Σ max. 1 min [V]", U1_max_total);
-		mapDataNames.put("U1 Σ maks. 1 min [V]", U1_max_total);
-		mapDataNames.put("U1 Σ min [V]", U1_min_total);
-		mapDataNames.put("U1 Σ min. 1 min [V]", U1_min_total);
-		mapDataNames.put("U2 Σ avg [V]", U2_avg_total);
-		mapDataNames.put("U2 Σ avg. 1 min [V]", U2_avg_total);
-		mapDataNames.put("U2 Σ śred. 1 min [V]", U2_avg_total);
-		mapDataNames.put("U2 Σ max [V]", U2_max_total);
-		mapDataNames.put("U2 Σ max. 1 min [V]", U2_max_total);
-		mapDataNames.put("U2 Σ maks. 1 min [V]", U2_max_total);
-		mapDataNames.put("U2 Σ min [V]", U2_min_total);
-		mapDataNames.put("U2 Σ min. 1 min [V]", U2_min_total);
-		mapDataNames.put("I0 Σ avg [A]", I0_avg_total);
-		mapDataNames.put("I0 Σ avg. 1 min [A]", I0_avg_total);
-		mapDataNames.put("I0 Σ śred. 1 min [A]", I0_avg_total);
-		mapDataNames.put("I0 Σ max [A]", I0_max_total);
-		mapDataNames.put("I0 Σ max. 1 min [A]", I0_max_total);
-		mapDataNames.put("I0 Σ maks. 1 min [A]", I0_max_total);
-		mapDataNames.put("I0 Σ min [A]", I0_min_total);
-		mapDataNames.put("I0 Σ min. 1 min [A]", I0_min_total);
-		mapDataNames.put("I1 Σ avg [A]", I1_avg_total);
-		mapDataNames.put("I1 Σ avg. 1 min [A]", I1_avg_total);
-		mapDataNames.put("I1 Σ śred. 1 min [A]", I1_avg_total);
-		mapDataNames.put("I1 Σ max [A]", I1_max_total);
-		mapDataNames.put("I1 Σ max. 1 min [A]", I1_max_total);
-		mapDataNames.put("I1 Σ maks. 1 min [A]", I1_max_total);
-		mapDataNames.put("I1 Σ min [A]", I1_min_total);
-		mapDataNames.put("I1 Σ min. 1 min [A]", I1_min_total);
-		mapDataNames.put("I2 Σ avg [A]", I2_avg_total);
-		mapDataNames.put("I2 Σ avg. 1 min [A]", I2_avg_total);
-		mapDataNames.put("I2 Σ śred. 1 min [A]", I2_avg_total);
-		mapDataNames.put("I2 Σ max [A]", I2_max_total);
-		mapDataNames.put("I2 Σ max. 1 min [A]", I2_max_total);
-		mapDataNames.put("I2 Σ maks. 1 min [A]", I2_max_total);
-		mapDataNames.put("I2 Σ min [A]", I2_min_total);
-		mapDataNames.put("I2 Σ min. 1 min [A]", I2_min_total);
-
-		mapDataNames.put("K L1 avg. 1 min [---]",      K_L1_avg);
-		mapDataNames.put("K L1 śred. 1 min [---]",     K_L1_avg);
-		mapDataNames.put("K L2 avg. 1 min [---]",      K_L2_avg);
-		mapDataNames.put("K L2 śred. 1 min [---]",     K_L2_avg);
-		mapDataNames.put("K L3 avg. 1 min [---]",      K_L3_avg);
-		mapDataNames.put("K L3 śred. 1 min [---]",     K_L3_avg);
-		mapDataNames.put("K N avg. 1 min [---]",       K_n_avg );
-		mapDataNames.put("K N śred. 1 min [---]",      K_n_avg );
-		mapDataNames.put("CF U L1 avg. 1 min [---]",   CF_U_L1_avg);
-		mapDataNames.put("CF U L1 śred. 1 min [---]",  CF_U_L1_avg);
-		mapDataNames.put("CF U L2 avg. 1 min [---]",   CF_U_L2_avg);
-		mapDataNames.put("CF U L2 śred. 1 min [---]",  CF_U_L2_avg);
-		mapDataNames.put("CF U L3 avg. 1 min [---]",   CF_U_L3_avg);
-		mapDataNames.put("CF U L3 śred. 1 min [---]",  CF_U_L3_avg);
-		mapDataNames.put("CF U N-PE avg. 1 min [---]", CF_U_NPE_avg);
-		mapDataNames.put("CF U N-PE śred. 1 min [---]",CF_U_NPE_avg);
-		mapDataNames.put("CF I L1 avg. 1 min [---]",   CF_I_L1_avg);
-		mapDataNames.put("CF I L1 śred. 1 min [---]",  CF_I_L1_avg);
-		mapDataNames.put("CF I L2 avg. 1 min [---]",   CF_I_L2_avg);
-		mapDataNames.put("CF I L2 śred. 1 min [---]",  CF_I_L2_avg);
-		mapDataNames.put("CF I L3 avg. 1 min [---]",   CF_I_L3_avg);
-		mapDataNames.put("CF I L3 śred. 1 min [---]",  CF_I_L3_avg);
-		mapDataNames.put("CF I N avg. 1 min [---]",    CF_I_N_avg);
-		mapDataNames.put("CF I N śred. 1 min [---]",   CF_I_N_avg);
-		mapDataNames.put("PF L1 avg [---]", PF_L1_avg);
-		mapDataNames.put("PF L1 avg. 1 min [---]", PF_L1_avg);
-		mapDataNames.put("PF L1 śred. 1 min [---]", PF_L1_avg);
-		mapDataNames.put("PF L2 avg [---]", PF_L2_avg);
-		mapDataNames.put("PF L2 avg. 1 min [---]", PF_L2_avg);
-		mapDataNames.put("PF L2 śred. 1 min [---]", PF_L2_avg);
-		mapDataNames.put("PF L3 avg [---]", PF_L3_avg);
-		mapDataNames.put("PF L3 avg. 1 min [---]", PF_L3_avg);
-		mapDataNames.put("PF L3 śred. 1 min [---]", PF_L3_avg);
-		
-		mapDataNames.put("PF L1 min. 1 min [---]",       PF_L1_min);
-		mapDataNames.put("PF L2 min. 1 min [---]",       PF_L2_min);
-		mapDataNames.put("PF L3 min. 1 min [---]",       PF_L3_min);
-		mapDataNames.put("PF L1 max. 1 min [---]",       PF_L1_max);
-		mapDataNames.put("PF L1 maks. 1 min [---]",      PF_L1_max);
-		mapDataNames.put("PF L2 max. 1 min [---]",       PF_L2_max);
-		mapDataNames.put("PF L2 maks. 1 min [---]",      PF_L2_max);
-		mapDataNames.put("PF L3 max. 1 min [---]",       PF_L3_max);
-		mapDataNames.put("PF L3 maks. 1 min [---]",      PF_L3_max);
-		mapDataNames.put("PF Σ avg. 1 min [---]",        PF_total_avg);
-		mapDataNames.put("PF Σ śred. 1 min [---]",         PF_total_avg);
-		mapDataNames.put("PF Σ min. 1 min [---]",        PF_total_min);
-		mapDataNames.put("PF Σ maks. 1 min [---]",       PF_total_max);
-		mapDataNames.put("PF Σ max. 1 min [---]",          PF_total_max);
-		mapDataNames.put("cos(φ) L1 avg. 1 min [---]",   cos_phi_L1_avg);
-		mapDataNames.put("cos(φ) L1 śred. 1 min [---]",  cos_phi_L1_avg);
-		mapDataNames.put("cos(φ) L2 avg. 1 min [---]",   cos_phi_L2_avg);
-		mapDataNames.put("cos(φ) L2 śred. 1 min [---]",  cos_phi_L2_avg);
-		mapDataNames.put("cos(φ) L3 avg. 1 min [---]",   cos_phi_L3_avg);
-		mapDataNames.put("cos(φ) L3 śred. 1 min [---]",  cos_phi_L3_avg);
-		mapDataNames.put("cos(φ) Σ avg. 1 min [---]",    cos_phi_total_avg);
-		mapDataNames.put("cos(φ) Σ śred. 1 min [---]",   cos_phi_total_avg);
-		mapDataNames.put("tan(φ)L+ L1 avg. 1 min [---]", tan_phi_L1_Lplus_avg);
-		mapDataNames.put("tg(φ)L+ L1 śred. 1 min [---]", tan_phi_L1_Lplus_avg);
-		mapDataNames.put("tan(φ)L+ L2 avg. 1 min [---]", tan_phi_L2_Lplus_avg);
-		mapDataNames.put("tg(φ)L+ L2 śred. 1 min [---]", tan_phi_L2_Lplus_avg);
-		mapDataNames.put("tan(φ)L+ L3 avg. 1 min [---]", tan_phi_L3_Lplus_avg);
-		mapDataNames.put("tg(φ)L+ L3 śred. 1 min [---]", tan_phi_L3_Lplus_avg);
-		mapDataNames.put("tan(φ)L+ Σ avg. 1 min [---]",  tan_phi_total_Lplus_avg);
-		mapDataNames.put("tg(φ)L+ Σ śred. 1 min [---]",  tan_phi_total_Lplus_avg);
-		mapDataNames.put("tan(φ)L- L1 avg. 1 min [---]", tan_phi_L1_Lmin_avg);
-		mapDataNames.put("tg(φ)L- L1 śred. 1 min [---]", tan_phi_L1_Lmin_avg);
-		mapDataNames.put("tan(φ)L- L2 avg. 1 min [---]", tan_phi_L2_Lmin_avg);
-		mapDataNames.put("tg(φ)L- L2 śred. 1 min [---]", tan_phi_L2_Lmin_avg);
-		mapDataNames.put("tan(φ)L- L3 avg. 1 min [---]", tan_phi_L3_Lmin_avg);
-		mapDataNames.put("tg(φ)L- L3 śred. 1 min [---]", tan_phi_L3_Lmin_avg);
-		mapDataNames.put("tan(φ)L- Σ avg. 1 min [---]",  tan_phi_total_Lmin_avg);
-		mapDataNames.put("tan(φ)L- Σ śred. 1 min [---]",  tan_phi_total_Lmin_avg);
-		mapDataNames.put("tan(φ)C- L1 avg. 1 min [---]", tan_phi_L1_Cmin_avg);
-		mapDataNames.put("tg(φ)C- L1 śred. 1 min [---]", tan_phi_L1_Cmin_avg);
-		mapDataNames.put("tan(φ)C- L2 avg. 1 min [---]", tan_phi_L2_Cmin_avg);
-		mapDataNames.put("tg(φ)C- L2 śred. 1 min [---]", tan_phi_L2_Cmin_avg);
-		mapDataNames.put("tan(φ)C- L3 avg. 1 min [---]", tan_phi_L3_Cmin_avg);
-		mapDataNames.put("tan(φ)C- L3 śred. 1 min [---]",tan_phi_L3_Cmin_avg);
-		mapDataNames.put("tan(φ)C- Σ avg. 1 min [---]",  tan_phi_total_Cmin_avg);
-		mapDataNames.put("tg(φ)C- Σ śred. 1 min [---]",  tan_phi_total_Cmin_avg);
-		mapDataNames.put("tan(φ)C+ L1 avg. 1 min [---]", tan_phi_L1_Cplus_avg);
-		mapDataNames.put("tg(φ)C+ L1 śred. 1 min [---]", tan_phi_L1_Cplus_avg);
-		mapDataNames.put("tan(φ)C+ L2 avg. 1 min [---]", tan_phi_L2_Cplus_avg);
-		mapDataNames.put("tg(φ)C+ L2 śred. 1 min [---]", tan_phi_L2_Cplus_avg);
-		mapDataNames.put("tan(φ)C+ L3 avg. 1 min [---]", tan_phi_L3_Cplus_avg);
-		mapDataNames.put("tg(φ)C+ L3 śred. 1 min [---]", tan_phi_L3_Cplus_avg);
-		mapDataNames.put("tan(φ)C+ Σ avg. 1 min [---]",  tan_phi_total_Cplus_avg);
-		mapDataNames.put("tg(φ)C+ Σ śred. 1 min [---]",  tan_phi_total_Cplus_avg);
-
-		mapDataNames.put("P+ L1 avg. 1 min [kW]",   P_plus_L1_avg);
-		mapDataNames.put("P+ L1 śred. 1 min [kW]",  P_plus_L1_avg);
-		mapDataNames.put("P+ L2 avg. 1 min [kW]",   P_plus_L2_avg);
-		mapDataNames.put("P+ L2 śred. 1 min [kW]",  P_plus_L2_avg);
-		mapDataNames.put("P+ L3 avg. 1 min [kW]",   P_plus_L3_avg);
-		mapDataNames.put("P+ L3 śred. 1 min [kW]",  P_plus_L3_avg);
-		mapDataNames.put("P+ Σ avg. 1 min [kW]",    P_plus_total_avg);
-		mapDataNames.put("P+ Σ śred. 1 min [kW]",   P_plus_total_avg);
-		mapDataNames.put("P- L1 avg. 1 min [kW]",   P_min_L1_avg);
-		mapDataNames.put("P- L1 śred. 1 min [kW]",  P_min_L1_avg);
-		mapDataNames.put("P- L2 avg. 1 min [kW]",   P_min_L2_avg);
-		mapDataNames.put("P- L2 śred. 1 min [kW]",  P_min_L2_avg);
-		mapDataNames.put("P- L3 avg. 1 min [kW]",   P_min_L3_avg);
-		mapDataNames.put("P- L3 śred. 1 min [kW]",  P_min_L3_avg);
-		mapDataNames.put("P- Σ avg. 1 min [kW]",    P_min_total_avg);
-		mapDataNames.put("P- Σ śred. 1 min [kW]",   P_min_total_avg);
-
-		mapDataNames.put("P L1 avg [kW]", P_L1_avg);
-		mapDataNames.put("P L1 avg. 1 min [kW]", P_L1_avg);
-		mapDataNames.put("P L1 śred. 1 min [kW]", P_L1_avg);
-		mapDataNames.put("P L2 avg [kW]", P_L2_avg);
-		mapDataNames.put("P L2 avg. 1 min [kW]", P_L2_avg);
-		mapDataNames.put("P L2 śred. 1 min [kW]", P_L2_avg);
-		mapDataNames.put("P L3 avg [kW]", P_L3_avg);
-		mapDataNames.put("P L3 avg. 1 min [kW]", P_L3_avg);
-		mapDataNames.put("P L3 śred. 1 min [kW]", P_L3_avg);
-		mapDataNames.put("P L1 max [kW]", P_L1_max);
-		mapDataNames.put("P L1 max. 1 min [kW]", P_L1_max);
-		mapDataNames.put("P L1 maks. 1 min [kW]", P_L1_max);
-		mapDataNames.put("P L2 max [kW]", P_L2_max);
-		mapDataNames.put("P L2 max. 1 min [kW]", P_L2_max);
-		mapDataNames.put("P L2 maks. 1 min [kW]", P_L2_max);
-		mapDataNames.put("P L3 max [kW]", P_L3_max);
-		mapDataNames.put("P L3 max. 1 min [kW]", P_L3_max);
-		mapDataNames.put("P L3 maks. 1 min [kW]", P_L3_max);
-		mapDataNames.put("P L1 min [kW]", P_L1_min);
-		mapDataNames.put("P L1 min. 1 min [kW]", P_L1_min);
-		mapDataNames.put("P L2 min [kW]", P_L2_min);
-		mapDataNames.put("P L2 min. 1 min [kW]", P_L2_min);
-		mapDataNames.put("P L3 min [kW]", P_L3_min);
-		mapDataNames.put("P L3 min. 1 min [kW]", P_L3_min);
-
-		mapDataNames.put("P Σ min. 1 min [kW]", P_total_min);
-		mapDataNames.put("P Σ max. 1 min [kW]", P_total_max);
-		mapDataNames.put("P Σ maks. 1 min [kW]",P_total_max);
-		mapDataNames.put("P Σ avg. 1 min [kW]", P_total_avg);
-		mapDataNames.put("P Σ śred. 1 min [kW]",P_total_avg);
-
-		mapDataNames.put("Q1 L1 avg [kvar]", Q_L1_avg);
-		mapDataNames.put("Q1 L1 avg. 1 min [kvar]", Q_L1_avg);
-		mapDataNames.put("Q1 L1 śred. 1 min [kvar]", Q_L1_avg);
-		mapDataNames.put("Q1 L2 avg [kvar]", Q_L2_avg);
-		mapDataNames.put("Q1 L2 avg. 1 min [kvar]", Q_L2_avg);
-		mapDataNames.put("Q1 L2 śred. 1 min [kvar]", Q_L2_avg);
-		mapDataNames.put("Q1 L3 avg [kvar]", Q_L3_avg);
-		mapDataNames.put("Q1 L3 avg. 1 min [kvar]", Q_L3_avg);
-		mapDataNames.put("Q1 L3 śred. 1 min [kvar]", Q_L3_avg);
-		mapDataNames.put("Q1 L1 max [kvar]", Q_L1_max);
-		mapDataNames.put("Q1 L1 max. 1 min [kvar]", Q_L1_max);
-		mapDataNames.put("Q1 L1 maks. 1 min [kvar]", Q_L1_max);
-		mapDataNames.put("Q1 L2 max [kvar]", Q_L2_max);
-		mapDataNames.put("Q1 L2 max. 1 min [kvar]", Q_L2_max);
-		mapDataNames.put("Q1 L2 maks. 1 min [kvar]", Q_L2_max);
-		mapDataNames.put("Q1 L3 max [kvar]", Q_L3_max);
-		mapDataNames.put("Q1 L3 max. 1 min [kvar]", Q_L3_max);
-		mapDataNames.put("Q1 L3 maks. 1 min [kvar]", Q_L3_max);
-		mapDataNames.put("Q1 L1 min [kvar]", Q_L1_min);
-		mapDataNames.put("Q1 L1 min. 1 min [kvar]", Q_L1_min);
-		mapDataNames.put("Q1 L2 min [kvar]", Q_L2_min);
-		mapDataNames.put("Q1 L2 min. 1 min [kvar]", Q_L2_min);
-		mapDataNames.put("Q1 L3 min [kvar]", Q_L3_min);
-		mapDataNames.put("Q1 L3 min. 1 min [kvar]", Q_L3_min);
-		mapDataNames.put("Q1 Σ max [kvar]", Q_total_max);
-		mapDataNames.put("Q1 Σ max. 1 min [kvar]", Q_total_max);
-		mapDataNames.put("Q1 Σ maks. 1 min [kvar]", Q_total_max);
-		mapDataNames.put("Q1 Σ min [kvar]", Q_total_min);
-		mapDataNames.put("Q1 Σ min. 1 min [kvar]", Q_total_min);
-		mapDataNames.put("Q1 Σ avg. 1 min [kvar]", Q_total_avg);
-		mapDataNames.put("Q1 Σ śred. 1 min [kvar]", Q_total_avg);
-
-		mapDataNames.put("Sn L1 avg. 1 min [kVA]",  Sn_L1_avg);
-		mapDataNames.put("Sn L1 śred. 1 min [kVA]", Sn_L1_avg);
-		mapDataNames.put("Sn L2 avg. 1 min [kVA]",  Sn_L2_avg);
-		mapDataNames.put("Sn L2 śred. 1 min [kVA]", Sn_L2_avg);
-		mapDataNames.put("Sn L3 avg. 1 min [kVA]",  Sn_L3_avg);
-		mapDataNames.put("Sn L3 śred. 1 min [kVA]", Sn_L3_avg);
-		mapDataNames.put("Sn Σ avg. 1 min [kVA]",   Sn_total);
-		mapDataNames.put("Sn Σ śred. 1 min [kVA]",  Sn_total);
-
-		mapDataNames.put("S L1 avg [kVA]", S_L1_avg);
-		mapDataNames.put("S L1 avg. 1 min [kVA]", S_L1_avg);
-		mapDataNames.put("S L1 śred. 1 min [kVA]", S_L1_avg);
-		mapDataNames.put("S L2 avg [kVA]", S_L2_avg);
-		mapDataNames.put("S L2 avg. 1 min [kVA]", S_L2_avg);
-		mapDataNames.put("S L2 śred. 1 min [kVA]", S_L2_avg);
-		mapDataNames.put("S L3 avg [kVA]", S_L3_avg);
-		mapDataNames.put("S L3 avg. 1 min [kVA]", S_L3_avg);
-		mapDataNames.put("S L3 śred. 1 min [kVA]", S_L3_avg);
-
-		mapDataNames.put("S L1 max [kVA]", S_L1_max);
-		mapDataNames.put("S L1 max. 1 min [kVA]", S_L1_max);
-		mapDataNames.put("S L1 maks. 1 min [kVA]", S_L1_max);
-		mapDataNames.put("S L2 max [kVA]", S_L2_max);
-		mapDataNames.put("S L2 max. 1 min [kVA]", S_L2_max);
-		mapDataNames.put("S L2 maks. 1 min [kVA]", S_L2_max);
-		mapDataNames.put("S L3 max [kVA]", S_L3_max);
-		mapDataNames.put("S L3 max. 1 min [kVA]", S_L3_max);
-		mapDataNames.put("S L3 maks. 1 min [kVA]", S_L3_max);
-		mapDataNames.put("S L1 min [kVA]", S_L1_min);
-		mapDataNames.put("S L1 min. 1 min [kVA]", S_L1_min);
-		mapDataNames.put("S L2 min [kVA]", S_L2_min);
-		mapDataNames.put("S L2 min. 1 min [kVA]", S_L2_min);
-		mapDataNames.put("S L3 min [kVA]", S_L3_min);
-		mapDataNames.put("S L3 min. 1 min [kVA]", S_L3_min);
-
-		mapDataNames.put("S Σ avg. 1 min [kVA]", S_total);
-		mapDataNames.put("S Σ śred. 1 min [kVA]", S_total);
-
-		mapDataNames.put("U0/U1 Σ avg [%]",U0_U1_avg);
-		mapDataNames.put("U0/U1 Σ avg. 1 min [%]",U0_U1_avg);
-		mapDataNames.put("U0/U1 Σ śred. 1 min [%]",U0_U1_avg);
-		mapDataNames.put("U0/U1 Σ max [%]",U0_U1_max);
-		mapDataNames.put("U0/U1 Σ max. 1 min [%]",U0_U1_max);
-		mapDataNames.put("U0/U1 Σ maks. 1 min [%]",U0_U1_max);
-		mapDataNames.put("U0/U1 Σ min [%]",U0_U1_min);
-		mapDataNames.put("U0/U1 Σ min. 1 min [%]",U0_U1_min);
-		mapDataNames.put("U2/U1 Σ avg [%]",U2_U1_avg);
-		mapDataNames.put("U2/U1 Σ avg. 1 min [%]",U2_U1_avg);
-		mapDataNames.put("U2/U1 Σ śred. 1 min [%]",U2_U1_avg);
-		mapDataNames.put("U2/U1 Σ max [%]",U2_U1_max);
-		mapDataNames.put("U2/U1 Σ max. 1 min [%]",U2_U1_max);
-		mapDataNames.put("U2/U1 Σ maks. 1 min [%]",U2_U1_max);
-		mapDataNames.put("U2/U1 Σ min [%]",U2_U1_min);
-		mapDataNames.put("U2/U1 Σ min. 1 min [%]",U2_U1_min);
-		mapDataNames.put("I0/I1 Σ avg [%]",I0_I1_avg);
-		mapDataNames.put("I0/I1 Σ avg. 1 min [%]",I0_I1_avg);
-		mapDataNames.put("I0/I1 Σ max [%]",I0_I1_max);
-		mapDataNames.put("I0/I1 Σ max. 1 min [%]",I0_I1_max);
-		mapDataNames.put("I0/I1 Σ maks. 1 min [%]",I0_I1_max);
-		mapDataNames.put("I0/I1 Σ min [%]",I0_I1_min);
-		mapDataNames.put("I0/I1 Σ min. 1 min [%]",I0_I1_min);
-		mapDataNames.put("I2/I1 Σ avg [%]",I2_I1_avg);
-		mapDataNames.put("I2/I1 Σ avg. 1 min [%]",I2_I1_avg);
-		mapDataNames.put("I2/I1 Σ śred. 1 min [%]",I2_I1_avg);
-		mapDataNames.put("I2/I1 Σ max [%]",I2_I1_max);
-		mapDataNames.put("I2/I1 Σ max. 1 min [%]",I2_I1_max);
-		mapDataNames.put("I2/I1 Σ maks. 1 min [%]",I2_I1_max);
-		mapDataNames.put("I2/I1 Σ min [%]",I2_I1_min);
-		mapDataNames.put("I2/I1 Σ min. 1 min [%]",I2_I1_min);
-		mapDataNames.put("THD U L1 avg [%]",  THD_L1);
-		mapDataNames.put("THD U L2 avg [%]",  THD_L2);
-		mapDataNames.put("THD U L3 avg [%]",  THD_L3);
-		mapDataNames.put("U H 1 L1 avg [V]",  H1_UL1);
-		mapDataNames.put("U H 1 L2 avg [V]",  H1_UL2);
-		mapDataNames.put("U H 1 L3 avg [V]",  H1_UL3);
-		mapDataNames.put("U H 2 L1 avg [V]",  H2_UL1);
-		mapDataNames.put("U H 2 L2 avg [V]",  H2_UL2);
-		mapDataNames.put("U H 2 L3 avg [V]",  H2_UL3);
-		mapDataNames.put("U H 3 L1 avg [V]",  H3_UL1);
-		mapDataNames.put("U H 3 L2 avg [V]",  H3_UL2);
-		mapDataNames.put("U H 3 L3 avg [V]",  H3_UL3);
-		mapDataNames.put("U H 4 L1 avg [V]",  H4_UL1);
-		mapDataNames.put("U H 4 L2 avg [V]",  H4_UL2);
-		mapDataNames.put("U H 4 L3 avg [V]",  H4_UL3);
-		mapDataNames.put("U H 5 L1 avg [V]",  H5_UL1);
-		mapDataNames.put("U H 5 L2 avg [V]",  H5_UL2);
-		mapDataNames.put("U H 5 L3 avg [V]",  H5_UL3);
-		mapDataNames.put("U H 6 L1 avg [V]",  H6_UL1);
-		mapDataNames.put("U H 6 L2 avg [V]",  H6_UL2);
-		mapDataNames.put("U H 6 L3 avg [V]",  H6_UL3);
-		mapDataNames.put("U H 7 L1 avg [V]",  H7_UL1);
-		mapDataNames.put("U H 7 L2 avg [V]",  H7_UL2);
-		mapDataNames.put("U H 7 L3 avg [V]",  H7_UL3);
-		mapDataNames.put("U H 8 L1 avg [V]",  H8_UL1);
-		mapDataNames.put("U H 8 L2 avg [V]",  H8_UL2);
-		mapDataNames.put("U H 8 L3 avg [V]",  H8_UL3);
-		mapDataNames.put("U H 9 L1 avg [V]",  H9_UL1);
-		mapDataNames.put("U H 9 L2 avg [V]",  H9_UL2);
-		mapDataNames.put("U H 9 L3 avg [V]",  H9_UL3);
-		mapDataNames.put("U H 10 L1 avg [V]", H10_UL1);
-		mapDataNames.put("U H 10 L2 avg [V]", H10_UL2);
-		mapDataNames.put("U H 10 L3 avg [V]", H10_UL3);
-		mapDataNames.put("U H 11 L1 avg [V]", H11_UL1);
-		mapDataNames.put("U H 11 L2 avg [V]", H11_UL2);
-		mapDataNames.put("U H 11 L3 avg [V]", H11_UL3);
-		mapDataNames.put("U H 12 L1 avg [V]", H12_UL1);
-		mapDataNames.put("U H 12 L2 avg [V]", H12_UL2);
-		mapDataNames.put("U H 12 L3 avg [V]", H12_UL3);
-		mapDataNames.put("U H 13 L1 avg [V]", H13_UL1);
-		mapDataNames.put("U H 13 L2 avg [V]", H13_UL2);
-		mapDataNames.put("U H 13 L3 avg [V]", H13_UL3);
-		mapDataNames.put("U H 14 L1 avg [V]", H14_UL1);
-		mapDataNames.put("U H 14 L2 avg [V]", H14_UL2);
-		mapDataNames.put("U H 14 L3 avg [V]", H14_UL3);
-		mapDataNames.put("U H 15 L1 avg [V]", H15_UL1);
-		mapDataNames.put("U H 15 L2 avg [V]", H15_UL2);
-		mapDataNames.put("U H 15 L3 avg [V]", H15_UL3);
-		mapDataNames.put("U H 16 L1 avg [V]", H16_UL1);
-		mapDataNames.put("U H 16 L2 avg [V]", H16_UL2);
-		mapDataNames.put("U H 16 L3 avg [V]", H16_UL3);
-		mapDataNames.put("U H 17 L1 avg [V]", H17_UL1);
-		mapDataNames.put("U H 17 L2 avg [V]", H17_UL2);
-		mapDataNames.put("U H 17 L3 avg [V]", H17_UL3);
-		mapDataNames.put("U H 18 L1 avg [V]", H18_UL1);
-		mapDataNames.put("U H 18 L2 avg [V]", H18_UL2);
-		mapDataNames.put("U H 18 L3 avg [V]", H18_UL3);
-		mapDataNames.put("U H 19 L1 avg [V]", H19_UL1);
-		mapDataNames.put("U H 19 L2 avg [V]", H19_UL2);
-		mapDataNames.put("U H 19 L3 avg [V]", H19_UL3);
-		mapDataNames.put("U H 20 L1 avg [V]", H20_UL1);
-		mapDataNames.put("U H 20 L2 avg [V]", H20_UL2);
-		mapDataNames.put("U H 20 L3 avg [V]", H20_UL3);
-		mapDataNames.put("U H 21 L1 avg [V]", H21_UL1);
-		mapDataNames.put("U H 21 L2 avg [V]", H21_UL2);
-		mapDataNames.put("U H 21 L3 avg [V]", H21_UL3);
-		mapDataNames.put("U H 22 L1 avg [V]", H22_UL1);
-		mapDataNames.put("U H 22 L2 avg [V]", H22_UL2);
-		mapDataNames.put("U H 22 L3 avg [V]", H22_UL3);
-		mapDataNames.put("U H 23 L1 avg [V]", H23_UL1);
-		mapDataNames.put("U H 23 L2 avg [V]", H23_UL2);
-		mapDataNames.put("U H 23 L3 avg [V]", H23_UL3);
-		mapDataNames.put("U H 24 L1 avg [V]", H24_UL1);
-		mapDataNames.put("U H 24 L2 avg [V]", H24_UL2);
-		mapDataNames.put("U H 24 L3 avg [V]", H24_UL3);
-		mapDataNames.put("U H 25 L1 avg [V]", H25_UL1);
-		mapDataNames.put("U H 25 L2 avg [V]", H25_UL2);
-		mapDataNames.put("U H 25 L3 avg [V]", H25_UL3);
-		mapDataNames.put("U H 26 L1 avg [V]", H26_UL1);
-		mapDataNames.put("U H 26 L2 avg [V]", H26_UL2);
-		mapDataNames.put("U H 26 L3 avg [V]", H26_UL3);
-		mapDataNames.put("U H 27 L1 avg [V]", H27_UL1);
-		mapDataNames.put("U H 27 L2 avg [V]", H27_UL2);
-		mapDataNames.put("U H 27 L3 avg [V]", H27_UL3);
-		mapDataNames.put("U H 28 L1 avg [V]", H28_UL1);
-		mapDataNames.put("U H 28 L2 avg [V]", H28_UL2);
-		mapDataNames.put("U H 28 L3 avg [V]", H28_UL3);
-		mapDataNames.put("U H 29 L1 avg [V]", H29_UL1);
-		mapDataNames.put("U H 29 L2 avg [V]", H29_UL2);
-		mapDataNames.put("U H 29 L3 avg [V]", H29_UL3);
-		mapDataNames.put("U H 30 L1 avg [V]", H30_UL1);
-		mapDataNames.put("U H 30 L2 avg [V]", H30_UL2);
-		mapDataNames.put("U H 30 L3 avg [V]", H30_UL3);
-		mapDataNames.put("U H 31 L1 avg [V]", H31_UL1);
-		mapDataNames.put("U H 31 L2 avg [V]", H31_UL2);
-		mapDataNames.put("U H 31 L3 avg [V]", H31_UL3);
-		mapDataNames.put("U H 32 L1 avg [V]", H32_UL1);
-		mapDataNames.put("U H 32 L2 avg [V]", H32_UL2);
-		mapDataNames.put("U H 32 L3 avg [V]", H32_UL3);
-		mapDataNames.put("U H 33 L1 avg [V]", H33_UL1);
-		mapDataNames.put("U H 33 L2 avg [V]", H33_UL2);
-		mapDataNames.put("U H 33 L3 avg [V]", H33_UL3);
-		mapDataNames.put("U H 34 L1 avg [V]", H34_UL1);
-		mapDataNames.put("U H 34 L2 avg [V]", H34_UL2);
-		mapDataNames.put("U H 34 L3 avg [V]", H34_UL3);
-		mapDataNames.put("U H 35 L1 avg [V]", H35_UL1);
-		mapDataNames.put("U H 35 L2 avg [V]", H35_UL2);
-		mapDataNames.put("U H 35 L3 avg [V]", H35_UL3);
-		mapDataNames.put("U H 36 L1 avg [V]", H36_UL1);
-		mapDataNames.put("U H 36 L2 avg [V]", H36_UL2);
-		mapDataNames.put("U H 36 L3 avg [V]", H36_UL3);
-		mapDataNames.put("U H 37 L1 avg [V]", H37_UL1);
-		mapDataNames.put("U H 37 L2 avg [V]", H37_UL2);
-		mapDataNames.put("U H 37 L3 avg [V]", H37_UL3);
-		mapDataNames.put("U H 38 L1 avg [V]", H38_UL1);
-		mapDataNames.put("U H 38 L2 avg [V]", H38_UL2);
-		mapDataNames.put("U H 38 L3 avg [V]", H38_UL3);
-		mapDataNames.put("U H 39 L1 avg [V]", H39_UL1);
-		mapDataNames.put("U H 39 L2 avg [V]", H39_UL2);
-		mapDataNames.put("U H 39 L3 avg [V]", H39_UL3);
-		mapDataNames.put("U H 40 L1 avg [V]", H40_UL1);
-		mapDataNames.put("U H 40 L2 avg [V]", H40_UL2);
-		mapDataNames.put("U H 40 L3 avg [V]", H40_UL3);
-		mapDataNames.put("U H 41 L1 avg [V]", H41_UL1);
-		mapDataNames.put("U H 41 L2 avg [V]", H41_UL2);
-		mapDataNames.put("U H 41 L3 avg [V]", H41_UL3);
-		mapDataNames.put("U H 42 L1 avg [V]", H42_UL1);
-		mapDataNames.put("U H 42 L2 avg [V]", H42_UL2);
-		mapDataNames.put("U H 42 L3 avg [V]", H42_UL3);
-		mapDataNames.put("U H 43 L1 avg [V]", H43_UL1);
-		mapDataNames.put("U H 43 L2 avg [V]", H43_UL2);
-		mapDataNames.put("U H 43 L3 avg [V]", H43_UL3);
-		mapDataNames.put("U H 44 L1 avg [V]", H44_UL1);
-		mapDataNames.put("U H 44 L2 avg [V]", H44_UL2);
-		mapDataNames.put("U H 44 L3 avg [V]", H44_UL3);
-		mapDataNames.put("U H 45 L1 avg [V]", H45_UL1);
-		mapDataNames.put("U H 45 L2 avg [V]", H45_UL2);
-		mapDataNames.put("U H 45 L3 avg [V]", H45_UL3);
-		mapDataNames.put("U H 46 L1 avg [V]", H46_UL1);
-		mapDataNames.put("U H 46 L2 avg [V]", H46_UL2);
-		mapDataNames.put("U H 46 L3 avg [V]", H46_UL3);
-		mapDataNames.put("U H 47 L1 avg [V]", H47_UL1);
-		mapDataNames.put("U H 47 L2 avg [V]", H47_UL2);
-		mapDataNames.put("U H 47 L3 avg [V]", H47_UL3);
-		mapDataNames.put("U H 48 L1 avg [V]",H48_UL1);
-		mapDataNames.put("U H 48 L2 avg [V]",H48_UL2);
-		mapDataNames.put("U H 48 L3 avg [V]",H48_UL3);
-		mapDataNames.put("U H 49 L1 avg [V]",H49_UL1);
-		mapDataNames.put("U H 49 L2 avg [V]",H49_UL2);
-		mapDataNames.put("U H 49 L3 avg [V]",H49_UL3);
-		mapDataNames.put("U H 50 L1 avg [V]",H50_UL1);
-		mapDataNames.put("U H 50 L2 avg [V]",H50_UL2);
-		mapDataNames.put("U H 50 L3 avg [V]",H50_UL3);
-
-	}
 
 	public static List<UniNames> parseNames(List<String> names) {
 		List<UniNames> uniNamesList = new ArrayList<>();
-		names.forEach(name -> {
-			if (mapDataNames.containsKey(name.trim())) {
-				uniNamesList.add(mapDataNames.get(name.trim()));
+		names.forEach(uniName -> {
+			final String name = uniName.trim();
+			final boolean notContainsAnyLine = !name.contains("L1") && !name.contains("L2") && !name.contains("L3");
+			// this if-else statement is because char encoding of sum sign so in .exe do not work
+			if (matchDate(name)) uniNamesList.add(Date);
+			else if (matchTime(name)) uniNamesList.add(Time);
+			else if (name.equals("E")) uniNamesList.add(Flag_E);
+			else if (name.equals("P")) uniNamesList.add(Flag_P);
+			else if (name.equals("G")) uniNamesList.add(Flag_G);
+			else if (name.equals("T")) uniNamesList.add(Flag_T);
+			else if (name.equals("A")) uniNamesList.add(Flag_A);
+			else if (name.startsWith("f")) {
+				if (name.contains("L1")) {
+					if (matchMin(name)) uniNamesList.add(f_L1_min);
+					else if (matchMax(name)) uniNamesList.add(f_L1_max);
+					else if (matchAvg(name)) uniNamesList.add(f_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchMin(name)) uniNamesList.add(f_L2_min);
+					else if (matchMax(name)) uniNamesList.add(f_L2_max);
+					else if (matchAvg(name)) uniNamesList.add(f_L2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchMin(name)) uniNamesList.add(f_L3_min);
+					else if (matchMax(name)) uniNamesList.add(f_L3_max);
+					else if (matchAvg(name)) uniNamesList.add(f_L3_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if (name.startsWith("U L")) {
+				if (name.contains("L1") && !name.contains("L12")) {
+					if (matchMin(name)) uniNamesList.add(UL1_min);
+					else if (matchMax(name)) uniNamesList.add(UL1_max);
+					else if (matchAvg(name)) uniNamesList.add(UL1_avg); else uniNamesList.add(NONE);
+				}else if (name.contains("L2") && !name.contains("L23")) {
+					if (matchMin(name)) uniNamesList.add(UL2_min);
+					else if (matchMax(name)) uniNamesList.add(UL2_max);
+					else if (matchAvg(name)) uniNamesList.add(UL2_avg); else uniNamesList.add(NONE);
+				}else if (name.contains("L3") && !name.contains("L31")) {
+					if (matchMin(name)) uniNamesList.add(UL3_min);
+					else if (matchMax(name)) uniNamesList.add(UL3_max);
+					else if (matchAvg(name)) uniNamesList.add(UL3_avg); else uniNamesList.add(NONE);
+				}else if (name.contains("L12")) {
+					if (matchMin(name)) uniNamesList.add(U12_min);
+					else if (matchMax(name)) uniNamesList.add(U12_max);
+					else if (matchAvg(name)) uniNamesList.add(U12_avg); else uniNamesList.add(NONE);
+				}else if (name.contains("L23")) {
+					if (matchMin(name)) uniNamesList.add(U23_min);
+					else if (matchMax(name)) uniNamesList.add(U23_max);
+					else if (matchAvg(name)) uniNamesList.add(U23_avg); else uniNamesList.add(NONE);
+				}else if (name.contains("L31")) {
+					if (matchMin(name)) uniNamesList.add(U31_min);
+					else if (matchMax(name)) uniNamesList.add(U31_max);
+					else if (matchAvg(name)) uniNamesList.add(U31_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if(name.startsWith("U N-PE")){
+				if (matchMin(name)) uniNamesList.add(U_NPE_min);
+				else if (matchMax(name)) uniNamesList.add(U_NPE_max);
+				else if (matchAvg(name)) uniNamesList.add(U_NPE_avg); else uniNamesList.add(NONE);
+			} else if(name.startsWith("I *")){
+				if (name.contains("L1")) {
+					if (matchMin(name)) uniNamesList.add(IL1_min);
+					else if (matchMax(name)) uniNamesList.add(IL1_max);
+					else if (matchAvg(name)) uniNamesList.add(IL1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchMin(name)) uniNamesList.add(IL2_min);
+					else if (matchMax(name)) uniNamesList.add(IL2_max);
+					else if (matchAvg(name)) uniNamesList.add(IL2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchMin(name)) uniNamesList.add(IL3_min);
+					else if (matchMax(name)) uniNamesList.add(IL3_max);
+					else if (matchAvg(name)) uniNamesList.add(IL3_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("*N")){
+					if (matchMin(name)) uniNamesList.add(IN_min);
+					else if (matchMax(name)) uniNamesList.add(IN_max);
+					else if (matchAvg(name)) uniNamesList.add(IN_avg); else uniNamesList.add(NONE);
+				}
+			} else if(name.startsWith("Pst")){
+				if (name.contains("L1") && !name.contains("L12")){
+					uniNamesList.add(Pst_UL1);
+				} else if (name.contains("L2") && !name.contains("L23")){
+					uniNamesList.add(Pst_UL2);
+				} else if (name.contains("L3") && !name.contains("L31")){
+					uniNamesList.add(Pst_UL3);
+				} else if (name.contains("L12")){
+					uniNamesList.add(Pst_U12);
+				} else if (name.contains("L23")){
+					uniNamesList.add(Pst_U23);
+				} else if (name.contains("L31")){
+					uniNamesList.add(Pst_U31);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if(name.startsWith("Plt")){
+				if (name.contains("L1") && !name.contains("L12")){
+					uniNamesList.add(Plt_L1);
+				} else if (name.contains("L2") && !name.contains("L23")){
+					uniNamesList.add(Plt_L2);
+				} else if (name.contains("L3") && !name.contains("L31")){
+					uniNamesList.add(Plt_L3);
+				} else if (name.contains("L12")){
+					uniNamesList.add(Plt_U12);
+				} else if (name.contains("L23")){
+					uniNamesList.add(Plt_U23);
+				} else if (name.contains("L31")){
+					uniNamesList.add(Plt_U31);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if(match("U0/U1", name)){
+				if (matchMin(name)) uniNamesList.add(U0_U1_min);
+				else if (matchMax(name)) uniNamesList.add(U0_U1_max);
+				else if (matchAvg(name)) uniNamesList.add(U0_U1_avg); else uniNamesList.add(NONE);
+			} else if(match("U2/U1", name)){
+				if (matchMin(name)) uniNamesList.add(U2_U1_min);
+				else if (matchMax(name)) uniNamesList.add(U2_U1_max);
+				else if (matchAvg(name)) uniNamesList.add(U2_U1_avg); else uniNamesList.add(NONE);
+			} else if(match("U0 ", name)){
+				if (matchMin(name)) uniNamesList.add(U0_min_total);
+				else if (matchMax(name)) uniNamesList.add(U0_max_total);
+				else if (matchAvg(name)) uniNamesList.add(U0_avg_total); else uniNamesList.add(NONE);
+			} else if(name.startsWith("U1")){
+				if (matchMin(name)) uniNamesList.add(U1_min_total);
+				else if (matchMax(name)) uniNamesList.add(U1_max_total);
+				else if (matchAvg(name)) uniNamesList.add(U1_avg_total); else uniNamesList.add(NONE);
+			} else if(match("U2 ", name)){
+				if (matchMin(name)) uniNamesList.add(U2_min_total);
+				else if (matchMax(name)) uniNamesList.add(U2_max_total);
+				else if (matchAvg(name)) uniNamesList.add(U2_avg_total); else uniNamesList.add(NONE);
+			}else if(match("I0/I1", name)){
+				if (matchMin(name)) uniNamesList.add(I0_I1_min);
+				else if (matchMax(name)) uniNamesList.add(I0_I1_max);
+				else if (matchAvg(name)) uniNamesList.add(I0_I1_avg); else uniNamesList.add(NONE);
+			} else if(match("I2/I1", name)){
+				if (matchMin(name)) uniNamesList.add(I2_I1_min);
+				else if (matchMax(name)) uniNamesList.add(I2_I1_max);
+				else if (matchAvg(name)) uniNamesList.add(I2_I1_avg); else uniNamesList.add(NONE);
+			} else if(match("I0 ", name)){
+				if (matchMin(name)) uniNamesList.add(I0_min_total);
+				else if (matchMax(name)) uniNamesList.add(I0_max_total);
+				else if (matchAvg(name)) uniNamesList.add(I0_avg_total); else uniNamesList.add(NONE);
+			} else if(name.startsWith("I1")){
+				if (matchMin(name)) uniNamesList.add(I1_min_total);
+				else if (matchMax(name)) uniNamesList.add(I1_max_total);
+				else if (matchAvg(name)) uniNamesList.add(I1_avg_total); else uniNamesList.add(NONE);
+			} else if(match("I2 ", name)){
+				if (matchMin(name)) uniNamesList.add(I2_min_total);
+				else if (matchMax(name)) uniNamesList.add(I2_max_total);
+				else if (matchAvg(name)) uniNamesList.add(I2_avg_total); else uniNamesList.add(NONE);
+			} else if(name.startsWith("CF U")){
+				if (name.contains("L1")) {
+					if (matchAvg(name)) uniNamesList.add(CF_U_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchAvg(name)) uniNamesList.add(CF_U_L2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchAvg(name)) uniNamesList.add(CF_U_L3_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("N-PE")){
+					if (matchAvg(name)) uniNamesList.add(CF_U_NPE_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if(name.startsWith("CF I")){
+				if (name.contains("L1")) {
+					if (matchAvg(name)) uniNamesList.add(CF_I_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchAvg(name)) uniNamesList.add(CF_I_L2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchAvg(name)) uniNamesList.add(CF_I_L3_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("N")){
+					if (matchAvg(name)) uniNamesList.add(CF_I_N_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			}else if(name.startsWith("THD U")){
+				if (name.contains("L1") && !name.contains("L12")){
+					if (matchAvg(name)) uniNamesList.add(THD_L1); else uniNamesList.add(NONE);
+				}else if (name.contains("L2") && !name.contains("L23")){
+					if (matchAvg(name)) uniNamesList.add(THD_L2); else uniNamesList.add(NONE);
+				}else if (name.contains("L3") && !name.contains("L31")){
+					if (matchAvg(name)) uniNamesList.add(THD_L3); else uniNamesList.add(NONE);
+				}else if (name.contains("L12")){
+					if (matchAvg(name)) uniNamesList.add(THD_12); else uniNamesList.add(NONE);
+				} else if (name.contains("L23")){
+					if (matchAvg(name)) uniNamesList.add(THD_23); else uniNamesList.add(NONE);
+				} else if (name.contains("L31")){
+					if (matchAvg(name)) uniNamesList.add(THD_31); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if (name.startsWith("U H") && !name.contains("N-PE")) {
+				if (matchAvg(name)) {
+					int i = Integer.parseInt(name.substring(3, 6).trim());
+					switch (i) {
+						case 1 -> {
+							if (name.contains("L1")) uniNamesList.add(H1_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H1_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H1_UL3); else uniNamesList.add(NONE);
+						}
+						case 2 -> {
+							if (name.contains("L1")) uniNamesList.add(H2_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H2_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H2_UL3); else uniNamesList.add(NONE);
+						}
+						case 3 -> {
+							if (name.contains("L1")) uniNamesList.add(H3_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H3_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H3_UL3); else uniNamesList.add(NONE);
+						}
+						case 4 -> {
+							if (name.contains("L1")) uniNamesList.add(H4_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H4_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H4_UL3); else uniNamesList.add(NONE);
+						}
+						case 5 -> {
+							if (name.contains("L1")) uniNamesList.add(H5_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H5_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H5_UL3); else uniNamesList.add(NONE);
+						}
+						case 6 -> {
+							if (name.contains("L1")) uniNamesList.add(H6_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H6_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H6_UL3); else uniNamesList.add(NONE);
+						}
+						case 7 -> {
+							if (name.contains("L1")) uniNamesList.add(H7_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H7_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H7_UL3); else uniNamesList.add(NONE);
+						}
+						case 8 -> {
+							if (name.contains("L1")) uniNamesList.add(H8_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H8_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H8_UL3); else uniNamesList.add(NONE);
+						}
+						case 9 -> {
+							if (name.contains("L1")) uniNamesList.add(H9_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H9_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H9_UL3); else uniNamesList.add(NONE);
+						}
+						case 10 -> {
+							if (name.contains("L1")) uniNamesList.add(H10_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H10_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H10_UL3); else uniNamesList.add(NONE);
+						}
+						case 11 -> {
+							if (name.contains("L1")) uniNamesList.add(H11_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H11_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H11_UL3); else uniNamesList.add(NONE);
+						}
+						case 12 -> {
+							if (name.contains("L1")) uniNamesList.add(H12_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H12_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H12_UL3); else uniNamesList.add(NONE);
+						}
+						case 13 -> {
+							if (name.contains("L1")) uniNamesList.add(H13_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H13_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H13_UL3); else uniNamesList.add(NONE);
+						}
+						case 14 -> {
+							if (name.contains("L1")) uniNamesList.add(H14_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H14_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H14_UL3); else uniNamesList.add(NONE);
+						}
+						case 15 -> {
+							if (name.contains("L1")) uniNamesList.add(H15_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H15_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H15_UL3); else uniNamesList.add(NONE);
+						}
+						case 16 -> {
+							if (name.contains("L1")) uniNamesList.add(H16_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H16_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H16_UL3); else uniNamesList.add(NONE);
+						}
+						case 17 -> {
+							if (name.contains("L1")) uniNamesList.add(H17_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H17_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H17_UL3); else uniNamesList.add(NONE);
+						}
+						case 18 -> {
+							if (name.contains("L1")) uniNamesList.add(H18_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H18_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H18_UL3); else uniNamesList.add(NONE);
+						}
+						case 19 -> {
+							if (name.contains("L1")) uniNamesList.add(H19_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H19_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H19_UL3); else uniNamesList.add(NONE);
+						}
+						case 20 -> {
+							if (name.contains("L1")) uniNamesList.add(H20_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H20_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H20_UL3); else uniNamesList.add(NONE);
+						}
+						case 21 -> {
+							if (name.contains("L1")) uniNamesList.add(H21_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H21_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H21_UL3); else uniNamesList.add(NONE);
+						}
+						case 22 -> {
+							if (name.contains("L1")) uniNamesList.add(H22_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H22_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H22_UL3); else uniNamesList.add(NONE);
+						}
+						case 23 -> {
+							if (name.contains("L1")) uniNamesList.add(H23_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H23_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H23_UL3); else uniNamesList.add(NONE);
+						}
+						case 24 -> {
+							if (name.contains("L1")) uniNamesList.add(H24_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H24_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H24_UL3); else uniNamesList.add(NONE);
+						}
+						case 25 -> {
+							if (name.contains("L1")) uniNamesList.add(H25_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H25_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H25_UL3); else uniNamesList.add(NONE);
+						}
+						case 26 -> {
+							if (name.contains("L1")) uniNamesList.add(H26_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H26_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H26_UL3); else uniNamesList.add(NONE);
+						}
+						case 27 -> {
+							if (name.contains("L1")) uniNamesList.add(H27_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H27_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H27_UL3); else uniNamesList.add(NONE);
+						}
+						case 28 -> {
+							if (name.contains("L1")) uniNamesList.add(H28_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H28_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H28_UL3); else uniNamesList.add(NONE);
+						}
+						case 29 -> {
+							if (name.contains("L1")) uniNamesList.add(H29_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H29_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H29_UL3); else uniNamesList.add(NONE);
+						}
+						case 30 -> {
+							if (name.contains("L1")) uniNamesList.add(H30_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H30_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H30_UL3); else uniNamesList.add(NONE);
+						}
+						case 31 -> {
+							if (name.contains("L1")) uniNamesList.add(H31_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H31_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H31_UL3); else uniNamesList.add(NONE);
+						}
+						case 32 -> {
+							if (name.contains("L1")) uniNamesList.add(H32_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H32_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H32_UL3); else uniNamesList.add(NONE);
+						}
+						case 33 -> {
+							if (name.contains("L1")) uniNamesList.add(H33_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H33_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H33_UL3); else uniNamesList.add(NONE);
+						}
+						case 34 -> {
+							if (name.contains("L1")) uniNamesList.add(H34_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H34_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H34_UL3); else uniNamesList.add(NONE);
+						}
+						case 35 -> {
+							if (name.contains("L1")) uniNamesList.add(H35_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H35_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H35_UL3); else uniNamesList.add(NONE);
+						}
+						case 36 -> {
+							if (name.contains("L1")) uniNamesList.add(H36_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H36_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H36_UL3); else uniNamesList.add(NONE);
+						}
+						case 37 -> {
+							if (name.contains("L1")) uniNamesList.add(H37_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H37_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H37_UL3); else uniNamesList.add(NONE);
+						}
+						case 38 -> {
+							if (name.contains("L1")) uniNamesList.add(H38_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H38_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H38_UL3); else uniNamesList.add(NONE);
+						}
+						case 39 -> {
+							if (name.contains("L1")) uniNamesList.add(H39_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H39_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H39_UL3); else uniNamesList.add(NONE);
+						}
+						case 40 -> {
+							if (name.contains("L1")) uniNamesList.add(H40_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H40_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H40_UL3); else uniNamesList.add(NONE);
+						}
+						case 41 -> {
+							if (name.contains("L1")) uniNamesList.add(H41_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H41_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H41_UL3); else uniNamesList.add(NONE);
+						}
+						case 42 -> {
+							if (name.contains("L1")) uniNamesList.add(H42_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H42_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H42_UL3); else uniNamesList.add(NONE);
+						}
+						case 43 -> {
+							if (name.contains("L1")) uniNamesList.add(H43_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H43_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H43_UL3); else uniNamesList.add(NONE);
+						}
+						case 44 -> {
+							if (name.contains("L1")) uniNamesList.add(H44_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H44_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H44_UL3); else uniNamesList.add(NONE);
+						}
+						case 45 -> {
+							if (name.contains("L1")) uniNamesList.add(H45_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H45_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H45_UL3); else uniNamesList.add(NONE);
+						}
+						case 46 -> {
+							if (name.contains("L1")) uniNamesList.add(H46_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H46_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H46_UL3); else uniNamesList.add(NONE);
+						}
+						case 47 -> {
+							if (name.contains("L1")) uniNamesList.add(H47_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H47_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H47_UL3); else uniNamesList.add(NONE);
+						}
+						case 48 -> {
+							if (name.contains("L1")) uniNamesList.add(H48_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H48_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H48_UL3); else uniNamesList.add(NONE);
+						}
+						case 49 -> {
+							if (name.contains("L1")) uniNamesList.add(H49_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H49_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H49_UL3); else uniNamesList.add(NONE);
+						}
+						case 50 -> {
+							if (name.contains("L1")) uniNamesList.add(H50_UL1);
+							else if (name.contains("L2")) uniNamesList.add(H50_UL2);
+							else if (name.contains("L3")) uniNamesList.add(H50_UL3); else uniNamesList.add(NONE);
+
+						}
+					}
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if (name.startsWith("K ")){
+				if (name.contains("L1") && !name.contains("L12")) {
+					if (matchAvg(name)) uniNamesList.add(K_L1_avg); else uniNamesList.add(NONE);
+				}else if (name.contains("L2") && !name.contains("L23")) {
+					if (matchAvg(name)) uniNamesList.add(K_L2_avg); else uniNamesList.add(NONE);
+				}else if (name.contains("L3") && !name.contains("L31")) {
+					if (matchAvg(name)) uniNamesList.add(K_L3_avg); else uniNamesList.add(NONE);
+				}else if (name.contains("N")){
+					if (matchAvg(name)) uniNamesList.add(K_N_avg); else uniNamesList.add(NONE);
+				}else {
+					uniNamesList.add(NONE);
+				}
+			} else if(match("PF ", name) && !name.contains("H")){
+				if (name.contains("L1")) {
+					if (matchMin(name)) uniNamesList.add(PF_L1_min);
+					else if (matchMax(name)) uniNamesList.add(PF_L1_max);
+					else if (matchAvg(name)) uniNamesList.add(PF_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchMin(name)) uniNamesList.add(PF_L3_min);
+					else if (matchMax(name)) uniNamesList.add(PF_L3_max);
+					else if (matchAvg(name)) uniNamesList.add(PF_L3_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchMin(name)) uniNamesList.add(PF_L3_min);
+					else if (matchMax(name)) uniNamesList.add(PF_L3_max);
+					else if (matchAvg(name)) uniNamesList.add(PF_L3_avg); else uniNamesList.add(NONE);
+				} else if (notContainsAnyLine){
+					if (matchMin(name)) uniNamesList.add(PF_total_min);
+					else if (matchMax(name)) uniNamesList.add(PF_total_max);
+					else if (matchAvg(name)) uniNamesList.add(PF_total_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if(match("cos", name)){
+				if (name.contains("L1")) {
+					if (matchAvg(name)) uniNamesList.add(cos_phi_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchAvg(name)) uniNamesList.add(cos_phi_L2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchAvg(name)) uniNamesList.add(cos_phi_L3_avg); else uniNamesList.add(NONE);
+				} else if (notContainsAnyLine){
+					if (matchAvg(name)) uniNamesList.add(cos_phi_total_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if(match("tan|tg", name)){
+				if(name.contains("L+")){
+					if (name.contains("L1")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L1_Lplus_avg); else uniNamesList.add(NONE);
+					} else if (name.contains("L2")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L2_Lplus_avg); else uniNamesList.add(NONE);
+					} else if (name.contains("L3")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L3_Lplus_avg); else uniNamesList.add(NONE);
+					} else if (notContainsAnyLine){
+						if (matchAvg(name)) uniNamesList.add(tan_phi_total_Lplus_avg); else uniNamesList.add(NONE);
+					} else {
+						uniNamesList.add(NONE);
+					}
+				} else if(name.contains("C-")){
+					if (name.contains("L1")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L1_Cmin_avg); else uniNamesList.add(NONE);
+					} else if (name.contains("L2")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L2_Cmin_avg); else uniNamesList.add(NONE);
+					} else if (name.contains("L3")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L3_Cmin_avg); else uniNamesList.add(NONE);
+					} else if (notContainsAnyLine){
+						if (matchAvg(name)) uniNamesList.add(tan_phi_total_Cmin_avg); else uniNamesList.add(NONE);
+					} else {
+						uniNamesList.add(NONE);
+					}
+				} else if(name.contains("L-")){
+					if (name.contains("L1")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L1_Lmin_avg); else uniNamesList.add(NONE);
+					} else if (name.contains("L2")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L2_Lmin_avg); else uniNamesList.add(NONE);
+					} else if (name.contains("L3")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L3_Lmin_avg); else uniNamesList.add(NONE);
+					} else if (notContainsAnyLine){
+						if (matchAvg(name)) uniNamesList.add(tan_phi_total_Lmin_avg); else uniNamesList.add(NONE);
+					} else {
+						uniNamesList.add(NONE);
+					}
+				} else if(name.contains("C+")){
+					if (name.contains("L1")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L1_Cplus_avg); else uniNamesList.add(NONE);
+					} else if (name.contains("L2")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L2_Cplus_avg); else uniNamesList.add(NONE);
+					} else if (name.contains("L3")) {
+						if (matchAvg(name)) uniNamesList.add(tan_phi_L3_Cplus_avg); else uniNamesList.add(NONE);
+					} else if (notContainsAnyLine){
+						if (matchAvg(name)) uniNamesList.add(tan_phi_total_Cplus_avg); else uniNamesList.add(NONE);
+					} else {
+						uniNamesList.add(NONE);
+					}
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if (match("P ", name) && !name.startsWith("P H")){
+				if (name.contains("L1")) {
+					if (matchMin(name)) uniNamesList.add(P_L1_min);
+					else if (matchMax(name)) uniNamesList.add(P_L1_max);
+					else if (matchAvg(name)) uniNamesList.add(P_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchMin(name)) uniNamesList.add(P_L2_min);
+					else if (matchMax(name)) uniNamesList.add(P_L2_max);
+					else if (matchAvg(name)) uniNamesList.add(P_L2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchMin(name)) uniNamesList.add(P_L3_min);
+					else if (matchMax(name)) uniNamesList.add(P_L3_max);
+					else if (matchAvg(name)) uniNamesList.add(P_L3_avg); else uniNamesList.add(NONE);
+				} else if (notContainsAnyLine){
+					if (matchMin(name)) uniNamesList.add(P_total_min);
+					else if (matchMax(name)) uniNamesList.add(P_total_max);
+					else if (matchAvg(name)) uniNamesList.add(P_total_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if (match("P+ ", name) && !name.contains("H")){
+				if (name.contains("L1")) {
+					if (matchAvg(name)) uniNamesList.add(P_plus_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchAvg(name)) uniNamesList.add(P_plus_L2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchAvg(name)) uniNamesList.add(P_plus_L3_avg); else uniNamesList.add(NONE);
+				} else if (notContainsAnyLine){
+					if (matchAvg(name)) uniNamesList.add(P_plus_total_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if (match("P- ", name) && !name.contains("H")){
+				if (name.contains("L1")) {
+					if (matchAvg(name)) uniNamesList.add(P_min_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchAvg(name)) uniNamesList.add(P_min_L2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchAvg(name)) uniNamesList.add(P_min_L3_avg); else uniNamesList.add(NONE);
+				} else if (notContainsAnyLine){
+					if (matchAvg(name)) uniNamesList.add(P_min_total_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if (match("Q1 ", name) && !name.contains("H")){
+				if (name.contains("L1")) {
+					if (matchMin(name)) uniNamesList.add(Q_L1_min);
+					else if (matchMax(name)) uniNamesList.add(Q_L1_max);
+					else if (matchAvg(name)) uniNamesList.add(Q_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchMin(name)) uniNamesList.add(Q_L2_min);
+					else if (matchMax(name)) uniNamesList.add(Q_L2_max);
+					else if (matchAvg(name)) uniNamesList.add(Q_L2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchMin(name)) uniNamesList.add(Q_L3_min);
+					else if (matchMax(name)) uniNamesList.add(Q_L3_max);
+					else if (matchAvg(name)) uniNamesList.add(Q_L3_avg); else uniNamesList.add(NONE);
+				} else if (notContainsAnyLine){
+					if (matchMin(name)) uniNamesList.add(Q_total_min);
+					else if (matchMax(name)) uniNamesList.add(Q_total_max);
+					else if (matchAvg(name)) uniNamesList.add(Q_total_avg); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if (match("Sn ", name) && !name.contains("H")){
+				if (name.contains("L1")) {
+					if (matchAvg(name)) uniNamesList.add(Sn_L1_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchAvg(name)) uniNamesList.add(Sn_L2_avg); else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchAvg(name)) uniNamesList.add(Sn_L3_avg); else uniNamesList.add(NONE);
+				} else if (notContainsAnyLine){
+					if (matchAvg(name)) uniNamesList.add(Sn_total); else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else if (match("S ", name) && !name.contains("H")){
+				if (name.contains("L1")) {
+					if (matchMin(name)) uniNamesList.add(S_L1_min);
+					else if (matchMax(name)) uniNamesList.add(S_L1_max);
+					else if (matchAvg(name)) uniNamesList.add(S_L1_avg);  else uniNamesList.add(NONE);
+				} else if (name.contains("L2")) {
+					if (matchMin(name)) uniNamesList.add(S_L2_min);
+					else if (matchMax(name)) uniNamesList.add(S_L2_max);
+					else if (matchAvg(name)) uniNamesList.add(S_L2_avg);  else uniNamesList.add(NONE);
+				} else if (name.contains("L3")) {
+					if (matchMin(name)) uniNamesList.add(S_L3_min);
+					else if (matchMax(name)) uniNamesList.add(S_L3_max);
+					else if (matchAvg(name)) uniNamesList.add(S_L3_avg);  else uniNamesList.add(NONE);
+				} else if (notContainsAnyLine){
+					if (matchMin(name)) uniNamesList.add(S_total_min);
+					else if (matchMax(name)) uniNamesList.add(S_total_max);
+					else if (matchAvg(name)) uniNamesList.add(S_total_avg);  else uniNamesList.add(NONE);
+				} else {
+					uniNamesList.add(NONE);
+				}
+			} else {
+				uniNamesList.add(NONE);
 			}
 		});
+
 		return uniNamesList;
+	}
+
+	private static boolean match(String regex, String name) {
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(name);
+		return m.find();
+	}
+
+	private static boolean matchDate(String trimmed) {
+		Pattern p1 = Pattern.compile("Dat.");
+		Matcher m1 = p1.matcher(trimmed);
+		return m1.find();
+	}
+
+	private static boolean matchTime(String trimmed) {
+		Pattern p1 = Pattern.compile("Time.*|Czas.*");
+		Matcher m1 = p1.matcher(trimmed);
+		return m1.find();
+	}
+
+	private static boolean matchMin(String trimmed) {
+		Pattern p1 = Pattern.compile("min(\\. [0-9]+ [a-z]+)? \\[");
+		Matcher m1 = p1.matcher(trimmed);
+		Pattern p2 = Pattern.compile(".+avg.");
+		Matcher m2 = p2.matcher(trimmed);
+		Pattern p3 = Pattern.compile(".+red.");
+		Matcher m3 = p3.matcher(trimmed);
+		Pattern p4 = Pattern.compile(".+ma.");
+		Matcher m4 = p4.matcher(trimmed);
+		return m1.find() && (!m2.find() && !m3.find() && !m4.find());
+	}
+	private static boolean matchAvg(String trimmed) {
+		Pattern p1 = Pattern.compile(".+avg.");
+		Matcher m1 = p1.matcher(trimmed);
+		Pattern p2 = Pattern.compile(".+red.");
+		Matcher m2 = p2.matcher(trimmed);
+		return m1.find() || m2.find();
+	}
+	private static boolean matchMax(String trimmed) {
+		Pattern p = Pattern.compile(".+ma.");
+		Matcher m = p.matcher(trimmed);
+		return m.find();
 	}
 
 	public static LocalDate parseDate(String stringDate) throws ApplicationException {

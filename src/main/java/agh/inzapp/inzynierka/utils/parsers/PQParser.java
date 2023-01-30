@@ -70,18 +70,18 @@ public class PQParser {
 		mapDataNames.put("Unbalance_-_Voltage_(_Neg./Pos.)_[%]", U2_U1_avg);
 		mapDataNames.put("Unbalance_-_Current_(_Neg./Pos.)_[%]", I2_I1_avg);
 		mapDataNames.put("F_[Hz]", f);
-		mapDataNames.put("P_total_min_[W]", P_min);
-		mapDataNames.put("P_total_[W]", P_total);
-		mapDataNames.put("P_total_[W]'_abs", P_abs);
-		mapDataNames.put("P_total_max_[W]", P_max);
-		mapDataNames.put("S_total_min__[VA]", S_min);
-		mapDataNames.put("S_total_[VA]", S_total);
-		mapDataNames.put("S_total_max_[VA]", S_max);
-		mapDataNames.put("PF_total", PF_total);
+		mapDataNames.put("P_total_min_[W]", P_total_min);
+		mapDataNames.put("P_total_[W]", P_total_avg);
+		mapDataNames.put("P_total_[W]'_abs", P_total_abs);
+		mapDataNames.put("P_total_max_[W]", P_total_max);
+		mapDataNames.put("S_total_min__[VA]", S_total_min);
+		mapDataNames.put("S_total_[VA]", S_total_avg);
+		mapDataNames.put("S_total_max_[VA]", S_total_max);
+		mapDataNames.put("PF_total", PF_total_avg);
 		mapDataNames.put("PF_total'_abs", PF_total_abs);
 		mapDataNames.put("cos(phi)", cos_phi);
 		mapDataNames.put("tan(phi)", tan_phi);
-		mapDataNames.put("QV_total_[Var]", Q_total);
+		mapDataNames.put("QV_total_[Var]", Q_total_avg);
 		mapDataNames.put("Pst_UL1", Pst_UL1);
 		mapDataNames.put("Pst_UL2", Pst_UL2);
 		mapDataNames.put("Pst_UL3", Pst_UL3);
@@ -292,7 +292,7 @@ public class PQParser {
 		}
 
 		switch (unitaryName){
-			case P_total, P_abs, P_max, P_min, S_total, S_max, S_min, Q_total -> d = d / 1000;
+			case P_total_avg, P_total_abs, P_total_max, P_total_min, S_total_avg, S_total_max, S_total_min, Q_total_avg, Q_total_min, Q_total_max -> d = d / 1000;
 		}
 
 		return d;
