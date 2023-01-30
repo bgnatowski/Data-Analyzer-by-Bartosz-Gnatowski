@@ -51,6 +51,9 @@ public abstract class CSVImportCommon {
 				.filter(uniNames -> !uniNames.equals(Plt_L3))
 				.forEach(unitaryName -> {
 					if (model.getColumnNames().contains(unitaryName)) {
+						if(unitaryName.equals(NONE)){
+							return;
+						}
 						long columnID = model.getColumnNames().indexOf(unitaryName);
 						final String stringRecord = recordsList.get(Math.toIntExact(columnID)).trim();
 						switch (unitaryName) {

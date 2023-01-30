@@ -44,6 +44,7 @@ public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 			model.setId(id.incrementAndGet());
 			model.setColumnNames(FXCollections.observableArrayList(columnsNames));
 			setDataInPQModel(records, model);
+			model.deleteNone();
 			dataModels.add(model);
 		}
 	}
