@@ -148,7 +148,7 @@ public class ReportViewController {
 			reportChartService.createLineChartsStandard(recordsBetween);
 			List<String> userAdditionalData = getUserEnteredData();
 			tmpReportPath = reportService.generateReportStandard(recordsBetween, userAdditionalData);
-		}
+		} else throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.not.enough.data"));
 	}
 
 	private List<String> getUserEnteredData() {

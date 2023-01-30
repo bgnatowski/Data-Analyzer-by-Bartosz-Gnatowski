@@ -20,6 +20,9 @@ public class ListCommonModelFx {
 	private List<CommonModelFx> modelsFx;
 	private boolean hasBoth;
 	private static volatile ListCommonModelFx instance;
+	private boolean canNormalReport;
+	private boolean canHarmoReport;
+	private boolean canAllReport;
 
 	private ListCommonModelFx() {
 		modelsFx = new ArrayList<>();
@@ -72,17 +75,15 @@ public class ListCommonModelFx {
 	}
 
 	public boolean hasOnlyHarmonics() {
-		final CommonModelFx commonModelFx = modelsFx.get(0);
-		return commonModelFx.getRecords().isEmpty() && !commonModelFx.getHarmonics().isEmpty();
+		return canHarmoReport;
 	}
 
 	public boolean hasOnlyStandard() {
-		final CommonModelFx commonModelFx = modelsFx.get(0);
-		return !commonModelFx.getRecords().isEmpty() && commonModelFx.getHarmonics().isEmpty();
+		return canNormalReport;
 	}
 
 	public boolean hasBoth() {
-		return hasBoth;
+		return canAllReport;
 	}
 
 	public LocalDateTime getStartDate() {
@@ -183,14 +184,10 @@ public class ListCommonModelFx {
 		List<Long> ilePustychPltL1 = calculateEmptyPltL1();
 		List<Long> ilePustychPltL2 = calculateEmptyPltL2();
 		List<Long> ilePustychPltL3 = calculateEmptyPltL3();
-
-//		String listString = columnNames.stream().map(Object::toString)
-//				.collect(Collectors.joining(", "));
-//		DialogUtils.errorDialog(listString);
-
-		final boolean czyNapiecia = UniNames.getNormalEnough().stream().allMatch(columnNames::contains);
-		final boolean czyHarmoniczne = UniNames.getHarmonicsEnough().stream().allMatch(columnNames::contains);
-		boolean czyCaly = czyHarmoniczne && czyNapiecia;
+		boolean pltKtorekolwiekBrakDanych = sprawdzPlt(ilePustychPltL1, ilePustychPltL2, ilePustychPltL3);
+		canNormalReport = new HashSet<>(columnNames).containsAll(UniNames.getNormalEnough()) && !pltKtorekolwiekBrakDanych;
+		canHarmoReport = new HashSet<>(columnNames).containsAll(UniNames.getHarmonicsEnough());
+		canAllReport = canNormalReport && canHarmoReport;
 
 		return FxmlUtils.getInternalizedPropertyByKey("stat.column") + ileKolumn + "\n" +
 				FxmlUtils.getInternalizedPropertyByKey("stat.record") + ileWierszy + "\n" +
@@ -198,9 +195,13 @@ public class ListCommonModelFx {
 				FxmlUtils.getInternalizedPropertyByKey("stat.plt1") + ilePustychPltL1.get(0) + "/" + ilePustychPltL1.get(1) + "\n" +
 				FxmlUtils.getInternalizedPropertyByKey("stat.plt2") + ilePustychPltL2.get(0) + "/" + ilePustychPltL2.get(1) + "\n" +
 				FxmlUtils.getInternalizedPropertyByKey("stat.plt3") + ilePustychPltL3.get(0) + "/" + ilePustychPltL3.get(1) + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.voltage") + (czyNapiecia ? "tak" : "nie") + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.harmo") + (czyHarmoniczne ? "tak" : "nie") + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.all") + (czyCaly ? "tak" : "nie") + "\n";
+				FxmlUtils.getInternalizedPropertyByKey("stat.voltage") + (canNormalReport ? "tak" : "nie") + "\n" +
+				FxmlUtils.getInternalizedPropertyByKey("stat.harmo") + (canHarmoReport ? "tak" : "nie") + "\n" +
+				FxmlUtils.getInternalizedPropertyByKey("stat.all") + (canAllReport ? "tak" : "nie") + "\n";
+	}
+
+	private boolean sprawdzPlt(List<Long> ilePustychPltL1, List<Long> ilePustychPltL2, List<Long> ilePustychPltL3) {
+		return ilePustychPltL1.get(0).equals(ilePustychPltL1.get(1)) ||  ilePustychPltL2.get(0).equals(ilePustychPltL2.get(1)) || ilePustychPltL3.get(0).equals(ilePustychPltL3.get(1));
 	}
 
 	private List<Long> calculateEmptyPltL1() {
