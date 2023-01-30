@@ -132,6 +132,7 @@ public class ReportViewController {
 		LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
 		LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
 		final List<CommonModelFx> recordsBetween = modelsList.getRecordsBetween(from, to);
+		if(recordsBetween.isEmpty()) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.wrong.date"));
 		if(modelsList.hasBoth()){
 			barChartService.createHarmonicsBarCharts(recordsBetween);
 			reportChartService.createLineChartsStandard(recordsBetween);
