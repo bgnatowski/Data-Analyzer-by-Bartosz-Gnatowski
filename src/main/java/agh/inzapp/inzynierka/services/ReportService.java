@@ -422,7 +422,7 @@ public class ReportService {
 
 		reportBuilder.put("data_start", dateStart.format(DateTimeFormatter.ofPattern("d.MM.yyyy")));
 		reportBuilder.put("data_stop", dateEnd.format(DateTimeFormatter.ofPattern("d.MM.yyyy")));
-		reportBuilder.put("czas_start", dateEnd.format(DateTimeFormatter.ofPattern("HH:mm")));
+		reportBuilder.put("czas_start", dateStart.format(DateTimeFormatter.ofPattern("HH:mm")));
 		reportBuilder.put("czas_stop", dateEnd.format(DateTimeFormatter.ofPattern("HH:mm")));
 		reportBuilder.put("czas_calkowity", measurementTime);
 		reportBuilder.put("czas_interwal", interval);
