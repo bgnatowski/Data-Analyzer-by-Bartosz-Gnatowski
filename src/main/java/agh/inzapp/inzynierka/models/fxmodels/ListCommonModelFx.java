@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 public class ListCommonModelFx {
 	private ObservableList<CommonModelFx> modelsFxObservableList;
 	private List<CommonModelFx> modelsFx;
-	private boolean hasBoth;
 	private static volatile ListCommonModelFx instance;
 	private boolean canNormalReport;
 	private boolean canHarmoReport;
@@ -27,7 +26,6 @@ public class ListCommonModelFx {
 	private ListCommonModelFx() {
 		modelsFx = new ArrayList<>();
 		modelsFxObservableList = FXCollections.observableArrayList();
-		hasBoth = false;
 	}
 
 	public static ListCommonModelFx getInstance() throws ApplicationException {
@@ -60,15 +58,9 @@ public class ListCommonModelFx {
 				});
 			}
 		}
-		testHasBoth();
 		modelsFxObservableList.setAll(modelsFx);
 	}
 
-	private void testHasBoth() {
-		final CommonModelFx commonModelFx = modelsFx.get(0);
-		if(!commonModelFx.getRecords().isEmpty() && !commonModelFx.getHarmonics().isEmpty())
-			hasBoth=true;
-	}
 
 	public static void reset() {
 		instance = null;
@@ -97,7 +89,7 @@ public class ListCommonModelFx {
 	}
 
 	public List<CommonModelFx> getRecordsBetween(LocalDateTime from, LocalDateTime to) throws ApplicationException {
-		if (!from.isBefore(to)) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.date.out.of.range"));
+		if (!from.isBefore(to)) throw new ApplicationException(FxmlUtils.getNameProperty("error.date.out.of.range"));
 		if (modelsFxObservableList.isEmpty()) return modelsFxObservableList;
 		final long start = from.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		final long end = to.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
@@ -189,15 +181,15 @@ public class ListCommonModelFx {
 		canHarmoReport = new HashSet<>(columnNames).containsAll(UniNames.getHarmonicsEnough());
 		canAllReport = canNormalReport && canHarmoReport;
 
-		return FxmlUtils.getInternalizedPropertyByKey("stat.column") + ileKolumn + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.record") + ileWierszy + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.flags") + ilePustychFlag.get(0) + "/" + ilePustychFlag.get(1) + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.plt1") + ilePustychPltL1.get(0) + "/" + ilePustychPltL1.get(1) + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.plt2") + ilePustychPltL2.get(0) + "/" + ilePustychPltL2.get(1) + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.plt3") + ilePustychPltL3.get(0) + "/" + ilePustychPltL3.get(1) + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.voltage") + (canNormalReport ? "tak" : "nie") + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.harmo") + (canHarmoReport ? "tak" : "nie") + "\n" +
-				FxmlUtils.getInternalizedPropertyByKey("stat.all") + (canAllReport ? "tak" : "nie") + "\n";
+		return FxmlUtils.getNameProperty("stat.column") + ileKolumn + "\n" +
+				FxmlUtils.getNameProperty("stat.record") + ileWierszy + "\n" +
+				FxmlUtils.getNameProperty("stat.flags") + ilePustychFlag.get(0) + "/" + ilePustychFlag.get(1) + "\n" +
+				FxmlUtils.getNameProperty("stat.plt1") + ilePustychPltL1.get(0) + "/" + ilePustychPltL1.get(1) + "\n" +
+				FxmlUtils.getNameProperty("stat.plt2") + ilePustychPltL2.get(0) + "/" + ilePustychPltL2.get(1) + "\n" +
+				FxmlUtils.getNameProperty("stat.plt3") + ilePustychPltL3.get(0) + "/" + ilePustychPltL3.get(1) + "\n" +
+				FxmlUtils.getNameProperty("stat.voltage") + (canNormalReport ? "tak" : "nie") + "\n" +
+				FxmlUtils.getNameProperty("stat.harmo") + (canHarmoReport ? "tak" : "nie") + "\n" +
+				FxmlUtils.getNameProperty("stat.all") + (canAllReport ? "tak" : "nie") + "\n";
 	}
 
 	private boolean sprawdzPlt(List<Long> ilePustychPltL1, List<Long> ilePustychPltL2, List<Long> ilePustychPltL3) {

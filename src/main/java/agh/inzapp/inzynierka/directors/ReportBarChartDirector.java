@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.services;
+package agh.inzapp.inzynierka.directors;
 
 import agh.inzapp.inzynierka.builders.BarChartBuilder;
 import agh.inzapp.inzynierka.models.enums.UniNames;
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 import static agh.inzapp.inzynierka.models.enums.FXMLNames.STANDALONE_CHART_PANE;
 import static agh.inzapp.inzynierka.models.enums.UniNames.getPowerLineHarmonicNames;
 @Component
-public class ReportBarChartService {
+public class ReportBarChartDirector {
 	private static final int HOW_MANY_POWERLINES = 3;
 	private final BarChartBuilder builder;
 
-	public ReportBarChartService() {
+	public ReportBarChartDirector() {
 		builder = new BarChartBuilder();
 	}
 

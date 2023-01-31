@@ -483,7 +483,7 @@ public class SonelParser {
 					}
 				});
 		if (isMatched) return parsedDate.get();
-		else throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.parse.model"));
+		else throw new ApplicationException(FxmlUtils.getNameProperty("error.parse.model"));
 	}
 
 	public static LocalTime parseTime(String time) {

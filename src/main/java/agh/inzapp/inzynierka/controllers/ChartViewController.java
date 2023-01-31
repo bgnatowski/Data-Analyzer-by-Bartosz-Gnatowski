@@ -4,7 +4,7 @@ import agh.inzapp.inzynierka.models.enums.UniNames;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
-import agh.inzapp.inzynierka.services.UserChartService;
+import agh.inzapp.inzynierka.directors.UserChartDirector;
 import agh.inzapp.inzynierka.utils.CommonUtils;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.GridPaneUtils;
@@ -60,12 +60,12 @@ public class ChartViewController {
 	private List<Button> deletingButtons;
 	/////////////////////////////////////
 	private ListCommonModelFx modelsList;
-	private UserChartService chartService;
+	private UserChartDirector chartsDirector;
 
 	public void initialize() {
 		try {
 			modelsList = ListCommonModelFx.getInstance();
-			chartService = new UserChartService();
+			chartsDirector = new UserChartDirector();
 			addTimeSpinnersToGrid();
 			initLists();
 			bindings();
@@ -158,8 +158,8 @@ public class ChartViewController {
 
 	@FXML
 	private void newChart() {
-		chartService.newLineChart();
-		chartCombo.setItems(chartService.getLineChartsList());
+		chartsDirector.newLineChart();
+		chartCombo.setItems(chartsDirector.getLineChartsList());
 		chartCombo.getSelectionModel().selectLast();
 		setSettingsPane();
 		yValuesList.forEach(value -> value.getSelectionModel().clearSelection());
@@ -168,11 +168,11 @@ public class ChartViewController {
 	@FXML
 	private void deleteChart() {
 		if (chartCombo.getItems().size() > 1 && chartCombo.getSelectionModel().getSelectedItem() != null) {
-			chartService.deleteChart(chartCombo.getValue());
+			chartsDirector.deleteChart(chartCombo.getValue());
 			chartCombo.getItems().remove(chartCombo.getValue());
-			chartCombo.setItems(chartService.getLineChartsList());
+			chartCombo.setItems(chartsDirector.getLineChartsList());
 			chartCombo.getSelectionModel().selectFirst();
-			chartService.getSelectedLineChart(chartCombo.getValue());
+			chartsDirector.getSelectedLineChart(chartCombo.getValue());
 			repaintChart();
 		}
 	}
@@ -221,11 +221,11 @@ public class ChartViewController {
 		final boolean b = yValuesList.stream().noneMatch(value -> value.getSelectionModel().isEmpty());
 		if(!b) return;
 		try {
-			chartService.clearSeriesBeforeCreatingNewOne();
+			chartsDirector.clearSeriesBeforeCreatingNewOne();
 			List<CommonModelFx> modelsInSelectedTime = getRecordsBetweenSelectedTime();
 
-			if (isTheSameDay()) chartService.setXDateTickToOnlyTime();
-			else chartService.setXDateTickToDays();
+			if (isTheSameDay()) chartsDirector.setXDateTickToOnlyTime();
+			else chartsDirector.setXDateTickToDays();
 
 			ArrayList<UniNames> yToSave = new ArrayList<>();
 			ArrayList<Color> yColorsToSave = new ArrayList<>();
@@ -234,11 +234,11 @@ public class ChartViewController {
 				Map<LocalDateTime, Double> xyDataMap = getSeriesDataMap(modelsInSelectedTime, i);
 				final UniNames name = yValuesList.get(i).getValue();
 				final Color color = yColorPickerList.get(i).getValue();
-				chartService.createSeries(xyDataMap, name, color);
+				chartsDirector.createSeries(xyDataMap, name, color);
 				yToSave.add(name);
 				yColorsToSave.add(color);
 			}
-			chartService.saveCurrentSettings(yToSave, yColorsToSave);
+			chartsDirector.saveCurrentSettings(yToSave, yColorsToSave);
 			setLegendColors();
 			setSettingsPane();
 		} catch (ApplicationException e) {
@@ -299,7 +299,7 @@ public class ChartViewController {
 	@FXML
 	private void setTitle(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			chartService.setLineChartTitle(chartTitle.getText());
+			chartsDirector.setLineChartTitle(chartTitle.getText());
 			repaintChart();
 		}
 	}
@@ -307,7 +307,7 @@ public class ChartViewController {
 	@FXML
 	private void setXLabel(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			chartService.setXAxisLabel(xLabel.getText());
+			chartsDirector.setXAxisLabel(xLabel.getText());
 			repaintChart();
 		}
 	}
@@ -315,7 +315,7 @@ public class ChartViewController {
 	@FXML
 	private void setYLabel(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			chartService.setYAxisLabel(yLabel.getText());
+			chartsDirector.setYAxisLabel(yLabel.getText());
 			repaintChart();
 		}
 	}
@@ -323,7 +323,7 @@ public class ChartViewController {
 	@FXML
 	private void setYMin(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			chartService.setYMin(Double.parseDouble(yMin.getText()));
+			chartsDirector.setYMin(Double.parseDouble(yMin.getText()));
 			repaintChart();
 		}
 	}
@@ -331,7 +331,7 @@ public class ChartViewController {
 	@FXML
 	private void setYMax(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			chartService.setYMax(Double.parseDouble(yMax.getText()));
+			chartsDirector.setYMax(Double.parseDouble(yMax.getText()));
 			repaintChart();
 		}
 	}
@@ -339,37 +339,37 @@ public class ChartViewController {
 	@FXML
 	private void setYTick(KeyEvent keyEvent) {
 		if (keyEvent.getCode().equals(KeyCode.ENTER)) {
-			chartService.setYTick(Double.parseDouble(yTick.getText()));
+			chartsDirector.setYTick(Double.parseDouble(yTick.getText()));
 			repaintChart();
 		}
 	}
 
 	@FXML
 	private void switchOnLegend() {
-		chartService.switchCurrentLegendOn();
+		chartsDirector.switchCurrentLegendOn();
 		repaintChart();
 	}
 
 	@FXML
 	private void switchOffLegend() {
-		chartService.switchCurrentLegendOff();
+		chartsDirector.switchCurrentLegendOff();
 		repaintChart();
 	}
 
 	@FXML
 	private void switchOnDataPoints() {
-		chartService.switchCurrentDataPointsOn();
+		chartsDirector.switchCurrentDataPointsOn();
 		repaintChart();
 	}
 
 	@FXML
 	private void switchOffDataPoints() {
-		chartService.switchCurrentDataPointsOff();
+		chartsDirector.switchCurrentDataPointsOff();
 		repaintChart();
 	}
 
 	private void setSettingsPane(){
-		final List<Object> chartSettings = chartService.getChartSettingsPane();
+		final List<Object> chartSettings = chartsDirector.getChartSettingsPane();
 		if (chartSettings.isEmpty()) {
 			chartTitle.setText("");
 			xLabel.setText("");
@@ -397,7 +397,7 @@ public class ChartViewController {
 
 	private void setSettings() {
 		setSettingsPane();
-		final List<Object> chartSettings = chartService.getChartYDataSettings();
+		final List<Object> chartSettings = chartsDirector.getChartYDataSettings();
 		if (!chartSettings.isEmpty()) {
 			List<UniNames> savedValues = new ArrayList<>((List<UniNames>) chartSettings.get(0));
 			List<Color> savedColors = new ArrayList<>((List<Color>) chartSettings.get(1));
@@ -451,7 +451,7 @@ public class ChartViewController {
 					.append(convertToWebString(colors.get(i)))
 					.append("; ");
 		}
-		chartService.setStyleCssLegendColor(style.toString());
+		chartsDirector.setStyleCssLegendColor(style.toString());
 	}
 
 	private ArrayList<Color> getUserDefinedColors() {
@@ -473,7 +473,7 @@ public class ChartViewController {
 	private LineChart<Number, Number> getCurrentSelectedLineChart() {
 		String selectedLineChart = chartCombo.getValue();
 		if (selectedLineChart != null)
-			return chartService.getSelectedLineChart(selectedLineChart);
+			return chartsDirector.getSelectedLineChart(selectedLineChart);
 		else
 			return null;
 	}

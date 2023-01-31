@@ -19,7 +19,7 @@ public class DialogUtils {
 	}
 	public static void errorDialog(String errorMessage, Class<? extends Exception> aClass, String bundleResourceKey) {
 		StringBuilder sb = new StringBuilder();
-		final String internalizedPropertyByKey = FxmlUtils.getInternalizedPropertyByKey(bundleResourceKey);
+		final String internalizedPropertyByKey = FxmlUtils.getNameProperty(bundleResourceKey);
 		sb.append(errorMessage)
 				.append(". \n")
 				.append(internalizedPropertyByKey);

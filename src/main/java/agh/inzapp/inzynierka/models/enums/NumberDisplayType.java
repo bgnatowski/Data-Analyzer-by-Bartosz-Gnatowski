@@ -3,8 +3,8 @@ package agh.inzapp.inzynierka.models.enums;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 
 public enum NumberDisplayType {
-	NORMAL(FxmlUtils.getInternalizedPropertyByKey("display.type.normal")),
-	SCIENTIFIC(FxmlUtils.getInternalizedPropertyByKey("display.type.scientific"));
+	NORMAL(FxmlUtils.getNameProperty("display.type.normal")),
+	SCIENTIFIC(FxmlUtils.getNameProperty("display.type.scientific"));
 
 	private final String displayedName;
 	NumberDisplayType(String displayedName) {

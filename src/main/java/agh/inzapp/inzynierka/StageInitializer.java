@@ -24,7 +24,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 
 	public StageInitializer(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
-		this.applicationTitle = FxmlUtils.getInternalizedPropertyByKey("application.title");
+		this.applicationTitle = FxmlUtils.getNameProperty("application.title");
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class StageInitializer implements ApplicationListener<StageReadyEvent> {
 			stage.setMinWidth(800);
 			stage.show();
 		} catch (IOException e) {
-			DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.main"));
+			DialogUtils.errorDialog(FxmlUtils.getNameProperty("error.main"));
 		}
 	}
 }

@@ -69,7 +69,7 @@ public class CSVImportPQ extends CSVImportCommon implements CSVStrategy {
 
 			}
 		} catch (IOException | CsvValidationException e) {
-			throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.cannot.read.csv"));
+			throw new ApplicationException(FxmlUtils.getNameProperty("error.cannot.read.csv"));
 		}
 	}
 }

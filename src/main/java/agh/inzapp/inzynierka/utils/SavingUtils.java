@@ -54,7 +54,7 @@ public class SavingUtils {
 			try {
 				ImageIO.write(SwingFXUtils.fromFXImage(image, null), "PNG", newBarChartFile);
 			} catch (IOException e) {
-				DialogUtils.errorDialog(FxmlUtils.getInternalizedPropertyByKey("error.generating"));
+				DialogUtils.errorDialog(FxmlUtils.getNameProperty("error.generating"));
 			}
 		});
 

@@ -162,7 +162,7 @@ public abstract class CSVImportCommon {
 					}
 				});
 		if(localDate.get() == null || localTime.get() == null){
-			throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.parse.model"));
+			throw new ApplicationException(FxmlUtils.getNameProperty("error.parse.model"));
 		}
 		model.setDate(LocalDateTime.of(localDate.get(), localTime.get()));
 		model.setRecords(FXCollections.observableMap(modelRecords));
@@ -303,7 +303,7 @@ public abstract class CSVImportCommon {
 			}
 		});
 		if(localDate.get() == null || localTime.get() == null){
-			throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.parse.model"));
+			throw new ApplicationException(FxmlUtils.getNameProperty("error.parse.model"));
 		}
 		model.setDate(LocalDateTime.of(localDate.get(), localTime.get()));
 		model.setRecords(FXCollections.observableMap(modelRecords));

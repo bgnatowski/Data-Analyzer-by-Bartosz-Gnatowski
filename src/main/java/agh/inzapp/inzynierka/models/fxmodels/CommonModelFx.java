@@ -19,12 +19,12 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @Component
 public class CommonModelFx implements Cloneable{
-	protected LongProperty id = new SimpleLongProperty();
-	protected ObjectProperty<LocalDateTime> date = new SimpleObjectProperty<>();
-	protected MapProperty<UniNames, String> flags = new SimpleMapProperty<>(FXCollections.observableMap(new LinkedHashMap<>()));
-	protected MapProperty<UniNames, Double> records = new SimpleMapProperty<>();
-	protected MapProperty<UniNames, Double> harmonics = new SimpleMapProperty<>();
-	protected ListProperty<UniNames> columnNames = new SimpleListProperty<>();
+	private LongProperty id = new SimpleLongProperty();
+	private ObjectProperty<LocalDateTime> date = new SimpleObjectProperty<>();
+	private MapProperty<UniNames, String> flags = new SimpleMapProperty<>(FXCollections.observableMap(new LinkedHashMap<>()));
+	private MapProperty<UniNames, Double> records = new SimpleMapProperty<>();
+	private MapProperty<UniNames, Double> harmonics = new SimpleMapProperty<>();
+	private ListProperty<UniNames> columnNames = new SimpleListProperty<>();
 
 	//copy constructor
 	public CommonModelFx(CommonModelFx dfx) {

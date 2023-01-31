@@ -458,7 +458,7 @@ public class PQParser {
 					}
 				});
 		if (isMatched) return parsedDate.get();
-		else throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.parse.model"));
+		else throw new ApplicationException(FxmlUtils.getNameProperty("error.parse.model"));
 	}
 
 	private static boolean match(String regex, String name) {

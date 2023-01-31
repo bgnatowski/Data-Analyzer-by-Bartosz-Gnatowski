@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.services;
+package agh.inzapp.inzynierka.directors;
 
 import agh.inzapp.inzynierka.builders.ReportBuilder;
 import agh.inzapp.inzynierka.models.enums.UniNames;
@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 
 @Component
-public class ReportService {
+public class ReportDirector {
 	private final BooleanProperty toggleButtonProperty = new SimpleBooleanProperty(false);
 	private static final int IMAGES = 10;
 	private static final int USER_DATA = 5;
@@ -39,7 +39,7 @@ public class ReportService {
 	private List<CommonModelFx> models;
 	private final Map<UniNames, Boolean> conditionsMap = new HashMap<>();
 
-	public ReportService() {
+	public ReportDirector() {
 		toggleButtonProperty.setValue(true);
 		reportBuilder = new ReportBuilder(new LinkedHashMap<>());
 	}

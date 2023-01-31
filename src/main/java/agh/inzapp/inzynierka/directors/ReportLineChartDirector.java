@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.services;
+package agh.inzapp.inzynierka.directors;
 
 import agh.inzapp.inzynierka.builders.LineChartBuilder;
 import agh.inzapp.inzynierka.models.enums.UniNames;
@@ -15,11 +15,11 @@ import java.util.Map;
 
 import static agh.inzapp.inzynierka.models.enums.UniNames.*;
 @Component
-public class ReportLineChartService {
+public class ReportLineChartDirector {
 	private List<CommonModelFx> models;
 	private final LineChartBuilder lineChartBuilder;
 
-	public ReportLineChartService() {
+	public ReportLineChartDirector() {
 		this.lineChartBuilder = new LineChartBuilder();
 	}
 

@@ -1,4 +1,4 @@
-package agh.inzapp.inzynierka.services;
+package agh.inzapp.inzynierka.directors;
 
 import agh.inzapp.inzynierka.builders.LineChartBuilder;
 import agh.inzapp.inzynierka.models.enums.UniNames;
@@ -15,18 +15,18 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class UserChartService {
+public class UserChartDirector {
 	private final List<LineChartBuilder> buildersList;
 	private LineChart<Number, Number> currentLineChart;
 	private LineChartBuilder builder;
 
-	public UserChartService() {
+	public UserChartDirector() {
 		buildersList = new ArrayList<>();
 	}
 	public ObservableList<String> getLineChartsList() {
 		List<String> chartList = new ArrayList<>();
 		for(int i = 0; i < buildersList.size(); i++){
-			final String e = FxmlUtils.getInternalizedPropertyByKey("chart.name") + (i+1);
+			final String e = FxmlUtils.getNameProperty("chart.name") + (i+1);
 			chartList.add(e);
 		}
 		return FXCollections.observableList(chartList);

@@ -4,9 +4,9 @@ import agh.inzapp.inzynierka.models.enums.AnalyzersModels;
 import agh.inzapp.inzynierka.models.fxmodels.CommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.ListCommonModelFx;
 import agh.inzapp.inzynierka.models.fxmodels.TimeSpinner;
-import agh.inzapp.inzynierka.services.ReportBarChartService;
-import agh.inzapp.inzynierka.services.ReportLineChartService;
-import agh.inzapp.inzynierka.services.ReportService;
+import agh.inzapp.inzynierka.directors.ReportBarChartDirector;
+import agh.inzapp.inzynierka.directors.ReportLineChartDirector;
+import agh.inzapp.inzynierka.directors.ReportDirector;
 import agh.inzapp.inzynierka.utils.DialogUtils;
 import agh.inzapp.inzynierka.utils.FxmlUtils;
 import agh.inzapp.inzynierka.utils.SavingUtils;
@@ -52,9 +52,9 @@ public class ReportViewController {
 	private VBox vBox;
 
 	private ListCommonModelFx modelsList;
-	private ReportBarChartService barChartService;
-	private ReportService reportService;
-	private ReportLineChartService reportChartService;
+	private ReportBarChartDirector reportBarChartDirector;
+	private ReportDirector reportDirector;
+	private ReportLineChartDirector reportLineChartDirector;
 	private String tmpReportPath;
 
 	@FXML
@@ -62,11 +62,11 @@ public class ReportViewController {
 		try {
 			modelsList = ListCommonModelFx.getInstance();
 
-			reportChartService = new ReportLineChartService();
-			barChartService = new ReportBarChartService();
-			reportService = new ReportService();
+			reportLineChartDirector = new ReportLineChartDirector();
+			reportBarChartDirector = new ReportBarChartDirector();
+			reportDirector = new ReportDirector();
 
-			saveButton.disableProperty().bind(reportService.toggleButtonPropertyProperty());
+			saveButton.disableProperty().bind(reportDirector.toggleButtonPropertyProperty());
 			addTimeSpinnersToGrid();
 			bindDatePickers();
 			bindings();
@@ -105,7 +105,7 @@ public class ReportViewController {
 	@FXML
 	private void generateOnAction() {
 		progress.setVisible(true);
-		info.setText(FxmlUtils.getInternalizedPropertyByKey("info.generating"));
+		info.setText(FxmlUtils.getNameProperty("info.generating"));
 		Task task = new Task<Void>() {
 			@Override
 			public Void call() throws ApplicationException, IOException {
@@ -117,12 +117,12 @@ public class ReportViewController {
 		task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
 			if(newValue instanceof Exception ex) {
 				progress.setVisible(false);
-				info.setText(FxmlUtils.getInternalizedPropertyByKey("error.default"));
+				info.setText(FxmlUtils.getNameProperty("error.default"));
 				DialogUtils.errorDialog(ex.getMessage());
 			}
 		});
 		task.setOnSucceeded(e -> {
-			info.setText(FxmlUtils.getInternalizedPropertyByKey("report.info.succes"));
+			info.setText(FxmlUtils.getNameProperty("report.info.succes"));
 			progress.setVisible(false);
 		});
 
@@ -132,41 +132,41 @@ public class ReportViewController {
 		LocalDateTime from = LocalDateTime.of(dateFrom.getValue(), timeFrom.getValue());
 		LocalDateTime to = LocalDateTime.of(dateTo.getValue(), timeTo.getValue());
 		final List<CommonModelFx> recordsBetween = modelsList.getRecordsBetween(from, to);
-		if(recordsBetween.isEmpty()) throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.wrong.date"));
+		if(recordsBetween.isEmpty()) throw new ApplicationException(FxmlUtils.getNameProperty("error.wrong.date"));
 		if(modelsList.hasBoth()){
-			barChartService.createHarmonicsBarCharts(recordsBetween);
-			reportChartService.createLineChartsStandard(recordsBetween);
-			reportChartService.createLineChartsHarmo(recordsBetween);
+			reportBarChartDirector.createHarmonicsBarCharts(recordsBetween);
+			reportLineChartDirector.createLineChartsStandard(recordsBetween);
+			reportLineChartDirector.createLineChartsHarmo(recordsBetween);
 			List<String> userAdditionalData = getUserEnteredData();
-			tmpReportPath = reportService.generateReport(recordsBetween, userAdditionalData);
+			tmpReportPath = reportDirector.generateReport(recordsBetween, userAdditionalData);
 		}else if(modelsList.hasOnlyHarmonics()){
-			barChartService.createHarmonicsBarCharts(recordsBetween);
-			reportChartService.createLineChartsHarmo(recordsBetween);
+			reportBarChartDirector.createHarmonicsBarCharts(recordsBetween);
+			reportLineChartDirector.createLineChartsHarmo(recordsBetween);
 			List<String> userAdditionalData = getUserEnteredData();
-			tmpReportPath = reportService.generateReportHarmo(recordsBetween, userAdditionalData);
+			tmpReportPath = reportDirector.generateReportHarmo(recordsBetween, userAdditionalData);
 		}else if(modelsList.hasOnlyStandard()){
-			reportChartService.createLineChartsStandard(recordsBetween);
+			reportLineChartDirector.createLineChartsStandard(recordsBetween);
 			List<String> userAdditionalData = getUserEnteredData();
-			tmpReportPath = reportService.generateReportStandard(recordsBetween, userAdditionalData);
-		} else throw new ApplicationException(FxmlUtils.getInternalizedPropertyByKey("error.not.enough.data"));
+			tmpReportPath = reportDirector.generateReportStandard(recordsBetween, userAdditionalData);
+		} else throw new ApplicationException(FxmlUtils.getNameProperty("error.not.enough.data"));
 	}
 
 	private List<String> getUserEnteredData() {
 		List<String> userAdditionalData = new ArrayList<>();
 		if (!switchboard.getText().isEmpty()) userAdditionalData.add(switchboard.getText());
-		else userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.electric.switchboard"));
+		else userAdditionalData.add(FxmlUtils.getNameProperty("report.default.electric.switchboard"));
 
 		if (!measurementPoint.getText().isEmpty()) userAdditionalData.add(measurementPoint.getText());
-		else userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.measurement.point"));
+		else userAdditionalData.add(FxmlUtils.getNameProperty("report.default.measurement.point"));
 
-		if (analyzersModelsComboBox.getSelectionModel().isEmpty()) userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.analyzer"));
+		if (analyzersModelsComboBox.getSelectionModel().isEmpty()) userAdditionalData.add(FxmlUtils.getNameProperty("report.default.analyzer"));
 		else userAdditionalData.add(analyzersModelsComboBox.getSelectionModel().getSelectedItem().toString());
 
 		if (!serialNumber.getText().isEmpty()) userAdditionalData.add(serialNumber.getText());
-		else userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.analyzer.series"));
+		else userAdditionalData.add(FxmlUtils.getNameProperty("report.default.analyzer.series"));
 
 		if (!author.getText().isEmpty()) userAdditionalData.add(author.getText());
-		else userAdditionalData.add(FxmlUtils.getInternalizedPropertyByKey("report.default.author"));
+		else userAdditionalData.add(FxmlUtils.getNameProperty("report.default.author"));
 
 		return userAdditionalData;
 	}
@@ -174,7 +174,7 @@ public class ReportViewController {
 	@FXML
 	private void saveAs() {
 		progress.setVisible(true);
-		info.setText(FxmlUtils.getInternalizedPropertyByKey("info.saving"));
+		info.setText(FxmlUtils.getNameProperty("info.saving"));
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MS Office Documents", "*.docx"));
 		File outputFile = fileChooser.showSaveDialog(vBox.getScene().getWindow());
@@ -188,11 +188,11 @@ public class ReportViewController {
 		task.exceptionProperty().addListener((observable, oldValue, newValue) ->  {
 			if(newValue instanceof Exception ex) {
 				progress.setVisible(false);
-				info.setText(FxmlUtils.getInternalizedPropertyByKey("error.saving"));
+				info.setText(FxmlUtils.getNameProperty("error.saving"));
 			}
 		});
 		task.setOnSucceeded(e -> {
-			info.setText(FxmlUtils.getInternalizedPropertyByKey("report.info.saved"));
+			info.setText(FxmlUtils.getNameProperty("report.info.saved"));
 			progress.setVisible(false);
 		});
 		new Thread(task).start();
