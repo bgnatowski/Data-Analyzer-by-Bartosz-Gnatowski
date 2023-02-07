@@ -78,19 +78,10 @@ public class CommonUtils {
 				(int) (color.getBlue() * 255));
 	}
 
-	public static Double percentile(List<Double> latencies, double percentile) {
-		int index = (int) Math.ceil(percentile / 100.0 * latencies.size());
-		return latencies.get(index-1);
-	}
-
-	public static Double get95Percentile(List<Double> column, UniNames name) {
-		final List<Double> sortedColumn = column.stream().sorted().toList();
-		return percentile(sortedColumn, 95);
-	}
-
-	public static Double get5Percentile(List<Double> column, UniNames name) {
-		final List<Double> sortedColumn = column.stream().sorted().toList();
-		return percentile(sortedColumn, 5);
+	public static Double percentile(List<Double> samples, double percentile) {
+		final List<Double> sortedSamples = samples.stream().sorted().toList();
+		int index = (int) Math.ceil(percentile / 100.0 * samples.size());
+		return sortedSamples.get(index-1);
 	}
 
 	public static Double getAvg(List<Double> column, UniNames name) {
@@ -104,26 +95,14 @@ public class CommonUtils {
 	}
 
 	public static Double getMax(List<Double> column, UniNames name) {
-		OptionalDouble max = column
-				.stream()
-				.mapToDouble(a -> a)
-				.max();
-		if(max.isPresent())
-			return max.getAsDouble();
-		return 0d;
+		return Collections.max(column);
 	}
 
 	public static Double getMin(List<Double> column, UniNames name) {
-		OptionalDouble min = column
-				.stream()
-				.mapToDouble(a -> a)
-				.min();
-		if(min.isPresent())
-			return min.getAsDouble();
-		return 0d;
+		return Collections.min(column);
 	}
 
-	public static Double getTolerancePercentage(List<Double> column, UniNames name, Double tolerance) {
+	public static Double getTolerancePercentage(List<Double> column, Double tolerance) {
 		final long amountInTolerance = column.stream().filter(result -> result <= tolerance).count();
 		return ((double) amountInTolerance/column.size()) * 100d;
 	}

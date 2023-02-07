@@ -243,9 +243,9 @@ public class ReportDirector {
 					.filter(Objects::nonNull)
 					.toList();
 			final Double min = CommonUtils.getMin(column, name);
-			final Double percentile5 = CommonUtils.get5Percentile(column, name);
+			final Double percentile5 = CommonUtils.percentile(column, 5);
 			final Double avg = CommonUtils.getAvg(column, name);
-			final Double percentile95 = CommonUtils.get95Percentile(column, name);
+			final Double percentile95 = CommonUtils.percentile(column, 95);
 			final Double max = CommonUtils.getMax(column, name);
 
 			boolean condition = false;
@@ -347,10 +347,10 @@ public class ReportDirector {
 				List<Double> column = models.stream().map(record -> record.getHarmonics().get(name))
 						.filter(Objects::nonNull)
 						.toList();
-				final Double percentile95 = CommonUtils.get95Percentile(column, name);
+				final Double percentile95 = CommonUtils.percentile(column, 95);
 				final Double max = CommonUtils.getMax(column, name);
 				final Double allowableTolerance = ALLOWABLE_TOLERANCE_HARMONIC.get(j);
-				final Double percentageTolerance = CommonUtils.getTolerancePercentage(column, name, allowableTolerance);
+				final Double percentageTolerance = CommonUtils.getTolerancePercentage(column, allowableTolerance);
 
 				// jeśli którakolwiek harmoniczna nie będzie spełniała warunku to cały warunek nie jest spełniony
 				boolean conditionHarmo = percentile95 <= allowableTolerance;
