@@ -10,7 +10,7 @@
     </parent>
     <groupId>agh.inzapp</groupId>
     <artifactId>Inzynierka</artifactId>
-    <version>DataAnalyzer_v2.1</version>
+    <version>DataAnalyzer_v2.2</version>
     <name>Inzynierka</name>
     <description>Inzynierka</description>
     <properties>
@@ -80,12 +80,6 @@
             <groupId>com.deepoove</groupId>
             <artifactId>poi-tl</artifactId>
             <version>1.12.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>28.0-jre</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

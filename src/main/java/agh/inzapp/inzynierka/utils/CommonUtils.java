@@ -4,6 +4,7 @@ import agh.inzapp.inzynierka.models.enums.UniNames;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
+import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -78,10 +79,9 @@ public class CommonUtils {
 				(int) (color.getBlue() * 255));
 	}
 
-	public static Double percentile(List<Double> samples, double percentile) {
-		final List<Double> sortedSamples = samples.stream().sorted().toList();
-		int index = (int) Math.ceil(percentile / 100.0 * samples.size());
-		return sortedSamples.get(index-1);
+	public static Double percentile(List<Double> column, double percentile) {
+		final double[] sortedSamplesArray = column.stream().mapToDouble(Double::doubleValue).sorted().toArray();
+		return new Percentile().evaluate(sortedSamplesArray, percentile);
 	}
 
 	public static Double getAvg(List<Double> column, UniNames name) {

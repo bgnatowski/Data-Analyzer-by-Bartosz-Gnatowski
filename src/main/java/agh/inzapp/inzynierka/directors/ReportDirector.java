@@ -246,7 +246,7 @@ public class ReportDirector {
 			final Double percentile5 = CommonUtils.percentile(column, 5);
 			final Double avg = CommonUtils.getAvg(column, name);
 			final Double percentile95 = CommonUtils.percentile(column, 95);
-			final Double max = CommonUtils.getMax(column, name);
+			final Double max = CommonUtils.percentile(column, 100);
 
 			boolean condition = false;
 			switch (name) {
@@ -348,7 +348,7 @@ public class ReportDirector {
 						.filter(Objects::nonNull)
 						.toList();
 				final Double percentile95 = CommonUtils.percentile(column, 95);
-				final Double max = CommonUtils.getMax(column, name);
+				final Double max = CommonUtils.percentile(column, 100);
 				final Double allowableTolerance = ALLOWABLE_TOLERANCE_HARMONIC.get(j);
 				final Double percentageTolerance = CommonUtils.getTolerancePercentage(column, allowableTolerance);
 

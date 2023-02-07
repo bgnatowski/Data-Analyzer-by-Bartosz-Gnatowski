@@ -68,7 +68,10 @@ public class ReportLineChartDirector {
 
 			xyDataMap = CommonUtils.zipToMap(xData, yData);
 			lineChartBuilder.createSeries(xyDataMap, seriesName);
-			lineChartBuilder.setYMin(min - off);
+			if(min < 0)
+				lineChartBuilder.setYMin(min - off);
+			else
+				lineChartBuilder.setYMin(0);
 			lineChartBuilder.setYMax(max + off);
 			lineChartBuilder.setYTick(off / 2);
 		}
@@ -86,7 +89,7 @@ public class ReportLineChartDirector {
 
 		List<LocalDateTime> xData = models.stream().map(CommonModelFx::getDate).toList();
 		Map<LocalDateTime, Double> xyDataMap;
-		for (int i = 1; i < 6; i++) { // 6 wykresów
+		for (int i = 1; i < 6; i++) { // 5 wykresów
 			lineChartBuilder.createNew();
 			lineChartBuilder.setLegendVisible(true);
 
@@ -97,12 +100,12 @@ public class ReportLineChartDirector {
 
 				final Double min = Collections.min(yData);
 				final Double max = Collections.max(yData);
-				final Double off = max-min;
+				final double off = max-min;
 
 				xyDataMap = CommonUtils.zipToMap(xData, yData);
 				lineChartBuilder.createSeries(xyDataMap, seriesName);
 
-				lineChartBuilder.setYMin(min-off);
+				lineChartBuilder.setYMin(0);
 				lineChartBuilder.setYMax(max+off);
 				lineChartBuilder.setYTick(off/2);
 			}
