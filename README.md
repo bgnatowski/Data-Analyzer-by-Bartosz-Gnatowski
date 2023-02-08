@@ -62,7 +62,7 @@ lub
 
 * Po pobraniu pliku *.jar* uruchomić za pomocą komendy:
 ```
-java -jar DataAnalyzer_v2.0.jar
+java -jar DataAnalyzer_v2.2.jar
 ```
 z folderu gdzie wypakowano plik.\
 Konieczne jest posiadanie JRE 1.7+. (dołączone do JDK 17+, możliwość pobrania na https://www.oracle.com/pl/java/technologies/downloads/#java17)
@@ -129,7 +129,7 @@ or
 
 * After you download the jar file, you can run it using
 ```
-java -jar DataAnalyzer_v2.0.jar
+java -jar DataAnalyzer_v2.2.jar
 ```
 from the directory you uncompressed it to.\
 You have to have JRE 1.7+. (bundled with JDK 17+, download at https://www.oracle.com/pl/java/technologies/downloads/#java17)
