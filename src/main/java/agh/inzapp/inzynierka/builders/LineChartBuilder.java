@@ -21,6 +21,8 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static java.lang.Math.abs;
+
 @Component
 public class LineChartBuilder {
 	private LineChart<Number, Number> chart;
@@ -81,7 +83,7 @@ public class LineChartBuilder {
 	private void setYAxisTick(Map<LocalDateTime, Double> xyDataMap) {
 		yMin = 0d;
 		yMax = Collections.max(xyDataMap.values());
-		yTick = (yMax - yMin) / 2;
+		yTick = (abs(yMax - yMin)) / 2;
 		setYAxisBounds() ;
 	}
 
@@ -91,13 +93,12 @@ public class LineChartBuilder {
 		xMax =localDateTimes.get(localDateTimes.size() - 1);
 		long min = xMin.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		long max = xMax.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
-		long off = max - min;
+		long off = abs(max - min);
 		LocalDateTime now = LocalDateTime.now();
 		LocalDateTime plusHours = now.plusHours(1);
 		final long l1 = now.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		final long l2 = plusHours.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli();
 		long tick = l2-l1;
-//		setXAxisBounds(min, max, off / (localDateTimes.size() / 2d));
 		setXAxisBounds(min, max, tick);
 		setTickLabelFormatterOnX();
 	}

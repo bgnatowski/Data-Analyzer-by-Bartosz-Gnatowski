@@ -79,9 +79,9 @@ public class CommonUtils {
 				(int) (color.getBlue() * 255));
 	}
 
-	public static Double percentile(List<Double> column, double percentile) {
+	public static Double percentile(List<Double> column, double k) {
 		final double[] sortedSamplesArray = column.stream().mapToDouble(Double::doubleValue).sorted().toArray();
-		return new Percentile().evaluate(sortedSamplesArray, percentile);
+		return new Percentile().withEstimationType(Percentile.EstimationType.R_7).evaluate(sortedSamplesArray, k);
 	}
 
 	public static Double getAvg(List<Double> column, UniNames name) {
