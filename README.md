@@ -35,11 +35,12 @@ W przypadku braku któregoś z parametru wygenerowany raport będzie niepełny.
 
 Dodatkowo:
 * Opcja przeciągnij i upuść pliki csv w obrębie listy, aby zaimportować.
-* Podgląd danych możliwy w osobnym oknie poprzez kliknięcie menu prawym przyciskiem myszy po czym "otwórz w nowym oknie".
-* Możliwość zapisu do csv w innym formacie reprezentacji liczb (naukowy, zmiennoprzecinkowy) poprzez przycisk "zapisz jako..." w menu podglądu danych. 
+* Podgląd danych możliwy w osobnym oknie poprzez kliknięcie menu "Podgląd danych" prawym przyciskiem myszy, po czym wybranie opcji "Otwórz w nowym oknie".
+* Okno statystyk całkowitych możliwe do włączenia poprzez kliknięcie menu "Podgląd danych" prawym przyciskiem myszy, po czym wybranie opcji "Otwórz okno statystyk".
+* Możliwość zapisu do csv w innym formacie reprezentacji liczb (naukowy, zmiennoprzecinkowy) poprzez przycisk "zapisz jako..." w menu podglądu danych.
 
 Poprawki w przyszłej wersji do korekty (nie wpływa na ogólną funkcjonalność):
-* mieszanie kolorów serii przy przełącznaniu pomiędzy wykresami
+* mieszanie kolorów serii przy przełączaniu pomiędzy wykresami;
 * w momencie, gdy jest więcej, niż jedna pusta lista serii w kreatorze (zakładka Oś X), utworzenie wykresu następuje dopiero po wybraniu serii w każdej z nich. 
 
 ## Licencja
@@ -103,12 +104,13 @@ To generate a full report, it is important that both types of data are imported.
 * Value of the level of each of the voltage harmonics (min. up to 25) for each of the 3 phases (SonelAnalysis - data export in %, WinPQ - data export in V).
 
 Extra:
-* Drag and drop csv files to the list to import.
-* Data can be previewed in a separate window by clicking the right mouse button in the menu and then "open in new window"
+* Drag and drop csv files to the list to import. 
+* Data can be previewed in a separate window by clicking the "Data Preview" menu with the right mouse button and then selecting the "Open in new window" option.
+* Total statistics window can be enabled by right-clicking the "Data View" menu and selecting "Open Statistics".
 * The ability to save to ".csv" in a different format of representation of numbers (scientific, floating point) via the "save as..." button in the data preview menu.
 
 Fixes in a future version to be corrected (does not affect overall functionality):
-* mixing series colors when switching between charts
+* mixing series colors when switching between charts;
 * when there is more than one empty series list in the wizard (X axis tab), the chart is created only after selecting a series in each of them.
 
 ## License
