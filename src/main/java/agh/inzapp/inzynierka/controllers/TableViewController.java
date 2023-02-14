@@ -49,15 +49,14 @@ public class TableViewController {
 	private String formatHarmo = "f";
 	private String formatNormal = "f";
 	private ListCommonModelFx modelList;
-	private static boolean first = true;
+
 	@FXML
 	public void initialize() {
 		try {
 			modelList = ListCommonModelFx.getInstance();
 			bindNormal();
 			bindHarmonics();
-			if(first) Platform.runLater(TableViewController::showInfoDialog);
-			first = false;
+			Platform.runLater(this::showInfoDialog);
 		} catch (ApplicationException e) {
 			DialogUtils.errorDialog(e.getMessage());
 		}
@@ -408,35 +407,20 @@ public class TableViewController {
 		alert.showAndWait();
 	}
 
-
-	static void showInfoDialog() {
-		try {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setWidth(620);
-			alert.setHeight(420);
-			alert.setTitle("Statystyki - import");
-			alert.setHeaderText("Zaimportowano poprawnie.\nStatystyki pomiarów:");
-
-			TextArea textArea = new TextArea(ListCommonModelFx.getInstance().getImportedStatistics());
-			textArea.setPrefColumnCount(40);
-			textArea.setPrefRowCount(20);
-			textArea.setEditable(false);
-			textArea.setWrapText(true);
-			textArea.setEditable(false);
-			alert.getDialogPane().setContent(textArea);
-			alert.initStyle(StageStyle.UTILITY);
-			alert.showAndWait();
-		} catch (ApplicationException e) {
-			DialogUtils.errorDialog(e.getMessage());
-		}
-
-	}
-
-	public static boolean isFirst() {
-		return first;
-	}
-
-	public static void setFirst(boolean first) {
-		TableViewController.first = first;
+	private void showInfoDialog(){
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setWidth(620);
+		alert.setHeight(420);
+		alert.setTitle("Statystyki - import");
+		alert.setHeaderText("Zaimportowano poprawnie.\nStatystyki pomiarów:");
+		TextArea textArea = new TextArea(modelList.getImportedStatistics());
+		textArea.setPrefColumnCount(40);
+		textArea.setPrefRowCount(20);
+		textArea.setEditable(false);
+		textArea.setWrapText(true);
+		textArea.setEditable(false);
+		alert.getDialogPane().setContent(textArea);
+		alert.initStyle(StageStyle.UTILITY);
+		alert.showAndWait();
 	}
 }

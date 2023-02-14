@@ -5,7 +5,6 @@ import agh.inzapp.inzynierka.utils.FxmlUtils;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import org.springframework.stereotype.Component;
@@ -73,11 +72,6 @@ public class MenuController {
 		tableViewButton.disableProperty().bind(toggleButtonProperty);
 		chartViewButton.disableProperty().bind(toggleButtonProperty);
 		reportButton.disableProperty().bind(toggleButtonProperty);
-	}
-
-	@FXML
-	private void openStatisticsWindow(ActionEvent event) {
-		TableViewController.showInfoDialog();
 	}
 
 	public static void setToggleButtonProperty(boolean toggleButtonProperty) {

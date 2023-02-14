@@ -36,7 +36,6 @@
                   <ContextMenu>
                     <items>
                       <MenuItem mnemonicParsing="false" onAction="#openInNewWindow" text="%menu.open.new.window" />
-                      <MenuItem mnemonicParsing="false" onAction="#openStatisticsWindow" text="%menu.open.statistics" />
                     </items>
                   </ContextMenu>
                </contextMenu>

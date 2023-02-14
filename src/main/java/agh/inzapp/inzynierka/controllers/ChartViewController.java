@@ -162,9 +162,6 @@ public class ChartViewController {
 		chartCombo.setItems(chartsDirector.getLineChartsList());
 		chartCombo.getSelectionModel().selectLast();
 		setSettingsPane();
-		for(int i = deletingButtons.size()-1; i>=0; i--){
-			deletingButtons.get(i).fire();
-		}
 		yValuesList.forEach(value -> value.getSelectionModel().clearSelection());
 	}
 
@@ -184,10 +181,6 @@ public class ChartViewController {
 	private void switchLineChart(ActionEvent event) {
 		repaintChart();
 		setSettings();
-		for(int i = deletingButtons.size()-1; i>=0; i--){
-			if(yValuesList.get(i+1).getSelectionModel().isEmpty())
-				deletingButtons.get(i).fire();
-		}
 	}
 
 	@FXML
@@ -257,10 +250,12 @@ public class ChartViewController {
 	@FXML // "Dodaj" dodaje linie w grid y
 	private void addLine() {
 		int row = yGrid.getRowCount();
+//		if (row < 7) { //ograniczenie - można zlikwidować raczej;
 			final ComboBox<UniNames> newComboBox = getUniNamesComboBox();
 			final ColorPicker newColorPicker = getColorPicker();
 			final Button newDelete = createButton(row + 1, newComboBox, newColorPicker);
 			yGrid.addRow(row, newComboBox, newColorPicker, newDelete);
+//		}
 	}
 
 	private ColorPicker getColorPicker() {
