@@ -38,6 +38,10 @@ Dodatkowo:
 * Podgląd danych możliwy w osobnym oknie poprzez kliknięcie menu prawym przyciskiem myszy po czym "otwórz w nowym oknie".
 * Możliwość zapisu do csv w innym formacie reprezentacji liczb (naukowy, zmiennoprzecinkowy) poprzez przycisk "zapisz jako..." w menu podglądu danych. 
 
+Poprawki w przyszłej wersji do korekty (nie wpływa na ogólną funkcjonalność):
+* mieszanie kolorów serii przy przełącznaniu pomiędzy wykresami
+* w momencie, gdy jest więcej, niż jedna pusta lista serii w kreatorze (zakładka Oś X), utworzenie wykresu następuje dopiero po wybraniu serii w każdej z nich. 
+
 ## Licencja
 
 [APACHE LICENSE, VERSION 2.0](https://www.apache.org/licenses/LICENSE-2.0)
@@ -66,7 +70,6 @@ java -jar DataAnalyzer_v2.2.jar
 ```
 z folderu gdzie wypakowano plik.\
 Konieczne jest posiadanie JRE 1.7+. (dołączone do JDK 17+, możliwość pobrania na https://www.oracle.com/pl/java/technologies/downloads/#java17)
-
 
 
 ### EN
@@ -103,6 +106,10 @@ Extra:
 * Drag and drop csv files to the list to import.
 * Data can be previewed in a separate window by clicking the right mouse button in the menu and then "open in new window"
 * The ability to save to ".csv" in a different format of representation of numbers (scientific, floating point) via the "save as..." button in the data preview menu.
+
+Fixes in a future version to be corrected (does not affect overall functionality):
+* mixing series colors when switching between charts
+* when there is more than one empty series list in the wizard (X axis tab), the chart is created only after selecting a series in each of them.
 
 ## License
 
