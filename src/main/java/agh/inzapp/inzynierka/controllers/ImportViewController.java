@@ -79,6 +79,7 @@ public class ImportViewController {
 
 	private void clearUploaded() {
 		ListCommonModelFx.reset();
+		TableViewController.setFirst(true);
 	}
 
 	private void importDataFromAnalyser() {

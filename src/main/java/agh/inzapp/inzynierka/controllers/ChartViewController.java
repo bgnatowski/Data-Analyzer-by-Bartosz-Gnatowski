@@ -250,12 +250,10 @@ public class ChartViewController {
 	@FXML // "Dodaj" dodaje linie w grid y
 	private void addLine() {
 		int row = yGrid.getRowCount();
-//		if (row < 7) { //ograniczenie - można zlikwidować raczej;
 			final ComboBox<UniNames> newComboBox = getUniNamesComboBox();
 			final ColorPicker newColorPicker = getColorPicker();
 			final Button newDelete = createButton(row + 1, newComboBox, newColorPicker);
 			yGrid.addRow(row, newComboBox, newColorPicker, newDelete);
-//		}
 	}
 
 	private ColorPicker getColorPicker() {
