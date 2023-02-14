@@ -41,7 +41,7 @@ Dodatkowo:
 
 Poprawki w przyszłej wersji do korekty (nie wpływa na ogólną funkcjonalność):
 * mieszanie kolorów serii przy przełączaniu pomiędzy wykresami;
-* w momencie, gdy jest więcej, niż jedna pusta lista serii w kreatorze (zakładka Oś X), utworzenie wykresu następuje dopiero po wybraniu serii w każdej z nich. 
+* w momencie, gdy jest więcej niż jedna pusta lista serii w kreatorze (zakładka Oś X), utworzenie wykresu następuje dopiero po wybraniu serii w każdej z nich. 
 
 ## Licencja
 
