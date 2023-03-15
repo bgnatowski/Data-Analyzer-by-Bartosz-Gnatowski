@@ -52,6 +52,14 @@ Ikony aplikacji użyte i nieedytowane zgodnie z licencjami:
 na licencji [Creative Commons (Attribution 3.0 Unported) (CC BY 3.0)](https://creativecommons.org/licenses/by/3.0/)
 * exit icon by Alessandro Rei (https://www.iconfinder.com/icons/6035/exit_icon#) na licencji [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
 
+## Biblioteki i narzędzia
+
+* JavaFX
+* SpringBoot
+* Project Lombok
+* OpenCSV
+* Poi-tl
+
 ## Instalacja
 
 Aplikacje można pobrać pod linkiem:
@@ -122,6 +130,13 @@ Application icons used and unedited according to the licenses:
   na licencji [Creative Commons (Attribution 3.0 Unported) (CC BY 3.0)](https://creativecommons.org/licenses/by/3.0/)
 * exit icon by Alessandro Rei (https://www.iconfinder.com/icons/6035/exit_icon#) na licencji [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
 
+## Technologies and libraries
+
+* JavaFX
+* SpringBoot
+* Project Lombok
+* OpenCSV
+* Poi-tl
 
 ## Installation
 
