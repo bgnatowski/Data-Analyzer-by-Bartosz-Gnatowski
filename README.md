@@ -54,6 +54,7 @@ na licencji [Creative Commons (Attribution 3.0 Unported) (CC BY 3.0)](https://cr
 
 ## Biblioteki i narzędzia
 
+* Java 17
 * JavaFX
 * SpringBoot
 * Project Lombok
@@ -132,6 +133,7 @@ Application icons used and unedited according to the licenses:
 
 ## Technologies and libraries
 
+* Java 17
 * JavaFX
 * SpringBoot
 * Project Lombok
